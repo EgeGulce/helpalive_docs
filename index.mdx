@@ -1,134 +1,54 @@
 ---
-title: "HelpAlive: your best product advisor"
-description: HelpAlive watches every user inside your product, answers their questions instantly with a context-aware AI assistant, and tells your team where adoption is breaking down.
-mode: frame
+title: "HelpAlive docs"
+sidebarTitle: "Home"
+description: One script tag. An AI assistant your users can talk to. Adoption insights your team can act on.
+mode: "custom"
 ---
 
-<div data-product-guide-index className="flex w-full flex-col gap-8 max-w-5xl mx-auto px-4 md:px-8 lg:px-12 py-10 lg:gap-14 lg:py-16">
-  <div className="flex max-w-[600px] flex-col gap-2 self-center text-center">
-    <h1 className="text-[30px] font-medium leading-9 tracking-tight text-gray-900 dark:text-gray-50">
-      HelpAlive Documentation
+<div className="mx-auto max-w-5xl px-6 py-16 lg:py-20">
+  <div className="flex flex-col items-center gap-6 text-center">
+    <img src="/logo/light.svg" alt="HelpAlive" className="block dark:hidden h-10 w-auto" />
+    <img src="/logo/dark.svg"  alt="HelpAlive" className="hidden dark:block h-10 w-auto" />
+    <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">
+      Your best product advisor.
     </h1>
-    <p className="text-balance text-base leading-relaxed tracking-tight text-gray-600 dark:text-gray-400">
+    <p className="max-w-2xl text-base md:text-lg text-gray-600 dark:text-gray-400">
       One script tag. An AI assistant your users can talk to. Adoption insights your team can act on.
     </p>
-  </div>
-
-  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-    <Card
-      title={<span className="product-guide-feature-card-title">Get started in 5 minutes</span>}
-      icon="rocket"
-      href="/quickstart"
-      className="product-guide-feature-card"
-      size={64}
-    >
-      <span className="product-guide-feature-card-description">Add HelpAlive to your product with one script tag and one identify call.</span>
-    </Card>
-
-    <a
-      href="/sdk/overview"
-      className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
-    >
-      <Icon icon="code" color="rgb(var(--primary))" size={18} className="shrink-0" />
-      <div className="flex flex-col gap-1">
-        <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">SDK reference</span>
-        <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-          Install the script, identify users and tenants, and call the public API.
-        </span>
-      </div>
-    </a>
-    <a
-      href="/chatbot/overview"
-      className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
-    >
-      <Icon icon="sparkles" color="rgb(var(--primary))" size={18} className="shrink-0" />
-      <div className="flex flex-col gap-1">
-        <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">AI chatbot</span>
-        <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-          Train a context-aware product assistant on your docs and ship it inside your app.
-        </span>
-      </div>
-    </a>
-  </div>
-
-  <hr className="border-0 border-t border-border" />
-
-  <div className="flex flex-col gap-4">
-    <h2 className="font-serif text-xl font-medium leading-normal text-gray-900 dark:text-gray-50">Common tasks</h2>
-
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="flex flex-wrap justify-center gap-3 pt-2">
       <a
-        href="/installation"
-        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+        href="/quickstart"
+        className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition"
       >
-        <Icon icon="terminal" color="rgb(var(--primary))" size={18} className="shrink-0" />
-        <div className="flex flex-col gap-1">
-          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Install the SDK</span>
-          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-            Drop one script tag into your HTML. Works with React, Vue, Angular, or plain HTML.
-          </span>
-        </div>
+        Get started
       </a>
       <a
-        href="/sdk/identify"
-        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+        href="/sdk/overview"
+        className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:border-primary transition dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50"
       >
-        <Icon icon="user-check" color="rgb(var(--primary))" size={18} className="shrink-0" />
-        <div className="flex flex-col gap-1">
-          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Identify users and tenants</span>
-          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-            Tie sessions to real users and workspaces so analytics and guidance are accurate.
-          </span>
-        </div>
-      </a>
-      <a
-        href="/chatbot/knowledge-base"
-        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
-      >
-        <Icon icon="book-open" color="rgb(var(--primary))" size={18} className="shrink-0" />
-        <div className="flex flex-col gap-1">
-          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Train the chatbot on your docs</span>
-          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-            Crawl a URL or upload files. We chunk, embed, and index for instant retrieval.
-          </span>
-        </div>
-      </a>
-      <a
-        href="/analytics/coverage-gaps"
-        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
-      >
-        <Icon icon="inbox" color="rgb(var(--primary))" size={18} className="shrink-0" />
-        <div className="flex flex-col gap-1">
-          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Find coverage gaps</span>
-          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-            See which questions your assistant can't answer, ranked by volume and severity.
-          </span>
-        </div>
-      </a>
-      <a
-        href="/privacy/overview"
-        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
-      >
-        <Icon icon="shield-check" color="rgb(var(--primary))" size={18} className="shrink-0" />
-        <div className="flex flex-col gap-1">
-          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Privacy & security</span>
-          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-            PII is redacted in the browser and again server-side before any storage.
-          </span>
-        </div>
-      </a>
-      <a
-        href="/plans/overview"
-        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
-      >
-        <Icon icon="credit-card" color="rgb(var(--primary))" size={18} className="shrink-0" />
-        <div className="flex flex-col gap-1">
-          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Plans & pricing</span>
-          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-            See what's included on each plan and how usage is metered.
-          </span>
-        </div>
+        SDK reference
       </a>
     </div>
+  </div>
+
+  <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <Card title="Quickstart" icon="rocket" href="/quickstart" horizontal>
+      Install HelpAlive in 5 minutes — one script tag, one identify call.
+    </Card>
+    <Card title="SDK" icon="code" href="/sdk/overview" horizontal>
+      Autocapture, identify, and the full public API surface.
+    </Card>
+    <Card title="AI chatbot" icon="sparkles" href="/chatbot/overview" horizontal>
+      A context-aware product assistant trained on your docs.
+    </Card>
+    <Card title="Analytics" icon="chart-line" href="/analytics/overview" horizontal>
+      Per-user, per-tenant adoption views and a coverage-gaps inbox.
+    </Card>
+    <Card title="Privacy" icon="shield-check" href="/privacy/overview" horizontal>
+      Two layers of PII redaction, DSAR-ready deletion, full audit.
+    </Card>
+    <Card title="Plans" icon="credit-card" href="/plans/overview" horizontal>
+      Early access pilots and how usage is metered.
+    </Card>
   </div>
 </div>

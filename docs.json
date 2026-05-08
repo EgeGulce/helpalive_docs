@@ -12,15 +12,13 @@
   "icons": {
     "library": "lucide"
   },
-  "styling": {
-    "eyebrows": "breadcrumbs"
-  },
   "contextual": {
     "options": ["copy", "view", "assistant", "mcp", "add-mcp"]
   },
   "logo": {
     "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "dark": "/logo/dark.svg",
+    "href": "/"
   },
   "navbar": {
     "links": [
@@ -50,12 +48,10 @@
         }
       ]
     },
-    "directory": "card",
     "groups": [
       {
         "group": "Get started",
         "icon": "rocket",
-        "expanded": true,
         "pages": [
           "introduction",
           "quickstart",
@@ -65,7 +61,6 @@
       {
         "group": "SDK",
         "icon": "code",
-        "expanded": true,
         "pages": [
           "sdk/overview",
           "sdk/identify",
@@ -74,9 +69,8 @@
         ]
       },
       {
-        "group": "AI chatbot",
+        "group": "Chatbot",
         "icon": "sparkles",
-        "expanded": true,
         "pages": [
           "chatbot/overview",
           "chatbot/knowledge-base",
@@ -85,9 +79,8 @@
         ]
       },
       {
-        "group": "Adoption analytics",
+        "group": "Analytics",
         "icon": "chart-line",
-        "expanded": true,
         "pages": [
           "analytics/overview",
           "analytics/coverage-gaps",
@@ -97,15 +90,13 @@
       {
         "group": "Guides",
         "icon": "map",
-        "expanded": false,
         "pages": [
           "guides/overview"
         ]
       },
       {
-        "group": "Privacy & security",
+        "group": "Privacy",
         "icon": "shield-check",
-        "expanded": true,
         "pages": [
           "privacy/overview",
           "privacy/redaction",
@@ -113,9 +104,8 @@
         ]
       },
       {
-        "group": "Plans & billing",
+        "group": "Plans",
         "icon": "credit-card",
-        "expanded": false,
         "pages": [
           "plans/overview",
           "plans/faq"
