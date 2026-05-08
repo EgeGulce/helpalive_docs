@@ -1,0 +1,97 @@
+---
+title: "Use cases"
+sidebarTitle: "Use cases"
+description: "What B2B SaaS teams use HelpAlive for: faster user activation, lower churn, ticket deflection, in-product upsell, and real visibility into feature adoption."
+keywords:
+  - SaaS user activation
+  - reduce churn B2B SaaS
+  - support ticket deflection
+  - in-app onboarding
+  - feature adoption
+  - product-led growth
+  - customer success tool
+  - user engagement SaaS
+mode: "wide"
+---
+
+HelpAlive is built for B2B SaaS teams who care about adoption and retention but don't have a dedicated product analyst. Here's what teams ship with it.
+
+## <span id="activation">Faster activation</span>
+
+**The problem.** New users sign up, click around for a few minutes, hit a wall they don't understand, and never come back. Activation funnels degrade silently.
+
+**What HelpAlive does.** The AI assistant greets every new user with context-aware suggestions for the page they landed on. The greeting and three suggested questions are computed from the user's plan, role, and current page — so a free-tier user sees different prompts than an admin reviewing billing.
+
+**Outcome.** Users hit their first value moment without reading the docs. Time-to-activation drops because the product itself is showing them the way.
+
+**Set up:** [Quickstart](/quickstart) → [Knowledge base](/chatbot/knowledge-base) → [Appearance](/chatbot/appearance).
+
+---
+
+## <span id="churn">Lower churn</span>
+
+**The problem.** Users who silently struggle leave. Analytics tools see the struggle but humans need weeks to ship a fix; meanwhile the user has already churned.
+
+**What HelpAlive does.**
+- The SDK auto-captures rage clicks, abandoned forms, DOM errors, and repeated dead-ends.
+- The AI assistant is one click away with full session context — no "what's wrong?" prompt; the user can describe the problem in their own words and the agent already knows what they were just doing.
+- The coverage-gaps inbox surfaces the categories of struggle your team needs to address — ranked by volume and severity.
+
+**Outcome.** Friction gets caught and answered in-product, in the moment. Patterns get caught for the team to fix. Both at the same time.
+
+**Set up:** [SDK overview](/sdk/overview) → [Chatbot overview](/chatbot/overview) → [Coverage gaps](/analytics/coverage-gaps).
+
+---
+
+## <span id="tickets">Ticket deflection</span>
+
+**The problem.** Generic AI support chatbots answer FAQs but lack product context. Users have to re-explain what they were doing, which page they're on, and what they tried already. Volume floods support.
+
+**What HelpAlive does.** The chatbot reads four sources of context at every turn — page, identity, recent activity, and a hybrid-retrieved knowledge base from your docs. It opens with "I see you were on Billing and clicked Upgrade twice" rather than "How can I help?"
+
+**Outcome.** First-touch deflection improves on questions where context is the bottleneck. Tickets that escalate arrive with a transcript already attached so support staff don't start cold.
+
+**Set up:** [Chatbot overview](/chatbot/overview) → [Knowledge base](/chatbot/knowledge-base) → [Coverage gaps](/analytics/coverage-gaps).
+
+---
+
+## <span id="upsell">In-product upsell</span>
+
+**The problem.** Upsell opportunities are time-sensitive — the moment a user hits a feature gate is the moment to introduce the upgrade path. Generic banners miss the moment; sales reps don't see the trigger in time.
+
+**What HelpAlive does.** Events from `identify()` (plan, role, signup date) plus auto-captured behavior tell you when a user on a lower tier is engaging with features that exist on a higher tier. The chatbot answers gating questions with the right framing — what's available, what's premium, and how to upgrade — without sounding like a sales pitch.
+
+**Outcome.** Conversion conversations happen in-app, in the moment, with full context.
+
+**Set up:** [Identify users](/sdk/identify) → [Chatbot appearance](/chatbot/appearance) for plan-aware welcome copy.
+
+---
+
+## <span id="visibility">A real map of how your product is used</span>
+
+**The problem.** Manual event tagging rots. Every new feature you ship needs a tracking spec, a code change, and a dashboard update. Coverage drifts; adoption metrics become aspirational.
+
+**What HelpAlive does.** Auto-capture is the default — clicks, pageviews, form submits, exposure summaries, friction signals. No tag plan. Every screen you ship is instrumented the moment it ships. Adoption dashboards stay in sync with reality.
+
+**Outcome.** Your team sees adoption trends without fighting an instrumentation backlog. New features are visible from day one, not from "next quarter when the analyst can write the tracking."
+
+**Set up:** [SDK overview](/sdk/overview) → [Analytics overview](/analytics/overview) → [User profiles](/analytics/user-profiles).
+
+---
+
+## Where HelpAlive doesn't fit
+
+Honesty matters: HelpAlive is not session replay (no video, no DOM snapshots), not a general analytics platform (we focus on adoption, not all-purpose dashboards), and not a developer-facing product (we don't replace your error monitoring, APM, or telemetry pipeline).
+
+If you want a tool to **debug** product behavior, you want session replay and APM. If you want to **govern** behavior, you want HelpAlive.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Compare HelpAlive" icon="git-compare" href="/compare">
+    vs Pendo, Intercom Fin, WalkMe, FullStory.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Five minutes to your first session.
+  </Card>
+</CardGroup>

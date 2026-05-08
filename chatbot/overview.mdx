@@ -1,7 +1,14 @@
 ---
 title: "Overview"
 sidebarTitle: "Overview"
-description: A context-aware AI product assistant rendered inside your app. Trained on your docs, aware of the user's page and identity, with a draft/publish workflow.
+description: "HelpAlive's AI chatbot is a context-aware product assistant rendered inside your app. Trained on your docs, aware of the user's page and identity, with a draft/publish workflow."
+keywords:
+  - AI product chatbot
+  - in-app AI assistant
+  - context-aware support chatbot
+  - RAG chatbot SaaS
+  - Shadow DOM widget
+  - SSE streaming chatbot
 mode: "wide"
 ---
 
@@ -14,17 +21,19 @@ The HelpAlive AI chatbot is a Preact widget rendered inside a Shadow DOM on your
 | **Bundle size** | ~25 KB IIFE |
 | **Isolation** | Shadow DOM — your CSS never leaks in, ours never leaks out |
 | **Streaming** | SSE, token-by-token |
-| **Backed by** | Hybrid retrieval (vector + BM25 + reciprocal-rank fusion), cross-encoder rerank, Claude generation |
+| **Retrieval** | Hybrid (vector + BM25 + reciprocal-rank fusion), cross-encoder rerank |
+| **Generation model** | Configurable per project. Defaults to OpenAI's `gpt-5.4-nano`; routes to OpenAI for `gpt-*` and Anthropic for `claude-*` (set `CHATBOT_MODEL` to switch). |
+| **Embeddings** | OpenAI `text-embedding-3-small`, stored in pgvector with HNSW |
 | **Knowledge sources** | Crawled URLs, uploaded files (PDF, DOCX, MD), pasted text |
 | **Workflow** | Draft → test → publish, atomic |
 
 ## How it works end-to-end
 
 1. **You point HelpAlive at your docs** — a URL to crawl, files to upload, or text to paste.
-2. **We chunk and embed** — content is split, embedded with OpenAI, and indexed into pgvector with HNSW.
+2. **We chunk and embed** — content is split, embedded with OpenAI's `text-embedding-3-small`, and indexed into pgvector with an HNSW index.
 3. **A user asks a question in your product** — the widget reads `getContext()` from the SDK to know the user's page, role, plan, and recent activity.
-4. **We retrieve and rerank** — hybrid retrieval (vector + BM25 fused with reciprocal-rank fusion), then cross-encoder rerank.
-5. **Claude generates an answer** — grounded in retrieved chunks plus the user's context. The response streams back over SSE, token by token.
+4. **We retrieve and rerank** — hybrid retrieval combines vector similarity with BM25 keyword search via reciprocal-rank fusion (k=60), then a cross-encoder reranks the top results.
+5. **The model generates an answer** — grounded in retrieved chunks plus the user's context. The prompt is structured into three blocks (anti-hallucination rules, customer guidance + tone, then dynamic context + retrieved chunks), with the first two cached. The response streams back over SSE, token by token.
 6. **The user rates it** — thumbs up / down feed into the [coverage-gaps inbox](/analytics/coverage-gaps).
 
 ## What makes it context-aware

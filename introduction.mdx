@@ -1,81 +1,87 @@
 ---
 title: "Introduction"
 sidebarTitle: "Introduction"
-description: HelpAlive is your best product advisor. It watches every user, answers their questions in-product, and tells your team what to fix.
+description: "HelpAlive is your best product advisor — an AI agent that watches every user inside your SaaS, intervenes when they're stuck, and answers in context when they ask. One product replaces an analytics tool, an in-app chatbot, and a guide builder."
+keywords:
+  - in-app guidance
+  - AI product assistant
+  - feature adoption SaaS
+  - context-aware chatbot
+  - user onboarding tool
+  - reduce churn SaaS
+  - alternative to Pendo
+  - alternative to Intercom Fin
+  - alternative to WalkMe
 mode: "wide"
 ---
 
-HelpAlive is a guidance layer for B2B SaaS. We help your users find value in your product through an in-app AI assistant, and we show your team where adoption is breaking down with insights drawn from real usage.
+**HelpAlive is your best product advisor — for every user, in every session.** It watches what users do inside your SaaS, learns what your *best* users do, and steps in when others go off track — with guided walkthroughs in the moment, and context-aware answers when they ask for help.
 
-You install one `<script>` tag, call `identify()` after login, and HelpAlive does the rest — no manual event tagging, no schema design, no per-feature SDK calls sprinkled through your app.
+One product replaces an analytics tool, an in-app chatbot, and a guide builder. You stay the supervisor; HelpAlive runs the work.
 
 <CardGroup cols={2}>
-  <Card title="Quick start" icon="rocket" href="/quickstart">
-    Install HelpAlive and identify your first user in under 5 minutes.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Drop in one script, call `identify()` after login, watch your first session land.
   </Card>
-  <Card title="SDK overview" icon="code" href="/sdk/overview">
-    See what the SDK captures automatically and which API methods are available.
+  <Card title="How it works" icon="circuit-board" href="/sdk/overview">
+    Autocapture, context-aware retrieval, and the public SDK API.
   </Card>
-  <Card title="AI chatbot" icon="sparkles" href="/chatbot/overview">
-    Train a context-aware product assistant on your docs and ship it inside your app.
+  <Card title="vs Pendo, Intercom, WalkMe" icon="git-compare" href="/compare">
+    Why teams pick HelpAlive over the analytics + chatbot + guides patchwork.
   </Card>
-  <Card title="Privacy & security" icon="shield-check" href="/privacy/overview">
-    Two layers of PII redaction — in the browser and again server-side.
+  <Card title="Use cases & outcomes" icon="target" href="/use-cases">
+    Onboarding, adoption, churn prevention, ticket deflection, upsell.
   </Card>
 </CardGroup>
 
 ## What HelpAlive does
 
-HelpAlive is built around three shipped pieces.
-
 <CardGroup cols={3}>
-  <Card title="Lightweight SDK" icon="zap">
-    An ~11&nbsp;KB browser SDK that auto-captures clicks, pageviews, form submits, rage clicks, and DOM errors. One script tag, one `identify()` call.
+  <Card title="Watches" icon="eye">
+    A one-script SDK auto-captures clicks, pageviews, form submits, rage clicks, and DOM errors. No manual tagging. PII is redacted in the browser before it leaves the page.
   </Card>
-  <Card title="AI product assistant" icon="message-circle">
-    A Preact widget rendered in a Shadow DOM, trained on your docs, aware of the user's current page, role, and recent activity. Answers stream over SSE.
+  <Card title="Intervenes" icon="hand-helping">
+    A context-aware AI assistant trained on your docs answers in your users' words — already aware of the page they're on, what they just clicked, and what plan or role they're on.
   </Card>
-  <Card title="Adoption analytics" icon="chart-line">
-    Per-user, per-tenant, and per-page views of who's using what. Plus a coverage-gaps inbox that ranks the questions your assistant can't answer.
+  <Card title="Reports" icon="chart-line">
+    A coverage-gaps inbox surfaces exactly which questions your assistant can't answer well, ranked by volume and severity, so your team knows what to fix next.
   </Card>
 </CardGroup>
 
-## Why teams choose HelpAlive
+## What teams use it for
 
 <CardGroup cols={2}>
-  <Card title="Guidance first, not dashboards" icon="compass">
-    The end-user surface is an assistant inside your product, not another tab to check. Users get answers where they're stuck.
+  <Card title="Faster activation" icon="zap" href="/use-cases#activation">
+    New users hit their first value moment sooner when the product itself shows them the way.
   </Card>
-  <Card title="No manual feature labeling" icon="tags">
-    Behavior is inferred from real interactions. You don't maintain a taxonomy of buttons or write tagging code.
+  <Card title="Less churn" icon="trending-down" href="/use-cases#churn">
+    Catch silent struggle before it becomes cancellation — the moments analytics tools see but never act on.
   </Card>
-  <Card title="Privacy you can verify" icon="lock">
-    PII is redacted client-side, then again in a dedicated server-side drainer that's the only service with access to raw events.
+  <Card title="Fewer tickets" icon="ticket" href="/use-cases#tickets">
+    Deflect support volume by answering inside the product, with full session context the user shouldn't have to re-explain.
   </Card>
-  <Card title="Works alongside your stack" icon="layers">
-    Sits next to FullStory, Mixpanel, or Amplitude. They stay your source of truth for analytics; HelpAlive is where you go to make things better.
+  <Card title="A real usage map" icon="map" href="/use-cases#visibility">
+    See which features are adopted, which are ignored, and which need a nudge — without maintaining a tag plan.
   </Card>
 </CardGroup>
 
-## Who it's for
+## Why this exists
 
-HelpAlive is built for small-to-mid B2B SaaS teams (roughly 20–200 people) who care about adoption and retention but can't justify the cost or setup of FullStory or Pendo. Typically one product person plus a couple of engineers — no dedicated analyst required.
+Your analytics tool sees what users do. Your support chatbot answers what users ask. Your guide builder runs what someone hand-coded. None of those see the user's *real-time* context — the page they're on, the click they just rage-tapped, the form they abandoned three minutes ago.
 
-It's also a fit for mid-market teams (200–1,000) who already run a heavyweight analytics tool and want a guidance layer on top of it.
+HelpAlive is built around that gap. The same SDK that captures behavior also feeds the AI assistant fresh page context at every turn, so the agent answers like someone who's actually watching — not someone reading a generic FAQ.
 
-<Note>
-  HelpAlive does not replace your analytics platform. We sit alongside it. Your existing tools keep capturing what happened — HelpAlive is the layer that helps your users find value and tells your team what to fix next.
-</Note>
+## Get started
 
-## What HelpAlive is not
+<CardGroup cols={2}>
+  <Card title="Install in 5 minutes" icon="rocket" href="/quickstart">
+    Paste one `<script>` tag, call `identify()` once, you're done.
+  </Card>
+  <Card title="Talk to us" icon="message-circle" href="https://helpalive.com/contact">
+    HelpAlive is in early access — pilots are sized to your team and traffic.
+  </Card>
+</CardGroup>
 
-- **Not session replay.** No video, no DOM snapshots.
-- **Not a general analytics platform.** We surface adoption metrics to prove guidance works, not to be a dashboard destination.
-- **Not a developer-facing product.** The customer is a product team, not an analyst writing SQL.
-- **Not a data warehouse.** Events are stored for adoption analytics, not for export to your data lake.
+## Built honestly
 
-## Next step
-
-<Card title="Install HelpAlive in 5 minutes" icon="arrow-right" href="/quickstart">
-  Paste a script tag, call `identify()` on login, watch your first session land in the dashboard.
-</Card>
+We mark in-progress areas as such. Today's shipped surface: the SDK, the AI chatbot, adoption analytics, the coverage-gaps inbox, the guide engine runtime, two layers of PII redaction, and DSAR-ready privacy tooling. In active development: the dashboard guides editor, automatic feature discovery from event sequences, and proactive recommendations driven by pattern mining.

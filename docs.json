@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "almond",
   "name": "HelpAlive",
-  "description": "HelpAlive is your best product advisor — an AI assistant inside your product plus adoption insights for your team.",
+  "description": "HelpAlive is your best product advisor — an AI agent that watches every user inside your SaaS, intervenes when they're stuck, and answers in context when they ask.",
   "colors": {
     "primary": "#3FACF8",
     "light": "#68cbe9",
@@ -11,6 +11,18 @@
   "favicon": "/favicon.svg",
   "icons": {
     "library": "lucide"
+  },
+  "seo": {
+    "indexing": "navigable",
+    "metatags": {
+      "og:type": "website",
+      "og:site_name": "HelpAlive Documentation",
+      "og:image": "/logo/icon.svg",
+      "twitter:card": "summary_large_image",
+      "twitter:site": "@helpalive",
+      "robots": "index, follow",
+      "author": "HelpAlive"
+    }
   },
   "contextual": {
     "options": ["copy", "view", "assistant", "mcp", "add-mcp"]
@@ -22,6 +34,10 @@
   },
   "navbar": {
     "links": [
+      {
+        "label": "helpalive.com",
+        "href": "https://helpalive.com"
+      },
       {
         "label": "Dashboard",
         "href": "https://app.helpalive.com"
@@ -55,7 +71,9 @@
         "pages": [
           "introduction",
           "quickstart",
-          "installation"
+          "installation",
+          "use-cases",
+          "compare"
         ]
       },
       {
@@ -114,6 +132,36 @@
     ]
   },
   "footer": {
-    "socials": {}
+    "socials": {
+      "website": "https://helpalive.com",
+      "x": "https://x.com/helpalive"
+    },
+    "links": [
+      {
+        "header": "Product",
+        "items": [
+          { "label": "Quickstart", "href": "/quickstart" },
+          { "label": "SDK", "href": "/sdk/overview" },
+          { "label": "AI chatbot", "href": "/chatbot/overview" },
+          { "label": "Compare", "href": "/compare" }
+        ]
+      },
+      {
+        "header": "Resources",
+        "items": [
+          { "label": "Use cases", "href": "/use-cases" },
+          { "label": "Privacy", "href": "/privacy/overview" },
+          { "label": "Plans", "href": "/plans/overview" }
+        ]
+      },
+      {
+        "header": "Company",
+        "items": [
+          { "label": "Website", "href": "https://helpalive.com" },
+          { "label": "Dashboard", "href": "https://app.helpalive.com" },
+          { "label": "Contact", "href": "https://helpalive.com/contact" }
+        ]
+      }
+    ]
   }
 }

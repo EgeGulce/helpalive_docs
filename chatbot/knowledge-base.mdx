@@ -1,7 +1,13 @@
 ---
 title: "Knowledge base"
 sidebarTitle: "Knowledge base"
-description: Train the AI chatbot on your documentation. Crawl a URL, upload PDFs and DOCX files, or paste text. Chunking, embedding, and indexing happen automatically.
+description: "Train the AI chatbot on your documentation. Crawl a URL, upload PDFs and DOCX files, or paste text. Chunking, embedding, and indexing happen automatically."
+keywords:
+  - train AI chatbot on docs
+  - RAG knowledge base SaaS
+  - upload PDF chatbot
+  - crawl docs chatbot
+  - chatbot training SaaS
 mode: "wide"
 ---
 
@@ -23,8 +29,8 @@ When you add a source from the dashboard:
 
 1. **Fetch** — the chat service crawls the URL or reads the uploaded file.
 2. **Chunk** — content is split on heading and paragraph boundaries, with target chunk sizes tuned for retrieval.
-3. **Embed** — chunks are embedded with OpenAI's embedding model.
-4. **Index** — embeddings land in pgvector with an HNSW index for fast nearest-neighbor search. A parallel BM25 index supports keyword retrieval for hybrid search.
+3. **Embed** — chunks are embedded with OpenAI's `text-embedding-3-small`.
+4. **Index** — embeddings land in pgvector (stored as `halfvec`, cosine similarity) with an HNSW index for fast nearest-neighbor search. A parallel BM25 index over Postgres `websearch_to_tsquery` supports keyword retrieval for hybrid search.
 5. **Surface** — the source appears in your dashboard with a status, page count, and last-indexed time.
 
 ## Crawling a URL

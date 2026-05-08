@@ -1,53 +1,67 @@
 ---
 title: "Plans"
 sidebarTitle: "Plans"
-description: HelpAlive is in early access. Pricing is being calibrated with design partners; talk to us about a pilot.
+description: "HelpAlive is in early access. Pricing aligns with the value created — per end-user session captured by the SDK plus AI usage on top, with a per-resolution charge as we get outcome data to anchor it. Talk to us about a pilot."
+keywords:
+  - HelpAlive pricing
+  - SaaS guidance pricing
+  - in-app chatbot pricing
+  - per-session pricing
+  - usage-based pricing SaaS
 mode: "wide"
 ---
 
-HelpAlive is in early access. We're working with a small group of design-partner customers while we lock in pricing, scale, and the rollout of features that depend on real customer data (pattern mining, recommendations, churn risk).
+HelpAlive is in early access. We're working with a small group of design-partner customers while we lock in pricing and scale the features that depend on real customer data (pattern mining, recommendations, churn risk).
 
-The shape below is what plans will look like once pricing is set. Today, the right path is to [talk to us](https://helpalive.com/contact) — we'll set you up with a pilot that fits your team's scale.
+The model below is how plans are shaped. Today, the right path is to [talk to us](https://helpalive.com/contact) — we'll size a pilot that fits your team's traffic.
+
+## How HelpAlive is priced
+
+Three components, designed so what you pay grows with the value you get:
+
+1. **Per end-user session** captured by the SDK. This scales with your traffic, not with your team size — a 5-person team running a high-traffic SaaS pays more than a 50-person team with low traffic.
+2. **AI usage** for chatbot answers, generated guidance, and (in development) automatically generated guide drafts. Token-equivalent metering, billed monthly.
+3. **Per resolution** (in development). Once we have real outcome data — guides completed, support questions deflected, friction events resolved — we'll layer in a per-resolution charge so customers pay more only when more real friction is being closed.
+
+Compare to:
+- **Seat-based pricing** (Pendo, Intercom): penalizes team growth even when you're not using the product more.
+- **Pure session-based** (segment-style): pays the same whether the tool actually helps anyone or not.
+
+Our model is built so revenue and customer outcomes move together.
 
 ## Plan shape
 
 <CardGroup cols={3}>
   <Card title="Starter" icon="zap" href="https://helpalive.com/contact">
-    **For small teams getting started**
+    **For small teams getting started.**
 
-    SDK + AI chatbot trained on your docs, core adoption analytics, coverage-gaps inbox, basic privacy controls. Capped event volume.
+    SDK + AI chatbot trained on your docs, core adoption analytics, coverage-gaps inbox, two-layer PII redaction. Capped event volume.
   </Card>
   <Card title="Growth" icon="star" href="https://helpalive.com/contact">
-    **For scaling B2B SaaS**
+    **For scaling B2B SaaS.**
 
-    Everything in Starter, plus higher event volume, in-app guides, multi-tenant analytics, team roles, custom origin allowlist, configurable session policy.
+    Everything in Starter, plus higher event volume, in-app guides on request, multi-tenant analytics, team roles, custom origin allowlist, configurable session policy.
   </Card>
   <Card title="Enterprise" icon="building-2" href="https://helpalive.com/contact">
-    **For larger or regulated environments**
+    **For larger or regulated environments.**
 
-    Everything in Growth, plus dedicated onboarding, custom retention policies, optional Row-Level Security, priority support, and a path to self-hosted deployment.
+    Everything in Growth, plus dedicated onboarding, custom retention policies, optional database-level Row-Level Security, priority support, and a path to self-hosted deployment.
   </Card>
 </CardGroup>
 
 <Note>
-  We don't publish per-tier pricing while we're calibrating with design partners. The Early Access program is the fastest path to a quote.
+  We don't publish per-tier pricing while we're calibrating with design partners. The Early Access program is the fastest path to a quote and the most useful to us for product development.
 </Note>
 
 ## What's in every plan
 
 These are guarantees, not upsells:
 
-- **Two-layer PII redaction** (browser + server-side Presidio).
+- **Two-layer PII redaction** (browser + server-side Microsoft Presidio in a dedicated drainer).
 - **Per-customer data isolation** with optional database-level RLS.
 - **DSAR-ready privacy tooling** — async deletion jobs with audit trail.
 - **Consent modes** — auto and required, plus runtime toggle.
 - **Data subject controls** — suppression, deletion, export on request.
-
-## Usage metering
-
-Plans are metered by **events per month** rather than seats. Dashboard users (your team) are typically unlimited or generously capped depending on plan.
-
-The SDK auto-captures behavioral events; for cost predictability we'll work with you in the pilot to size the right plan based on your traffic. Burst handling and over-quota behavior are configurable per customer.
 
 ## Talk to us
 
@@ -57,8 +71,6 @@ The Early Access program is the path in today.
   Tell us about your product and team — we'll size a pilot.
 </Card>
 
-## Frequently asked
-
 <Card title="Plans & billing FAQ" icon="circle-help" href="/plans/faq">
-  Trial options, payment, scope of "users", switching plans.
+  Trial options, payment, scope of usage, and switching plans.
 </Card>

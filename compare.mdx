@@ -1,0 +1,112 @@
+---
+title: "Compare"
+sidebarTitle: "Compare"
+description: "How HelpAlive compares to Pendo, Intercom Fin, WalkMe, FullStory, and Userpilot. The honest read on what overlaps, what doesn't, and which problem each tool actually solves."
+keywords:
+  - HelpAlive vs Pendo
+  - HelpAlive vs Intercom Fin
+  - HelpAlive vs WalkMe
+  - HelpAlive vs FullStory
+  - HelpAlive vs Userpilot
+  - HelpAlive vs Appcues
+  - HelpAlive vs Forethought
+  - in-app guidance comparison
+  - AI support chatbot comparison
+  - product analytics alternative
+mode: "wide"
+---
+
+HelpAlive sits at the intersection of three categories: product analytics, AI support, and in-app guidance. Each category has well-known incumbents. None of them solve the whole loop.
+
+This page is the honest read on what overlaps, what doesn't, and where you'd reach for which tool.
+
+## The category map
+
+| | Sees behavior | Acts on behavior | Knows session context |
+|---|---|---|---|
+| **Product analytics** (Pendo, Amplitude, FullStory, Mixpanel) | Yes | No — humans ship fixes weeks later | No |
+| **AI support chatbots** (Intercom Fin, Forethought, Zendesk AI) | No | When asked | Limited — usually only the message text |
+| **Rule-based onboarding** (WalkMe, Userpilot, Appcues) | No | Yes — but rules are hand-coded | No |
+| **HelpAlive** | Yes | Yes — proactively and reactively | Yes — page, identity, plan, recent activity |
+
+The split lines are real. Sophisticated incumbents recognize the gap: in the last 18 months Amplitude acquired Command AI, FullStory acquired Usetiful, and Zendesk acquired Forethought. They're paying acquisition dollars because the existing stacks can't bolt this on.
+
+## HelpAlive vs Pendo
+
+| | HelpAlive | Pendo |
+|---|---|---|
+| **What it sees** | Auto-captured behavior, no tagging | Manual event tagging required for most reports |
+| **What it does about it** | AI agent intervenes in-product, with context | Tooltips and guides — hand-authored, rule-based |
+| **AI in-product chat** | Native, context-aware | Add-on, no session context |
+| **Privacy** | Two-layer redaction (browser + server-side Presidio) | Standard PII handling |
+| **Setup** | One script + `identify()` | Tag plan, page categorization, segment definitions |
+| **Pricing** | Per-session + AI usage; aligns with outcomes | Seat-based; penalizes growth |
+
+**When Pendo wins.** Mature product orgs with a dedicated analyst, a long-running tag plan, and complex multi-product setups. Pendo's product analytics depth at scale is genuine.
+
+**When HelpAlive wins.** Teams of 10–150 who need adoption, friction insight, and in-app guidance without staffing a Pendo deployment.
+
+## HelpAlive vs Intercom Fin
+
+| | HelpAlive | Intercom Fin |
+|---|---|---|
+| **In-product chat** | Yes — Preact widget in Shadow DOM, ~25 KB | Yes — Intercom Messenger |
+| **Page-aware answers** | Yes — `getContext()` reads URL, identity, recent activity | Limited — message text only |
+| **Behavioral signals** | Auto-captured by the same SDK | Not collected |
+| **Multi-step product help** | Walkthroughs grounded in real product surface | Q&A on docs |
+| **Automation ceiling** | Improves as your knowledge base grows | Intercom's own benchmark: "up to 83%" in software — the lowest of any vertical they publish |
+
+**When Intercom Fin wins.** Companies already on Intercom for human support, with a deep installed base and ticketing flow.
+
+**When HelpAlive wins.** Teams who want the chatbot to *act inside the product*, not just answer in a side panel. The exact question that breaks Fin in B2B SaaS — "I'm trying to do X but I'm stuck on this page" — is the question HelpAlive opens with.
+
+## HelpAlive vs WalkMe / Userpilot / Appcues
+
+| | HelpAlive | Rule-based onboarding tools |
+|---|---|---|
+| **Guide authoring** | Engine runtime ships today; record-mode authoring + auto-generated guides on the roadmap | Visual editor; rules and selectors hand-coded per flow |
+| **Maintenance** | Self-updates with the product (no selectors to fix when UI changes) | Selector breakage on every UI ship |
+| **AI integration** | Native — chatbot + guides reuse the same SDK and context | Bolt-on if available |
+| **Triggering** | Behavioral + contextual + ask-driven | Rule-based; you encode one optimal path |
+
+**When WalkMe wins.** Enterprise digital adoption programs with dedicated DAP teams, multi-app rollouts, and compliance training requirements.
+
+**When HelpAlive wins.** Teams who want the assistant to act *and* answer, who can't justify a DAP team, and who don't want to maintain selector libraries against a fast-shipping product.
+
+## HelpAlive vs FullStory
+
+| | HelpAlive | FullStory |
+|---|---|---|
+| **Use case** | Adoption, intervention, support deflection | Session replay, frustration analysis, debugging |
+| **Output** | In-product action — guidance and answers | Video replay for engineers |
+| **Storage shape** | Redacted events, no DOM snapshots | DOM snapshots + replay |
+| **PII model** | Two-layer redaction; raw data never reaches the dashboard | Redaction rules apply at capture |
+
+These tools complement each other. FullStory is excellent for **debugging behavior** ("why did this user rage click?"). HelpAlive is for **acting on behavior** ("show this user the right path").
+
+We sit alongside FullStory; we're not a replacement.
+
+## When you don't need HelpAlive
+
+- You're a consumer app where users only do the same three things in the same order. Manual onboarding flows from a rule-based tool will be enough.
+- You only need session replay for engineering debugging. FullStory + Sentry is the right stack.
+- You have a dedicated growth analyst and a long-running tag plan you trust. Pendo / Amplitude already give you the visibility you need.
+
+## What we built around
+
+The deciding insight: **every SaaS product has two groups of users.** Users who succeed and use the product fully, and users who silently struggle. The information needed to help the second group is locked inside what the first group does.
+
+Analytics tools see both but treat them as separate populations. AI chatbots see neither. Rule-based tools encode one path and hope.
+
+HelpAlive is the only product built around capturing what your best users do, then using that intelligence to act in real time when others go off track.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Use cases" icon="target" href="/use-cases">
+    The specific outcomes teams ship with HelpAlive.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Five minutes to your first session.
+  </Card>
+</CardGroup>
