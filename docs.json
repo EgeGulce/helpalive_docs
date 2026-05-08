@@ -65,7 +65,7 @@
       },
       {
         "group": "Agent",
-        "icon": "sparkles",
+        "icon": "messages-square",
         "pages": [
           "agent/overview",
           "agent/train",
@@ -75,7 +75,7 @@
       },
       {
         "group": "Studio",
-        "icon": "wand-2",
+        "icon": "wand-sparkles",
         "pages": [
           "studio/overview",
           "studio/pages",

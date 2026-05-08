@@ -1,82 +1,182 @@
 ---
 title: "Guides"
 sidebarTitle: "Guides"
-description: "In-app guides walk users through tasks step by step, with highlights and tooltips on real elements in your product. The runtime is shipped today; the Studio editor is in active development."
+description: "Step-by-step in-app walkthroughs that highlight real elements in your product, advance as the user clicks, and complete the task with them. The runtime ships today; the Studio editor is in active development."
 keywords:
   - in-app walkthroughs
   - product tour SaaS
   - interactive tutorials
   - in-app guidance
   - user onboarding flows
+  - feature adoption walkthroughs
+  - guided tours SaaS
+mode: "wide"
 ---
 
-**Guides** are interactive in-product walkthroughs — multi-step flows that lead a user through a task, with highlights and tooltips on real elements in your product. They're managed from **Studio → Guides** in your dashboard.
+**Guides** are interactive in-product walkthroughs. Instead of asking your users to read a doc, watch a video, or open a support ticket, a Guide highlights the next element they need to click, explains what it does in one sentence, and advances as they actually use the product. By the end of a Guide, the user has *completed the task*, not just read about it.
+
+You manage Guides from **Studio → Guides** in your dashboard.
 
 <Note>
-  **Status today.** The guide runtime is shipped and battle-tested. The Studio guide editor is in active development. Until that ships, custom guides for early-access customers are authored directly by HelpAlive on request.
+  **Status today.** The Guide runtime — the part that runs Guides in your users' browsers — is shipped and battle-tested. The Studio Guide editor (record-mode authoring) is in active development. Until that lands, HelpAlive will author Guides for early-access customers on request.
 </Note>
 
-## What guides do
+## What a Guide looks like
+
+When a Guide runs, your user sees:
+
+1. **A spotlight** that dims everything on the page except the element to focus on (a button, an input, a tab).
+2. **A tooltip** anchored to that element, with a short instruction — "Click here to invite a teammate" — and a step counter ("Step 2 of 5").
+3. **Automatic advancement** — the moment the user clicks the highlighted element, the Guide moves to the next step. No "Next" button to click.
+4. **Graceful exits** — the user can dismiss at any time, jump back to a previous step, or restart from the beginning.
+
+It looks and feels native to your product because the spotlight follows your real DOM. There's no overlay screen pretending to be your app.
+
+## What you can do with Guides
 
 <CardGroup cols={2}>
-  <Card title="Highlight what matters" icon="target">
-    A spotlight overlay points to the exact element on the page — a button, a tab, a form field — and dims everything else.
+  <Card title="Onboard new users" icon="rocket">
+    Walk every new signup through their first three meaningful actions — connect their first integration, invite a teammate, ship their first thing. Time-to-first-value drops because the product itself is showing them the way.
   </Card>
-  <Card title="Walk through tasks" icon="list-checks">
-    Steps advance as the user clicks through, so they learn by doing — not by reading.
+  <Card title="Surface underused features" icon="eye">
+    A user just discovered a feature exists but doesn't know how to use it. A Guide shows them the next two clicks, the difference becomes obvious, and they adopt it.
   </Card>
-  <Card title="Stay accurate as you ship" icon="shield">
-    Guides match elements by their meaning (role, label, position), so they keep working when your UI changes.
+  <Card title="Walk through complex flows" icon="map">
+    Multi-step tasks (configuring a workflow, setting up a pipeline, mapping fields) are the hardest things to learn and the most expensive to support. A Guide turns "read the docs and try" into "click through and finish."
   </Card>
-  <Card title="Run in any product" icon="globe">
-    Guides work in any web app, no matter what framework or component library it's built with.
+  <Card title="Recover from errors" icon="life-buoy">
+    A user just rage-clicked or saw a DOM error. The Agent can launch a Guide that walks them through a working alternative — turning friction into completion instead of an abandoned session.
+  </Card>
+  <Card title="Announce new releases" icon="megaphone">
+    Ship a feature, then ship a Guide that walks current users through what's new. Announcements that respect the user's time — they show up in the right place, at the right moment.
+  </Card>
+  <Card title="Plan-aware paths" icon="users">
+    Free users see Guides that lead to upgrade-worthy features. Pro users see Guides that go deeper into Pro-only flows. Same product, different paths — driven by `plan` and `role` from your `identify()` call.
   </Card>
 </CardGroup>
 
-## How guides will be used
+## Concrete examples
 
-1. **You build a guide** in **Studio → Guides** — record it by clicking through your product, or define steps in the editor.
-2. **Stage it as a draft** — guides go through the same draft / publish workflow as the Agent.
-3. **Target who sees it** — segment by workspace, role, plan, or page. Per-workspace exclusions are first-class.
-4. **It runs when triggered** — programmatically via the SDK, or (coming) when the Agent identifies a goal that matches a published guide.
-5. **You measure the impact** — every step emits an event. Completion rates, drop-off steps, and friction inside guides flow back into your analytics.
+### Example 1 — First-day onboarding
 
-## What works today
+Your SaaS is a billing tool. A new admin signs up and lands on an empty dashboard.
 
-The guide **runtime** — the part that runs guides in your users' browsers — is fully shipped:
+- **Step 1.** "Welcome — let's set up your first invoice template." Spotlight on the **New Template** button.
+- **Step 2.** "Give it a name." Spotlight on the name input.
+- **Step 3.** "Pick which fields to include." Spotlight on the field-selector menu.
+- **Step 4.** "Save." Spotlight on the Save button.
+- **Step 5.** "You can now generate invoices from this template — try it on the dashboard." No spotlight; finishing message.
 
-- Reliable element matching across page navigations and UI changes.
-- Spotlight overlay and tooltips that feel native to your product.
-- Lifecycle events you can subscribe to (started, advanced, deviated, abandoned, completed).
-- Workspace-level rollout exclusions.
+The user just made their first invoice template. They didn't read a doc, didn't open chat, didn't email support.
 
-Most teams won't need to trigger guides from code — the dashboard editor (and, soon, the Agent) handles launching for you.
+### Example 2 — Feature discovery
+
+A pro-tier user has been on your product for two weeks but never used the workflow automation feature.
+
+- The Agent notices via session signals (lots of repeated clicks the automation would handle).
+- It offers a Guide: "I see you do this every day — want me to show you how to automate it?"
+- If accepted, the Guide walks them through creating their first workflow.
+
+The user discovers the feature *and* completes it in one shot.
+
+### Example 3 — Error recovery
+
+A user is configuring an integration and hits an error: "Invalid API key."
+
+- The Agent reads the page context and recent events; sees the form submit failed.
+- It opens with: "Looks like the key you entered isn't valid yet. Want me to walk you through where to find the right one?"
+- If accepted, a Guide walks them to the integration provider's API key page (in a new tab if needed) and back to your form to paste it.
+
+What used to be a frustrated user opening a ticket becomes a guided recovery.
+
+## How Guides stay accurate as your product ships
+
+A common problem with traditional onboarding tools: they break the moment your UI changes. A button moves, a class name gets renamed, and the walkthrough points at nothing.
+
+HelpAlive's resolver matches elements by their **meaning** (role, label, position in the page hierarchy) rather than fragile selectors. A button labelled "Save" stays findable even if its CSS class changes. Reordering a sidebar doesn't break a Guide that points at a tab. This is what lets you author a Guide once and trust it to work as you keep shipping.
+
+If something does ever break (rare), the failure is graceful: the Guide pauses with a recoverable state instead of crashing the page or leaving an orphan tooltip.
+
+## Authoring Guides
+
+The Studio Guide editor is in active development. Two ways to think about it:
+
+<CardGroup cols={2}>
+  <Card title="Record mode" icon="circle-dot">
+    Click through your product. HelpAlive captures the steps you took, the elements you interacted with, and the page transitions. Edit copy, polish step order, publish.
+  </Card>
+  <Card title="Manual mode" icon="pen-line">
+    Define steps explicitly — page URL, element to highlight (identified by role + label), step copy, advance condition. For Guides that don't need to be recorded.
+  </Card>
+</CardGroup>
+
+Until the editor ships, the workflow is:
+
+1. Tell us which flow you want a Guide for.
+2. We author it for you (typically within a business day for early-access customers).
+3. It appears in your Studio → Guides list, ready to publish.
+
+[Get early access](https://helpalive.com/#early-access) and we'll set up your highest-priority Guide on day one.
+
+## How Guides integrate with the Agent
+
+The Agent and Guides are designed to reinforce each other:
+
+- **Agent identifies a goal → launches a Guide.** During a chat, the Agent recognizes that the user wants to do a specific multi-step task. Instead of writing out the steps in text, it launches the matching Guide.
+- **Guide encounters a question → invites the Agent.** Inside a Guide, if the user clicks "I'm stuck", the Agent opens with full context — including which Guide step they were on.
+- **Agent learns from Guide outcomes.** Every Guide step emits a lifecycle event (started, advanced, completed, abandoned). The Agent uses those signals over time to know which Guides actually help, for which users.
+
+This is what we mean when we say "one product instead of three" — the in-app assistant, the in-app guidance, and the analytics that measures both share the same data and the same SDK.
+
+## Targeting and rollout
+
+Every Guide can be targeted to specific:
+
+- **Workspaces.** Roll out to one customer first, then expand.
+- **Roles.** Admins see different Guides than viewers.
+- **Plans.** Free-tier and enterprise customers see different paths.
+- **Pages.** A Guide attached to `/billing` only triggers when users are on that page.
+- **Behavior signals.** Coming soon — trigger a Guide based on rage clicks, abandoned forms, or other real-time signals.
+
+You can also exclude specific workspaces from any Guide — useful for enterprise customers who run a custom workflow and don't want generic onboarding nudges.
+
+## Measurement
+
+Every step a user takes inside a Guide flows back into your analytics. From the Studio detail view of any Guide, you can see:
+
+- **Completion rate** — what percentage of users who started the Guide finished it.
+- **Drop-off step** — which step is the most common exit point. (This is usually where your real product needs improvement.)
+- **Friction inside the Guide** — rage clicks, errors, or back-tracking that happened while the Guide was running.
+- **Adoption lift** — for Guides tied to a feature, how usage of that feature changed for users who completed the Guide vs. those who didn't.
+
+This is how you know your Guides are doing what you intended — not just running.
 
 ## What's in active development
 
-<CardGroup cols={2}>
-  <Card title="Record-mode authoring" icon="circle-dot">
-    Click through your product to capture a guide automatically — no manual step-by-step authoring.
-  </Card>
-  <Card title="Agent-launched guides" icon="message-circle-question">
-    The Agent identifies a goal during a conversation and launches the matching guide on its own.
-  </Card>
-  <Card title="Auto-suggested guides" icon="sparkles">
-    Surface candidate guides automatically based on what your users actually try to do.
-  </Card>
-</CardGroup>
+| Capability | Status |
+|------------|--------|
+| Spotlight runtime, lifecycle events, draft / publish, per-workspace exclusions | **Shipped** |
+| Programmatic launch from your code | **Shipped** |
+| Studio Guide editor (record-mode authoring) | **In active development** |
+| Agent-launched Guides (chat → matching Guide) | **In active development** |
+| Auto-suggested Guides (HelpAlive proposes Guides based on what users actually try) | **In design** |
+| Behavioral triggers (rage clicks, abandoned forms) | **In design** |
 
-We mark these as future work because we want to be precise about what ships today and what we're building next.
+We mark these so you know what ships today and what's coming. Everything in **Shipped** is in production for early-access customers right now.
 
-## Need a guide today?
-
-While the editor is in flight, HelpAlive will author guides for you. Reach out and we'll turn around your highest-priority flow.
+## Next steps
 
 <CardGroup cols={2}>
   <Card title="Get Early Access" icon="message-circle" href="https://helpalive.com/#early-access">
-    Tell us which flow needs a guide and we'll author it.
+    Tell us which flow needs a Guide and we'll author it within a business day.
   </Card>
-  <Card title="Agent overview" icon="sparkles" href="/agent/overview">
-    The AI assistant that will trigger guides for you.
+  <Card title="Agent overview" icon="messages-square" href="/agent/overview">
+    The AI assistant that will trigger Guides for you.
+  </Card>
+  <Card title="Topics inbox" icon="inbox" href="/studio/topics">
+    See which questions a Guide could deflect.
+  </Card>
+  <Card title="Studio overview" icon="wand-sparkles" href="/studio/overview">
+    All the places where Studio acts on what users do.
   </Card>
 </CardGroup>

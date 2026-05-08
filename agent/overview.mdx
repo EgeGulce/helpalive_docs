@@ -8,6 +8,9 @@ keywords:
   - context-aware support
   - product chatbot
   - SaaS chatbot
+  - in-app support
+  - product Q&A
+mode: "wide"
 ---
 
 The **Agent** is HelpAlive's in-app AI assistant. It lives inside your product, knows the user's current page, role, and recent activity, and answers their questions grounded in your documentation — in real time.
@@ -21,6 +24,23 @@ You configure the Agent from the **Agent** section of your dashboard. There are 
 | **Test** | Run a batch of test questions against your draft changes before you publish. |
 | **Appearance** | Match the Agent to your brand — colors, position, welcome message, layout. |
 | **Configuration** | Visibility, rate limits, and danger-zone reset controls. |
+
+## What your team gets
+
+<CardGroup cols={2}>
+  <Card title="A real-time helpdesk inside your product" icon="message-circle">
+    Users ask questions in plain language, in the moment of confusion. The Agent answers grounded in your docs and the user's current situation — not a generic FAQ.
+  </Card>
+  <Card title="Lower support volume on routine questions" icon="trending-down">
+    Anything covered by your knowledge base resolves before it becomes a ticket. What does escalate arrives with full context attached.
+  </Card>
+  <Card title="A signal of what's missing" icon="inbox">
+    Every question the Agent couldn't answer well lands in the [Topics inbox](/studio/topics) — your team's working backlog of "what to write next."
+  </Card>
+  <Card title="A path to running [Guides](/studio/guides)" icon="map">
+    When a user's question is "how do I do X?", the Agent identifies the goal and (soon) launches the matching Guide instead of just describing the steps.
+  </Card>
+</CardGroup>
 
 ## What makes the Agent context-aware
 
@@ -47,12 +67,22 @@ The result: instead of opening with "How can I help?", the Agent says something 
 
 When you turn the Agent on, your users see a launcher button in the corner of your product. When they open it, they get:
 
-- A personalized greeting based on who they are and what page they're on.
-- Three suggested questions for the current page.
-- A real-time conversation, with thumbs-up / thumbs-down feedback.
-- The option to start a fresh conversation any time.
+- A **personalized greeting** based on who they are and what page they're on. ("Hey Priya — anything I can help with on the Workflows page?")
+- **Three suggested questions** for the current page, picked from what users in similar situations actually ask.
+- A **real-time conversation** with thumbs-up / thumbs-down feedback, so you can see which answers worked.
+- A **start-fresh** option any time the conversation drifts off topic.
 
 End users don't install anything. The Agent appears automatically once HelpAlive is integrated.
+
+## What you control
+
+Every part of the Agent's behavior is configurable from the dashboard, with a draft / publish workflow so you can preview changes before they reach end users.
+
+- **Knowledge sources** — what the Agent reads to answer questions. Crawled docs, uploaded files, or pasted text. See [Train](/agent/train).
+- **Tone and rules** — formal vs casual, concise vs thorough, custom instructions like "always link to a doc" or "never recommend competitor products." Set in **Agent → Personalization**.
+- **Custom answers** — for things that aren't doc-shaped. Internal policies, plan-specific responses, time-sensitive notices. Configured in **Agent → Personalization**.
+- **Appearance** — color, position, welcome message, color scheme. See [Appearance](/agent/appearance).
+- **Visibility** — turn the Agent off entirely, scope it to specific workspaces, or hide it for users who haven't consented to chat tracking.
 
 ## At a glance
 

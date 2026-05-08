@@ -69,14 +69,13 @@ The dashboard has three main sections, plus settings:
 - [Plans](/plans/overview) — per-session + AI-usage pricing model, early-access program
 - [FAQ](/plans/faq) — trial options, payment, what counts toward usage
 
-## Compared with
+## What customers get, in detail
 
-HelpAlive is most often compared with:
-- **Pendo / Amplitude / FullStory / Mixpanel** — strong on what users do, but rely on humans to ship fixes weeks later.
-- **Intercom Fin / Forethought / Zendesk AI** — answer when asked, but lack product context.
-- **WalkMe / Userpilot / Appcues** — intervene in-app, but rely on hand-coded rules and manual selectors that break when your UI ships.
-
-HelpAlive is the only product built around capturing what your best users do, then using that intelligence to act in real time when others get stuck. Sophisticated incumbents recognize the gap: in the last 18 months Amplitude acquired Command AI, FullStory acquired Usetiful, and Zendesk acquired Forethought.
+- **In-app AI Agent** that answers user questions in context — knows the page, identity, plan, and recent activity. Reduces routine tickets and shortens time-to-answer for everything else.
+- **Step-by-step in-app Guides** that walk users through real tasks. The Guide highlights the next element to click, advances when they actually click it, and ends with the task *completed* — not just read about. Common uses: first-day onboarding, surfacing under-used features, complex multi-step flows, error recovery, release announcements, plan-aware paths.
+- **Topics inbox** — every question the Agent couldn't answer well becomes a row in your team's working backlog. Grouped by topic, ranked by volume × gap score, status-tracked (identified / addressed / ignored).
+- **Audience analytics** — per-user and per-workspace activity timelines, friction signals (rage clicks, errors, abandoned forms) surfaced inline so support can investigate any user incident in one place.
+- **Privacy controls** — two-layer PII redaction, async DSAR deletion jobs with audit trail, consent modes (auto / required), per-customer data isolation.
 
 ## Outcomes teams target
 
@@ -89,6 +88,6 @@ HelpAlive is the only product built around capturing what your best users do, th
 
 ## Pricing model
 
-HelpAlive is priced per end-user session captured by the SDK + AI usage on top, with a per-resolution charge layered in once outcome data exists. The model aligns customer outcomes with revenue. Seat-based pricing (Pendo, Intercom) penalizes growth; HelpAlive scales with traffic and impact.
+HelpAlive is priced per end-user session captured by the SDK + AI usage on top, with a per-resolution charge layered in once outcome data exists. The model aligns customer outcomes with revenue — customers pay more only when more friction is being resolved.
 
 In early access — pricing tiers are calibrated with design partners. Apply for early access at https://helpalive.com/#early-access for a pilot quote.
