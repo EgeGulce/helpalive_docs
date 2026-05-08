@@ -1,108 +1,98 @@
 ---
 title: "Coverage gaps"
 sidebarTitle: "Coverage gaps"
-description: "A working inbox of the questions your AI assistant can't answer well. Clustered with HDBSCAN, ranked by volume times gap score so you know what to write next."
+description: "A working inbox of the questions your AI chatbot can't answer well. Grouped into topics and ranked so you know what to write or fix next."
 keywords:
-  - chatbot coverage gaps
-  - questions chatbot cant answer
   - chatbot quality monitoring
+  - chatbot coverage gaps
+  - chatbot improvement
   - what to write docs
-  - chatbot improvement insights
+  - chatbot insights
 mode: "wide"
 ---
 
-The coverage-gaps inbox is one of the most actionable surfaces in HelpAlive. Every user question is classified on the way out of the chatbot, clustered into topics, and ranked so you know what to fix next.
+The coverage-gaps inbox is one of the most useful surfaces in HelpAlive. Every question the chatbot couldn't answer well is captured, grouped into topics, and ranked — so your team always knows what to fix next.
 
-If you've ever wished for a list of "things our docs are missing, ordered by impact", this is it.
+## How questions get flagged
 
-## How questions get classified
+Whenever the chatbot answers, we watch for three signals:
 
-When the chatbot answers a question, the retrieval pipeline emits a `CoverageStats` verdict:
+| Signal | Meaning |
+|--------|---------|
+| **Nothing matched** | We searched your knowledge base and didn't find anything relevant. Usually means your docs are missing something. |
+| **Weak match** | We found something, but it wasn't a strong fit for the question. |
+| **User thumbs-down** | The user rated the answer poorly, even when we were confident. |
 
-| Class | When it fires |
-|-------|---------------|
-| `no_retrieval` | Nothing in the knowledge base matched the question above the relevance floor. |
-| `weak_retrieval` | Matches were thin — top scores below threshold or off-topic semantically. |
-| `negative_rating` | The user thumbed down the answer, regardless of retrieval confidence. |
-| `covered` | Retrieval was confident and the user didn't thumb down. (Shown for completeness; not actionable.) |
+A question can carry more than one signal — for example, a thumbs-down on a weak match counts twice toward the gap score.
 
-A single question can carry multiple classifications. For example, weak retrieval that the user thumbed down counts twice in the gap score.
+## How topics are built
 
-## Topic clustering
+Individual questions are noisy ("how do I cancel?", "is there a way to stop my subscription?", "delete account please"). HelpAlive groups similar questions together into **topics** so you see patterns instead of single questions:
 
-Individual questions are noisy ("how do I cancel?", "is there a way to stop my subscription?", "delete account please"). The dashboard clusters questions with **HDBSCAN** on their embeddings to surface topics:
+- **Cancellation flow** — 47 questions in the last 30 days
+- **Pricing for additional seats** — 22 questions
+- **How to invite a teammate** — 18 questions
 
-- **"Cancellation flow"** — 47 questions in the last 30 days.
-- **"Pricing for additional seats"** — 22 questions.
-- **"How to invite a teammate"** — 18 questions.
+Topics stay stable as new questions come in — adding a few new ones doesn't reshuffle the inbox.
 
-Topics are stable across re-clusterings — adding a few new questions doesn't reshuffle the inbox.
+## How they're ranked
 
-## Ranking
-
-Topics are ranked by `volume × gap score`:
-
-- **Volume** — how many questions hit this topic in the selected window.
-- **Gap score** — a weighted sum of `no_retrieval`, `weak_retrieval`, and `negative_rating` rates within the topic.
-
-A topic asked 200 times with mostly confident answers ranks below a topic asked 50 times that the assistant consistently fails on.
+Topics are ranked by **volume × gap score** — how often it comes up, weighted by how badly the chatbot is failing on it. A topic asked 200 times with mostly confident answers ranks below a topic asked 50 times that the chatbot can't handle.
 
 ## Working the inbox
 
-**Dashboard → AI → Coverage gaps**
-
-For each topic, you see:
+Open **AI → Coverage gaps** in the dashboard. Each topic shows:
 
 - **Question count** in the selected window.
-- **Severity badge** (`high`, `medium`, `low`) based on gap score.
+- **Severity** — `high`, `medium`, or `low`.
 - **Sample questions** from the cluster.
-- **Sample answers** the assistant gave (so you can spot hallucinations).
-- **Recommended action** — typically "add a doc" or "improve a doc".
+- **Sample answers** the chatbot gave (so you can spot weak ones).
+- **Recommended action** — usually "add a doc" or "improve a doc".
 
-Click into a topic to see all questions, all answers, and rating distribution.
+Click a topic to see all questions, all answers, and rating distribution.
 
-## Resolving a topic
+## Resolving a gap
 
-There are three ways to resolve a coverage gap:
+There are three options:
 
-1. **Write or update a doc** — add the missing knowledge to your source URL or upload a new file. Re-crawl and publish.
-2. **Add a custom response** — for things that aren't doc-shaped (pricing, internal policies, plan-specific responses).
-3. **Mark as not actionable** — for questions that are out of scope (e.g. "what's the weather?").
+1. **Add or update content** in your knowledge base. Re-index, then publish.
+2. **Add a custom answer** for things that aren't doc-shaped — internal policies, plan-specific responses, time-sensitive notices.
+3. **Mark it as not actionable** for off-topic questions ("what's the weather?").
 
-After publishing, watch the next 24–48 hours of traffic. The gap score should drop sharply if the new content was a good fit. If not, the topic stays in the inbox at a lower rank.
+After publishing a fix, watch the next 24–48 hours of traffic. The gap score should drop sharply if the new content was the right fit. If not, the topic stays in the inbox at a lower rank.
 
 ## Filters
 
 | Filter | Use case |
 |--------|----------|
-| **Time range** | Compare last 7 vs last 30 days to see what's getting worse / better. |
-| **Source** | Filter to questions from a specific page or tenant. |
-| **Class** | Show only `no_retrieval` (clear gaps) or only `negative_rating` (quality issues). |
-| **Plan / role** | Are pro users hitting different gaps than free users? |
+| **Time range** | Compare the last 7 days to the last 30 to see what's getting worse or better. |
+| **Source** | Narrow to questions from a specific page or workspace. |
+| **Signal** | Show only "nothing matched" (clear gaps) or only thumbs-downs (quality issues). |
+| **Plan / role** | Find out if pro users hit different gaps than free users. |
 
 ## What it isn't
 
-- It's not a CSAT survey. The thumbs up/down feeds in but isn't the whole signal.
-- It's not a chatbot QA dashboard. Quality issues surface here, but the goal is product action — write docs, fix flows — not LLM tuning.
-- It's not a feature-request log. Some topics will be feature requests; treat those as input to product, not as docs work.
+- **Not a CSAT survey.** The thumbs up / down feeds in but isn't the whole picture.
+- **Not chatbot-tuning telemetry.** Quality issues surface here, but the goal is product action — write docs, fix flows — not LLM tuning.
+- **Not a feature-request log.** Some topics will be feature requests; treat those as input to product, not as docs work.
 
 ## Privacy
 
-Coverage gaps surface the **text** of user questions because the whole point is to read them and respond. This is the only place in HelpAlive analytics where verbatim user input is shown. Question text:
+The inbox shows **the actual text** of user questions because reading them is the whole point. To keep this safe:
 
-- Lives in the `chatbot_messages` store, not in the event analytics tables.
-- Is redacted for emails, phone numbers, and other PII patterns before storage.
-- Is scoped per customer — your team only sees questions from your own users.
+- Question text lives in a separate, secure store from your event analytics.
+- Personal information (emails, phone numbers, IDs) is automatically redacted before storage.
+- You only see questions from your own users — never from other HelpAlive customers.
 
-Users can request deletion via DSAR ([Privacy → DSAR](/privacy/dsar)) and their question history is removed from the inbox.
+If a user requests deletion, their question history is removed from the inbox. See [Data deletion](/privacy/dsar).
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Knowledge base" icon="book-open" href="/chatbot/knowledge-base">
-    Add or re-crawl sources after resolving a gap.
+    Add or update content after resolving a gap.
   </Card>
-  <Card title="Draft / publish" icon="git-branch" href="/chatbot/draft-publish">
+  <Card title="Draft & publish" icon="git-branch" href="/chatbot/draft-publish">
     Stage and verify changes before they reach users.
   </Card>
 </CardGroup>

@@ -11,7 +11,7 @@ keywords:
 mode: "wide"
 ---
 
-The HelpAlive SDK is the data foundation for everything else in the product. It's a small browser script that auto-captures user behavior, identifies users and tenants for analytics, and lets the AI chatbot read fresh page context at chat time.
+The HelpAlive SDK is a small browser script that does three things: auto-captures user behavior, ties activity to real users and workspaces, and feeds the AI chatbot fresh page context whenever a user opens it. One script tag, one `identify()` call, and you're done.
 
 ## At a glance
 
@@ -43,25 +43,25 @@ The HelpAlive SDK is the data foundation for everything else in the product. It'
 
 ## What's auto-captured
 
-The SDK observes the DOM and emits events with redacted selector hashes. You don't write tracking code or maintain a tag plan.
+The SDK observes user behavior automatically — you don't write tracking code or maintain a tag plan. Every captured event is anonymized before transmission.
 
-| Event | Description |
-|-------|-------------|
-| `pageview` | Initial load and SPA navigations (history API + hash changes). |
-| `click` | Click on any element. Selector hashed, text content redacted. |
-| `form_start` | First interaction with a form input — used for abandonment analysis. |
-| `form_submit` | Form submission. |
-| `rage_click` | Repeated clicks in a small area (frustration signal). |
-| `scroll_depth` | Per-page max scroll percentage. |
-| `dom_error` | `console.error` and unhandled JavaScript exceptions. |
-| `exposure` | Per-page summary of visible interactive elements. Used by the chatbot to know what's on screen. |
+| Event | What we capture |
+|-------|-----------------|
+| `pageview` | Page loads, including in-app navigations (single-page apps work out of the box). |
+| `click` | Clicks on buttons, links, and other interactive elements. Element identifiers are anonymized; text content is redacted. |
+| `form_start` | The user begins filling out a form. Useful for abandonment analysis. |
+| `form_submit` | The user submits a form. (We never capture the field values.) |
+| `rage_click` | Repeated clicks on the same element — a strong frustration signal. |
+| `scroll_depth` | How far a user scrolled on each page. |
+| `dom_error` | JavaScript errors and console errors that occurred while the user was interacting. |
+| `exposure` | A summary of which interactive elements were visible on the page. Helps the chatbot know what's on screen when a user asks a question. |
 
 ## What's not captured
 
 - **Keystrokes.** The SDK never logs `keydown` or `input` content.
 - **Form values.** Submit events fire, but field values are not transmitted.
 - **Password fields.** Always excluded.
-- **PII patterns** (emails, phone numbers, national IDs, etc.). Stripped client-side before any payload leaves the browser; stripped again server-side in a dedicated drainer.
+- **PII patterns** (emails, phone numbers, national IDs, etc.). Stripped in the browser before any payload leaves the page; stripped again on our servers before storage.
 
 See [Privacy & redaction](/privacy/redaction) for the complete data model.
 
@@ -71,25 +71,25 @@ The SDK exposes these methods on `window.HelpAlive`. Full signatures live in the
 
 | Method | Purpose |
 |--------|---------|
-| `init(options)` | Manual init when loading via npm. Not needed when using the script tag. |
-| `identify(payload)` | Identify the user and tenant. Required before events are accepted by the backend. |
-| `track(name, props?)` | Emit a custom event. |
-| `flush()` | Force-flush queued events to the server. |
+| `init(options)` | Manually initialize the SDK. Only needed when loading via npm; the script tag auto-initializes. |
+| `identify(payload)` | Identify the user and workspace. Required for events to flow. |
+| `track(name, props?)` | Send a custom event for things autocapture can't see. |
+| `flush()` | Send any queued events right away. |
 | `reset()` | Clear identity (call this on logout). |
-| `getContext()` | Read the current page, identity, and session state. Used by the chatbot widget. |
-| `setRealTimeMode(enabled)` | Drain queued events immediately. The chatbot turns this on while a chat is active. |
+| `getContext()` | Read the current page, identity, and session state — used by the chatbot widget. |
+| `setRealTimeMode(enabled)` | Send events instantly instead of in batches. The chatbot turns this on while a chat is active. |
 | `setConsent(consent)` | Set or change the user's consent preferences at runtime. |
-| `notify(payload)` | Push a proactive notification into the widget. |
-| `onNotification(cb)` | Subscribe to notifications. |
-| `startGuide(guide, opts?)` | Lazy-load the guide engine and start an in-app guide. |
+| `notify(payload)` | Push a proactive notification into the chatbot. |
+| `onNotification(cb)` | Subscribe to notifications from your own code. |
+| `startGuide(guide, opts?)` | Start an in-app guide programmatically. |
 | `getSuggestions()` | Fetch suggested questions for the current page. |
 | `shutdown()` | Tear down the SDK. |
 
 ## Event buffering
 
-Events are buffered in memory until `identify()` lands. The buffer holds up to 100 events; if `identify()` is never called, events are dropped on page unload (anonymous sessions are not stored in production).
+Events are buffered in memory until `identify()` runs. If a user never authenticates, the buffered events are dropped when they leave the page — anonymous sessions are never stored.
 
-Once identified, the SDK flushes on a rolling schedule and on `visibilitychange` so events don't get lost when users tab away or close the page.
+Once a user is identified, events are sent on a rolling schedule and whenever the page goes into the background, so events don't get lost when users switch tabs or close the page.
 
 ## Next steps
 

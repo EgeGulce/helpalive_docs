@@ -105,8 +105,8 @@ console.log(ctx?.session?.consent);  // { analytics: true, chat: true }
 Nothing. With `analytics: false`:
 
 - No events are sent.
-- No session record is created in our backend.
-- No fingerprint, IP, or device data is logged.
+- No session record is created on our servers.
+- No device fingerprint, IP, or browser data is logged.
 
 The chatbot widget hides entirely with `chat: false` — it doesn't even mount.
 

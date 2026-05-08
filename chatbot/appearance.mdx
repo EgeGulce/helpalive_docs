@@ -17,7 +17,7 @@ The chatbot widget is configured entirely through the dashboard. No code changes
 
 **Dashboard → AI → Appearance**
 
-Every change lands in `draft_*` columns until you publish. Use the **Test** page to preview before shipping. See [Draft / publish](/chatbot/draft-publish).
+Every change is staged as a draft until you publish. Use the **Test** page to preview before shipping. See [Draft & publish](/chatbot/draft-publish).
 
 ## Configuration options
 
@@ -58,7 +58,7 @@ Hey {displayName}! I'm here to help with anything in your {tenantName} workspace
 | `dark` | Always dark. |
 | `system` | Follows the user's OS preference, switching live on `prefers-color-scheme` change. |
 
-Because the widget renders in a Shadow DOM, your host page's CSS does not affect chatbot styling — you control it entirely from the dashboard.
+The widget is fully isolated from your page styles, so your CSS won't accidentally change how the chatbot looks. You control its appearance entirely from the dashboard.
 
 ## Position presets
 

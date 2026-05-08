@@ -38,7 +38,7 @@ The split lines are real. Sophisticated incumbents recognize the gap: in the las
 | **What it sees** | Auto-captured behavior, no tagging | Manual event tagging required for most reports |
 | **What it does about it** | AI agent intervenes in-product, with context | Tooltips and guides — hand-authored, rule-based |
 | **AI in-product chat** | Native, context-aware | Add-on, no session context |
-| **Privacy** | Two-layer redaction (browser + server-side Presidio) | Standard PII handling |
+| **Privacy** | Two-layer PII redaction (browser + server) | Standard PII handling |
 | **Setup** | One script + `identify()` | Tag plan, page categorization, segment definitions |
 | **Pricing** | Per-session + AI usage; aligns with outcomes | Seat-based; penalizes growth |
 
@@ -50,7 +50,7 @@ The split lines are real. Sophisticated incumbents recognize the gap: in the las
 
 | | HelpAlive | Intercom Fin |
 |---|---|---|
-| **In-product chat** | Yes — Preact widget in Shadow DOM, ~25 KB | Yes — Intercom Messenger |
+| **In-product chat** | Yes — lightweight, isolated widget that won't conflict with your styles | Yes — Intercom Messenger |
 | **Page-aware answers** | Yes — `getContext()` reads URL, identity, recent activity | Limited — message text only |
 | **Behavioral signals** | Auto-captured by the same SDK | Not collected |
 | **Multi-step product help** | Walkthroughs grounded in real product surface | Q&A on docs |

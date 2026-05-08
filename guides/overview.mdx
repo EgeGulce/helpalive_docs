@@ -1,101 +1,89 @@
 ---
 title: "Overview"
 sidebarTitle: "Overview"
-description: "In-app guides — multi-step walkthroughs that highlight, explain, and advance through real product flows. The runtime engine ships today; record-mode authoring and chatbot-driven launching are in active development."
+description: "In-app guides walk users through tasks, step by step, with highlights and tooltips on real elements in your product. The runtime is shipped today; the dashboard editor is in active development."
 keywords:
   - in-app walkthroughs
   - product tour SaaS
   - interactive tutorials
   - in-app guidance
-  - user onboarding flows
-  - guide engine
+  - user onboarding
 mode: "wide"
 ---
 
-Guides are interactive, in-product walkthroughs — multi-step flows that lead a user through a task, attached to real elements in your product. They reuse the SDK's page-context awareness and feed execution events back into the analytics pipeline so you can measure what they actually move.
+Guides are interactive in-product walkthroughs — multi-step flows that lead a user through a task, with highlights and tooltips attached to real elements in your product.
 
 <Note>
-  **Status today.** The guide engine **runtime** is shipped and battle-tested: resolver, spotlight overlay, state machine, lifecycle events, and a 40 KB lazy-loaded bundle. The dashboard guide editor (record-mode authoring, draft / publish UI) is in active development. Until that ships, custom guides for early-access customers are authored directly by HelpAlive.
+  **Status today.** The guide runtime is shipped and battle-tested. The dashboard guide editor is in active development. Until that ships, custom guides for early-access customers are authored directly by HelpAlive on request.
 </Note>
+
+## What guides do
+
+<CardGroup cols={2}>
+  <Card title="Highlight what matters" icon="target">
+    A spotlight overlay points to the exact element on the page — a button, a tab, a form field — and dims everything else.
+  </Card>
+  <Card title="Walk through tasks" icon="list-checks">
+    Steps advance as the user clicks through, so they learn by doing — not by reading.
+  </Card>
+  <Card title="Stay accurate as you ship" icon="shield">
+    Guides match elements by their meaning (role, label, position), so they keep working when your UI changes.
+  </Card>
+  <Card title="Run in any product" icon="globe">
+    Guides work in any web app, no matter what framework or component library it's built with.
+  </Card>
+</CardGroup>
+
+## How guides will be used
+
+1. **You build a guide** — record it by clicking through your product, or define steps in the editor.
+2. **Stage it as a draft** — guides go through the same draft / publish workflow as the chatbot.
+3. **Target who sees it** — segment by workspace, role, plan, or page. Per-workspace exclusions are first-class.
+4. **It runs when you trigger it** — programmatically with the SDK, or (coming) when the chatbot identifies a goal that matches a published guide.
+5. **You measure the impact** — every step emits an event. Completion rates, drop-off steps, and friction inside guides flow back into your analytics.
 
 ## What works today
 
-<CardGroup cols={2}>
-  <Card title="Resolver + spotlight runtime" icon="target">
-    The SDK can render multi-step guides on real DOM elements with stable matching across remounts, portals, and i18n label changes. 17/17 capture-testbed tests green.
-  </Card>
-  <Card title="Lifecycle event protocol" icon="activity">
-    `guide.started`, `guide.step_entered`, `guide.step_advanced`, `guide.user_deviated`, `guide.abandoned`, `guide.completed` — all emitted on the SDK and ingested for measurement.
-  </Card>
-  <Card title="Backend CRUD + draft / publish" icon="database">
-    Four-table schema, REST API at `/api/v1/guides/*`, versioning, per-tenant rollout exclusions.
-  </Card>
-  <Card title="Programmatic trigger" icon="play">
-    `HelpAlive.startGuide(guideJson, options)` lazy-loads the engine and starts a guide. See [SDK API reference](/sdk/api-reference#startguide-cancelguide-preloadguides).
-  </Card>
-</CardGroup>
+The guide **runtime** — the part that runs guides in your users' browsers — is fully shipped:
 
-## What's in development
+- Reliable element matching across page navigations and UI changes.
+- Spotlight overlay and tooltips that feel native to your product.
+- Lifecycle events you can subscribe to (started, advanced, deviated, abandoned, completed).
+- Workspace-level rollout exclusions.
+
+Trigger a guide programmatically with the SDK any time:
+
+```javascript
+HelpAlive.startGuide(guide, options);
+```
+
+See the [SDK API reference](/sdk/api-reference) for the full method list.
+
+## What's in active development
 
 <CardGroup cols={2}>
   <Card title="Record-mode authoring" icon="circle-dot">
-    Click through your product to capture a guide. The dashboard editor is being wired to the shipped backend.
+    Click through your product to capture a guide automatically — no manual step-by-step authoring.
   </Card>
   <Card title="Chatbot-launched guides" icon="message-circle-question">
-    The chatbot identifies a goal during conversation and starts the matching guide. Engine and chatbot integration paths exist; subscription is the next sprint.
+    The chatbot identifies a goal during a conversation and launches the matching guide on its own.
   </Card>
-  <Card title="Auto-generated guide drafts" icon="sparkles">
-    From captured behavior, surface candidate flows. Depends on the pattern-mining pipeline, also in design.
+  <Card title="Auto-suggested guides" icon="sparkles">
+    Surface candidate guides automatically based on what your users actually try to do.
   </Card>
 </CardGroup>
 
-## How guides will work end-to-end
+We mark these as future work because we want to be precise about what ships today and what we're building next.
 
-1. **Author** — click through your product in record mode, or define steps in the editor.
-2. **Stage** — guides go into draft until published, atomically.
-3. **Target** — segment by tenant, role, plan, or page. Per-tenant exclusions are first-class.
-4. **Trigger** — programmatically with `HelpAlive.startGuide(...)`, or (soon) when the chatbot resolves a goal that matches a published guide.
-5. **Run** — the SDK lazy-loads the engine, the resolver matches each step's fingerprint to a live DOM element, and the spotlight overlay advances on click or step advancement.
-6. **Measure** — every step emits a lifecycle event. Completion rates, drop-off steps, and friction inside guides flow back into the analytics tables.
+## Need a guide today?
 
-## SDK methods available today
-
-```typescript
-// Start a guide
-HelpAlive.startGuide(guide, options?: { bundleUrl?: string; loadTimeoutMs?: number });
-
-// Stop the active guide
-HelpAlive.cancelGuide();
-
-// Preload the engine bundle (call on chatbot boot for sub-second start)
-HelpAlive.preloadGuides({ ids: string[] });
-
-// Read the current controller
-HelpAlive.getActiveGuideController();
-
-// Subscribe to guide-start events
-HelpAlive.onGuideStarted((event) => { ... });
-```
-
-See the [SDK API reference](/sdk/api-reference) for full signatures.
-
-## Per-tenant exclusions
-
-Some guides shouldn't run for some tenants — for example, an enterprise customer running a custom workflow won't want generic onboarding nudges. Exclusions are configurable per guide per tenant from the backend; the editor UI will expose them when it ships.
-
-## Looking further out
-
-The longer-term vision is for the chatbot to **plan** a multi-step task and the guide engine to **execute** the steps in real time — turning a user's question ("how do I migrate my workspace?") directly into a running guide. The runtime pieces of that picture are in place; the planning side depends on better behavior-to-flow mapping and a deeper integration we haven't built yet.
-
-We mark this as future work because we want to be precise about what ships today versus what we're building next.
-
-## Next steps
+While the editor is in flight, HelpAlive will author guides for you. Reach out and we'll turn around your highest-priority flow.
 
 <CardGroup cols={2}>
+  <Card title="Talk to us" icon="message-circle" href="https://helpalive.com/contact">
+    Tell us which flow needs a guide.
+  </Card>
   <Card title="SDK API reference" icon="code" href="/sdk/api-reference">
     The methods available today for triggering guides programmatically.
-  </Card>
-  <Card title="Talk to us" icon="message-circle" href="https://helpalive.com/contact">
-    HelpAlive authors guides on request for early-access customers while the editor is in flight.
   </Card>
 </CardGroup>

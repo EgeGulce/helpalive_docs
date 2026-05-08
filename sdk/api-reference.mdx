@@ -37,7 +37,7 @@ HelpAlive.init({ apiKey: "YOUR_API_KEY" });
 
 ## identify
 
-Tie events to a real user and tenant. **Required** before events are accepted by the backend.
+Tie captured events to a real user and workspace. **Required** before HelpAlive accepts any events.
 
 ```typescript
 HelpAlive.identify({
@@ -56,7 +56,7 @@ See [Identify users and tenants](/sdk/identify) for full field semantics.
 
 ## track
 
-Emit a custom event. Use this for milestones autocapture can't see — e.g. backend-driven state changes, business events, or feature flags becoming visible.
+Emit a custom event. Use this for milestones autocapture can't see — server-driven state changes, business events, or feature flags becoming visible.
 
 ```typescript
 HelpAlive.track(name: string, properties?: Record<string, unknown>): void;
@@ -70,7 +70,7 @@ HelpAlive.track("subscription_upgraded", {
 });
 ```
 
-Properties flow through the redaction pipeline like every other event payload. Don't put raw PII in property values.
+Properties pass through the same PII redaction as every other event. Don't put raw personal information in property values.
 
 ## flush
 
@@ -103,7 +103,7 @@ function logout() {
 
 ## getContext
 
-Read the current page, identity, and session state. The chatbot widget calls this to ground its prompt in the user's situation.
+Read the current page, identity, and session state. The chatbot uses this internally so it always answers in context.
 
 ```typescript
 HelpAlive.getContext(): ChatbotContext | null;
@@ -119,14 +119,14 @@ Returns `null` if `identify()` hasn't run yet.
 
 ## setRealTimeMode
 
-Drain queued events immediately instead of waiting for the rolling flush. The chatbot widget enables this while a chat is active so the LLM sees fresh page context.
+Send events instantly instead of waiting for the next batch. The chatbot turns this on while a chat is active so it always sees the user's most recent activity.
 
 ```typescript
 HelpAlive.setRealTimeMode(enabled: boolean): void;
 HelpAlive.setRealTimeConsumer(name: string, active: boolean): void;
 ```
 
-You usually don't need to call these — the chatbot widget manages real-time mode automatically.
+You usually don't need to call these — the chatbot manages this automatically.
 
 ## setConsent
 
@@ -142,7 +142,7 @@ HelpAlive.setConsent({ analytics: true, chat: true });
 
 ## notify
 
-Push a proactive notification into the widget. Useful for surfacing announcements or in-app messages the customer triggers from the dashboard or your own backend.
+Push a proactive notification into the chatbot — useful for surfacing announcements or in-app messages from your own server-side code.
 
 ```typescript
 HelpAlive.notify(payload: NotificationPayload): void;
@@ -152,7 +152,7 @@ HelpAlive.onNotification(callback: (payload) => void): UnsubscribeFn;
 
 ## startGuide / cancelGuide / preloadGuides
 
-Lazy-load the guide engine and run an in-app guide. The guides backend ships today; the dashboard editor is wiring up.
+Run an in-app guide. The guide system is shipped today; the dashboard guide editor is in active development. See [Guides overview](/guides/overview) for the current state.
 
 ```typescript
 HelpAlive.startGuide(guide: GuideRef, options?: GuideOptions): Promise<unknown>;
@@ -170,7 +170,7 @@ Fetch suggested questions for the current page — used by the chatbot launcher 
 HelpAlive.getSuggestions(): Promise<string[]>;
 ```
 
-Suggestions are cached for 60 seconds per `(session, page, experience level, role)` tuple.
+Suggestions are cached for 60 seconds per session, page, and user role — repeated calls within that window are free.
 
 ## onActivation
 
@@ -196,7 +196,7 @@ Tear down the SDK, stop autocapture, and cancel pending network requests.
 HelpAlive.shutdown(): void;
 ```
 
-You normally don't need this. It exists for testing and for embeddings where the host page needs to fully detach the SDK.
+You normally don't need this. It exists for testing and for cases where the host page needs to fully detach the SDK at runtime.
 
 ## Types
 

@@ -44,7 +44,7 @@ The SDK auto-captures a small set of high-signal events. From those, the dashboa
 | **Elements** | click, exposure |
 | **Friction** | rage_click, dom_error, form_start without submit |
 
-Summary tables refresh hourly. Real-time per-user pages read live event data so admins see fresh activity.
+Aggregated dashboards refresh hourly. Per-user views show live activity, so admins always see what's happening right now.
 
 ## Tenant-level views
 
@@ -76,13 +76,13 @@ The most valuable view for product teams. Every user question that goes through 
 - `weak_retrieval` — matches were thin or off-topic.
 - `negative_rating` — user thumbed down despite a confident answer.
 
-These are clustered with HDBSCAN into topics and ranked by `volume × gap score`. The result is a working inbox of "things to write next" or "features to fix" — see [Coverage gaps](/analytics/coverage-gaps).
+These are grouped into topics and ranked by **volume × gap score**. The result is a working inbox of "things to write next" or "features to fix" — see [Coverage gaps](/analytics/coverage-gaps).
 
 ## What's still maturing
 
 | Area | Status |
 |------|--------|
-| Per-feature adoption rates | In progress — depends on automatic feature discovery from event sequences. SDK signals are captured today; the backend pipeline is being built. |
+| Per-feature adoption rates | In progress — depends on automatic feature discovery. The signals are captured today; the analysis pipeline is being built. |
 | Feature health scores | In progress — same dependency. |
 | Custom reports + date ranges | UI exists; full real-data pipeline is partial. |
 | CSV / PDF export | Planned. |

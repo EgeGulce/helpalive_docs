@@ -1,40 +1,34 @@
 ---
 title: "Redaction"
 sidebarTitle: "Redaction"
-description: "HelpAlive runs two layers of PII redaction — in the browser before events are sent, then again in a dedicated drainer using Microsoft Presidio."
+description: "HelpAlive redacts personal data twice — once in the browser before transmission, then again on our servers — using industry-standard pattern detection."
 keywords:
-  - PII redaction SDK
-  - Microsoft Presidio integration
+  - PII redaction
+  - sensitive data redaction
   - browser PII stripping
   - GDPR compliant analytics
-  - sensitive data redaction
+  - safe SaaS analytics
 mode: "wide"
 ---
 
-Every event flows through two redaction layers before it reaches durable storage. This page details what each layer strips and what's never captured at all.
+Every event flows through two redaction layers before it reaches durable storage. This page details what each layer strips, what's never captured at all, and what the guarantees mean for your users.
 
-## Never-captured fields
+## Never captured
 
 Some fields are never observed by the SDK in the first place:
 
-- **Keystroke contents.** The SDK doesn't bind to `keydown` for input capture. It does observe keys for shortcut detection (e.g. detecting that a keyboard shortcut fired) but the key content is not transmitted.
-- **Form input values.** `form_submit` events fire when a form is submitted; the values of the inputs do not flow.
-- **`<input type="password">`.** Always excluded, full stop.
-- **Any element marked `data-helpalive-redact`.** A custom hook for fields you want to keep out of selectors and exposure data — e.g. account numbers shown in a banner.
+- **Keystroke contents.** The SDK doesn't watch keys typed into inputs (we only react to keyboard shortcuts, never to character data).
+- **Form input values.** Submit events fire when a form is submitted; the values inside the inputs do not flow.
+- **Password fields.** Excluded fully — never captured, never transmitted, no hashing.
+- **Anything you mark as private.** Add `data-helpalive-redact` to any element you want kept out of selectors and exposure data — useful for sensitive labels (account numbers, balances).
 
-## Layer 1 — browser-side
+## Layer 1 — in the browser
 
-Before each batch is shipped to the events endpoint, the SDK runs:
+Before any payload is sent, the SDK runs:
 
 ### URL hygiene
 
-URLs are normalized:
-
-- Query string removed if it contains values that look like PII (emails, tokens, base64 IDs, JWT-like strings).
-- Fragment ID removed if it contains values that look like PII.
-- Path segments that match PII patterns are replaced with `:redacted:`.
-
-Examples:
+URLs are normalized before transmission. Anything in the path, query, or fragment that looks like personal data is replaced.
 
 | Original | After hygiene |
 |----------|---------------|
@@ -45,93 +39,71 @@ Examples:
 
 ### Pattern stripping
 
-Any captured text passes through pattern-based redaction:
+Captured text passes through pattern-based redaction:
 
 | Pattern | What's stripped |
 |---------|-----------------|
 | Email | `jdoe@example.com` → `[email]` |
 | Phone | `+1 415 555 0123` → `[phone]` |
-| Credit-card-like | `4111 1111 1111 1111` → `[card]` |
-| US SSN-like | `123-45-6789` → `[ssn]` |
+| Card number | `4111 1111 1111 1111` → `[card]` |
+| US Social Security number | `123-45-6789` → `[ssn]` |
 | IPv4 | `203.0.113.7` → `[ip]` |
 
-The browser pass is intentionally cheaper than the server pass — speed matters here because we run on every event before send.
+### Anonymous element identifiers
 
-### Selector hashing
+When the SDK records that a user clicked something, it doesn't send the element's class names, IDs, or text content. It sends an anonymous identifier that's stable for analytics grouping but reveals nothing about what the element actually says.
 
-DOM selectors are hashed before transmission. The hash is stable across sessions for the same element, so analytics can group by element, but a hash alone reveals no information about the element's text or class names.
+### Fail closed
 
-### Fail-closed
+If the redaction layer ever throws (it shouldn't — but software), the batch is dropped, not transmitted. Better lost analytics than leaked data.
 
-If the redaction layer throws (it shouldn't, but software), the batch is dropped, not transmitted. Better lost analytics than leaked data.
+## Layer 2 — on our servers
 
-## Layer 2 — server-side drainer
+After the browser pass, events arrive at a private intake process. We apply a heavier pass that catches things the browser layer can't reasonably handle:
 
-After the browser redaction pass, events arrive at the events Redis stream. A separate service — the **drainer** — consumes from the stream and applies a heavier pass:
+- Names and addresses (which need a language model to recognize, not a regex).
+- Locale-specific identifiers (national IDs, regional phone formats, address shapes).
+- Edge cases in punctuation, formatting, or context that pattern matchers miss.
 
-### Microsoft Presidio
+Detected entities are replaced with type tokens (`<PERSON>`, `<EMAIL_ADDRESS>`, `<US_SSN>`) before storage.
 
-The drainer loads spaCy models per worker and runs **Microsoft Presidio** against every string field. Presidio uses a combination of:
+### Why two layers?
 
-- Named-entity recognition (people, places, organizations).
-- Pattern matchers tuned per locale (national IDs, phone formats, address shapes).
-- A configurable risk threshold per entity type.
+The browser pass is fast and catches the obvious patterns. The server pass is comprehensive — it uses industry-standard PII detection that's far more thorough than what we can ship into a small browser SDK. Together, they cover the cases each one alone would miss.
 
-Detected entities are replaced with type tokens (`<PERSON>`, `<EMAIL_ADDRESS>`, `<US_SSN>`).
+### Isolation
 
-### Why a second layer
-
-The browser pass is fast, deterministic, and catches the most common patterns. The server pass is comprehensive — it catches:
-
-- Names (which the browser pass cannot recognize without an NLP model).
-- Addresses.
-- Locale-specific identifiers.
-- Edge cases in punctuation and formatting that the regex layer misses.
-
-### Drainer isolation
-
-The drainer is the **only** service with credentials for the events Redis stream:
-
-- The dashboard service (`apps/service`) doesn't have the env var.
-- The chatbot service (`apps/chat-service`) doesn't have the env var.
-- The auth service doesn't have the env var.
-
-This is enforced by topology, not by policy. Even if one of the other services is compromised, raw event data is unreachable.
-
-After redaction, the drainer writes to Postgres. From there, the dashboard reads — but it only ever sees redacted data.
+The intake process is the **only** part of our infrastructure with access to raw event data. The dashboard never sees raw events — only the redacted output. This is enforced by infrastructure, not by policy.
 
 ## Storage layout
 
 | Store | What's in it | Redacted |
 |-------|--------------|----------|
-| **Events Redis stream** | Raw events from the SDK, for the few minutes before the drainer consumes | Browser-redacted |
-| **Events Postgres** | Long-term analytics events | Browser- + server-redacted |
-| **Chatbot messages Postgres** | Question and answer text | Server-redacted (Presidio) |
-| **User profiles Postgres** | Identity, traits, plan, role | Email & display name flow as user-supplied; consent and suppression flags set per user |
+| **Event analytics** | Long-term redacted events | Yes — both layers |
+| **Chat conversations** | Question and answer text | Yes — server-side pass |
+| **User profiles** | Identity and traits you sent (display name, email, plan) | Stored as you sent them |
 
-## Where verbatim text survives
+## Where verbatim text intentionally survives
 
 Two places intentionally keep verbatim user input:
 
-1. **Chatbot messages** (Presidio-redacted). The whole point of the assistant is to read user questions and respond, and the whole point of [Coverage gaps](/analytics/coverage-gaps) is to surface what users ask. PII patterns are stripped, but otherwise the text is kept.
-2. **Identity fields** (`displayName`, `email`). You provide them through `identify()`; they live on the profile so admins can search and support.
-
-Both are scoped per customer and removable on DSAR request.
+1. **Chat conversations** (after PII redaction). The whole point of the chatbot is to read user questions and respond, and the whole point of [Coverage gaps](/analytics/coverage-gaps) is to surface what users ask. Personal data is stripped, but the question is otherwise kept.
+2. **Identity fields** (`displayName`, `email`). You provide them through `identify()`. They live on the user profile so admins can search and support, scoped per customer and removable on DSAR request.
 
 ## Audit
 
-Every redaction layer logs:
+Every redaction pass logs:
 
 - Counts of detected entity types per minute (no payloads).
-- Drainer queue depth and lag.
-- Failed redaction attempts (very rare; alerts on threshold).
+- Internal queue depth and lag.
+- Failed redaction attempts (rare; alerts on threshold).
 
-These metrics are visible internally for HelpAlive ops; not currently exposed to customer dashboards.
+These are visible internally for HelpAlive operations; they aren't currently exposed to customer dashboards.
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="DSAR deletion" icon="trash" href="/privacy/dsar">
+  <Card title="Data deletion" icon="trash" href="/privacy/dsar">
     Delete a user's data on request.
   </Card>
   <Card title="Configure consent" icon="shield-check" href="/sdk/consent">

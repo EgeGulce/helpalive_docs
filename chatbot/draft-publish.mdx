@@ -25,14 +25,14 @@ A misconfigured assistant is worse than no assistant. Without a staging step, a 
 
 ## The data model
 
-Every configurable surface has paired columns: `live_*` for what end users see, and `draft_*` for staged changes. When you publish:
+Every configurable surface has two states: **live** (what your end users see) and **draft** (your staged changes). When you publish:
 
-1. The draft values are validated.
-2. Validated drafts are copied into the live columns inside a single transaction.
-3. The retrieval layer rebuilds its filters so any new knowledge sources go live atomically.
-4. The widget's config cache is invalidated; running widgets fetch the new config on their next config refresh.
+1. Your drafted changes are validated.
+2. Valid drafts replace the live config in one atomic step — no partial updates ever reach users.
+3. New or updated knowledge sources become available to the chatbot at the same instant.
+4. Running chatbot widgets pick up the new config on their next refresh.
 
-If validation fails, nothing is copied — your users keep seeing the previous live config until you fix the draft.
+If validation fails, nothing changes — your users keep seeing the previous live config until you fix the draft.
 
 ## What's gated
 
@@ -60,7 +60,7 @@ Things that are **not** drafted (changes apply immediately):
 - Reads draft appearance, draft guidance, draft knowledge.
 - Includes unpublished knowledge sources in retrieval.
 - Shows a "Previewing draft" chip so you never confuse it with production traffic.
-- Rate-limited per dashboard user via Redis (so a stuck preview can't run up your bill).
+- Rate-limited per dashboard user (so a stuck preview can't run up your bill).
 
 Use it as the last step before every publish.
 

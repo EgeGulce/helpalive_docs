@@ -19,7 +19,7 @@ When a user invokes their right to deletion under GDPR, CCPA, or your own privac
 A DSAR job removes:
 
 - **Identity** — the row in user profiles for the targeted `(tenantId, userId)`.
-- **Events** — every event with that `userId` in the events tables.
+- **Events** — every captured event tied to that `userId`.
 - **Chatbot history** — every message the user sent or received.
 - **Coverage-gap contributions** — the user's questions are removed from the inbox.
 - **Suppression entries** — any prior suppression flags are cleared (since there's no user left to suppress).
@@ -79,7 +79,7 @@ If a user wants you to **stop processing** their data without permanently deleti
 
 | Action | Effect | Reversible |
 |--------|--------|------------|
-| **User suppression** | Future events for the user are dropped at ingest. Existing events are preserved. | Yes |
+| **User suppression** | Future events for the user stop being captured. Existing events are preserved. | Yes |
 | **Tenant suppression** | Same, scoped to a whole tenant. | Yes |
 | **DSAR deletion** | All data for the user / tenant removed. | **No** — destructive |
 
