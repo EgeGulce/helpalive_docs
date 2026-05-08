@@ -80,24 +80,15 @@ function onAccept(user) {
 }
 ```
 
-## Logout and consent reset
+## Logout
 
-Calling `reset()` clears the in-memory identity but does **not** revoke consent. If you want to revoke consent on logout (e.g. shared-device scenarios), call both:
+Logging the user out clears identity automatically. If you want to also revoke consent on logout (useful for shared-device scenarios), call `setConsent` with both flags off as part of your logout flow:
 
 ```javascript
 function logout() {
   HelpAlive.setConsent({ analytics: false, chat: false });
-  HelpAlive.reset();
+  // …your logout logic
 }
-```
-
-## Verifying consent state
-
-You can read the current consent state through `getContext()`:
-
-```javascript
-const ctx = HelpAlive.getContext();
-console.log(ctx?.session?.consent);  // { analytics: true, chat: true }
 ```
 
 ## What gets stored when consent is denied

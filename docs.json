@@ -13,7 +13,7 @@
     "library": "lucide"
   },
   "seo": {
-    "indexing": "navigable",
+    "indexing": "all",
     "metatags": {
       "og:type": "website",
       "og:site_name": "HelpAlive Documentation",
@@ -28,24 +28,14 @@
     "options": ["copy", "view", "assistant", "mcp", "add-mcp"]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg",
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png",
     "href": "/"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "helpalive.com",
-        "href": "https://helpalive.com"
-      },
-      {
-        "label": "Dashboard",
-        "href": "https://app.helpalive.com"
-      }
-    ],
     "primary": {
       "type": "button",
-      "label": "Get Early Access",
+      "label": "Sign up for early access",
       "href": "https://helpalive.com/#early-access"
     }
   },
@@ -72,8 +62,7 @@
           "introduction",
           "quickstart",
           "installation",
-          "use-cases",
-          "compare"
+          "use-cases"
         ]
       },
       {
@@ -82,7 +71,6 @@
         "pages": [
           "sdk/overview",
           "sdk/identify",
-          "sdk/api-reference",
           "sdk/consent"
         ]
       },
@@ -146,8 +134,7 @@
           { "label": "SDK", "href": "/sdk/overview" },
           { "label": "Agent", "href": "/agent/overview" },
           { "label": "Studio", "href": "/studio/overview" },
-          { "label": "Insight", "href": "/insight/overview" },
-          { "label": "Compare", "href": "/compare" }
+          { "label": "Insight", "href": "/insight/overview" }
         ]
       },
       {
@@ -163,7 +150,7 @@
         "items": [
           { "label": "Website", "href": "https://helpalive.com" },
           { "label": "Dashboard", "href": "https://app.helpalive.com" },
-          { "label": "Get Early Access", "href": "https://helpalive.com/#early-access" }
+          { "label": "Sign up for early access", "href": "https://helpalive.com/#early-access" }
         ]
       }
     ]

@@ -15,7 +15,7 @@ The dashboard has three main sections, plus settings:
 
 ## What's available today
 
-- **One-script SDK** — auto-captures clicks, pageviews, form submits, rage clicks, and DOM errors. No event tagging required. Works with React, Vue, Angular, or plain HTML.
+- **One-script SDK** — auto-captures clicks, pageviews, form submits, rage clicks, and DOM errors. No event tagging required. Works with React, Vue, Angular, plain HTML, or via Google Tag Manager. The only required code call is `HelpAlive.identify({ userId, tenantId })` after login.
 - **AI Agent** — a context-aware assistant inside your product. Trained on your docs (URL crawl or file upload), aware of the user's current page, identity, and recent activity.
 - **Topics inbox** — every question the Agent can't answer well, grouped into topics, ranked by volume and severity. Your team's working backlog of doc improvements.
 - **Audience analytics** — per-user, per-workspace activity views with friction signals (rage clicks, errors).
@@ -35,14 +35,13 @@ The dashboard has three main sections, plus settings:
 ### Get started
 - [Introduction](/introduction) — what HelpAlive does and who it's for
 - [Quickstart](/quickstart) — install in 5 minutes
-- [Installation](/installation) — script tag, npm, framework examples (React, Vue, Angular, plain HTML)
+- [Installation](/installation) — JavaScript script tag, Google Tag Manager, framework examples (React, Vue, Angular, plain HTML)
 - [Use cases](/use-cases) — activation, churn, ticket deflection, upsell, visibility
 - [Compare](/compare) — vs Pendo, Intercom Fin, WalkMe, FullStory, Userpilot, Appcues
 
 ### SDK
 - [SDK overview](/sdk/overview) — what's auto-captured and the public API at a glance
 - [Identify](/sdk/identify) — `identify({ userId, tenantId, ... })` — both required
-- [API reference](/sdk/api-reference) — every public method with signatures
 - [Consent](/sdk/consent) — auto / required modes, runtime toggle
 
 ### Agent

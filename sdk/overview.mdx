@@ -1,17 +1,17 @@
 ---
 title: "Overview"
 sidebarTitle: "Overview"
-description: "The HelpAlive SDK is an ~11 KB browser script that auto-captures user behavior, identifies users and tenants, and powers the AI chatbot. One script, one identify call."
+description: "The HelpAlive SDK is a small browser script that auto-captures user behavior, ties activity to real users and workspaces, and powers the AI Agent. One script, one identify call."
 keywords:
   - HelpAlive SDK
-  - JavaScript SDK SaaS
-  - autocapture analytics SDK
-  - user behavior SDK
-  - one-script analytics
+  - in-app AI assistant SDK
+  - autocapture analytics
+  - user behavior tracking SDK
+  - one-script SaaS analytics
 mode: "wide"
 ---
 
-The HelpAlive SDK is a small browser script that does three things: auto-captures user behavior, ties activity to real users and workspaces, and feeds the AI chatbot fresh page context whenever a user opens it. One script tag, one `identify()` call, and you're done.
+The HelpAlive SDK is a small browser script that does three things: auto-captures user behavior, ties activity to real users and workspaces, and feeds the AI Agent fresh page context whenever a user opens it. **One script tag, one `identify()` call, and you're done.**
 
 ## At a glance
 
@@ -19,25 +19,21 @@ The HelpAlive SDK is a small browser script that does three things: auto-capture
 |---|---|
 | **Size** | ~11 KB gzipped |
 | **Runtime dependencies** | None |
-| **Distribution** | CDN script tag or `@helpalive/sdk` on npm |
+| **Distribution** | CDN script tag (or via Google Tag Manager) |
 | **Loading** | Async, non-blocking |
 | **Browser support** | Evergreen browsers (Chrome, Edge, Firefox, Safari) |
-| **Global** | `window.HelpAlive` |
 
 ## What the SDK does
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card title="Autocapture" icon="zap">
-    Clicks, form submits, pageviews, rage clicks, DOM errors, and a per-page exposure summary — captured automatically with no tagging.
+    Clicks, pageviews, form submits, rage clicks, DOM errors — captured automatically with no tagging.
   </Card>
   <Card title="Identity" icon="user-check">
-    `identify()` ties events to a stable user and tenant so analytics, profiles, and chatbot personalization are accurate.
+    `identify()` ties events to a stable user and workspace so analytics and Agent personalization are accurate.
   </Card>
-  <Card title="Manual events" icon="hammer">
-    `track()` lets you add custom events for milestones autocapture can't see (e.g. "subscription upgraded", "report exported").
-  </Card>
-  <Card title="Chat context" icon="message-circle">
-    `getContext()` and real-time mode let the chatbot widget read the user's current page, role, and recent activity to answer in context.
+  <Card title="Agent context" icon="message-circle">
+    Feeds the in-app AI Agent fresh page context — what the user just clicked, where they got stuck — so it answers like someone who's actually watching.
   </Card>
 </CardGroup>
 
@@ -54,36 +50,47 @@ The SDK observes user behavior automatically — you don't write tracking code o
 | `rage_click` | Repeated clicks on the same element — a strong frustration signal. |
 | `scroll_depth` | How far a user scrolled on each page. |
 | `dom_error` | JavaScript errors and console errors that occurred while the user was interacting. |
-| `exposure` | A summary of which interactive elements were visible on the page. Helps the chatbot know what's on screen when a user asks a question. |
+| `exposure` | A summary of which interactive elements were visible on the page. Helps the Agent know what's on screen when a user asks a question. |
 
 ## What's not captured
 
-- **Keystrokes.** The SDK never logs `keydown` or `input` content.
-- **Form values.** Submit events fire, but field values are not transmitted.
+- **Keystrokes.** The SDK never logs what users type into inputs.
+- **Form values.** Submit events fire; the values inside are never transmitted.
 - **Password fields.** Always excluded.
 - **PII patterns** (emails, phone numbers, national IDs, etc.). Stripped in the browser before any payload leaves the page; stripped again on our servers before storage.
 
 See [Privacy & redaction](/privacy/redaction) for the complete data model.
 
-## Public API
+## The two calls you need to make
 
-The SDK exposes these methods on `window.HelpAlive`. Full signatures live in the [API reference](/sdk/api-reference).
+The SDK exposes a small surface on `window.HelpAlive`. The only methods you'll typically call yourself are:
 
-| Method | Purpose |
-|--------|---------|
-| `init(options)` | Manually initialize the SDK. Only needed when loading via npm; the script tag auto-initializes. |
-| `identify(payload)` | Identify the user and workspace. Required for events to flow. |
-| `track(name, props?)` | Send a custom event for things autocapture can't see. |
-| `flush()` | Send any queued events right away. |
-| `reset()` | Clear identity (call this on logout). |
-| `getContext()` | Read the current page, identity, and session state — used by the chatbot widget. |
-| `setRealTimeMode(enabled)` | Send events instantly instead of in batches. The chatbot turns this on while a chat is active. |
-| `setConsent(consent)` | Set or change the user's consent preferences at runtime. |
-| `notify(payload)` | Push a proactive notification into the chatbot. |
-| `onNotification(cb)` | Subscribe to notifications from your own code. |
-| `startGuide(guide, opts?)` | Start an in-app guide programmatically. |
-| `getSuggestions()` | Fetch suggested questions for the current page. |
-| `shutdown()` | Tear down the SDK. |
+### `HelpAlive.identify(payload)` — required after login
+
+Tells HelpAlive who the user is and which workspace they belong to. Without it, the SDK buffers events but nothing is sent.
+
+```javascript
+HelpAlive.identify({
+  userId:   user.id,           // required
+  tenantId: tenant.id,         // required (use "default" if no workspaces)
+  email:    user.email,
+  plan:     user.plan
+});
+```
+
+See [Identify](/sdk/identify) for the full field reference.
+
+### `HelpAlive.setConsent(prefs)` — when integrating with your cookie banner
+
+Pauses or resumes tracking based on the user's consent state.
+
+```javascript
+HelpAlive.setConsent({ analytics: true, chat: true });
+```
+
+See [Consent](/sdk/consent) for the full setup.
+
+That's it for the public surface most apps need. Everything else — buffering, flushing, real-time mode while the Agent is open, page-context handoff to the chatbot — happens automatically inside the SDK.
 
 ## Event buffering
 
@@ -94,16 +101,16 @@ Once a user is identified, events are sent on a rolling schedule and whenever th
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Identify users and tenants" icon="user-check" href="/sdk/identify">
-    The required first call after authentication.
-  </Card>
-  <Card title="API reference" icon="book" href="/sdk/api-reference">
-    Full method signatures and option types.
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    The required call after authentication.
   </Card>
   <Card title="Configure consent" icon="shield-check" href="/sdk/consent">
     Pause tracking until your consent banner returns a decision.
   </Card>
+  <Card title="Set up the Agent" icon="sparkles" href="/agent/overview">
+    Train the AI assistant on your docs.
+  </Card>
   <Card title="Privacy posture" icon="lock" href="/privacy/overview">
-    What data the SDK sends, what it doesn't, and where redaction happens.
+    What we capture, what we don't, where redaction happens.
   </Card>
 </CardGroup>

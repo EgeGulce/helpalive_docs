@@ -83,7 +83,7 @@
   ],
   "publicApiSurface": [
     "Script tag: <script src='https://cdn.helpalive.com/sdk/helpalive.js' data-api-key='...' async></script>",
-    "npm: import HelpAlive from '@helpalive/sdk'; HelpAlive.init({ apiKey })",
+    "Google Tag Manager: Custom HTML tag with the same script src + data-api-key",
     "identify({ userId, tenantId, displayName?, email?, role?, plan?, createdAt? }) — userId and tenantId required",
     "track(name, properties?) for custom events",
     "flush(), reset(), shutdown()",
