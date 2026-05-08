@@ -1,0 +1,137 @@
+---
+title: "Forward HelpAlive events to any endpoint via webhooks"
+description: "POST friction signals, walkthrough events, and escalations to any HTTPS endpoint — your ticketing system, data warehouse, or custom tooling."
+---
+
+HelpAlive can POST events to any HTTPS endpoint you control. Use webhooks to forward friction signals to your ticketing system, pipe walkthrough completion data into your data warehouse, trigger internal automation workflows, or build custom integrations with tools HelpAlive doesn't natively support. Every event includes a signed payload so you can verify it came from HelpAlive.
+
+## How to configure
+
+<Steps>
+  <Step title="Open the integrations settings">
+    In the HelpAlive dashboard, go to **Settings → Integrations → Webhooks**.
+  </Step>
+  <Step title="Add an endpoint">
+    Click **Add Endpoint** and enter the HTTPS URL where HelpAlive should POST events.
+  </Step>
+  <Step title="Select events">
+    Choose which events to send to this endpoint. You can create multiple endpoints with different event selections.
+  </Step>
+  <Step title="Copy your webhook secret">
+    After saving, copy the webhook secret shown for this endpoint. You'll use it to verify incoming payloads.
+  </Step>
+</Steps>
+
+## Available events
+
+| Event | Description |
+|---|---|
+| `user.friction_detected` | The user deviated from the successful path for a given flow |
+| `user.walkthrough_started` | The user began a HelpAlive guided walkthrough |
+| `user.walkthrough_completed` | The user completed a guided walkthrough from start to finish |
+| `user.walkthrough_dismissed` | The user dismissed a walkthrough without completing it |
+| `user.escalated` | The user was escalated to live chat or flagged for support follow-up |
+
+## Payload structure
+
+HelpAlive sends all events with the same top-level structure. The `data` object contains fields specific to each event type.
+
+```json
+{
+  "event": "user.friction_detected",
+  "timestamp": "2026-05-08T10:30:00Z",
+  "userId": "user_123",
+  "sessionId": "sess_abc",
+  "data": {
+    "route": "/onboarding/step-3",
+    "walkthroughId": "wt_xyz",
+    "deviationScore": 0.87
+  }
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `event` | string | The event name, e.g. `user.friction_detected` |
+| `timestamp` | string | ISO 8601 timestamp of when the event occurred |
+| `userId` | string | The user ID passed to `HelpAlive.identify()` |
+| `sessionId` | string | The HelpAlive session identifier |
+| `data` | object | Event-specific fields, varies by event type |
+
+## Verifying webhook signatures
+
+<Note>
+  HelpAlive signs every webhook payload with HMAC-SHA256 using your endpoint's webhook secret. To verify a request came from HelpAlive, compute the HMAC-SHA256 of the raw request body using your secret and compare it to the value in the `X-HelpAlive-Signature` header. Reject any request where the signatures don't match.
+</Note>
+
+Here is a complete example of receiving and verifying a webhook in Node.js:
+
+```javascript
+import crypto from "crypto";
+import express from "express";
+
+const app = express();
+
+// Use the raw body buffer for signature verification — do not parse as JSON first.
+app.post(
+  "/webhooks/helpalive",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    const secret = process.env.HELPALIVE_WEBHOOK_SECRET;
+    const signature = req.headers["x-helpalive-signature"];
+
+    if (!signature) {
+      return res.status(400).send("Missing signature");
+    }
+
+    const expected = crypto
+      .createHmac("sha256", secret)
+      .update(req.body)
+      .digest("hex");
+
+    const trusted = Buffer.from(`sha256=${expected}`, "utf8");
+    const received = Buffer.from(signature, "utf8");
+
+    if (
+      trusted.length !== received.length ||
+      !crypto.timingSafeEqual(trusted, received)
+    ) {
+      return res.status(401).send("Invalid signature");
+    }
+
+    const event = JSON.parse(req.body.toString());
+
+    switch (event.event) {
+      case "user.friction_detected":
+        // Handle friction event
+        break;
+      case "user.escalated":
+        // Handle escalation event
+        break;
+      default:
+        // Ignore unrecognised event types
+        break;
+    }
+
+    res.status(200).send("OK");
+  }
+);
+
+app.listen(3000);
+```
+
+## Retry behavior
+
+If your endpoint returns a non-2xx response or times out, HelpAlive retries the delivery up to **3 times** using exponential backoff:
+
+| Attempt | Delay |
+|---|---|
+| 1st retry | 30 seconds after initial failure |
+| 2nd retry | 5 minutes after 1st retry |
+| 3rd retry | 30 minutes after 2nd retry |
+
+After three failed retries, the delivery is marked as failed. You can view failed deliveries and manually replay them from **Settings → Integrations → Webhooks → Delivery log**.
+
+<Warning>
+  Your endpoint must respond within **10 seconds**. If it takes longer, HelpAlive treats the delivery as failed and schedules a retry. For slow processing, respond with `200 OK` immediately and handle the event asynchronously.
+</Warning>

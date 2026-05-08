@@ -1,0 +1,51 @@
+---
+title: "Live chat handoff with full session context attached"
+description: "Escalate users from HelpAlive to Intercom or Zendesk automatically, with their full session context passed directly to the live agent."
+---
+
+When HelpAlive determines that a user needs human help — repeated friction, unresolved guidance, or a direct request — it can hand off to your existing live chat tool and pass the full session context along. The agent who picks up the conversation already knows where the user is, what they clicked, and where they got stuck, so they can help immediately without asking the user to explain everything from scratch.
+
+<Note>
+  The live chat handoff integration is coming soon. To express interest or get notified when it launches, [contact us at helpalive.com/contact](https://helpalive.com/contact).
+</Note>
+
+## Supported tools
+
+HelpAlive supports handoff to the following live chat platforms:
+
+- **Intercom** — passes context as conversation attributes and an internal note
+- **Zendesk** — passes context as ticket tags and an internal comment
+
+## How to configure
+
+<Steps>
+  <Step title="Open the integrations settings">
+    In the HelpAlive dashboard, go to **Settings → Integrations → Live Chat**.
+  </Step>
+  <Step title="Select your live chat tool">
+    Choose **Intercom** or **Zendesk** from the list of supported tools.
+  </Step>
+  <Step title="Authenticate">
+    Follow the OAuth prompts to connect your live chat account. HelpAlive requests only the permissions needed to create conversations and attach notes.
+  </Step>
+  <Step title="Configure escalation triggers">
+    Choose when HelpAlive should trigger a handoff — for example, after a user hits a friction point three or more times, or when a walkthrough is dismissed without completion.
+  </Step>
+  <Step title="Save and test">
+    Save your configuration. Use the **Send test handoff** button to verify that session context appears correctly in your live chat tool.
+  </Step>
+</Steps>
+
+## What context is passed on handoff
+
+When HelpAlive escalates a user, it attaches the following information to the conversation or ticket:
+
+| Field | Description |
+|---|---|
+| Current route | The page or URL path the user is on at the time of escalation |
+| Recent clicks | A chronological list of the user's last 10 interaction events |
+| Deviation summary | A plain-language summary of where the user diverged from the expected path |
+| User identity | The user ID and any attributes you passed to `HelpAlive.identify()` |
+| Session ID | The HelpAlive session identifier, useful for cross-referencing analytics |
+
+The agent receives this context as a formatted internal note before the conversation begins, so they can read it without the user seeing it.

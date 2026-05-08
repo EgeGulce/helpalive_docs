@@ -1,0 +1,134 @@
+---
+title: "HelpAlive: AI-powered in-product user guidance"
+description: Everything you need to install HelpAlive, guide your users, and connect your support stack.
+mode: frame
+---
+
+<div data-product-guide-index className="flex w-full flex-col gap-8 max-w-5xl mx-auto px-4 md:px-8 lg:px-12 py-10 lg:gap-14 lg:py-16">
+  <div className="flex max-w-[540px] flex-col gap-2 self-center text-center">
+    <h1 className="text-[30px] font-medium leading-9 tracking-tight text-gray-900 dark:text-gray-50">
+      HelpAlive Documentation
+    </h1>
+    <p className="text-balance text-base leading-relaxed tracking-tight text-gray-600 dark:text-gray-400">
+      Install in minutes. Guide every user. Stop churn before it starts.
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <Card
+      title={<span className="product-guide-feature-card-title">Get started</span>}
+      icon="rocket"
+      href="/introduction"
+      className="product-guide-feature-card"
+      size={64}
+    >
+      <span className="product-guide-feature-card-description">Add HelpAlive to your product with one script tag and one identify call.</span>
+    </Card>
+
+    <a
+      href="/concepts/how-it-works"
+      className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+    >
+      <Icon icon="brain" color="rgb(var(--primary))" size={18} className="shrink-0" />
+      <div className="flex flex-col gap-1">
+        <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">How it works</span>
+        <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+          Understand crowd intelligence, proactive detection, and context-aware support.
+        </span>
+      </div>
+    </a>
+    <a
+      href="/integrations/overview"
+      className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+    >
+      <Icon icon="plug" color="rgb(var(--primary))" size={18} className="shrink-0" />
+      <div className="flex flex-col gap-1">
+        <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Integrations</span>
+        <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+          Connect Intercom, Zendesk, Salesforce, HubSpot, Slack, and custom webhooks.
+        </span>
+      </div>
+    </a>
+  </div>
+
+  <hr className="border-0 border-t border-border" />
+
+  <div className="flex flex-col gap-4">
+    <h2 className="font-serif text-xl font-medium leading-normal text-gray-900 dark:text-gray-50">Common tasks</h2>
+
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <a
+        href="/installation"
+        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+      >
+        <Icon icon="code" color="rgb(var(--primary))" size={18} className="shrink-0" />
+        <div className="flex flex-col gap-1">
+          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Install the snippet</span>
+          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            Paste one script tag and call identify() on login. Works with any stack.
+          </span>
+        </div>
+      </a>
+      <a
+        href="/guides/identify-users"
+        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+      >
+        <Icon icon="user-check" color="rgb(var(--primary))" size={18} className="shrink-0" />
+        <div className="flex flex-col gap-1">
+          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Identify your users</span>
+          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            Tie sessions to real users so guidance is personalized and analytics are accurate.
+          </span>
+        </div>
+      </a>
+      <a
+        href="/integrations/webhooks"
+        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+      >
+        <Icon icon="webhook" color="rgb(var(--primary))" size={18} className="shrink-0" />
+        <div className="flex flex-col gap-1">
+          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Set up webhooks</span>
+          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            Route friction events and escalations to your ticketing system or data warehouse.
+          </span>
+        </div>
+      </a>
+      <a
+        href="/guides/walkthroughs"
+        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+      >
+        <Icon icon="list-checks" color="rgb(var(--primary))" size={18} className="shrink-0" />
+        <div className="flex flex-col gap-1">
+          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Create walkthroughs</span>
+          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            Build step-by-step in-product guides that appear exactly when users need them.
+          </span>
+        </div>
+      </a>
+      <a
+        href="/concepts/privacy-security"
+        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+      >
+        <Icon icon="shield-check" color="rgb(var(--primary))" size={18} className="shrink-0" />
+        <div className="flex flex-col gap-1">
+          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Privacy & security</span>
+          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            Zero PII ever leaves the browser — learn how client-side scrubbing works.
+          </span>
+        </div>
+      </a>
+      <a
+        href="/plans/overview"
+        className="rounded-2xl flex flex-col gap-4 border bg-gray-50 p-4 outline-none shadow-sm shadow-gray-950/5 transition hover:border-primary hover:shadow-md dark:bg-gray-950 dark:shadow-black/20 dark:hover:border-primary"
+      >
+        <Icon icon="credit-card" color="rgb(var(--primary))" size={18} className="shrink-0" />
+        <div className="flex flex-col gap-1">
+          <span className="font-serif text-base font-medium text-gray-900 dark:text-gray-50">Plans & pricing</span>
+          <span className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            Compare Pro, Premium, and Enterprise to find the right plan for your team.
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+---
+title: "Proactive and reactive guidance modes in HelpAlive"
+description: "HelpAlive intervenes before users ask for help and equips your support team with full session context the moment a chat conversation starts."
+---
+
+HelpAlive operates in two complementary modes: proactive guidance, which reaches users before they know they need help, and reactive guidance, which ensures that when a user does reach out, your support team already has everything they need to respond immediately. Both modes are driven by the same session context — the difference is who acts on it first.
+
+<Tabs>
+  <Tab title="Proactive">
+    Proactive guidance is HelpAlive's primary mode. When the [crowd intelligence engine](/concepts/crowd-intelligence) detects that a user is deviating from the behavioral map, HelpAlive steps in automatically — no user action required.
+
+    **Drop-off prevention**
+
+    HelpAlive catches users before they abandon a flow. Instead of watching your funnel metrics after the fact, you get real-time intervention at the moment a user is about to leave a page or give up on a task.
+
+    **Silent onboarding**
+
+    New users receive guided walkthroughs exactly when they need them — triggered by their own behavior, not by a static checklist you wrote at launch. Users who are navigating confidently are left alone. Users who are struggling get help.
+
+    **Smart nudges**
+
+    Not every intervention is a full walkthrough. When the deviation signal is mild, HelpAlive can surface a single targeted nudge — a tooltip, a highlighted element, a short instruction — scoped to the exact step where the user is stuck.
+
+    **Real-time intervention**
+
+    Detection and delivery happen client-side, with no perceptible delay. The walkthrough or nudge appears inside your product UI — not in a separate help center, not in a new tab — while the user is still in the moment.
+  </Tab>
+  <Tab title="Reactive">
+    Reactive guidance activates when a user opens the support chat widget. At that point, HelpAlive has already been observing the session and has built a complete picture of what happened.
+
+    **Full session context**
+
+    The chat widget receives the user's current location in the product, the full sequence of interactions they took, and the exact point where they deviated from the successful path. This context is passed to the agent or AI responding to the conversation.
+
+    **Instant awareness**
+
+    There is no cold start. Your support team does not need to ask "what were you trying to do?" or "which page are you on?" — they already know. The first message can address the actual problem rather than gathering background information.
+
+    **Guided walkthroughs on demand**
+
+    Support agents can trigger a walkthrough directly from the chat interface, sending the user a step-by-step guide inside the product without asking them to navigate to a help article.
+
+    **Smart suggestions**
+
+    If an AI agent is handling the conversation, HelpAlive's session context enables it to suggest solutions that are specific to the user's path — not generic answers drawn from a knowledge base alone.
+  </Tab>
+</Tabs>
+
+## Frequency and timing
+
+HelpAlive only intervenes when there is a real signal that a user is stuck. Interventions are not scheduled, not triggered by timers, and not shown to users who are navigating successfully. The same user will not see repeated walkthroughs for the same issue.
+
+You can configure the sensitivity of the deviation threshold, the minimum time between interventions for a given user, and which parts of your product are in scope for proactive guidance. These controls ensure that guidance feels helpful rather than intrusive.
+
+For a full reference on configuring these parameters, see the [frequency controls guide](/guides/frequency-controls).
+
+## Related concepts
+
+- [Crowd intelligence](/concepts/crowd-intelligence) — how the behavioral map is built and how deviation is defined
+- [How HelpAlive works](/concepts/how-it-works) — the full end-to-end flow

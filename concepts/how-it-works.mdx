@@ -1,0 +1,42 @@
+---
+title: "How HelpAlive detects user friction and delivers guidance"
+description: "HelpAlive observes sessions, builds a behavioral map from successful users, detects when anyone goes off-track, and delivers in-product guidance automatically."
+---
+
+HelpAlive runs entirely inside your product. You paste in one script tag, and from that point forward HelpAlive watches every session, builds a behavioral map of how successful users move through your product, and steps in with guided walkthroughs the moment someone starts to struggle — before they ever open a support ticket.
+
+<Steps>
+  <Step title="Install the snippet">
+    Add the HelpAlive JS snippet to your page. No framework dependencies, no build step, no event tagging required. One script tag is all it takes to start collecting sessions. See the [installation guide](/installation) for the exact snippet and optional `identify()` call.
+  </Step>
+  <Step title="HelpAlive builds a behavioral map">
+    As sessions accumulate, HelpAlive's [crowd intelligence](/concepts/crowd-intelligence) engine analyzes the aggregate behavior of all your users — click sequences, page paths, and interaction patterns — to construct a behavioral map of what "success" looks like at every point in your product. No rules to write. No events to define. The map builds and refines itself automatically.
+  </Step>
+  <Step title="Deviation is detected in real time">
+    When a user's session begins to diverge from the successful path — pausing too long, clicking the wrong element, backtracking — HelpAlive detects the deviation immediately. This happens client-side, in the background, with no perceptible latency for the user.
+  </Step>
+  <Step title="Contextual guidance appears inside your product">
+    HelpAlive delivers a step-by-step walkthrough or a targeted nudge directly inside your UI — right where the user is stuck. No redirect, no pop-up window, no external help center. The intervention is timed and scoped to the specific deviation. See [proactive and reactive guidance](/concepts/proactive-guidance) for details on how timing and frequency are controlled.
+  </Step>
+  <Step title="Support chat starts with full context">
+    If a user opens the support chat widget, HelpAlive has already shared their full session context with the agent or AI on the other end — their current location in the product, the last elements they clicked, and where they first deviated. There is no cold start and no "how can I help you?" Your support team can respond to what is actually happening, not what the user guesses they should describe.
+  </Step>
+</Steps>
+
+<Note>
+  **Diagram overview:** Session data flows from the browser into the HelpAlive behavioral engine. The engine compares the live session against the crowd-sourced behavioral map. On deviation, the guidance layer triggers an in-product intervention. In parallel, the session context object is made available to the chat widget. All PII scrubbing via Microsoft Presidio happens client-side before any data leaves the browser. See [privacy and security](/concepts/privacy-security) for the full data flow.
+</Note>
+
+## Learn more
+
+<CardGroup cols={3}>
+  <Card title="Crowd intelligence" icon="users" href="/concepts/crowd-intelligence">
+    How HelpAlive builds its behavioral map from aggregate session data — with zero manual setup.
+  </Card>
+  <Card title="Proactive and reactive guidance" icon="compass" href="/concepts/proactive-guidance">
+    How HelpAlive delivers walkthroughs and how timing and frequency are controlled.
+  </Card>
+  <Card title="Privacy and security" icon="shield-check" href="/concepts/privacy-security">
+    How client-side PII scrubbing works and what data HelpAlive does and does not collect.
+  </Card>
+</CardGroup>

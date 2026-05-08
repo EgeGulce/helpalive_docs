@@ -1,0 +1,84 @@
+---
+title: "Quick start: add HelpAlive to your product in 5 minutes"
+description: Install HelpAlive by pasting one script tag and calling identify() on login. No backend changes, no event tagging — works with any web stack.
+---
+
+Getting HelpAlive running takes two steps: paste a script tag into your HTML, then call `identify()` when a user logs in. There are no backend changes, no event-tagging schemas to design, and no framework lock-in. Once those two steps are done, HelpAlive starts learning from every session automatically.
+
+<Steps>
+  <Step title="Add the script tag">
+    Paste the HelpAlive snippet into your page. Place it in `<head>` or just before `</body>` — either position works.
+
+    <CodeGroup>
+
+    ```html HTML
+    <script>
+      (function(h,e,l,p){
+        var a=h.createElement('script');
+        a.src='https://cdn.helpalive.com/v1/ha.min.js';
+        a.dataset.projectId='YOUR_PROJECT_ID';
+        a.async=true;
+        h.head.appendChild(a);
+      })(document);
+    </script>
+    ```
+
+    ```jsx React
+    // In your root component (e.g. App.jsx or _app.jsx),
+    // add this inside a <Script> tag or a useEffect that runs once.
+    import { useEffect } from 'react';
+
+    export default function App() {
+      useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
+        script.dataset.projectId = 'YOUR_PROJECT_ID';
+        script.async = true;
+        document.head.appendChild(script);
+      }, []);
+
+      return <>{/* your app */}</>;
+    }
+    ```
+
+    ```javascript Vue
+    // In main.js or your root App.vue mounted() hook
+    const script = document.createElement('script');
+    script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
+    script.dataset.projectId = 'YOUR_PROJECT_ID';
+    script.async = true;
+    document.head.appendChild(script);
+    ```
+
+    </CodeGroup>
+
+    Replace `YOUR_PROJECT_ID` with the value from **Settings → Project** in your HelpAlive dashboard.
+  </Step>
+
+  <Step title="Call identify() on login">
+    After a user authenticates, call `window.HelpAlive.identify()` with their ID and any traits you want to use for segmentation. Do this once per session, immediately after login.
+
+    ```javascript
+    window.HelpAlive.identify('user_8x92k', {
+      name: 'Priya Sharma',
+      email: 'priya@example.com',
+      plan: 'pro',
+      createdAt: '2025-11-03T09:00:00Z'
+    });
+    ```
+
+    If HelpAlive loads asynchronously before `identify()` is called, the snippet queues the call and flushes it once the script is ready — no race condition handling required.
+  </Step>
+
+  <Step title="Open your product and watch the dashboard">
+    Navigate through your product as a logged-in user. Within a few seconds you should see a live session appear in the **Sessions** view of the HelpAlive dashboard. Crowd intelligence begins building as more users move through your flows — guidance triggers appear automatically once enough sessions have been analyzed to establish baseline paths.
+  </Step>
+</Steps>
+
+<Note>
+HelpAlive ships with GDPR and CCPA consent mode enabled out of the box. When consent mode is active, behavioral data collection pauses until the user accepts your consent banner, and no data is sent to HelpAlive servers before that point. No extra configuration is needed.
+</Note>
+
+<Tip>
+The steps above cover the minimal setup. For framework-specific instructions, npm package options, Content Security Policy headers, and single-page app routing, see the full [installation guide](/installation).
+</Tip>

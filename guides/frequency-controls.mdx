@@ -1,0 +1,65 @@
+---
+title: "Set guidance frequency limits, caps, and cooldowns"
+description: "Tune how often HelpAlive shows guidance to your users — set cooldowns, session caps, excluded routes, and dismiss behavior to prevent guidance fatigue."
+---
+
+HelpAlive only shows guidance when its crowd intelligence engine detects a genuine signal — a user deviating from a successful path, not just moving slowly or taking an unfamiliar route. That threshold means guidance is already infrequent by design. But every product is different, and you can tune the frequency controls to match your users' expectations and your product's cadence. All frequency settings are configured in the HelpAlive dashboard under **Settings → Guidance frequency**.
+
+<Info>
+The default settings are calibrated to be helpful without being intrusive. Most products work well with the defaults from day one. You have the controls available when you need them, but you do not need to configure them to get value from HelpAlive.
+</Info>
+
+## Configurable settings
+
+### Per-user cooldown
+
+The minimum number of days that must pass before the same user sees the same walkthrough again. This prevents a user who dismissed or completed a walkthrough from seeing it again immediately.
+
+- **Default:** 7 days
+- **Recommended range:** 3–30 days, depending on how frequently users revisit the flow in question
+
+If a user completes a walkthrough successfully, HelpAlive marks it as resolved for that user and the cooldown does not apply — the walkthrough will not re-trigger unless you explicitly reset the user's state.
+
+### Session cap
+
+The maximum number of guidance interventions shown to a user in a single session. Once the cap is reached, no further guidance fires for the remainder of that session, even if the crowd intelligence engine detects additional deviation signals.
+
+- **Default:** 2 interventions per session
+- **Recommended range:** 1–3. Increasing beyond 3 risks making guidance feel intrusive.
+
+### Global frequency limit
+
+The maximum number of guidance interventions a user can receive in a single calendar day, across all walkthroughs. This acts as an overall safety valve on top of the per-session cap.
+
+- **Default:** no global daily limit (the session cap provides the primary control)
+- **When to use:** set a global daily limit if your product has multiple high-traffic flows and you want to ensure users are never shown guidance more than once or twice per day regardless of how many sessions they start
+
+### Excluded routes
+
+A list of URL patterns where guidance should never appear, regardless of trigger conditions. Use this to protect sensitive or high-stakes areas of your product where interruptions would be disruptive.
+
+Common routes to exclude:
+
+- `/settings/*` — account and configuration pages
+- `/billing/*` — payment flows
+- `/checkout/*` — purchase and upgrade flows
+- `/onboarding/complete` — post-onboarding confirmation pages
+
+Enter patterns using the same glob syntax used in walkthrough targeting. Each pattern you add prevents any walkthrough from firing on matching pages.
+
+### Dismiss behavior
+
+Users can interact with any guidance overlay in two ways:
+
+- **Snooze** — the overlay closes and will not reappear for the current session. The per-user cooldown timer starts from the moment the user snoozes.
+- **Permanently dismiss** — the user opts out of seeing that specific walkthrough again. A permanently dismissed walkthrough will never reappear for that user, even after the cooldown period expires.
+
+Snooze and dismiss controls are always visible to users in the guidance overlay. You cannot disable them. This ensures users remain in control of their experience.
+
+<Note>
+You can reset a user's dismiss state from the dashboard under **Users → [user record] → Guidance history**. This is useful if a user accidentally dismissed a walkthrough and contacts support asking to see it again.
+</Note>
+
+<Tip>
+Start with the default settings and let HelpAlive collect a few weeks of data before adjusting. The dashboard's **Frequency insights** panel shows dismissal rates, session cap hits, and cooldown collisions — use that data to decide whether to loosen or tighten any setting. Changing frequency controls without data often leads to over-correction in either direction.
+</Tip>

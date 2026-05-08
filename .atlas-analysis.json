@@ -1,0 +1,78 @@
+{
+  "projectType": "saas",
+  "projectName": "HelpAlive",
+  "projectDescription": "HelpAlive is an AI-powered user guidance platform that proactively detects when users are struggling inside your product and delivers contextual walkthroughs and support — before they ask for help.",
+  "theme": "almond",
+  "primaryColor": "#040404",
+  "lightColor": "#68cbe9",
+  "darkColor": "#a8e2e5",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "installation"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/how-it-works",
+              "concepts/crowd-intelligence",
+              "concepts/proactive-guidance",
+              "concepts/privacy-security"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/identify-users",
+              "guides/configure-guidance",
+              "guides/walkthroughs",
+              "guides/frequency-controls"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/overview",
+              "integrations/live-chat",
+              "integrations/crm",
+              "integrations/slack",
+              "integrations/webhooks"
+            ]
+          },
+          {
+            "group": "Plans & Billing",
+            "pages": [
+              "plans/overview",
+              "plans/faq"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Crowd intelligence — learns successful navigation patterns from all users automatically",
+    "Proactive real-time intervention when users deviate from successful paths",
+    "Context-aware support chat that already knows where the user is and what went wrong",
+    "Interactive guided walkthroughs rendered inside the product",
+    "One-line JavaScript snippet install — no backend changes, no event tagging",
+    "Client-side PII scrubbing via Microsoft Presidio — zero sensitive data leaves the browser",
+    "Frequency controls to prevent guidance fatigue",
+    "Integrations with Intercom, Zendesk, Salesforce, HubSpot, Slack, and webhooks"
+  ],
+  "publicApiSurface": [
+    "Script tag installation: <script src='...'></script>",
+    "identify(userId, traits) — identify the logged-in user",
+    "Webhook events for friction patterns and escalations",
+    "Custom API access (Enterprise plan)",
+    "Guidance frequency and trigger configuration settings"
+  ]
+}

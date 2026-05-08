@@ -1,0 +1,205 @@
+---
+title: "Install HelpAlive on React, Vue, Angular, or plain HTML"
+description: Add HelpAlive to any web stack with one script tag and one identify() call. Full examples for React, Vue, Angular, and plain HTML included.
+---
+
+HelpAlive installs entirely in the browser — there is no server SDK to deploy, no database schema to migrate, and no pipeline to configure. You add one script tag and one `identify()` call, and HelpAlive handles the rest. This page walks through the snippet, the identify call, framework-specific patterns, what HelpAlive tracks automatically, and how it protects user privacy.
+
+## Script tag
+
+Paste the snippet into your HTML, either inside `<head>` or immediately before `</body>`. Replace `YOUR_PROJECT_ID` with the value from **Settings → Project** in your dashboard.
+
+```html
+<script>
+  (function(h,e,l,p){
+    var a=h.createElement('script');
+    a.src='https://cdn.helpalive.com/v1/ha.min.js';
+    a.dataset.projectId='YOUR_PROJECT_ID';
+    a.async=true;
+    h.head.appendChild(a);
+  })(document);
+</script>
+```
+
+The loader is 2 KB, loads asynchronously, and does not block page rendering. It exposes `window.HelpAlive` once ready and queues any calls made before it finishes loading.
+
+## Identify your users
+
+Call `window.HelpAlive.identify(userId, traits)` once per session, immediately after your authentication flow completes. The `userId` must be a stable, non-PII identifier — a database ID or UUID works well. Pass any traits you want to use for segmentation or to personalize guidance.
+
+```javascript
+window.HelpAlive.identify('user_8x92k', {
+  name: 'Priya Sharma',
+  email: 'priya@example.com',
+  plan: 'pro',
+  createdAt: '2025-11-03T09:00:00Z'
+});
+```
+
+Traits are optional but recommended. `plan` and `createdAt` are especially useful — HelpAlive can show different walkthroughs to trial users versus paying customers, and can tailor onboarding guidance based on account age.
+
+## Framework examples
+
+The pattern is the same across every framework: inject the script once on app load, then call `identify()` after the user authenticates.
+
+<Tabs>
+  <Tab title="HTML">
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My App</title>
+
+  <!-- HelpAlive snippet -->
+  <script>
+    (function(h,e,l,p){
+      var a=h.createElement('script');
+      a.src='https://cdn.helpalive.com/v1/ha.min.js';
+      a.dataset.projectId='YOUR_PROJECT_ID';
+      a.async=true;
+      h.head.appendChild(a);
+    })(document);
+  </script>
+</head>
+<body>
+  <!-- your app markup -->
+
+  <script>
+    // Call after your login flow resolves
+    window.HelpAlive.identify('user_8x92k', {
+      name: 'Priya Sharma',
+      email: 'priya@example.com',
+      plan: 'pro',
+      createdAt: '2025-11-03T09:00:00Z'
+    });
+  </script>
+</body>
+</html>
+```
+
+  </Tab>
+  <Tab title="React">
+
+```jsx
+// src/App.jsx
+import { useEffect } from 'react';
+
+export default function App({ user }) {
+  // Load the HelpAlive script once on mount
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
+    script.dataset.projectId = 'YOUR_PROJECT_ID';
+    script.async = true;
+    document.head.appendChild(script);
+  }, []);
+
+  // Identify the user once they are available
+  useEffect(() => {
+    if (!user) return;
+    window.HelpAlive?.identify(user.id, {
+      name: user.name,
+      email: user.email,
+      plan: user.plan,
+      createdAt: user.createdAt
+    });
+  }, [user]);
+
+  return <>{/* your app */}</>;
+}
+```
+
+  </Tab>
+  <Tab title="Vue">
+
+```javascript
+// src/main.js
+import { createApp } from 'vue';
+import App from './App.vue';
+
+const app = createApp(App);
+app.mount('#app');
+
+// Load the HelpAlive script
+const script = document.createElement('script');
+script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
+script.dataset.projectId = 'YOUR_PROJECT_ID';
+script.async = true;
+document.head.appendChild(script);
+```
+
+```vue
+<!-- Call identify() in your authenticated layout component -->
+<script>
+export default {
+  props: ['user'],
+  mounted() {
+    if (!this.user) return;
+    window.HelpAlive?.identify(this.user.id, {
+      name: this.user.name,
+      email: this.user.email,
+      plan: this.user.plan,
+      createdAt: this.user.createdAt
+    });
+  }
+};
+</script>
+```
+
+  </Tab>
+  <Tab title="Angular">
+
+```typescript
+// src/app/app.component.ts
+import { Component, OnInit, Input } from '@angular/core';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  plan: string;
+  createdAt: string;
+}
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html'
+})
+export class AppComponent implements OnInit {
+  @Input() user?: User;
+
+  ngOnInit(): void {
+    // Load the HelpAlive script
+    const script = document.createElement('script');
+    script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
+    script.dataset['projectId'] = 'YOUR_PROJECT_ID';
+    script.async = true;
+    document.head.appendChild(script);
+
+    // Identify the user once available
+    if (this.user) {
+      (window as any).HelpAlive?.identify(this.user.id, {
+        name: this.user.name,
+        email: this.user.email,
+        plan: this.user.plan,
+        createdAt: this.user.createdAt
+      });
+    }
+  }
+}
+```
+
+  </Tab>
+</Tabs>
+
+## What gets tracked
+
+<Note>
+HelpAlive infers user behavior automatically — you do not tag events, define funnels, or write tracking code. The script observes clicks, navigation, and UI interactions as they happen and maps them against patterns learned from previous sessions. There is no analytics schema to maintain and no instrumentation gap when you ship new features.
+</Note>
+
+## Zero PII
+
+HelpAlive runs [Microsoft Presidio](https://microsoft.github.io/presidio/) directly in the browser before any data leaves the page. Presidio scans observed text for PII patterns — names, email addresses, phone numbers, national identifiers, and more — and strips them before the payload is transmitted. HelpAlive never captures keystrokes or form input values. For a full breakdown of what is and is not collected, see the [privacy and security](/concepts/privacy-security) page.

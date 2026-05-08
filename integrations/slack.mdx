@@ -1,0 +1,61 @@
+---
+title: "Get Slack alerts when users hit friction in your product"
+description: "Send HelpAlive friction signals, unresolved guidance, and escalation events to a Slack channel so your team can respond before users give up."
+---
+
+HelpAlive can notify a Slack channel when friction patterns reach a threshold that warrants human attention — a user has hit a wall repeatedly, a walkthrough hasn't resolved the issue, or a live chat escalation has been triggered. Instead of waiting for a support ticket or a churn event, your team sees what's happening in real time and can act immediately.
+
+<Note>
+  The Slack alerts integration is coming soon. To express interest or get notified when it launches, [contact us at helpalive.com/contact](https://helpalive.com/contact).
+</Note>
+
+<Tip>
+  Create a dedicated **#helpalive-alerts** channel in your Slack workspace. Keeping HelpAlive notifications in a single channel makes it easy to triage, avoids noise in general support channels, and lets you set up Slack workflow automations on top of the alerts.
+</Tip>
+
+## Alert types
+
+HelpAlive sends Slack alerts for the following events:
+
+- **Friction detected** — a user deviated from the expected path and HelpAlive recorded a deviation event
+- **Walkthrough not resolving** — a user has been shown guidance two or more times on the same flow without completing it
+- **Escalation triggered** — a user was escalated to live chat or flagged for support follow-up
+
+## How to configure
+
+<Steps>
+  <Step title="Open the integrations settings">
+    In the HelpAlive dashboard, go to **Settings → Integrations → Slack**.
+  </Step>
+  <Step title="Connect your Slack workspace">
+    Click **Connect workspace** and complete the Slack OAuth flow. HelpAlive requests permission to post messages to channels you select.
+  </Step>
+  <Step title="Select a channel">
+    Choose the Slack channel where HelpAlive should send alerts. We recommend creating a dedicated **#helpalive-alerts** channel.
+  </Step>
+  <Step title="Choose your alert types">
+    Enable or disable individual alert types — friction detected, walkthrough not resolving, and escalation triggered — based on your team's needs.
+  </Step>
+  <Step title="Save and test">
+    Save your configuration. Click **Send test alert** to verify that the message appears correctly in your selected channel.
+  </Step>
+</Steps>
+
+## Example alert message
+
+When HelpAlive sends a Slack alert, it looks like this:
+
+```text
+HelpAlive Alert — Escalation triggered
+
+User: user_123
+Route: /onboarding/step-3
+Time: 2026-05-08 10:30 UTC
+
+The user was escalated to live chat after hitting friction on /onboarding/step-3
+three times in this session. Deviation score: 0.87.
+
+Session ID: sess_abc
+```
+
+Each alert includes the user ID, the route where friction occurred, the timestamp, a plain-language summary of what happened, and the session ID so you can look up the full session in the HelpAlive dashboard.

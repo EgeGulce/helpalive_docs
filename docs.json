@@ -1,0 +1,108 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "almond",
+  "name": "HelpAlive",
+  "description": "HelpAlive detects when your users are struggling and guides them back on track — before they ever ask for help.",
+  "colors": {
+    "primary": "#040404",
+    "light": "#68cbe9",
+    "dark": "#a8e2e5"
+  },
+  "favicon": "https://media.brand.dev/cfb78cdc-bfff-4fbb-974b-dd78e4011cd3.jpg",
+  "icons": {
+    "library": "lucide"
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
+  },
+  "contextual": {
+    "options": ["copy", "view", "assistant", "mcp", "add-mcp"]
+  },
+  "logo": {
+    "light": "https://media.brand.dev/2c3ada34-54d7-494c-b999-926ad2b61635.svg",
+    "dark": "https://media.brand.dev/2c3ada34-54d7-494c-b999-926ad2b61635.svg"
+  },
+  "navbar": {
+    "links": [],
+    "primary": {
+      "type": "button",
+      "label": "Get Early Access",
+      "href": "https://helpalive.com/contact"
+    }
+  },
+  "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Home",
+          "icon": "house",
+          "href": "/"
+        },
+        {
+          "anchor": "Help",
+          "icon": "life-buoy",
+          "href": "https://helpalive.com/contact"
+        }
+      ]
+    },
+    "directory": "card",
+    "groups": [
+      {
+        "group": "Get Started",
+        "icon": "rocket",
+        "expanded": true,
+        "pages": [
+          "introduction",
+          "quickstart",
+          "installation"
+        ]
+      },
+      {
+        "group": "Core Concepts",
+        "icon": "brain",
+        "expanded": true,
+        "pages": [
+          "concepts/how-it-works",
+          "concepts/crowd-intelligence",
+          "concepts/proactive-guidance",
+          "concepts/privacy-security"
+        ]
+      },
+      {
+        "group": "Guides",
+        "icon": "map",
+        "expanded": true,
+        "pages": [
+          "guides/identify-users",
+          "guides/configure-guidance",
+          "guides/walkthroughs",
+          "guides/frequency-controls"
+        ]
+      },
+      {
+        "group": "Integrations",
+        "icon": "plug",
+        "expanded": true,
+        "pages": [
+          "integrations/overview",
+          "integrations/live-chat",
+          "integrations/crm",
+          "integrations/slack",
+          "integrations/webhooks"
+        ]
+      },
+      {
+        "group": "Plans & Billing",
+        "icon": "credit-card",
+        "expanded": true,
+        "pages": [
+          "plans/overview",
+          "plans/faq"
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {}
+  }
+}
