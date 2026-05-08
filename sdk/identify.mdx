@@ -1,0 +1,139 @@
+---
+title: "Identify users and tenants"
+description: Call HelpAlive.identify() after login to tie events to real users and workspaces. userId and tenantId are required.
+---
+
+`identify()` is the only call you have to make beyond the script tag. It tells HelpAlive which user is using your product, which workspace they belong to, and what traits to use for segmentation and personalization.
+
+## When to call it
+
+Call `identify()` once per session, immediately after your authentication flow resolves. Good places to call it:
+
+- Your auth callback or session-init code.
+- The mount of an authenticated layout component.
+- The first server-rendered page that has the user's session.
+
+If `identify()` runs before the SDK script finishes loading, the call is queued and replayed once `window.HelpAlive` is available.
+
+## Signature
+
+```typescript
+HelpAlive.identify({
+  userId:      string;   // required — your stable app user ID
+  tenantId:    string;   // required — workspace/org ID, or "default"
+  tenantName?: string;
+  displayName?:string;
+  email?:      string;
+  role?:       string;
+  plan?:       string;
+  createdAt?:  string;   // ISO 8601
+});
+```
+
+## Field reference
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `userId` | Yes | Your app's stable user ID. Must not change across sessions. Avoid using email if it can change. |
+| `tenantId` | Yes | Workspace or organization ID. If your app doesn't have multi-tenancy, pass `"default"`. |
+| `tenantName` | No | Display name for the workspace. Shown in the **Tenants** list in the dashboard. |
+| `displayName` | No | Full name of the user (e.g. `"Priya Sharma"`). Recommend `firstName + " " + lastName`. |
+| `email` | No | User's email. Used for display and search. Keep `userId` as the stable identifier. |
+| `role` | No | User's role or permission level (e.g. `"admin"`, `"editor"`, `"viewer"`). Helps segment behavior. |
+| `plan` | No | Subscription tier (e.g. `"free"`, `"pro"`, `"enterprise"`). Enables plan-segmented insights and chatbot behavior. |
+| `createdAt` | No | When the user signed up, in ISO 8601. Used for cohort analysis. |
+
+## Why identify() matters
+
+Without `identify()`, events buffer in the browser but don't reach the backend. Calling `identify()` lets HelpAlive:
+
+- **Connect behavior to real users and organizations** across sessions and devices.
+- **Group users by workspace** for tenant-level adoption views.
+- **Personalize chatbot greetings and suggestions** based on plan, role, and recent activity.
+- **Power per-user profiles** in the dashboard so you can see what an individual customer is doing.
+
+## Example
+
+```javascript
+HelpAlive.identify({
+  userId:      "user_8x92k",
+  tenantId:    "acme-corp",
+  tenantName:  "Acme Corp",
+  displayName: "Priya Sharma",
+  email:       "priya@acme.com",
+  role:        "admin",
+  plan:        "pro",
+  createdAt:   "2024-11-03T09:00:00Z"
+});
+```
+
+## Apps without multi-tenancy
+
+If your product has one user per account and no concept of workspaces, pass a constant tenant ID:
+
+```javascript
+HelpAlive.identify({
+  userId:   "user_8x92k",
+  tenantId: "default"
+});
+```
+
+You can switch to real tenant IDs later — existing events and profiles will be re-grouped automatically.
+
+## Tenant switching mid-session
+
+If a user changes workspaces inside your product without a full reload (common in B2B apps with a tenant switcher), call `identify()` again with the new `tenantId`. The SDK detects the change and re-roots subsequent events under the new tenant.
+
+```javascript
+// User clicks "Switch to Beta Inc."
+HelpAlive.identify({
+  userId:   "user_8x92k",
+  tenantId: "beta-inc",
+  tenantName: "Beta Inc."
+});
+```
+
+## Logout
+
+Call `reset()` when the user logs out. This clears the in-memory identity and prevents events from being attributed to the wrong user on a shared device.
+
+```javascript
+HelpAlive.reset();
+```
+
+## Anonymous sessions
+
+If `identify()` is never called, the SDK buffers up to 100 events in memory. If the user authenticates within the same page load, the buffered events are flushed under their identity. If they leave the page first, the events are dropped — anonymous sessions are not stored.
+
+This is intentional: it keeps anonymous traffic out of your adoption metrics and out of the chatbot's session-history search.
+
+## Field rules and gotchas
+
+<AccordionGroup>
+  <Accordion title="userId must be stable">
+    Use a database ID, UUID, or another non-changing identifier. Don't use email — if a user changes their email, their analytics will fork into two profiles.
+  </Accordion>
+  <Accordion title="email is for display, not identity">
+    `email` is searchable in the dashboard but is not the identity key. The SDK and backend both index on `userId`.
+  </Accordion>
+  <Accordion title="tenantId is required even for single-tenant apps">
+    Pass `"default"` if your app has no concept of workspaces. The backend partitions events by tenant for performance and isolation reasons.
+  </Accordion>
+  <Accordion title="Calling identify() multiple times">
+    Safe and expected. Each call updates the in-memory identity. Identical calls are deduplicated server-side.
+  </Accordion>
+  <Accordion title="PII in displayName or email">
+    Both fields flow through the redaction pipeline like every other event. They're stored against the user profile so you can search and segment, but they don't appear in raw event logs.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Manual events with track()" icon="hammer" href="/sdk/api-reference#track">
+    Emit custom events for milestones the SDK can't autocapture.
+  </Card>
+  <Card title="Configure consent" icon="shield-check" href="/sdk/consent">
+    Pause tracking until your cookie banner returns a decision.
+  </Card>
+</CardGroup>

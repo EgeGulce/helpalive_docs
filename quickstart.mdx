@@ -1,84 +1,102 @@
 ---
-title: "Quick start: add HelpAlive to your product in 5 minutes"
-description: Install HelpAlive by pasting one script tag and calling identify() on login. No backend changes, no event tagging — works with any web stack.
+title: "Quickstart"
+description: Install HelpAlive in 5 minutes. Paste one script tag, call identify() after login, and watch your first session land in the dashboard.
 ---
 
-Getting HelpAlive running takes two steps: paste a script tag into your HTML, then call `identify()` when a user logs in. There are no backend changes, no event-tagging schemas to design, and no framework lock-in. Once those two steps are done, HelpAlive starts learning from every session automatically.
+Getting HelpAlive running takes two steps: paste a script tag into your HTML, then call `identify()` when a user logs in. There are no backend changes, no event-tagging schemas, no framework lock-in.
 
 <Steps>
   <Step title="Add the script tag">
-    Paste the HelpAlive snippet into your page. Place it in `<head>` or just before `</body>` — either position works.
+    Paste the snippet into your HTML — inside `<head>` or just before `</body>`. It loads on every page of your app.
 
-    <CodeGroup>
-
-    ```html HTML
-    <script>
-      (function(h,e,l,p){
-        var a=h.createElement('script');
-        a.src='https://cdn.helpalive.com/v1/ha.min.js';
-        a.dataset.projectId='YOUR_PROJECT_ID';
-        a.async=true;
-        h.head.appendChild(a);
-      })(document);
+    ```html
+    <script
+      src="https://cdn.helpalive.com/sdk/helpalive.js"
+      data-api-key="YOUR_API_KEY"
+      async>
     </script>
     ```
 
-    ```jsx React
-    // In your root component (e.g. App.jsx or _app.jsx),
-    // add this inside a <Script> tag or a useEffect that runs once.
-    import { useEffect } from 'react';
+    Replace `YOUR_API_KEY` with the key shown in your dashboard under **Settings → Integration**.
 
-    export default function App() {
-      useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
-        script.dataset.projectId = 'YOUR_PROJECT_ID';
-        script.async = true;
-        document.head.appendChild(script);
-      }, []);
-
-      return <>{/* your app */}</>;
-    }
-    ```
-
-    ```javascript Vue
-    // In main.js or your root App.vue mounted() hook
-    const script = document.createElement('script');
-    script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
-    script.dataset.projectId = 'YOUR_PROJECT_ID';
-    script.async = true;
-    document.head.appendChild(script);
-    ```
-
-    </CodeGroup>
-
-    Replace `YOUR_PROJECT_ID` with the value from **Settings → Project** in your HelpAlive dashboard.
+    <Note>
+      The script is ~11 KB gzipped, has no runtime dependencies, and loads asynchronously. It exposes `window.HelpAlive` once ready and queues any calls made before it finishes loading.
+    </Note>
   </Step>
 
-  <Step title="Call identify() on login">
-    After a user authenticates, call `window.HelpAlive.identify()` with their ID and any traits you want to use for segmentation. Do this once per session, immediately after login.
+  <Step title="Identify your user after login">
+    Once the user authenticates, call `HelpAlive.identify()` with their stable user ID and a tenant ID. Both are required.
 
     ```javascript
-    window.HelpAlive.identify('user_8x92k', {
-      name: 'Priya Sharma',
-      email: 'priya@example.com',
-      plan: 'pro',
-      createdAt: '2025-11-03T09:00:00Z'
+    HelpAlive.identify({
+      userId:     "user_8x92k",      // required: stable app user ID
+      tenantId:   "acme-corp",       // required: workspace/org ID, or "default"
+      tenantName: "Acme Corp",       // optional: workspace name
+      displayName:"Priya Sharma",    // optional: full name
+      email:      "priya@acme.com",  // optional: for search/display
+      role:       "admin",           // optional: admin / editor / viewer
+      plan:       "pro"              // optional: free / pro / enterprise
     });
     ```
 
-    If HelpAlive loads asynchronously before `identify()` is called, the snippet queues the call and flushes it once the script is ready — no race condition handling required.
+    If your app doesn't have multi-tenancy, pass `tenantId: "default"`.
+
+    <Tip>
+      If `identify()` runs before the SDK finishes loading, the call is queued and flushed once the script is ready — no race-condition handling required on your side.
+    </Tip>
   </Step>
 
-  <Step title="Open your product and watch the dashboard">
-    Navigate through your product as a logged-in user. Within a few seconds you should see a live session appear in the **Sessions** view of the HelpAlive dashboard. Crowd intelligence begins building as more users move through your flows — guidance triggers appear automatically once enough sessions have been analyzed to establish baseline paths.
+  <Step title="Verify the connection">
+    1. Log into your app and click around a few pages.
+    2. Open the HelpAlive dashboard and go to **Settings → Integration**.
+    3. The integration status should flip to **Active** within a few seconds.
+    4. **Tenant Management** will list your workspace once identify data starts arriving.
   </Step>
 </Steps>
 
-<Note>
-HelpAlive ships with GDPR and CCPA consent mode enabled out of the box. When consent mode is active, behavioral data collection pauses until the user accepts your consent banner, and no data is sent to HelpAlive servers before that point. No extra configuration is needed.
-</Note>
+## What you get with the two-step setup
 
-<Tip>
-The steps above cover the minimal setup. For framework-specific instructions, npm package options, Content Security Policy headers, and single-page app routing, see the full [installation guide](/installation).
-</Tip>
+Once the script and `identify()` call are in place, HelpAlive starts:
+
+- **Auto-capturing** clicks, form submits, pageviews, rage clicks, and DOM errors — no event tagging required.
+- **Building user and tenant profiles** so adoption metrics are tied to real accounts.
+- **Powering the AI chatbot** if you've enabled it (the widget loads automatically).
+
+## Common stumbles
+
+<AccordionGroup>
+  <Accordion title="Content Security Policy blocks the script">
+    Add the HelpAlive origin to your CSP header:
+
+    ```
+    script-src  https://cdn.helpalive.com;
+    connect-src https://api.helpalive.com;
+    ```
+  </Accordion>
+  <Accordion title="Single-page apps and route changes">
+    The SDK detects history-API navigations automatically — no `pageview` call needed when your router changes the URL.
+  </Accordion>
+  <Accordion title="Calling identify() before the script is ready">
+    Safe. The SDK queues calls made before it finishes loading and replays them once `window.HelpAlive` is available. You don't need a `window.HelpAlive?.` guard.
+  </Accordion>
+  <Accordion title="No tenant ID in your app">
+    Pass `tenantId: "default"`. You can switch to real tenant IDs later without re-identifying users.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Full installation guide" icon="terminal" href="/installation">
+    Framework-specific examples for React, Vue, Angular, and plain HTML, plus npm package usage.
+  </Card>
+  <Card title="SDK reference" icon="code" href="/sdk/api-reference">
+    All public SDK methods — `track`, `flush`, `reset`, `setConsent`, and more.
+  </Card>
+  <Card title="Set up the AI chatbot" icon="sparkles" href="/chatbot/overview">
+    Train the assistant on your docs and customize its appearance.
+  </Card>
+  <Card title="Privacy posture" icon="shield-check" href="/privacy/overview">
+    Understand what's redacted, where, and what data leaves the browser.
+  </Card>
+</CardGroup>

@@ -1,0 +1,114 @@
+---
+title: "Configure consent"
+description: HelpAlive ships with consent-aware tracking. Pause analytics until your cookie banner resolves and toggle consent at runtime.
+---
+
+HelpAlive supports two consent modes and a runtime toggle so you can integrate with whatever consent banner or compliance flow you already run.
+
+## Modes
+
+| Mode | Behavior |
+|------|----------|
+| **Auto** (default) | The SDK starts capturing as soon as the script loads. Use this when your jurisdiction doesn't require prior consent (e.g. legitimate-interest analytics). |
+| **Consent required** | The SDK loads but does not send events until you call `setConsent()` with explicit permission. |
+
+Set the default mode in **Settings → Privacy** in your dashboard. The SDK reads this on init.
+
+## Runtime toggle
+
+Even in auto mode, you can change consent at any time — useful when a user updates their preferences in your privacy center.
+
+```javascript
+// User accepts cookies
+HelpAlive.setConsent({ analytics: true, chat: true });
+
+// User rejects analytics but allows the chatbot
+HelpAlive.setConsent({ analytics: false, chat: true });
+
+// User rejects everything
+HelpAlive.setConsent({ analytics: false, chat: false });
+```
+
+| Field | Effect when `false` |
+|-------|---------------------|
+| `analytics` | Stops sending behavioral events to the analytics pipeline. Existing buffered events are dropped. |
+| `chat` | Hides the chatbot widget. Outstanding messages are not sent. |
+
+## Pattern: cookie banner integration
+
+```javascript
+// 1. Load the SDK with consent gating enabled (set in dashboard)
+//    The script loads but stays silent.
+
+// 2. Show your consent banner.
+showConsentBanner({
+  onAccept: (choices) => {
+    HelpAlive.setConsent({
+      analytics: choices.analytics === true,
+      chat:      choices.chat === true
+    });
+  },
+  onReject: () => {
+    HelpAlive.setConsent({ analytics: false, chat: false });
+  }
+});
+```
+
+## Pattern: GDPR-style explicit opt-in
+
+For EU traffic where prior consent is required:
+
+1. Set the project's default consent mode to **Required** in the dashboard.
+2. Don't call `identify()` until the user accepts.
+3. Call `setConsent({ analytics: true, chat: true })` and then `identify()` in your accept handler.
+
+```javascript
+function onAccept(user) {
+  HelpAlive.setConsent({ analytics: true, chat: true });
+  HelpAlive.identify({
+    userId:   user.id,
+    tenantId: user.tenantId
+  });
+}
+```
+
+## Logout and consent reset
+
+Calling `reset()` clears the in-memory identity but does **not** revoke consent. If you want to revoke consent on logout (e.g. shared-device scenarios), call both:
+
+```javascript
+function logout() {
+  HelpAlive.setConsent({ analytics: false, chat: false });
+  HelpAlive.reset();
+}
+```
+
+## Verifying consent state
+
+You can read the current consent state through `getContext()`:
+
+```javascript
+const ctx = HelpAlive.getContext();
+console.log(ctx?.session?.consent);  // { analytics: true, chat: true }
+```
+
+## What gets stored when consent is denied
+
+Nothing. With `analytics: false`:
+
+- No events are sent.
+- No session record is created in our backend.
+- No fingerprint, IP, or device data is logged.
+
+The chatbot widget hides entirely with `chat: false` — it doesn't even mount.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Privacy overview" icon="shield-check" href="/privacy/overview">
+    The full data model — what's captured, what's redacted, where storage happens.
+  </Card>
+  <Card title="DSAR deletion" icon="trash" href="/privacy/dsar">
+    Delete a user's data on request, with audit trail.
+  </Card>
+</CardGroup>

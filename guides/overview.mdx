@@ -1,0 +1,94 @@
+---
+title: "Guides overview"
+description: In-app guides — multi-step walkthroughs, tooltips, and onboarding flows. Backend ships today; the editor UI is in active development.
+---
+
+Guides are interactive, in-product walkthroughs — multi-step flows that lead a user through a task, tooltips that explain a feature, banners that announce a change. They run on top of the SDK and reuse its page-context awareness.
+
+<Note>
+  **Status:** The guides backend ships today — CRUD, versioning, draft / publish, per-tenant rollout exclusions, execution-event ingest. The dashboard editor is reading mock data while we wire the backend through. Expect production-ready guide authoring shortly. Until then, custom guides can be authored by HelpAlive on request — talk to your account manager.
+</Note>
+
+## What guides will offer
+
+<CardGroup cols={2}>
+  <Card title="Multi-step walkthroughs" icon="list-checks">
+    Step the user through a task with annotations on real elements in your product.
+  </Card>
+  <Card title="Tooltips" icon="message-square-text">
+    Inline hints attached to specific UI affordances — dismissable, segmentable.
+  </Card>
+  <Card title="Modals and banners" icon="megaphone">
+    For announcements, plan-specific messages, or critical updates.
+  </Card>
+  <Card title="Targeting" icon="users">
+    Trigger guides by page, role, plan, or tenant. Per-tenant rollout exclusions are a first-class concept.
+  </Card>
+</CardGroup>
+
+## How guides will work end-to-end
+
+1. **Author** — define a guide in the dashboard editor (steps, target selectors, copy, conditions).
+2. **Stage** — guides go into draft until published.
+3. **Target** — segment by tenant, role, plan, or behavior.
+4. **Trigger** — start automatically based on user behavior, or programmatically with `HelpAlive.startGuide(...)`.
+5. **Measure** — execution events flow back into HelpAlive so you can see whether guides actually help.
+
+## SDK API for guides
+
+The SDK exposes guide methods today. Once the editor is live, you'll author guides in the dashboard; the methods below let you trigger and observe them programmatically:
+
+```typescript
+// Start a guide by ID or reference
+HelpAlive.startGuide(guide, options?);
+
+// Cancel the active guide
+HelpAlive.cancelGuide();
+
+// Preload a set of guide bundles
+HelpAlive.preloadGuides({ ids: ["onboarding", "billing-tour"] });
+
+// Read the active guide's controller
+HelpAlive.getActiveGuideController();
+
+// Subscribe to guide-start events
+HelpAlive.onGuideStarted((event) => { ... });
+```
+
+See the [SDK API reference](/sdk/api-reference) for full signatures.
+
+## Per-tenant rollout exclusions
+
+Some guides shouldn't run for some tenants — for example, an enterprise customer running a custom workflow won't want generic onboarding nudges. Exclusions are a first-class concept on the backend, configurable per guide per tenant from the dashboard once the editor ships.
+
+## Execution events and measurement
+
+Every guide step emits an event: started, advanced, completed, dismissed, errored. Those events flow back into the analytics tables so you can:
+
+- Measure completion rate per guide.
+- Spot steps where users get stuck.
+- Compare with-guide vs without-guide adoption for the targeted feature.
+
+## What's planned
+
+| Area | Status |
+|------|--------|
+| Guides backend (CRUD, versioning, draft/publish) | **Shipped** |
+| Per-tenant rollout exclusions | **Shipped** |
+| Execution-event ingest | **Shipped** |
+| SDK guide engine (`startGuide`, `cancelGuide`) | **Shipped** |
+| Dashboard editor UI | **In progress** — reading mock data today |
+| Onboarding flows (multi-step with completion tracking) | **Planned** |
+| Tooltip / modal / banner delivery | **Planned** |
+| Targeting by behavior / segment | **Planned** — depends on segments |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="SDK API reference" icon="code" href="/sdk/api-reference">
+    Available SDK methods for triggering guides programmatically today.
+  </Card>
+  <Card title="Talk to us about a custom guide" icon="message-circle" href="https://helpalive.com/contact">
+    We'll author guides for early customers while the editor is in flight.
+  </Card>
+</CardGroup>

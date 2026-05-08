@@ -1,0 +1,111 @@
+---
+title: "DSAR — data deletion"
+description: Honor a user's right-to-be-forgotten request. Async deletion jobs with status, audit trail, and irreversible cleanup of events, profile, and chat history.
+---
+
+When a user invokes their right to deletion under GDPR, CCPA, or your own privacy policy, HelpAlive ships an async DSAR pipeline that removes their data and writes an audit record.
+
+## What gets deleted
+
+A DSAR job removes:
+
+- **Identity** — the row in user profiles for the targeted `(tenantId, userId)`.
+- **Events** — every event with that `userId` in the events tables.
+- **Chatbot history** — every message the user sent or received.
+- **Coverage-gap contributions** — the user's questions are removed from the inbox.
+- **Suppression entries** — any prior suppression flags are cleared (since there's no user left to suppress).
+
+What's preserved:
+
+- **The DSAR job audit record itself** — date, actor, target, completion status.
+- **Aggregated counts** that can no longer be tied back to the user (e.g. tenant-level event totals from before the deletion).
+
+## Tenant-level vs user-level
+
+| Scope | Use case |
+|-------|----------|
+| **User-level** | Standard right-to-be-forgotten request from a single end user. |
+| **Tenant-level** | A whole customer organization is offboarding — remove all users and events under that tenant. |
+
+Tenant-level deletion cascades to every user in the tenant.
+
+## Triggering a deletion
+
+### From the dashboard
+
+1. **Analyze → User profiles → [tenant] → [user]** → click **Delete user data**.
+2. Confirm in the modal — this requires a **step-up** elevation. Sensitive actions like delete and key regen require you to re-authenticate within the last 15 minutes.
+3. The job is enqueued. Status appears immediately in **Settings → Privacy → Deletion jobs**.
+
+### From the API
+
+If you've integrated DSAR triggering into your own privacy center, use the privacy API. (API key required; ask your account manager for the spec.)
+
+## Job lifecycle
+
+| State | Meaning |
+|-------|---------|
+| `queued` | Accepted, waiting for the worker. |
+| `running` | Worker is removing rows across stores. |
+| `complete` | All target rows removed. |
+| `failed` | Something went wrong. The audit record holds the error; no partial deletion is left in place — failures roll back. |
+
+Most jobs complete in seconds. Tenant-level deletions for very active tenants can take minutes.
+
+## Audit trail
+
+Every job writes an audit record:
+
+- Actor (dashboard user who triggered it).
+- Target (tenant + optional user).
+- Trigger (manual, API).
+- Outcome (`complete`, `failed`).
+- Counts of rows removed per store.
+
+The audit record itself is immutable and is *not* deleted by subsequent DSARs.
+
+## Suppression — the lighter alternative
+
+If a user wants you to **stop processing** their data without permanently deleting history, use suppression instead:
+
+| Action | Effect | Reversible |
+|--------|--------|------------|
+| **User suppression** | Future events for the user are dropped at ingest. Existing events are preserved. | Yes |
+| **Tenant suppression** | Same, scoped to a whole tenant. | Yes |
+| **DSAR deletion** | All data for the user / tenant removed. | **No** — destructive |
+
+Use suppression when "I want to stop being tracked" is the request. Use DSAR when "I want my data deleted" is the request.
+
+Suppression lives in **Settings → Privacy → Suppression**.
+
+## Step-up authentication
+
+Sensitive actions (DSAR delete, API-key regen, password change, account delete) require a step-up. After your last successful login, you have a 15-minute elevation window — sensitive actions inside the window go through; outside the window you're prompted to re-authenticate.
+
+This protects against an attacker who borrows an unlocked dashboard tab from accidentally triggering destructive privacy actions.
+
+## Handling DSAR requests at scale
+
+If you receive DSAR requests via a third-party privacy platform (OneTrust, DataGrail, Transcend), the typical pattern is:
+
+1. The platform receives the user's request.
+2. Your privacy ops engineer reviews and approves.
+3. Trigger the deletion in HelpAlive via dashboard or API.
+4. Capture the resulting audit record ID and attach it to the upstream privacy ticket.
+
+We're happy to wire your privacy platform directly to the HelpAlive DSAR API if you're seeing significant volume — talk to your account manager.
+
+## Data export
+
+Self-serve user data export (the other half of DSAR — right of access) is on the roadmap. Today, request an export through your account manager and we'll generate one out-of-band.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Privacy overview" icon="shield-check" href="/privacy/overview">
+    The full data and access model.
+  </Card>
+  <Card title="Configure consent" icon="lock" href="/sdk/consent">
+    Pause tracking proactively, before a DSAR is needed.
+  </Card>
+</CardGroup>

@@ -1,0 +1,102 @@
+---
+title: "Appearance"
+description: Match the chatbot widget to your product brand. Color, position, welcome message, color scheme, and header styling — all configurable from the dashboard.
+---
+
+The chatbot widget is configured entirely through the dashboard. No code changes required to adjust look, position, or copy — the widget reads its config at load time and refreshes automatically when you publish.
+
+## Where to configure
+
+**Dashboard → AI → Appearance**
+
+Every change lands in `draft_*` columns until you publish. Use the **Test** page to preview before shipping. See [Draft / publish](/chatbot/draft-publish).
+
+## Configuration options
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| **Color** | Primary brand color used for the launcher button, send button, and message accents. | `#6366f1` |
+| **Position** | Which corner of the viewport the launcher pins to. | `bottom-right` |
+| **Welcome message** | First message shown when a user opens the widget. Can use `{displayName}` and `{plan}` tokens. | "Hi! How can I help?" |
+| **Placeholder** | Input hint text. | "Ask a question…" |
+| **Side spacing** | Horizontal offset from the viewport edge in pixels. | `24` |
+| **Bottom spacing** | Vertical offset from the viewport edge in pixels. | `24` |
+| **Color scheme** | `light`, `dark`, or `system` (follows the user's OS preference). | `system` |
+| **Background type** | `solid` or `gradient` for the chat panel header. | `solid` |
+| **Background gradient** | Two-stop gradient (only when type is `gradient`). | — |
+| **Header text color** | Override for header text contrast. | Auto-computed |
+| **Launcher logo** | Custom SVG/PNG for the launcher button (light + dark variants). | HelpAlive icon |
+
+## Personalization tokens
+
+The welcome message and any custom guidance copy can use these tokens:
+
+| Token | Resolves to |
+|-------|-------------|
+| `{displayName}` | The user's display name from `identify()`. Falls back to "there" if missing. |
+| `{tenantName}` | The workspace name from `identify()`. |
+| `{plan}` | The plan from `identify()` (e.g. `pro`, `enterprise`). |
+| `{role}` | The role from `identify()`. |
+
+```
+Hey {displayName}! I'm here to help with anything in your {tenantName} workspace.
+```
+
+## Color scheme behavior
+
+| Setting | Behavior |
+|---------|----------|
+| `light` | Always light, regardless of OS or host page. |
+| `dark` | Always dark. |
+| `system` | Follows the user's OS preference, switching live on `prefers-color-scheme` change. |
+
+Because the widget renders in a Shadow DOM, your host page's CSS does not affect chatbot styling — you control it entirely from the dashboard.
+
+## Position presets
+
+| Position | Notes |
+|----------|-------|
+| `bottom-right` | Default. Most common. |
+| `bottom-left` | Useful when your product has its own help/menu in the bottom-right. |
+| `top-right` | Rare; helpful for landscape kiosks. |
+| `top-left` | Rare. |
+
+If your product has a fixed bottom bar, increase **Bottom spacing** so the launcher clears it.
+
+## Custom launcher logo
+
+Upload SVG (preferred) or PNG variants for light and dark modes. The widget swaps automatically based on the active color scheme.
+
+| Variant | When used |
+|---------|-----------|
+| Light logo | Light color scheme. |
+| Dark logo | Dark color scheme. |
+
+Recommended size: 32×32 pixels. SVGs scale cleanly to any DPR.
+
+## Localization
+
+The welcome message and placeholder are stored as plain strings — set them to your primary language. Chatbot answers themselves are generated in the language of the user's question; no manual translation step is required.
+
+For multi-language products, you can vary the welcome message based on user `role` or `plan` in your `identify()` payload (e.g. configure in your app shell which language token to send) and use guidance templates to bias the assistant toward a specific language.
+
+## Hiding the widget
+
+Three ways:
+
+1. **Per-user, runtime** — `HelpAlive.setConsent({ chat: false })`.
+2. **Per-tenant** — disable the chatbot for specific tenants in **Settings → Tenants**.
+3. **Globally** — turn off the chatbot in **AI → Settings**.
+
+Hiding is immediate; no page reload required.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Train on your docs" icon="book-open" href="/chatbot/knowledge-base">
+    Crawl URLs or upload files.
+  </Card>
+  <Card title="Draft / publish workflow" icon="git-branch" href="/chatbot/draft-publish">
+    Atomic publishes with a Test preview.
+  </Card>
+</CardGroup>

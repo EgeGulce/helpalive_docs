@@ -1,48 +1,62 @@
 ---
-title: "HelpAlive plans: Pro, Premium, and Enterprise pricing"
-description: "Compare HelpAlive's Pro, Premium, and Enterprise plans side by side to find the right fit for your team size, automation needs, and support requirements."
+title: "Plans & pricing"
+description: HelpAlive is in early access. Pricing is being calibrated with design partners; talk to us about a pilot.
 ---
 
-HelpAlive offers three plans designed to match where your team is today — whether you're just getting started with in-product guidance, scaling across a growing organisation, or running a large-scale deployment that needs full API control and dedicated onboarding support.
+HelpAlive is in early access. We're working with a small group of design-partner customers while we lock in pricing, scale, and the rollout of features that depend on real customer data (pattern mining, recommendations, churn risk).
 
-## Feature comparison
+The shape below is what plans will look like once pricing is set. Today, the right path is to [talk to us](https://helpalive.com/contact) — we'll set you up with a pilot that fits your team's scale.
 
-| Feature | Pro | Premium | Enterprise |
-|---|---|---|---|
-| Smart Automations | 1 | 3 | Unlimited |
-| Custom Fields | 10 | 20 | Unlimited |
-| Real-Time Insights | Yes | Yes | Yes |
-| Team Collaboration Tools | — | Yes | Yes |
-| Third-Party Integrations | — | Yes | Yes |
-| Dedicated Support | — | Yes | Yes |
-| Advanced Reporting | — | — | Yes |
-| Unlimited Users | — | — | Yes |
-| Custom API Access | — | — | Yes |
-
-## Plans
+## Plan shape
 
 <CardGroup cols={3}>
-  <Card title="Pro" icon="zap" href="https://helpalive.com/contact">
-    **$50 / month**
+  <Card title="Starter" icon="zap" href="https://helpalive.com/contact">
+    **For small teams getting started**
 
-    The right starting point for small teams. Includes core workflow automation tools, real-time sync across key apps, up to 3 team members, 1 smart automation, 10 custom fields, and monthly performance reports.
+    SDK + AI chatbot trained on your docs, core adoption analytics, coverage-gaps inbox, basic privacy controls. Capped event volume.
   </Card>
-  <Card title="Premium" icon="star" href="https://helpalive.com/contact">
-    **$80 / month**
+  <Card title="Growth" icon="star" href="https://helpalive.com/contact">
+    **For scaling B2B SaaS**
 
-    The most popular plan. Everything in Pro, plus advanced automation and analytics, unlimited users, multi-tool integrations, team collaboration tools, dedicated support, 3 smart automations, and 20 custom fields.
+    Everything in Starter, plus higher event volume, in-app guides, multi-tenant analytics, team roles, custom origin allowlist, configurable session policy.
   </Card>
   <Card title="Enterprise" icon="building-2" href="https://helpalive.com/contact">
-    **$150 / month**
+    **For larger or regulated environments**
 
-    Everything in Premium, plus full API access, a dedicated onboarding specialist, unlimited smart automations, unlimited custom fields, and advanced reporting. Contact us for custom pricing on large-scale deployments.
+    Everything in Growth, plus dedicated onboarding, custom retention policies, optional Row-Level Security, priority support, and a path to self-hosted deployment.
   </Card>
 </CardGroup>
 
 <Note>
-  Enterprise pricing can be tailored to your organisation's scale and requirements. [Get in touch](https://helpalive.com/contact) to discuss a custom quote.
+  We don't publish per-tier pricing while we're calibrating with design partners. The Early Access program is the fastest path to a quote.
 </Note>
 
-<Tip>
-  Have questions about billing cycles, payment methods, or switching plans? See the [Plans and billing FAQ](/plans/faq) for answers to the most common questions.
-</Tip>
+## What's in every plan
+
+These are guarantees, not upsells:
+
+- **Two-layer PII redaction** (browser + server-side Presidio).
+- **Per-customer data isolation** with optional database-level RLS.
+- **DSAR-ready privacy tooling** — async deletion jobs with audit trail.
+- **Consent modes** — auto and required, plus runtime toggle.
+- **Data subject controls** — suppression, deletion, export on request.
+
+## Usage metering
+
+Plans are metered by **events per month** rather than seats. Dashboard users (your team) are typically unlimited or generously capped depending on plan.
+
+The SDK auto-captures behavioral events; for cost predictability we'll work with you in the pilot to size the right plan based on your traffic. Burst handling and over-quota behavior are configurable per customer.
+
+## Talk to us
+
+The Early Access program is the path in today.
+
+<Card title="Get Early Access" icon="arrow-right" href="https://helpalive.com/contact">
+  Tell us about your product and team — we'll size a pilot.
+</Card>
+
+## Frequently asked
+
+<Card title="Plans & billing FAQ" icon="circle-help" href="/plans/faq">
+  Trial options, payment, scope of "users", switching plans.
+</Card>

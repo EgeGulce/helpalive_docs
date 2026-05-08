@@ -2,13 +2,13 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "almond",
   "name": "HelpAlive",
-  "description": "HelpAlive detects when your users are struggling and guides them back on track — before they ever ask for help.",
+  "description": "HelpAlive is your best product advisor — an AI assistant inside your product plus adoption insights for your team.",
   "colors": {
-    "primary": "#040404",
+    "primary": "#3FACF8",
     "light": "#68cbe9",
-    "dark": "#a8e2e5"
+    "dark": "#1494f0"
   },
-  "favicon": "https://media.brand.dev/cfb78cdc-bfff-4fbb-974b-dd78e4011cd3.jpg",
+  "favicon": "/favicon.svg",
   "icons": {
     "library": "lucide"
   },
@@ -19,11 +19,16 @@
     "options": ["copy", "view", "assistant", "mcp", "add-mcp"]
   },
   "logo": {
-    "light": "https://media.brand.dev/2c3ada34-54d7-494c-b999-926ad2b61635.svg",
-    "dark": "https://media.brand.dev/2c3ada34-54d7-494c-b999-926ad2b61635.svg"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [],
+    "links": [
+      {
+        "label": "Dashboard",
+        "href": "https://app.helpalive.com"
+      }
+    ],
     "primary": {
       "type": "button",
       "label": "Get Early Access",
@@ -48,7 +53,7 @@
     "directory": "card",
     "groups": [
       {
-        "group": "Get Started",
+        "group": "Get started",
         "icon": "rocket",
         "expanded": true,
         "pages": [
@@ -58,43 +63,59 @@
         ]
       },
       {
-        "group": "Core Concepts",
-        "icon": "brain",
+        "group": "SDK",
+        "icon": "code",
         "expanded": true,
         "pages": [
-          "concepts/how-it-works",
-          "concepts/crowd-intelligence",
-          "concepts/proactive-guidance",
-          "concepts/privacy-security"
+          "sdk/overview",
+          "sdk/identify",
+          "sdk/api-reference",
+          "sdk/consent"
+        ]
+      },
+      {
+        "group": "AI chatbot",
+        "icon": "sparkles",
+        "expanded": true,
+        "pages": [
+          "chatbot/overview",
+          "chatbot/knowledge-base",
+          "chatbot/appearance",
+          "chatbot/draft-publish"
+        ]
+      },
+      {
+        "group": "Adoption analytics",
+        "icon": "chart-line",
+        "expanded": true,
+        "pages": [
+          "analytics/overview",
+          "analytics/coverage-gaps",
+          "analytics/user-profiles"
         ]
       },
       {
         "group": "Guides",
         "icon": "map",
-        "expanded": true,
+        "expanded": false,
         "pages": [
-          "guides/identify-users",
-          "guides/configure-guidance",
-          "guides/walkthroughs",
-          "guides/frequency-controls"
+          "guides/overview"
         ]
       },
       {
-        "group": "Integrations",
-        "icon": "plug",
+        "group": "Privacy & security",
+        "icon": "shield-check",
         "expanded": true,
         "pages": [
-          "integrations/overview",
-          "integrations/live-chat",
-          "integrations/crm",
-          "integrations/slack",
-          "integrations/webhooks"
+          "privacy/overview",
+          "privacy/redaction",
+          "privacy/dsar"
         ]
       },
       {
-        "group": "Plans & Billing",
+        "group": "Plans & billing",
         "icon": "credit-card",
-        "expanded": true,
+        "expanded": false,
         "pages": [
           "plans/overview",
           "plans/faq"

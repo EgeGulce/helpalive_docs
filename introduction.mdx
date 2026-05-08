@@ -1,46 +1,79 @@
 ---
-title: "HelpAlive: proactive AI in-product guidance platform"
-description: HelpAlive learns what successful users do and guides everyone else — proactively intervening with in-product walkthroughs before users get stuck or churn.
+title: "Introduction"
+description: HelpAlive is your best product advisor. It watches every user, answers their questions in-product, and tells your team what to fix.
 ---
 
-HelpAlive is an AI-powered in-product guidance platform that watches how your users navigate, learns what successful paths look like, and automatically steps in when someone goes off track. Instead of waiting for users to open a support ticket, HelpAlive detects friction in real time and delivers contextual walkthroughs right inside your product. This page explains what HelpAlive is, what problem it solves, and who it's built for.
+HelpAlive is a guidance layer for B2B SaaS. We help your users find value in your product through an in-app AI assistant, and we show your team where adoption is breaking down with insights drawn from real usage.
+
+You install one `<script>` tag, call `identify()` after login, and HelpAlive does the rest — no manual event tagging, no schema design, no per-feature SDK calls sprinkled through your app.
 
 <CardGroup cols={2}>
   <Card title="Quick start" icon="rocket" href="/quickstart">
-    Install HelpAlive and identify your first user in under 5 minutes — no backend changes required.
+    Install HelpAlive and identify your first user in under 5 minutes.
   </Card>
-  <Card title="Installation" icon="code" href="/installation">
-    Step-by-step setup for React, Vue, Angular, and any server-rendered stack.
+  <Card title="SDK overview" icon="code" href="/sdk/overview">
+    See what the SDK captures automatically and which API methods are available.
   </Card>
-  <Card title="How it works" icon="brain" href="/concepts/how-it-works">
-    Understand crowd intelligence, proactive detection, and context-aware support.
+  <Card title="AI chatbot" icon="sparkles" href="/chatbot/overview">
+    Train a context-aware product assistant on your docs and ship it inside your app.
   </Card>
-  <Card title="Integrations" icon="plug" href="/integrations/overview">
-    Connect Intercom, Zendesk, Salesforce, HubSpot, Slack, and custom webhooks.
+  <Card title="Privacy & security" icon="shield-check" href="/privacy/overview">
+    Two layers of PII redaction — in the browser and again server-side.
   </Card>
 </CardGroup>
 
-## Why HelpAlive?
+## What HelpAlive does
 
-HelpAlive addresses four outcomes that every product and support team cares about.
+HelpAlive is built around three shipped pieces.
+
+<CardGroup cols={3}>
+  <Card title="Lightweight SDK" icon="zap">
+    An ~11&nbsp;KB browser SDK that auto-captures clicks, pageviews, form submits, rage clicks, and DOM errors. One script tag, one `identify()` call.
+  </Card>
+  <Card title="AI product assistant" icon="message-circle">
+    A Preact widget rendered in a Shadow DOM, trained on your docs, aware of the user's current page, role, and recent activity. Answers stream over SSE.
+  </Card>
+  <Card title="Adoption analytics" icon="chart-line">
+    Per-user, per-tenant, and per-page views of who's using what. Plus a coverage-gaps inbox that ranks the questions your assistant can't answer.
+  </Card>
+</CardGroup>
+
+## Why teams choose HelpAlive
 
 <CardGroup cols={2}>
-  <Card title="Less churn" icon="trending-down">
-    Users who get stuck and don't find help leave. HelpAlive intercepts those moments before they become cancellations.
+  <Card title="Guidance first, not dashboards" icon="compass">
+    The end-user surface is an assistant inside your product, not another tab to check. Users get answers where they're stuck.
   </Card>
-  <Card title="Fewer tickets" icon="ticket">
-    Guided walkthroughs answer the question before the user reaches for the chat widget or emails support.
+  <Card title="No manual feature labeling" icon="tags">
+    Behavior is inferred from real interactions. You don't maintain a taxonomy of buttons or write tagging code.
   </Card>
-  <Card title="Faster activation" icon="zap">
-    New users reach their first value moment sooner when the product itself shows them where to go next.
+  <Card title="Privacy you can verify" icon="lock">
+    PII is redacted client-side, then again in a dedicated server-side drainer that's the only service with access to raw events.
   </Card>
-  <Card title="Upsell opportunities" icon="arrow-up-right">
-    Session context tells you exactly when a user is ready to hear about a higher-tier feature — surface the message at the right moment.
+  <Card title="Works alongside your stack" icon="layers">
+    Sits next to FullStory, Mixpanel, or Amplitude. They stay your source of truth for analytics; HelpAlive is where you go to make things better.
   </Card>
 </CardGroup>
 
-## How it fits in your stack
+## Who it's for
+
+HelpAlive is built for small-to-mid B2B SaaS teams (roughly 20–200 people) who care about adoption and retention but can't justify the cost or setup of FullStory or Pendo. Typically one product person plus a couple of engineers — no dedicated analyst required.
+
+It's also a fit for mid-market teams (200–1,000) who already run a heavyweight analytics tool and want a guidance layer on top of it.
 
 <Note>
-HelpAlive sits alongside your existing tools rather than replacing them. It layers on top of your product UI with a single script tag and works with whatever frontend framework or server-rendered stack you already use. Your CRM, help desk, and chat tools keep working as before — HelpAlive enriches them with real-time session context through its integration layer.
+  HelpAlive does not replace your analytics platform. We sit alongside it. Your existing tools keep capturing what happened — HelpAlive is the layer that helps your users find value and tells your team what to fix next.
 </Note>
+
+## What HelpAlive is not
+
+- **Not session replay.** No video, no DOM snapshots.
+- **Not a general analytics platform.** We surface adoption metrics to prove guidance works, not to be a dashboard destination.
+- **Not a developer-facing product.** The customer is a product team, not an analyst writing SQL.
+- **Not a data warehouse.** Events are stored for adoption analytics, not for export to your data lake.
+
+## Next step
+
+<Card title="Install HelpAlive in 5 minutes" icon="arrow-right" href="/quickstart">
+  Paste a script tag, call `identify()` on login, watch your first session land in the dashboard.
+</Card>
