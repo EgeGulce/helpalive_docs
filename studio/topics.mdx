@@ -1,0 +1,101 @@
+---
+title: "Topics"
+sidebarTitle: "Topics"
+description: "The Studio Topics inbox is your team's working queue of questions the Agent couldn't answer well — grouped, ranked, and ready to act on. Coverage gaps surfaced as actionable work."
+keywords:
+  - chatbot quality monitoring
+  - chatbot coverage gaps
+  - chatbot improvement
+  - what to write docs
+  - chatbot insights
+  - SaaS user questions
+  - product team backlog
+mode: "wide"
+---
+
+The **Studio → Topics** inbox is one of the most useful surfaces in HelpAlive. Every question the Agent couldn't answer well is captured, grouped into topics, and ranked — so your team always knows what to fix next.
+
+## How questions get flagged
+
+Whenever the Agent answers, HelpAlive watches for three signals:
+
+| Signal | Meaning |
+|--------|---------|
+| **Nothing matched** | We searched your knowledge base and didn't find anything relevant. Usually means your docs are missing something. |
+| **Weak match** | We found something, but it wasn't a strong fit for the question. |
+| **User thumbs-down** | The user rated the answer poorly, even when we were confident. |
+
+A question can carry more than one signal — for example, a thumbs-down on a weak match counts twice toward the topic's score.
+
+## Topics, not individual questions
+
+Individual questions are noisy ("how do I cancel?", "stop my subscription", "delete account please"). HelpAlive groups similar questions together into **topics** so you see patterns instead of single questions:
+
+- **Cancellation flow** — 47 questions in the last 30 days
+- **Pricing for additional seats** — 22 questions
+- **How to invite a teammate** — 18 questions
+
+Topics stay stable as new questions come in — adding a few new ones doesn't reshuffle your inbox.
+
+## Ranking
+
+Topics are ranked by **volume × gap score** — how often a topic comes up, weighted by how badly the Agent is failing on it. A topic asked 200 times with mostly confident answers ranks below a topic asked 50 times the Agent can't handle.
+
+## Working the inbox
+
+Open **Studio → Topics** in your dashboard. Each topic shows:
+
+- **Question count** in the selected window.
+- **Severity** — `high`, `medium`, or `low`.
+- **Sample questions** from the cluster.
+- **Sample answers** the Agent gave (so you can spot weak ones).
+- **Status** — `identified`, `addressed`, or `ignored`.
+
+Click a topic to see all its questions, all its answers, and the rating distribution.
+
+## Resolving a topic
+
+Three options:
+
+1. **Add or update content** in **Agent → Train**. Re-index, then publish.
+2. **Add a custom answer** for things that aren't doc-shaped — internal policies, plan-specific responses, time-sensitive notices. Configure in **Agent → Personalization**.
+3. **Ignore it** for off-topic questions ("what's the weather?") or things genuinely out of scope.
+
+After publishing a fix, watch the next 24–48 hours of traffic. The topic's score should drop sharply if the new content is the right fit. If not, the topic stays at a lower rank.
+
+## Filters
+
+| Filter | Use case |
+|--------|----------|
+| **Time range** | Compare the last 7 days to the last 30 to see what's getting worse or better. |
+| **Page** | Narrow to questions from a specific page. |
+| **Signal** | Show only "nothing matched" (clear gaps) or only thumbs-downs (quality issues). |
+| **Status** | Show identified, addressed, or ignored topics. |
+| **Plan / role** | Find out if pro users hit different gaps than free users. |
+
+## What it isn't
+
+- **Not a CSAT survey.** The thumbs-up / down feeds in but isn't the whole picture.
+- **Not Agent-tuning telemetry.** Quality issues surface here, but the goal is product action — write docs, fix flows — not LLM tuning.
+- **Not a feature-request log.** Some topics will be feature requests; treat those as input to product, not as docs work.
+
+## Privacy
+
+The inbox shows **the actual text** of user questions because reading them is the whole point. To keep this safe:
+
+- Question text lives in a separate, secure store from your behavioral analytics.
+- Personal information (emails, phone numbers, IDs) is automatically redacted before storage.
+- You only see questions from your own users — never from other HelpAlive customers.
+
+If a user requests deletion, their question history is removed from the inbox. See [Data deletion](/privacy/dsar).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Train" icon="book-open" href="/agent/train">
+    Add or update content after resolving a topic.
+  </Card>
+  <Card title="Publishing" icon="git-branch" href="/agent/publishing">
+    Stage and verify changes before they reach users.
+  </Card>
+</CardGroup>

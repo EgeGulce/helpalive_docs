@@ -1,20 +1,20 @@
 ---
-title: "Overview"
-sidebarTitle: "Overview"
-description: "In-app guides walk users through tasks, step by step, with highlights and tooltips on real elements in your product. The runtime is shipped today; the dashboard editor is in active development."
+title: "Guides"
+sidebarTitle: "Guides"
+description: "In-app guides walk users through tasks step by step, with highlights and tooltips on real elements in your product. The runtime is shipped today; the Studio editor is in active development."
 keywords:
   - in-app walkthroughs
   - product tour SaaS
   - interactive tutorials
   - in-app guidance
-  - user onboarding
+  - user onboarding flows
 mode: "wide"
 ---
 
-Guides are interactive in-product walkthroughs — multi-step flows that lead a user through a task, with highlights and tooltips attached to real elements in your product.
+**Guides** are interactive in-product walkthroughs — multi-step flows that lead a user through a task, with highlights and tooltips on real elements in your product. They're managed from **Studio → Guides** in your dashboard.
 
 <Note>
-  **Status today.** The guide runtime is shipped and battle-tested. The dashboard guide editor is in active development. Until that ships, custom guides for early-access customers are authored directly by HelpAlive on request.
+  **Status today.** The guide runtime is shipped and battle-tested. The Studio guide editor is in active development. Until that ships, custom guides for early-access customers are authored directly by HelpAlive on request.
 </Note>
 
 ## What guides do
@@ -36,10 +36,10 @@ Guides are interactive in-product walkthroughs — multi-step flows that lead a 
 
 ## How guides will be used
 
-1. **You build a guide** — record it by clicking through your product, or define steps in the editor.
-2. **Stage it as a draft** — guides go through the same draft / publish workflow as the chatbot.
+1. **You build a guide** in **Studio → Guides** — record it by clicking through your product, or define steps in the editor.
+2. **Stage it as a draft** — guides go through the same draft / publish workflow as the Agent.
 3. **Target who sees it** — segment by workspace, role, plan, or page. Per-workspace exclusions are first-class.
-4. **It runs when you trigger it** — programmatically with the SDK, or (coming) when the chatbot identifies a goal that matches a published guide.
+4. **It runs when triggered** — programmatically via the SDK, or (coming) when the Agent identifies a goal that matches a published guide.
 5. **You measure the impact** — every step emits an event. Completion rates, drop-off steps, and friction inside guides flow back into your analytics.
 
 ## What works today
@@ -65,8 +65,8 @@ See the [SDK API reference](/sdk/api-reference) for the full method list.
   <Card title="Record-mode authoring" icon="circle-dot">
     Click through your product to capture a guide automatically — no manual step-by-step authoring.
   </Card>
-  <Card title="Chatbot-launched guides" icon="message-circle-question">
-    The chatbot identifies a goal during a conversation and launches the matching guide on its own.
+  <Card title="Agent-launched guides" icon="message-circle-question">
+    The Agent identifies a goal during a conversation and launches the matching guide on its own.
   </Card>
   <Card title="Auto-suggested guides" icon="sparkles">
     Surface candidate guides automatically based on what your users actually try to do.
@@ -80,8 +80,8 @@ We mark these as future work because we want to be precise about what ships toda
 While the editor is in flight, HelpAlive will author guides for you. Reach out and we'll turn around your highest-priority flow.
 
 <CardGroup cols={2}>
-  <Card title="Talk to us" icon="message-circle" href="https://helpalive.com/contact">
-    Tell us which flow needs a guide.
+  <Card title="Get Early Access" icon="message-circle" href="https://helpalive.com/#early-access">
+    Tell us which flow needs a guide and we'll author it.
   </Card>
   <Card title="SDK API reference" icon="code" href="/sdk/api-reference">
     The methods available today for triggering guides programmatically.

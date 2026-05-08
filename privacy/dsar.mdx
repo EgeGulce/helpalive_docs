@@ -27,24 +27,24 @@ A DSAR job removes:
 What's preserved:
 
 - **The DSAR job audit record itself** — date, actor, target, completion status.
-- **Aggregated counts** that can no longer be tied back to the user (e.g. tenant-level event totals from before the deletion).
+- **Aggregated counts** that can no longer be tied back to the user (e.g. workspace-level event totals from before the deletion).
 
-## Tenant-level vs user-level
+## Workspace-level vs user-level
 
 | Scope | Use case |
 |-------|----------|
 | **User-level** | Standard right-to-be-forgotten request from a single end user. |
-| **Tenant-level** | A whole customer organization is offboarding — remove all users and events under that tenant. |
+| **Workspace-level** | A whole customer organization is offboarding — remove all users and events under that tenant. |
 
-Tenant-level deletion cascades to every user in the tenant.
+Workspace-level deletion cascades to every user in the tenant.
 
 ## Triggering a deletion
 
 ### From the dashboard
 
-1. **Analyze → User profiles → [tenant] → [user]** → click **Delete user data**.
+1. Open **Insight → Audience**, find the user, and click **Delete user data** in the user detail drawer. Or, for a workspace-level delete, do the same from the workspace detail.
 2. Confirm in the modal — this requires a **step-up** elevation. Sensitive actions like delete and key regen require you to re-authenticate within the last 15 minutes.
-3. The job is enqueued. Status appears immediately in **Settings → Privacy → Deletion jobs**.
+3. The job is enqueued. Status appears immediately in **Settings → Privacy Management**.
 
 ### From the API
 
@@ -59,7 +59,7 @@ If you've integrated DSAR triggering into your own privacy center, use the priva
 | `complete` | All target rows removed. |
 | `failed` | Something went wrong. The audit record holds the error; no partial deletion is left in place — failures roll back. |
 
-Most jobs complete in seconds. Tenant-level deletions for very active tenants can take minutes.
+Most jobs complete in seconds. Workspace-level deletions for very active tenants can take minutes.
 
 ## Audit trail
 
@@ -80,12 +80,12 @@ If a user wants you to **stop processing** their data without permanently deleti
 | Action | Effect | Reversible |
 |--------|--------|------------|
 | **User suppression** | Future events for the user stop being captured. Existing events are preserved. | Yes |
-| **Tenant suppression** | Same, scoped to a whole tenant. | Yes |
+| **Workspace suppression** | Same, scoped to a whole tenant. | Yes |
 | **DSAR deletion** | All data for the user / tenant removed. | **No** — destructive |
 
 Use suppression when "I want to stop being tracked" is the request. Use DSAR when "I want my data deleted" is the request.
 
-Suppression lives in **Settings → Privacy → Suppression**.
+Suppression lives in **Settings → Privacy Management**.
 
 ## Step-up authentication
 

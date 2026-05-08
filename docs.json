@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "almond",
   "name": "HelpAlive",
-  "description": "HelpAlive is your best product advisor — an AI agent that watches every user inside your SaaS, intervenes when they're stuck, and answers in context when they ask.",
+  "description": "HelpAlive is an AI agent that watches every user inside your SaaS, intervenes when they're stuck with in-app guides, and answers their questions in context. One product replaces an analytics tool, an in-app chatbot, and a guide builder.",
   "colors": {
     "primary": "#3FACF8",
     "light": "#68cbe9",
@@ -46,7 +46,7 @@
     "primary": {
       "type": "button",
       "label": "Get Early Access",
-      "href": "https://helpalive.com/contact"
+      "href": "https://helpalive.com/#early-access"
     }
   },
   "navigation": {
@@ -87,29 +87,31 @@
         ]
       },
       {
-        "group": "Chatbot",
+        "group": "Agent",
         "icon": "sparkles",
         "pages": [
-          "chatbot/overview",
-          "chatbot/knowledge-base",
-          "chatbot/appearance",
-          "chatbot/draft-publish"
+          "agent/overview",
+          "agent/train",
+          "agent/appearance",
+          "agent/publishing"
         ]
       },
       {
-        "group": "Analytics",
-        "icon": "chart-line",
+        "group": "Studio",
+        "icon": "wand-2",
         "pages": [
-          "analytics/overview",
-          "analytics/coverage-gaps",
-          "analytics/user-profiles"
+          "studio/overview",
+          "studio/pages",
+          "studio/topics",
+          "studio/guides"
         ]
       },
       {
-        "group": "Guides",
-        "icon": "map",
+        "group": "Insight",
+        "icon": "compass",
         "pages": [
-          "guides/overview"
+          "insight/overview",
+          "insight/audience"
         ]
       },
       {
@@ -142,7 +144,9 @@
         "items": [
           { "label": "Quickstart", "href": "/quickstart" },
           { "label": "SDK", "href": "/sdk/overview" },
-          { "label": "AI chatbot", "href": "/chatbot/overview" },
+          { "label": "Agent", "href": "/agent/overview" },
+          { "label": "Studio", "href": "/studio/overview" },
+          { "label": "Insight", "href": "/insight/overview" },
           { "label": "Compare", "href": "/compare" }
         ]
       },
@@ -159,7 +163,7 @@
         "items": [
           { "label": "Website", "href": "https://helpalive.com" },
           { "label": "Dashboard", "href": "https://app.helpalive.com" },
-          { "label": "Contact", "href": "https://helpalive.com/contact" }
+          { "label": "Get Early Access", "href": "https://helpalive.com/#early-access" }
         ]
       }
     ]

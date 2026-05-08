@@ -87,7 +87,7 @@ The intake process is the **only** part of our infrastructure with access to raw
 
 Two places intentionally keep verbatim user input:
 
-1. **Chat conversations** (after PII redaction). The whole point of the chatbot is to read user questions and respond, and the whole point of [Coverage gaps](/analytics/coverage-gaps) is to surface what users ask. Personal data is stripped, but the question is otherwise kept.
+1. **Chat conversations** (after PII redaction). The whole point of the Agent is to read user questions and respond, and the whole point of [Topics](/studio/topics) is to surface what users ask. Personal data is stripped, but the question is otherwise kept.
 2. **Identity fields** (`displayName`, `email`). You provide them through `identify()`. They live on the user profile so admins can search and support, scoped per customer and removable on DSAR request.
 
 ## Audit

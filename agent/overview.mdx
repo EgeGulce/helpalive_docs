@@ -1,0 +1,88 @@
+---
+title: "Overview"
+sidebarTitle: "Overview"
+description: "The HelpAlive Agent is an AI assistant that lives inside your SaaS — context-aware, trained on your docs, and ready to answer your users' questions in real time."
+keywords:
+  - AI agent SaaS
+  - in-app AI assistant
+  - context-aware support
+  - product chatbot
+  - SaaS chatbot
+mode: "wide"
+---
+
+The **Agent** is HelpAlive's in-app AI assistant. It lives inside your product, knows the user's current page, role, and recent activity, and answers their questions grounded in your documentation — in real time.
+
+You configure the Agent from the **Agent** section of your dashboard. There are five tabs:
+
+| Tab | What you do here |
+|-----|------------------|
+| **Train** | Add your knowledge sources — docs URL crawls, PDFs, Word documents, or pasted text. |
+| **Personalization** | Set the Agent's tone, length, and custom rules. Add specific answers for special-case questions. |
+| **Test** | Run a batch of test questions against your draft changes before you publish. |
+| **Appearance** | Match the Agent to your brand — colors, position, welcome message, layout. |
+| **Configuration** | Visibility, rate limits, and danger-zone reset controls. |
+
+## What makes the Agent context-aware
+
+A generic AI chatbot reads the message and replies. The HelpAlive Agent does more: every answer is grounded in **four kinds of context**, in real time.
+
+<CardGroup cols={2}>
+  <Card title="Page context" icon="window">
+    The exact page the user is on, the title, and what's visible on screen.
+  </Card>
+  <Card title="User identity" icon="user">
+    Who the user is, their role, plan, and which workspace they belong to — straight from your `identify()` call.
+  </Card>
+  <Card title="Recent activity" icon="clock">
+    What they clicked, where they got stuck, and which errors they saw in the last few minutes.
+  </Card>
+  <Card title="Your knowledge base" icon="book-open">
+    Your docs, help articles, and custom answers — searched for relevance before every reply.
+  </Card>
+</CardGroup>
+
+The result: instead of opening with "How can I help?", the Agent says something like *"I see you were trying to add a teammate from the Billing page — want me to walk you through it?"*
+
+## What your end users see
+
+When you turn the Agent on, your users see a launcher button in the corner of your product. When they open it, they get:
+
+- A personalized greeting based on who they are and what page they're on.
+- Three suggested questions for the current page.
+- A real-time conversation, with thumbs-up / thumbs-down feedback.
+- The option to start a fresh conversation any time.
+
+End users don't install anything. The Agent appears automatically once HelpAlive is integrated.
+
+## At a glance
+
+| | |
+|---|---|
+| **Where it runs** | Inside your product, in a dedicated chat panel |
+| **Isolation** | Won't conflict with your styles or scripts |
+| **Response speed** | Streams the answer word-by-word as it's generated |
+| **Knowledge sources** | Your docs site (crawled), uploaded files (PDF, DOCX, Markdown), or pasted text |
+| **Setup time** | Around 10 minutes |
+| **Workflow** | Edit → preview on the **Test** tab → publish |
+
+## Privacy
+
+Conversations live in their own secure store and **never** mix with your behavioral analytics. Personal data in messages is automatically redacted before storage. See [Privacy](/privacy/overview) for the full picture.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Train on your docs" icon="book-open" href="/agent/train">
+    Add your first knowledge source — Agent → Train.
+  </Card>
+  <Card title="Customize appearance" icon="palette" href="/agent/appearance">
+    Match the Agent to your brand.
+  </Card>
+  <Card title="Publishing changes" icon="git-branch" href="/agent/publishing">
+    Stage, preview, and publish atomically.
+  </Card>
+  <Card title="Find what to write next" icon="inbox" href="/studio/topics">
+    The Studio → Topics inbox surfaces what the Agent can't answer well.
+  </Card>
+</CardGroup>

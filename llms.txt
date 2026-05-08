@@ -1,23 +1,34 @@
 # HelpAlive
 
-> HelpAlive is your best product advisor — an AI agent that watches every user inside a SaaS product, learns from your best ones, and steps in when others go off track. It delivers in-product walkthroughs in the moment and context-aware answers when users ask. One product replaces an analytics tool, an in-app chatbot, and a guide builder.
+> HelpAlive is an AI agent that watches every user inside a SaaS product, intervenes the moment they're stuck with step-by-step in-app walkthroughs, and answers their questions in real time with full session context. One product replaces an analytics tool, an in-app chatbot, and a guide builder, so customers supervise outcomes instead of operating tools.
 
-HelpAlive is built for B2B SaaS teams of 10–150 people who care about adoption and retention but don't have a dedicated product analyst. Setup takes minutes — drop one script tag into your app, call `identify()` after login, and HelpAlive starts capturing user behavior automatically and powering an AI chatbot that's grounded in your documentation. Personal data is redacted twice — first in the user's browser, then again on our servers — so you get adoption insight without the privacy headache.
+HelpAlive is built for B2B SaaS teams of 10–150 people who care about adoption and retention but don't have a dedicated product analyst. Setup takes minutes — drop one script tag into your app, call `identify()` after login, and HelpAlive starts capturing user behavior automatically and powering an AI Agent that's grounded in your documentation. Personal data is redacted twice — first in the user's browser, then again on our servers — so you get adoption insight without the privacy headache.
+
+## How the dashboard is organized
+
+The dashboard has three main sections, plus settings:
+
+- **Agent** — train the AI assistant on your docs, customize its tone, design, and behavior, then publish. Five tabs: Train, Personalization, Test, Appearance, Configuration.
+- **Studio** — work the Topics inbox of unanswered questions, manage the pages your Agent runs on, ship in-app guides. Tabs: Pages, Topics, Guides (plus Features and Configuration coming soon).
+- **Insight** — browse workspaces and users, see adoption reports, monitor Agent sentiment. Tabs: Audience, Reports, Sentiment.
+- **Settings** — Team, Integration & API Key, Security & Access, Billing, Privacy Management.
 
 ## What's available today
 
 - **One-script SDK** — auto-captures clicks, pageviews, form submits, rage clicks, and DOM errors. No event tagging required. Works with React, Vue, Angular, or plain HTML.
-- **AI chatbot** — a context-aware assistant inside your product. Trained on your docs (URL crawl or file upload), aware of the user's current page, identity, and recent activity.
-- **Adoption analytics** — per-user, per-workspace, per-page activity views. The coverage-gaps inbox surfaces the questions your chatbot can't answer well, ranked by volume and severity.
-- **In-app guides** — multi-step walkthroughs with spotlight highlights on real elements in your product. The guide runtime is shipped today; the dashboard guide editor is in active development.
+- **AI Agent** — a context-aware assistant inside your product. Trained on your docs (URL crawl or file upload), aware of the user's current page, identity, and recent activity.
+- **Topics inbox** — every question the Agent can't answer well, grouped into topics, ranked by volume and severity. Your team's working backlog of doc improvements.
+- **Audience analytics** — per-user, per-workspace activity views with friction signals (rage clicks, errors).
+- **In-app guide runtime** — multi-step walkthroughs with spotlight highlights on real elements in your product. Authoring UI is in active development.
 - **Privacy & security** — two-layer PII redaction, per-customer data isolation, DSAR-ready async deletion jobs with audit trail, consent modes (auto / required) with runtime toggle.
 
 ## What's in active development
 
 - Dashboard guide editor with record-mode authoring (click through your product to capture a guide).
-- Chatbot-launched guides — the assistant identifies a goal during chat and runs the matching guide.
+- Agent-launched guides — the Agent identifies a goal during chat and runs the matching guide.
 - Auto-suggested guides based on what your users actually try to do.
-- Proactive in-app recommendations driven by behavioral pattern analysis.
+- Automatic feature discovery and feature-health scores.
+- Proactive in-product recommendations driven by behavioral pattern analysis.
 
 ## Documentation index
 
@@ -29,24 +40,26 @@ HelpAlive is built for B2B SaaS teams of 10–150 people who care about adoption
 - [Compare](/compare) — vs Pendo, Intercom Fin, WalkMe, FullStory, Userpilot, Appcues
 
 ### SDK
-- [SDK overview](/sdk/overview) — what's auto-captured, the public API at a glance
+- [SDK overview](/sdk/overview) — what's auto-captured and the public API at a glance
 - [Identify](/sdk/identify) — `identify({ userId, tenantId, ... })` — both required
 - [API reference](/sdk/api-reference) — every public method with signatures
 - [Consent](/sdk/consent) — auto / required modes, runtime toggle
 
-### Chatbot
-- [Overview](/chatbot/overview) — what makes the chatbot context-aware
-- [Knowledge base](/chatbot/knowledge-base) — train on URLs, PDFs, DOCX, or pasted text
-- [Appearance](/chatbot/appearance) — color, position, welcome message, color scheme
-- [Publishing](/chatbot/draft-publish) — atomic draft → preview → publish workflow
+### Agent
+- [Overview](/agent/overview) — what makes the Agent context-aware
+- [Train](/agent/train) — load your knowledge: URL crawl, PDF / DOCX / Markdown upload, pasted text
+- [Appearance](/agent/appearance) — colors, layout, welcome message, color scheme
+- [Publishing](/agent/publishing) — atomic draft → preview → publish workflow
 
-### Analytics
-- [Overview](/analytics/overview) — adoption analytics, what's tracked, what's not
-- [Coverage gaps](/analytics/coverage-gaps) — the inbox of questions your chatbot can't answer well
-- [User profiles](/analytics/user-profiles) — per-user activity timeline, platforms, privacy state
+### Studio
+- [Overview](/studio/overview) — Studio at a glance
+- [Pages](/studio/pages) — where the Agent is active and how each page is performing
+- [Topics](/studio/topics) — inbox of questions the Agent can't answer well
+- [Guides](/studio/guides) — in-app walkthroughs, what works today, what's in development
 
-### Guides
-- [Guide engine overview](/guides/overview) — what works today, what's in development
+### Insight
+- [Overview](/insight/overview) — adoption analytics layer
+- [Audience](/insight/audience) — workspace and per-user analytics with full activity timeline
 
 ### Privacy & security
 - [Privacy overview](/privacy/overview) — guarantees, what's captured, what's not
@@ -79,4 +92,4 @@ HelpAlive is the only product built around capturing what your best users do, th
 
 HelpAlive is priced per end-user session captured by the SDK + AI usage on top, with a per-resolution charge layered in once outcome data exists. The model aligns customer outcomes with revenue. Seat-based pricing (Pendo, Intercom) penalizes growth; HelpAlive scales with traffic and impact.
 
-In early access — pricing tiers are calibrated with design partners. Contact us at https://helpalive.com/contact for a pilot quote.
+In early access — pricing tiers are calibrated with design partners. Apply for early access at https://helpalive.com/#early-access for a pilot quote.

@@ -1,0 +1,110 @@
+---
+title: "Publishing"
+sidebarTitle: "Publishing"
+description: "Stage every Agent change as a draft, preview it on the Test tab, and publish atomically. Drafts never reach end users until you ship them."
+keywords:
+  - chatbot draft publish workflow
+  - chatbot staging environment
+  - safe chatbot deployment
+  - chatbot testing
+mode: "wide"
+---
+
+Every change you make to the Agent — Train sources, Personalization, Appearance, Configuration — is staged as a **draft** until you publish. Drafts never reach end users until you ship them.
+
+## How it works
+
+When you have unsaved changes, a **draft banner** appears at the top of every Agent tab. From any tab you can:
+
+1. **Preview** your changes on the **Agent → Test** tab.
+2. **Publish** to push everything live atomically.
+3. **Discard** to revert your draft and stay on the current published version.
+
+## What's drafted
+
+| Surface | Drafted? |
+|---------|----------|
+| **Train** — knowledge sources (URLs, files, pasted text) | Yes |
+| **Personalization** — tone, length, custom answers, guidance rules | Yes |
+| **Appearance** — colors, position, welcome message, layout, logos | Yes |
+| **Configuration** — visibility, rate limits | Yes |
+
+Things that are **not** drafted (changes apply immediately):
+
+- API keys
+- Privacy actions (DSAR, suppression)
+- Team membership
+- Allowed domains
+
+## Publishing
+
+Click **Publish** in the draft banner. A confirmation dialog shows you which sections are about to change:
+
+- Knowledge sources added, re-crawled, or removed.
+- Personalization fields edited.
+- Appearance fields edited.
+- Configuration fields edited.
+
+Publish is **admin-only**. Non-admins see the banner but cannot publish. The action is logged with the actor, the timestamp, and a snapshot of what changed.
+
+## What happens on publish
+
+1. Your drafted changes are validated.
+2. Valid drafts replace the live config in one atomic step — no partial updates ever reach users.
+3. New or updated knowledge sources become available to the Agent at the same instant.
+4. Running Agent widgets pick up the new config on their next refresh.
+
+If validation fails, nothing changes — your users keep seeing the previous live config until you fix the draft.
+
+## The Test tab
+
+The **Agent → Test** tab is your safety net. It runs against your **draft** configuration:
+
+- Draft Personalization (tone, custom answers).
+- Draft knowledge sources (including ones you haven't published).
+- Draft Appearance and content.
+
+A "Previewing draft" indicator makes sure you never confuse it with production traffic.
+
+Use it as the last step before every publish.
+
+## Production guarantees
+
+The Agent's retrieval layer filters on `published` content only. This means:
+
+- A draft URL you just crawled — invisible to users until publish.
+- A custom answer you haven't approved — invisible to users until publish.
+- An appearance change you haven't shipped — invisible to users until publish.
+
+There is no path for draft content to reach production traffic short of an explicit publish.
+
+## Common workflows
+
+<AccordionGroup>
+  <Accordion title="Adding a new knowledge source">
+    1. **Agent → Train → Add source** → enter URL or upload file.
+    2. Wait for the source to finish indexing (status flips to `ready`).
+    3. Open **Agent → Test**, ask a question that should be covered.
+    4. Verify the answer is grounded in the new source.
+    5. Click **Publish** in the draft banner.
+  </Accordion>
+  <Accordion title="Updating the welcome message">
+    1. **Agent → Appearance → Content** → edit the welcome message.
+    2. Open **Agent → Test** and verify the new message renders.
+    3. Click **Publish** in the draft banner.
+  </Accordion>
+  <Accordion title="Discarding draft changes">
+    Click **Discard** in the draft banner to revert all unsaved changes back to the published version.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Topics inbox" icon="inbox" href="/studio/topics">
+    Find what to write next, ranked by user demand.
+  </Card>
+  <Card title="Train" icon="book-open" href="/agent/train">
+    Manage your knowledge sources.
+  </Card>
+</CardGroup>

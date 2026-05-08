@@ -1,7 +1,7 @@
 ---
 title: "HelpAlive docs"
 sidebarTitle: "Home"
-description: One script tag. An AI assistant your users can talk to. Adoption insights your team can act on.
+description: "HelpAlive is an AI agent that watches every user inside your SaaS, intervenes when they're stuck with in-app guides, and answers their questions in context. One product replaces an analytics tool, an in-app chatbot, and a guide builder."
 mode: "custom"
 ---
 
@@ -9,46 +9,50 @@ mode: "custom"
   <div className="flex flex-col items-center gap-6 text-center">
     <img src="/logo/light.svg" alt="HelpAlive" className="block dark:hidden h-10 w-auto" />
     <img src="/logo/dark.svg"  alt="HelpAlive" className="hidden dark:block h-10 w-auto" />
-    <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">
-      Your best product advisor.
+
+    <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">
+      An AI agent for every user in your SaaS.
     </h1>
-    <p className="max-w-2xl text-base md:text-lg text-gray-600 dark:text-gray-400">
-      One script tag. An AI assistant your users can talk to. Adoption insights your team can act on.
+
+    <p className="max-w-3xl text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-400">
+      HelpAlive watches what users do inside your product, intervenes the moment they get stuck with step-by-step in-app guidance, and answers their questions in real time with full session context.
+      One product replaces an analytics tool, an in-app chatbot, and a guide builder — so your team supervises outcomes instead of operating tools.
     </p>
+
     <div className="flex flex-wrap justify-center gap-3 pt-2">
       <a
         href="/quickstart"
-        className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition"
+        className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 transition"
       >
-        Get started
+        Get started in 5 minutes
       </a>
       <a
-        href="/sdk/overview"
-        className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:border-primary transition dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50"
+        href="/compare"
+        className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:border-primary transition dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50"
       >
-        SDK reference
+        See how we compare
       </a>
     </div>
   </div>
 
   <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
     <Card title="Quickstart" icon="rocket" href="/quickstart" horizontal>
-      Install HelpAlive in 5 minutes — one script tag, one identify call.
+      One script tag, one identify call. You're live in five minutes.
     </Card>
     <Card title="SDK" icon="code" href="/sdk/overview" horizontal>
-      Autocapture, identify, and the full public API surface.
+      Autocapture, identify, and the public API for the browser SDK.
     </Card>
-    <Card title="AI chatbot" icon="sparkles" href="/chatbot/overview" horizontal>
-      A context-aware product assistant trained on your docs.
+    <Card title="Agent" icon="sparkles" href="/agent/overview" horizontal>
+      Train the AI assistant on your docs, customize it, and ship.
     </Card>
-    <Card title="Analytics" icon="chart-line" href="/analytics/overview" horizontal>
-      Per-user, per-tenant adoption views and a coverage-gaps inbox.
+    <Card title="Studio" icon="wand-2" href="/studio/overview" horizontal>
+      Topics inbox, in-app guides, and the pages your Agent runs on.
+    </Card>
+    <Card title="Insight" icon="compass" href="/insight/overview" horizontal>
+      Per-user, per-workspace adoption analytics — no manual tagging.
     </Card>
     <Card title="Privacy" icon="shield-check" href="/privacy/overview" horizontal>
-      Two layers of PII redaction, DSAR-ready deletion, full audit.
-    </Card>
-    <Card title="Plans" icon="credit-card" href="/plans/overview" horizontal>
-      Early access pilots and how usage is metered.
+      Two-layer PII redaction, DSAR-ready deletion, full audit.
     </Card>
   </div>
 </div>

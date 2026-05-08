@@ -1,0 +1,141 @@
+---
+title: "Audience"
+sidebarTitle: "Audience"
+description: "Browse every workspace and user in your HelpAlive deployment. Drill into any user for a full activity timeline — perfect for support, customer success, and account reviews."
+keywords:
+  - per-user analytics SaaS
+  - customer success tool
+  - user activity timeline
+  - SaaS support investigation
+  - account review tool
+  - per-tenant analytics
+mode: "wide"
+---
+
+The **Insight → Audience** tab is where your team browses every workspace and user in your HelpAlive deployment. Use it for support, customer success, account reviews, and prioritizing outreach.
+
+## Where to find it
+
+Open your dashboard and go to **Insight → Audience**. You'll see two panes:
+
+- **Workspace rail (left)** — every workspace, sorted by activity, with a prioritization signal.
+- **User table (right)** — every user across all workspaces (or filtered to a single workspace when one is selected).
+
+Click any workspace to see its detail drawer. Click any user to see a full activity timeline.
+
+## What's on a user's timeline
+
+When you open a user, you see:
+
+<CardGroup cols={2}>
+  <Card title="Identity" icon="user">
+    `userId`, workspace, display name, email, role, plan, account age — sourced from your most recent `identify()` call.
+  </Card>
+  <Card title="Activity timeline" icon="clock">
+    A reverse-chronological log of pageviews, clicks, errors, rage clicks, and Agent conversations.
+  </Card>
+  <Card title="Platforms" icon="monitor">
+    Browsers, operating systems, mobile vs desktop, time zones.
+  </Card>
+  <Card title="Privacy state" icon="shield-check">
+    Consent state, suppression flags, any DSAR jobs in flight.
+  </Card>
+</CardGroup>
+
+## Activity timeline detail
+
+The timeline aggregates the most recent events for the user. Common entries:
+
+| Event | Shown as |
+|-------|----------|
+| Pageview | A row with the page title and URL. |
+| Click | A row with the anonymized element identifier and surrounding page context. |
+| Form submit | A row with the form's surrounding context. (Field values are never captured.) |
+| Rage click | Highlighted as a friction signal. |
+| DOM error | Highlighted as a quality signal, with the error message. |
+| Agent conversation | Expandable; shows the full message thread and rating. |
+
+Events are clipped to the most recent few hundred for performance.
+
+## Sessions
+
+Activity is grouped into **sessions** — contiguous bursts of activity separated by idle gaps. The default idle threshold is 30 minutes; this is configurable per customer in **Settings → Security & Access**.
+
+Each session shows start time, end time, page count, event count, and whether the user opened the Agent.
+
+## Recent Agent conversations
+
+Conversations are linked from the activity timeline so support staff can see what the user asked the Agent and what answer they got. Each conversation shows:
+
+- The page where the chat started.
+- The full message thread.
+- The user's rating, if they gave one.
+- Coverage classification (was the answer well-grounded?) — useful for spotting where the Agent let this user down.
+
+## What's on a workspace detail
+
+Click a workspace from the rail to see:
+
+- **Members** — every user in that workspace and their activity.
+- **Recent activity** — the workspace's collective event timeline.
+- **Sessions and conversations** — aggregate counts by day.
+- **Plan and traits** — what was reported through `identify()`.
+
+## Privacy state
+
+The user profile surfaces privacy at a glance:
+
+- **Consent** — `analytics: on/off`, `chat: on/off` from the most recent `setConsent()` call.
+- **Workspace suppression** — if the user's workspace has been suppressed (capture paused).
+- **User suppression** — if this specific user has been suppressed.
+- **DSAR** — any in-flight or completed deletion jobs, with status.
+
+If a user has been deleted via DSAR, the profile shows a placeholder with the deletion timestamp instead of activity.
+
+## Searching
+
+The user search supports:
+
+- **Display name** (case-insensitive substring).
+- **Email** (case-insensitive substring).
+- **`userId`** (exact match — useful for engineers debugging from logs).
+
+Search is scoped to your customer; you only see your own users.
+
+## Common workflows
+
+<AccordionGroup>
+  <Accordion title="Support looking up a customer who reports a bug">
+    1. Search by email.
+    2. Open the profile → scroll the activity timeline to the time the user reported the issue.
+    3. Look for `dom_error`, `rage_click`, or repeated form submits near that time.
+    4. If they used the Agent, expand the conversation to see what they asked.
+  </Accordion>
+  <Accordion title="Success reviewing an at-risk account">
+    1. Open the workspace from the rail.
+    2. Sort users by activity (most active first) → spot which seats are quiet.
+    3. Click a quiet user → confirm they really aren't using the product.
+    4. Cross-reference with their plan and role to spot upsell or churn risk.
+  </Accordion>
+  <Accordion title="Honoring a delete request">
+    See [Data deletion](/privacy/dsar) for the full flow — initiated from the user profile.
+  </Accordion>
+</AccordionGroup>
+
+## Privacy guarantees on the profile
+
+- Display name and email are visible to dashboard admins by design — you need them to do support and success work.
+- Raw event content (clicked text, form values) is **never** shown — only redacted identifiers and page metadata.
+- Agent question text is shown because it's the only way to do support; question text is itself PII-redacted on storage.
+- Profile data is scoped per customer. Cross-customer access is impossible by construction.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Topics inbox" icon="inbox" href="/studio/topics">
+    The "what to write next" queue.
+  </Card>
+  <Card title="Data deletion" icon="trash" href="/privacy/dsar">
+    Honor a user's right-to-be-forgotten request.
+  </Card>
+</CardGroup>
