@@ -24,6 +24,9 @@
       "author": "HelpAlive"
     }
   },
+  "search": {
+    "prompt": "Search the docs..."
+  },
   "contextual": {
     "options": ["copy", "view", "assistant", "mcp", "add-mcp"]
   },
@@ -40,20 +43,6 @@
     }
   },
   "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Home",
-          "icon": "house",
-          "href": "/"
-        },
-        {
-          "anchor": "Help",
-          "icon": "life-buoy",
-          "href": "https://helpalive.com/contact"
-        }
-      ]
-    },
     "groups": [
       {
         "group": "Get started",
