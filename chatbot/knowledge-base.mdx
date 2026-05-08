@@ -1,0 +1,99 @@
+---
+title: "Knowledge base"
+description: Train the AI chatbot on your documentation. Crawl a URL, upload PDFs and DOCX files, or paste text. Chunking, embedding, and indexing happen automatically.
+---
+
+The chatbot grounds every answer in your knowledge base. You point HelpAlive at your docs and we handle ingestion: crawling, chunking, embedding, and indexing into a vector store.
+
+## What can you ingest
+
+| Source | Method | Notes |
+|--------|--------|-------|
+| **Documentation site** | Crawl from URL | Recursive crawl with depth and same-domain controls. |
+| **PDF** | Upload | Per-file processing; text extracted and chunked. |
+| **DOCX** | Upload | Same as PDF. |
+| **Markdown** | Upload or paste | Headings preserved as chunk boundaries. |
+| **Plain text** | Paste | Useful for FAQs and short guidance. |
+
+## How ingestion works
+
+When you add a source from the dashboard:
+
+1. **Fetch** — the chat service crawls the URL or reads the uploaded file.
+2. **Chunk** — content is split on heading and paragraph boundaries, with target chunk sizes tuned for retrieval.
+3. **Embed** — chunks are embedded with OpenAI's embedding model.
+4. **Index** — embeddings land in pgvector with an HNSW index for fast nearest-neighbor search. A parallel BM25 index supports keyword retrieval for hybrid search.
+5. **Surface** — the source appears in your dashboard with a status, page count, and last-indexed time.
+
+## Crawling a URL
+
+From **AI → Knowledge base → Add source → URL**:
+
+- **Start URL** — the page to begin crawling from.
+- **Crawl depth** — how many link-hops deep to follow.
+- **Stay on domain** — when on, the crawler ignores cross-domain links.
+- **Include / exclude paths** — glob-style filters (`/blog/**`, `/api/v2/*`).
+
+Ingestion is async. Large sites finish within a few minutes; you can keep working in the dashboard while indexing runs.
+
+## Uploading files
+
+From **AI → Knowledge base → Add source → Upload**:
+
+Drag and drop one or many files (PDF, DOCX, MD). Each file becomes a source with its own metadata. Re-uploading the same file replaces the existing index — no duplication.
+
+## Source management
+
+Each source has:
+
+- **Status** — `crawling`, `indexing`, `ready`, or `error`.
+- **Pages / chunks** — what was discovered and indexed.
+- **Last indexed** — for re-crawling stale content.
+- **Publish status** — `draft` or `published` (see below).
+
+You can re-crawl, archive, or delete a source at any time. Deleting a source removes its embeddings from the index immediately.
+
+## Draft / publish for knowledge
+
+Knowledge sources participate in the same draft/publish workflow as the rest of the chatbot config. New or changed sources go into `draft` until you publish them. The retrieval layer filters on `publish_status = 'published'` — meaning unpublished content **cannot** leak into production answers.
+
+The dashboard **Test** page intentionally reads `draft ?? live` so you can preview answers using draft content before shipping. See [Draft / publish workflow](/chatbot/draft-publish) for the full model.
+
+## Hybrid retrieval
+
+At query time, every chunk is scored two ways:
+
+1. **Vector similarity** — cosine similarity over embeddings (semantic match).
+2. **BM25** — classic keyword relevance (exact match).
+
+The two ranked lists are fused with **reciprocal-rank fusion**, then the top results are reranked with a cross-encoder for relevance. This combination handles paraphrases ("how do I cancel" → docs that say "delete subscription") without dropping precision on exact-name lookups.
+
+## Quality checks
+
+The dashboard's coverage-gaps inbox classifies every user question on the way out:
+
+- `no_retrieval` — nothing relevant matched. Often means missing docs.
+- `weak_retrieval` — matches were thin or off-topic.
+- `negative_rating` — user thumbed down despite a confident answer.
+
+These are aggregated into topics with HDBSCAN clustering and ranked by `volume × gap score` so you know which content to write next. See [Coverage gaps](/analytics/coverage-gaps) for the workflow.
+
+## What never enters the knowledge base
+
+- **Customer-specific PII** from your users — events and chat messages are stored separately.
+- **Private data** behind login — the crawler only follows publicly accessible URLs unless you upload private content directly as files.
+- **Drafts you haven't published** — strictly filtered out of production retrieval.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Customize appearance" icon="palette" href="/chatbot/appearance">
+    Color, position, welcome message, color scheme.
+  </Card>
+  <Card title="Draft / publish" icon="git-branch" href="/chatbot/draft-publish">
+    The atomic publish workflow that prevents broken assistant deploys.
+  </Card>
+  <Card title="Coverage gaps" icon="inbox" href="/analytics/coverage-gaps">
+    Discover what your assistant can't answer yet.
+  </Card>
+</CardGroup>

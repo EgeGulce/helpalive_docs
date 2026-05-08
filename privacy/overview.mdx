@@ -1,0 +1,139 @@
+---
+title: "Privacy & security overview"
+description: HelpAlive enforces privacy in two layers — client-side redaction in the browser, then server-side redaction in a dedicated drainer that's the only service with raw event access.
+---
+
+Privacy is an infrastructure-level guarantee in HelpAlive, not a policy statement. This page summarizes the model; the [Redaction](/privacy/redaction) and [DSAR](/privacy/dsar) pages have the operational details.
+
+## The promise
+
+- **Two layers of redaction** — once in the browser before any payload leaves, again on the server in a dedicated drainer.
+- **Drainer isolation** — only the drainer service has access to raw event data. The dashboard service literally doesn't have the credentials.
+- **Per-customer data isolation** — single database, `customer_id`-scoped, with optional Row-Level Security.
+- **DSAR-ready** — async deletion jobs with status and audit trail.
+- **Consent-aware** — auto and required modes, runtime toggle.
+
+## What gets sent from the browser
+
+The SDK transmits these event payloads:
+
+| Field | Example | Notes |
+|-------|---------|-------|
+| Event type | `click`, `pageview` | Auto-captured. |
+| Page URL | `/billing` | URL hygiene strips query strings and fragment IDs that look like PII. |
+| Selector hash | `b3f2…` | The DOM selector for the clicked element, hashed. |
+| Surrounding text (redacted) | `[redacted email]…Settings` | PII patterns stripped before transmission. |
+| Timestamps | `1715000000` | Unix milliseconds. |
+| Identity | `userId`, `tenantId` | From `identify()`. |
+| Traits | `plan`, `role` | Optional fields from `identify()`. |
+
+## What never gets sent
+
+- **Keystroke contents.** No `keydown` capture beyond shortcut detection.
+- **Form values.** Submit events fire; field values do not flow.
+- **Password fields.** Always excluded.
+- **Detected PII patterns** — emails, phone numbers, national IDs, credit-card-like patterns are stripped client-side.
+- **Chatbot message content** in the analytics pipeline. Chat messages live in a separate, redacted store; the analytics tables only see metadata (page, turn count, rating).
+
+## Two-layer redaction
+
+### Layer 1 — in the browser
+
+Before each batch of events is sent, the SDK runs a redaction pass:
+
+- URL hygiene — strip params, fragments, and path segments that look like emails / IDs / tokens.
+- Pattern-strip emails, phone numbers, credit-card-like numbers from any captured text.
+- Hash selectors so they're not human-readable.
+
+If the redaction layer crashes (it shouldn't), the batch is dropped — the SDK fails closed, never sending unredacted data.
+
+### Layer 2 — in the drainer
+
+The events Redis stream feeds a dedicated **drainer service**. The drainer:
+
+- Loads spaCy models per worker for **Microsoft Presidio** PII detection.
+- Runs Presidio on all string fields against an extensive PII pattern set.
+- Writes the redacted result into Postgres.
+
+The drainer is the **only** service with credentials to read the events Redis stream. The dashboard service, the chatbot service, and the auth service do not have the environment variable and cannot read raw events. This is a topology guarantee, not a policy promise.
+
+See [Redaction details](/privacy/redaction) for the full pattern list.
+
+## Storage model
+
+| Store | Contents | Access |
+|-------|----------|--------|
+| **Events Redis stream** | Raw events for a few minutes max | Drainer only |
+| **Events Postgres** | Redacted events | Dashboard read-only, drainer write-only |
+| **Chatbot messages Postgres** | Chat questions and answers | Chatbot service + dashboard read-only |
+| **User profiles Postgres** | Identity, traits | Dashboard read/write |
+
+Per-customer isolation:
+
+- All tables are scoped by `customer_id`.
+- Application-level filters enforce isolation in every query.
+- Optional Row-Level Security (RLS) via the `APP_ROLE_PASSWORD` env var enforces isolation at the database level for customers who want belt-and-suspenders.
+
+## Consent
+
+Two modes:
+
+| Mode | Behavior |
+|------|----------|
+| **Auto** | Default. SDK starts capturing on load. |
+| **Required** | SDK loads but stays silent until `setConsent()` is called. |
+
+Set the project default in the dashboard. Toggle at runtime with `HelpAlive.setConsent({ analytics, chat })`. See [Configure consent](/sdk/consent).
+
+## DSAR — right to be forgotten
+
+Users can request deletion. The dashboard supports:
+
+- **User-level deletion** — remove a specific user's events, profile, and chat history.
+- **Tenant-level deletion** — remove a whole tenant.
+- **Async jobs** with status (queued, running, complete, failed) and an audit trail.
+
+See [DSAR deletion](/privacy/dsar) for the workflow.
+
+## Suppression
+
+Lighter than DSAR — pause ingestion without deleting historical data:
+
+- **Tenant suppression** — stop ingesting events for a tenant. Reversible.
+- **User suppression** — stop ingesting for a specific user. Reversible.
+
+Useful for honoring "stop processing my data" requests without irreversibly removing analytics.
+
+## Retention
+
+The default partition retention is 12 months for events. Per-customer retention can be tightened on request; a UI for self-serve retention configuration is planned.
+
+## Compliance posture
+
+HelpAlive ships with compliance defaults appropriate for B2B SaaS:
+
+- GDPR-ready data subject controls (consent, suppression, deletion).
+- Documented data model — see `/data-we-collect` in your dashboard.
+- SOC 2 in progress; talk to us about specific certifications under NDA.
+
+## Trust through visibility
+
+The privacy posture above is shipped, not aspirational. You can verify it:
+
+- **From your dashboard** — see consent state, suppression flags, and DSAR jobs per user.
+- **From your network tab** — inspect what payloads the SDK sends and confirm what's not there.
+- **From our codebase** — `apps/drainer/` is the only service with the events Redis URL; `apps/service/` and `apps/chat-service/` don't reach raw events.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Redaction details" icon="eraser" href="/privacy/redaction">
+    Pattern list, what's stripped where.
+  </Card>
+  <Card title="DSAR deletion" icon="trash" href="/privacy/dsar">
+    Honor a user's right-to-be-forgotten request.
+  </Card>
+  <Card title="Configure consent" icon="shield-check" href="/sdk/consent">
+    Auto vs required modes, runtime toggle.
+  </Card>
+</CardGroup>

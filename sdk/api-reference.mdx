@@ -1,0 +1,227 @@
+---
+title: "SDK API reference"
+description: Full reference for every public method on window.HelpAlive — init, identify, track, flush, reset, getContext, setConsent, notify, startGuide, and more.
+---
+
+Every public method exposed on `window.HelpAlive`. The script tag form auto-initializes; the npm form requires a manual `init()` call.
+
+<Note>
+  All async methods return native `Promise` instances. Type signatures below use TypeScript syntax — the SDK ships a `.d.ts` so the same types work in your editor.
+</Note>
+
+## init
+
+Initialize the SDK manually. Only required when loading via the npm package — the script tag auto-initializes from `data-*` attributes.
+
+```typescript
+HelpAlive.init({
+  apiKey:        string;          // required
+  endpoint?:     string;          // events endpoint override
+  chatEndpoint?: string;          // chatbot endpoint override
+  debug?:        boolean;         // log SDK activity to the console
+});
+```
+
+```javascript
+import HelpAlive from "@helpalive/sdk";
+
+HelpAlive.init({ apiKey: "YOUR_API_KEY" });
+```
+
+## identify
+
+Tie events to a real user and tenant. **Required** before events are accepted by the backend.
+
+```typescript
+HelpAlive.identify({
+  userId:      string;   // required
+  tenantId:    string;   // required
+  tenantName?: string;
+  displayName?:string;
+  email?:      string;
+  role?:       string;
+  plan?:       string;
+  createdAt?:  string;   // ISO 8601
+});
+```
+
+See [Identify users and tenants](/sdk/identify) for full field semantics.
+
+## track
+
+Emit a custom event. Use this for milestones autocapture can't see — e.g. backend-driven state changes, business events, or feature flags becoming visible.
+
+```typescript
+HelpAlive.track(name: string, properties?: Record<string, unknown>): void;
+```
+
+```javascript
+HelpAlive.track("subscription_upgraded", {
+  fromPlan: "pro",
+  toPlan:   "enterprise",
+  mrr:      499
+});
+```
+
+Properties flow through the redaction pipeline like every other event payload. Don't put raw PII in property values.
+
+## flush
+
+Force-flush queued events to the server. Resolves once the network request completes.
+
+```typescript
+HelpAlive.flush(): Promise<{ success: boolean; error?: string; errorCode?: string }>;
+```
+
+```javascript
+await HelpAlive.flush();
+```
+
+You rarely need to call this manually — the SDK flushes on a rolling schedule and on `visibilitychange`. Useful before navigating to an external URL or showing a critical UI flow.
+
+## reset
+
+Clear the in-memory identity. Call on logout.
+
+```typescript
+HelpAlive.reset(): void;
+```
+
+```javascript
+function logout() {
+  HelpAlive.reset();
+  // ... your logout logic
+}
+```
+
+## getContext
+
+Read the current page, identity, and session state. The chatbot widget calls this to ground its prompt in the user's situation.
+
+```typescript
+HelpAlive.getContext(): ChatbotContext | null;
+
+interface ChatbotContext {
+  page:     { url: string; title: string; pathname: string; ... };
+  identity: { userId?: string; tenantId?: string; role?: string; plan?: string; ... };
+  session:  { startedAt: string; eventCount: number; ... };
+}
+```
+
+Returns `null` if `identify()` hasn't run yet.
+
+## setRealTimeMode
+
+Drain queued events immediately instead of waiting for the rolling flush. The chatbot widget enables this while a chat is active so the LLM sees fresh page context.
+
+```typescript
+HelpAlive.setRealTimeMode(enabled: boolean): void;
+HelpAlive.setRealTimeConsumer(name: string, active: boolean): void;
+```
+
+You usually don't need to call these — the chatbot widget manages real-time mode automatically.
+
+## setConsent
+
+Set or change the user's consent preferences at runtime. See [Configure consent](/sdk/consent) for full details.
+
+```typescript
+HelpAlive.setConsent(consent: { analytics: boolean; chat: boolean }): void;
+```
+
+```javascript
+HelpAlive.setConsent({ analytics: true, chat: true });
+```
+
+## notify
+
+Push a proactive notification into the widget. Useful for surfacing announcements or in-app messages the customer triggers from the dashboard or your own backend.
+
+```typescript
+HelpAlive.notify(payload: NotificationPayload): void;
+
+HelpAlive.onNotification(callback: (payload) => void): UnsubscribeFn;
+```
+
+## startGuide / cancelGuide / preloadGuides
+
+Lazy-load the guide engine and run an in-app guide. The guides backend ships today; the dashboard editor is wiring up.
+
+```typescript
+HelpAlive.startGuide(guide: GuideRef, options?: GuideOptions): Promise<unknown>;
+HelpAlive.cancelGuide(): void;
+HelpAlive.preloadGuides(options: { ids: string[] }): Promise<void>;
+HelpAlive.getActiveGuideController(): GuideController | null;
+HelpAlive.onGuideStarted(callback: (e) => void): UnsubscribeFn;
+```
+
+## getSuggestions
+
+Fetch suggested questions for the current page — used by the chatbot launcher to show "What can I do here?" hints.
+
+```typescript
+HelpAlive.getSuggestions(): Promise<string[]>;
+```
+
+Suggestions are cached for 60 seconds per `(session, page, experience level, role)` tuple.
+
+## onActivation
+
+Subscribe to user-activation events (clicks, keydowns) the SDK has captured. Useful for custom triggers in the host app.
+
+```typescript
+HelpAlive.onActivation(callback: (event) => void): UnsubscribeFn;
+```
+
+## clearConfigCache
+
+Force a fresh fetch of the chatbot configuration on the next load. Use when your team has just published changes from the dashboard and you want to bypass the local cache.
+
+```typescript
+HelpAlive.clearConfigCache(): void;
+```
+
+## shutdown
+
+Tear down the SDK, stop autocapture, and cancel pending network requests.
+
+```typescript
+HelpAlive.shutdown(): void;
+```
+
+You normally don't need this. It exists for testing and for embeddings where the host page needs to fully detach the SDK.
+
+## Types
+
+The npm package ships full TypeScript declarations. Common types referenced above:
+
+```typescript
+interface IdentifyPayload {
+  userId: string;
+  tenantId: string;
+  tenantName?: string;
+  displayName?: string;
+  email?: string;
+  role?: string;
+  plan?: string;
+  createdAt?: string;
+}
+
+interface ChatbotContext {
+  page:     PageContext;
+  identity: IdentityContext;
+  session:  SessionContext;
+}
+
+interface FlushResult {
+  success: boolean;
+  error?: string;
+  errorCode?: string;
+}
+```
+
+Import them directly when you need them in your own typed code:
+
+```typescript
+import type { IdentifyPayload } from "@helpalive/sdk";
+```

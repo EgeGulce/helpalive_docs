@@ -1,0 +1,111 @@
+---
+title: "AI chatbot overview"
+description: A context-aware AI product assistant rendered inside your app. Trained on your docs, aware of the user's page and identity, with a draft/publish workflow.
+---
+
+The HelpAlive AI chatbot is a Preact widget rendered inside a Shadow DOM on your product. It's trained on your documentation, aware of the user's current page and identity, and answers stream over Server-Sent Events for token-by-token responses.
+
+## At a glance
+
+| | |
+|---|---|
+| **Bundle size** | ~25 KB IIFE |
+| **Isolation** | Shadow DOM — your CSS never leaks in, ours never leaks out |
+| **Streaming** | SSE, token-by-token |
+| **Backed by** | Hybrid retrieval (vector + BM25 + reciprocal-rank fusion), cross-encoder rerank, Claude generation |
+| **Knowledge sources** | Crawled URLs, uploaded files (PDF, DOCX, MD), pasted text |
+| **Workflow** | Draft → test → publish, atomic |
+
+## How it works end-to-end
+
+1. **You point HelpAlive at your docs** — a URL to crawl, files to upload, or text to paste.
+2. **We chunk and embed** — content is split, embedded with OpenAI, and indexed into pgvector with HNSW.
+3. **A user asks a question in your product** — the widget reads `getContext()` from the SDK to know the user's page, role, plan, and recent activity.
+4. **We retrieve and rerank** — hybrid retrieval (vector + BM25 fused with reciprocal-rank fusion), then cross-encoder rerank.
+5. **Claude generates an answer** — grounded in retrieved chunks plus the user's context. The response streams back over SSE, token by token.
+6. **The user rates it** — thumbs up / down feed into the [coverage-gaps inbox](/analytics/coverage-gaps).
+
+## What makes it context-aware
+
+The chatbot reads four sources of context at every turn:
+
+<CardGroup cols={2}>
+  <Card title="Page context" icon="window">
+    URL, title, and a redacted summary of visible interactive elements on the current page.
+  </Card>
+  <Card title="User identity" icon="user">
+    `userId`, `tenantId`, `role`, `plan`, and `displayName` from the most recent `identify()` call.
+  </Card>
+  <Card title="Recent activity" icon="clock">
+    Pageviews, clicks, errors, and rage clicks from the last few minutes — so the assistant can see "they were on /billing, clicked Upgrade twice, got a console error".
+  </Card>
+  <Card title="Knowledge base" icon="book-open">
+    Hybrid retrieval over your crawled docs, uploaded files, and custom guidance templates.
+  </Card>
+</CardGroup>
+
+This is what lets the chatbot say "It looks like you're trying to add a teammate from the Billing page — that lives under Settings → Team. Want me to walk you through it?" instead of a generic FAQ answer.
+
+## Configuring the assistant
+
+The chatbot is configured entirely through the dashboard. There are four areas:
+
+<CardGroup cols={2}>
+  <Card title="Knowledge base" icon="library" href="/chatbot/knowledge-base">
+    Crawl a URL, upload PDFs/DOCX, or paste text. Chunked, embedded, and reindexed automatically.
+  </Card>
+  <Card title="Appearance" icon="palette" href="/chatbot/appearance">
+    Color, position, welcome message, launcher logos, color scheme, header styling.
+  </Card>
+  <Card title="Guidance templates" icon="message-square" href="/chatbot/draft-publish#guidance">
+    Tone, length, customer-specific rules (empathy, simple language, strict grounding).
+  </Card>
+  <Card title="Draft / publish" icon="git-branch" href="/chatbot/draft-publish">
+    Stage every change, preview on a Test page, publish atomically.
+  </Card>
+</CardGroup>
+
+## How users experience it
+
+The widget mounts as a launcher button in the corner of your product (configurable position). When clicked, it opens a chat panel with:
+
+- A personalized greeting computed from session context, plan, and role.
+- Three suggested questions for the current page (cached for 60 seconds per session/page tuple).
+- A streaming chat interface with thumbs up / down feedback.
+- A small form to start a new conversation.
+
+End users don't install anything. The assistant appears automatically once you've integrated HelpAlive in your product.
+
+## What's analytics-safe
+
+Chat message bodies live in a separate `chatbot_messages` store and **never** flow through the event analytics pipeline. Only metadata — page, turn count, rating, latency — enters the analytics tables. This means:
+
+- A user asking the chatbot "Why was I charged $499?" doesn't surface that question text in adoption analytics.
+- The coverage-gaps inbox sees the question (that's the whole point), but it never blends with click/pageview data.
+
+See [Privacy overview](/privacy/overview) for the full separation of concerns.
+
+## Streaming behavior
+
+Responses stream over SSE. The widget renders tokens as they arrive, with a typing indicator until the first byte. If the connection drops mid-stream, the partial response is preserved and the user sees a "Reconnect" affordance.
+
+## Rate limiting
+
+The dashboard's **Test** page (used for previewing draft changes) is rate-limited per dashboard user via Redis. Production widget traffic is rate-limited per (tenant, user) tuple — limits scale with your plan.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Train on your docs" icon="book-open" href="/chatbot/knowledge-base">
+    Crawl a URL or upload files. Chunking, embedding, and indexing happen automatically.
+  </Card>
+  <Card title="Customize appearance" icon="palette" href="/chatbot/appearance">
+    Match the widget to your product brand.
+  </Card>
+  <Card title="Draft / publish workflow" icon="git-branch" href="/chatbot/draft-publish">
+    Test changes safely before they reach end users.
+  </Card>
+  <Card title="Coverage gaps" icon="inbox" href="/analytics/coverage-gaps">
+    Find the questions your assistant can't answer.
+  </Card>
+</CardGroup>

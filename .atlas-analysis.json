@@ -1,18 +1,18 @@
 {
   "projectType": "saas",
   "projectName": "HelpAlive",
-  "projectDescription": "HelpAlive is an AI-powered user guidance platform that proactively detects when users are struggling inside your product and delivers contextual walkthroughs and support — before they ask for help.",
+  "projectDescription": "HelpAlive is a guidance layer for B2B SaaS — an in-product AI assistant trained on your docs, plus adoption insights drawn from real usage. Three shipped components: a lightweight browser SDK, a context-aware chatbot, and an adoption analytics dashboard.",
   "theme": "almond",
-  "primaryColor": "#040404",
+  "primaryColor": "#3FACF8",
   "lightColor": "#68cbe9",
-  "darkColor": "#a8e2e5",
+  "darkColor": "#1494f0",
   "navigation": {
     "tabs": [
       {
         "tab": "Documentation",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Get started",
             "pages": [
               "introduction",
               "quickstart",
@@ -20,35 +20,47 @@
             ]
           },
           {
-            "group": "Core Concepts",
+            "group": "SDK",
             "pages": [
-              "concepts/how-it-works",
-              "concepts/crowd-intelligence",
-              "concepts/proactive-guidance",
-              "concepts/privacy-security"
+              "sdk/overview",
+              "sdk/identify",
+              "sdk/api-reference",
+              "sdk/consent"
+            ]
+          },
+          {
+            "group": "AI chatbot",
+            "pages": [
+              "chatbot/overview",
+              "chatbot/knowledge-base",
+              "chatbot/appearance",
+              "chatbot/draft-publish"
+            ]
+          },
+          {
+            "group": "Adoption analytics",
+            "pages": [
+              "analytics/overview",
+              "analytics/coverage-gaps",
+              "analytics/user-profiles"
             ]
           },
           {
             "group": "Guides",
             "pages": [
-              "guides/identify-users",
-              "guides/configure-guidance",
-              "guides/walkthroughs",
-              "guides/frequency-controls"
+              "guides/overview"
             ]
           },
           {
-            "group": "Integrations",
+            "group": "Privacy & security",
             "pages": [
-              "integrations/overview",
-              "integrations/live-chat",
-              "integrations/crm",
-              "integrations/slack",
-              "integrations/webhooks"
+              "privacy/overview",
+              "privacy/redaction",
+              "privacy/dsar"
             ]
           },
           {
-            "group": "Plans & Billing",
+            "group": "Plans & billing",
             "pages": [
               "plans/overview",
               "plans/faq"
@@ -59,20 +71,27 @@
     ]
   },
   "keyFeatures": [
-    "Crowd intelligence — learns successful navigation patterns from all users automatically",
-    "Proactive real-time intervention when users deviate from successful paths",
-    "Context-aware support chat that already knows where the user is and what went wrong",
-    "Interactive guided walkthroughs rendered inside the product",
-    "One-line JavaScript snippet install — no backend changes, no event tagging",
-    "Client-side PII scrubbing via Microsoft Presidio — zero sensitive data leaves the browser",
-    "Frequency controls to prevent guidance fatigue",
-    "Integrations with Intercom, Zendesk, Salesforce, HubSpot, Slack, and webhooks"
+    "Lightweight browser SDK (~11 KB) with autocapture for clicks, pageviews, form submits, rage clicks, DOM errors, and per-page exposure summaries",
+    "AI product assistant — Preact widget in Shadow DOM, hybrid retrieval (vector + BM25 + RRF), cross-encoder rerank, Claude streaming over SSE",
+    "Knowledge-base ingestion from URL crawl or file upload (PDF, DOCX, MD), chunked + embedded into pgvector with HNSW",
+    "Draft / publish workflow for chatbot config, knowledge sources, and guidance — atomic publishes, Test page preview",
+    "Coverage-gaps inbox — every user question classified (no_retrieval / weak_retrieval / negative_rating), HDBSCAN-clustered, ranked by volume × gap",
+    "Adoption analytics — per-user, per-tenant, per-page activity views",
+    "Two-layer PII redaction — client-side pattern stripping, then server-side Microsoft Presidio in a dedicated drainer (the only service with raw event access)",
+    "DSAR-ready privacy tooling — async deletion jobs, audit trail, suppression for tenants and users",
+    "Consent modes (auto / required) with runtime toggle"
   ],
   "publicApiSurface": [
-    "Script tag installation: <script src='...'></script>",
-    "identify(userId, traits) — identify the logged-in user",
-    "Webhook events for friction patterns and escalations",
-    "Custom API access (Enterprise plan)",
-    "Guidance frequency and trigger configuration settings"
+    "Script tag: <script src='https://cdn.helpalive.com/sdk/helpalive.js' data-api-key='...' async></script>",
+    "npm: import HelpAlive from '@helpalive/sdk'; HelpAlive.init({ apiKey })",
+    "identify({ userId, tenantId, displayName?, email?, role?, plan?, createdAt? }) — userId and tenantId required",
+    "track(name, properties?) for custom events",
+    "flush(), reset(), shutdown()",
+    "getContext() returns ChatbotContext for the widget",
+    "setRealTimeMode(enabled), setRealTimeConsumer(name, active)",
+    "setConsent({ analytics, chat })",
+    "notify(payload), onNotification(callback)",
+    "startGuide(guide, opts?), cancelGuide(), preloadGuides({ ids }), getActiveGuideController(), onGuideStarted(callback)",
+    "getSuggestions(), onActivation(callback), clearConfigCache()"
   ]
 }

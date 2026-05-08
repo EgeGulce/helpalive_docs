@@ -1,0 +1,132 @@
+---
+title: "Redaction"
+description: HelpAlive runs two layers of PII redaction — in the browser before events are sent, then again in a dedicated drainer using Microsoft Presidio.
+---
+
+Every event flows through two redaction layers before it reaches durable storage. This page details what each layer strips and what's never captured at all.
+
+## Never-captured fields
+
+Some fields are never observed by the SDK in the first place:
+
+- **Keystroke contents.** The SDK doesn't bind to `keydown` for input capture. It does observe keys for shortcut detection (e.g. detecting that a keyboard shortcut fired) but the key content is not transmitted.
+- **Form input values.** `form_submit` events fire when a form is submitted; the values of the inputs do not flow.
+- **`<input type="password">`.** Always excluded, full stop.
+- **Any element marked `data-helpalive-redact`.** A custom hook for fields you want to keep out of selectors and exposure data — e.g. account numbers shown in a banner.
+
+## Layer 1 — browser-side
+
+Before each batch is shipped to the events endpoint, the SDK runs:
+
+### URL hygiene
+
+URLs are normalized:
+
+- Query string removed if it contains values that look like PII (emails, tokens, base64 IDs, JWT-like strings).
+- Fragment ID removed if it contains values that look like PII.
+- Path segments that match PII patterns are replaced with `:redacted:`.
+
+Examples:
+
+| Original | After hygiene |
+|----------|---------------|
+| `/users/jdoe@example.com/edit` | `/users/:redacted:/edit` |
+| `/billing?email=jdoe@example.com` | `/billing` |
+| `/share#token=eyJhbGc...` | `/share` |
+| `/orders/4827` | `/orders/4827` *(numeric IDs preserved — not PII)* |
+
+### Pattern stripping
+
+Any captured text passes through pattern-based redaction:
+
+| Pattern | What's stripped |
+|---------|-----------------|
+| Email | `jdoe@example.com` → `[email]` |
+| Phone | `+1 415 555 0123` → `[phone]` |
+| Credit-card-like | `4111 1111 1111 1111` → `[card]` |
+| US SSN-like | `123-45-6789` → `[ssn]` |
+| IPv4 | `203.0.113.7` → `[ip]` |
+
+The browser pass is intentionally cheaper than the server pass — speed matters here because we run on every event before send.
+
+### Selector hashing
+
+DOM selectors are hashed before transmission. The hash is stable across sessions for the same element, so analytics can group by element, but a hash alone reveals no information about the element's text or class names.
+
+### Fail-closed
+
+If the redaction layer throws (it shouldn't, but software), the batch is dropped, not transmitted. Better lost analytics than leaked data.
+
+## Layer 2 — server-side drainer
+
+After the browser redaction pass, events arrive at the events Redis stream. A separate service — the **drainer** — consumes from the stream and applies a heavier pass:
+
+### Microsoft Presidio
+
+The drainer loads spaCy models per worker and runs **Microsoft Presidio** against every string field. Presidio uses a combination of:
+
+- Named-entity recognition (people, places, organizations).
+- Pattern matchers tuned per locale (national IDs, phone formats, address shapes).
+- A configurable risk threshold per entity type.
+
+Detected entities are replaced with type tokens (`<PERSON>`, `<EMAIL_ADDRESS>`, `<US_SSN>`).
+
+### Why a second layer
+
+The browser pass is fast, deterministic, and catches the most common patterns. The server pass is comprehensive — it catches:
+
+- Names (which the browser pass cannot recognize without an NLP model).
+- Addresses.
+- Locale-specific identifiers.
+- Edge cases in punctuation and formatting that the regex layer misses.
+
+### Drainer isolation
+
+The drainer is the **only** service with credentials for the events Redis stream:
+
+- The dashboard service (`apps/service`) doesn't have the env var.
+- The chatbot service (`apps/chat-service`) doesn't have the env var.
+- The auth service doesn't have the env var.
+
+This is enforced by topology, not by policy. Even if one of the other services is compromised, raw event data is unreachable.
+
+After redaction, the drainer writes to Postgres. From there, the dashboard reads — but it only ever sees redacted data.
+
+## Storage layout
+
+| Store | What's in it | Redacted |
+|-------|--------------|----------|
+| **Events Redis stream** | Raw events from the SDK, for the few minutes before the drainer consumes | Browser-redacted |
+| **Events Postgres** | Long-term analytics events | Browser- + server-redacted |
+| **Chatbot messages Postgres** | Question and answer text | Server-redacted (Presidio) |
+| **User profiles Postgres** | Identity, traits, plan, role | Email & display name flow as user-supplied; consent and suppression flags set per user |
+
+## Where verbatim text survives
+
+Two places intentionally keep verbatim user input:
+
+1. **Chatbot messages** (Presidio-redacted). The whole point of the assistant is to read user questions and respond, and the whole point of [Coverage gaps](/analytics/coverage-gaps) is to surface what users ask. PII patterns are stripped, but otherwise the text is kept.
+2. **Identity fields** (`displayName`, `email`). You provide them through `identify()`; they live on the profile so admins can search and support.
+
+Both are scoped per customer and removable on DSAR request.
+
+## Audit
+
+Every redaction layer logs:
+
+- Counts of detected entity types per minute (no payloads).
+- Drainer queue depth and lag.
+- Failed redaction attempts (very rare; alerts on threshold).
+
+These metrics are visible internally for HelpAlive ops; not currently exposed to customer dashboards.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="DSAR deletion" icon="trash" href="/privacy/dsar">
+    Delete a user's data on request.
+  </Card>
+  <Card title="Configure consent" icon="shield-check" href="/sdk/consent">
+    Pause tracking until consent is granted.
+  </Card>
+</CardGroup>

@@ -1,0 +1,101 @@
+---
+title: "SDK overview"
+description: The HelpAlive SDK is an ~11 KB browser script that auto-captures user behavior, identifies users and tenants, and powers the AI chatbot.
+---
+
+The HelpAlive SDK is the data foundation for everything else in the product. It's a small browser script that auto-captures user behavior, identifies users and tenants for analytics, and lets the AI chatbot read fresh page context at chat time.
+
+## At a glance
+
+| | |
+|---|---|
+| **Size** | ~11 KB gzipped |
+| **Runtime dependencies** | None |
+| **Distribution** | CDN script tag or `@helpalive/sdk` on npm |
+| **Loading** | Async, non-blocking |
+| **Browser support** | Evergreen browsers (Chrome, Edge, Firefox, Safari) |
+| **Global** | `window.HelpAlive` |
+
+## What the SDK does
+
+<CardGroup cols={2}>
+  <Card title="Autocapture" icon="zap">
+    Clicks, form submits, pageviews, rage clicks, DOM errors, and a per-page exposure summary — captured automatically with no tagging.
+  </Card>
+  <Card title="Identity" icon="user-check">
+    `identify()` ties events to a stable user and tenant so analytics, profiles, and chatbot personalization are accurate.
+  </Card>
+  <Card title="Manual events" icon="hammer">
+    `track()` lets you add custom events for milestones autocapture can't see (e.g. "subscription upgraded", "report exported").
+  </Card>
+  <Card title="Chat context" icon="message-circle">
+    `getContext()` and real-time mode let the chatbot widget read the user's current page, role, and recent activity to answer in context.
+  </Card>
+</CardGroup>
+
+## What's auto-captured
+
+The SDK observes the DOM and emits events with redacted selector hashes. You don't write tracking code or maintain a tag plan.
+
+| Event | Description |
+|-------|-------------|
+| `pageview` | Initial load and SPA navigations (history API + hash changes). |
+| `click` | Click on any element. Selector hashed, text content redacted. |
+| `form_start` | First interaction with a form input — used for abandonment analysis. |
+| `form_submit` | Form submission. |
+| `rage_click` | Repeated clicks in a small area (frustration signal). |
+| `scroll_depth` | Per-page max scroll percentage. |
+| `dom_error` | `console.error` and unhandled JavaScript exceptions. |
+| `exposure` | Per-page summary of visible interactive elements. Used by the chatbot to know what's on screen. |
+
+## What's not captured
+
+- **Keystrokes.** The SDK never logs `keydown` or `input` content.
+- **Form values.** Submit events fire, but field values are not transmitted.
+- **Password fields.** Always excluded.
+- **PII patterns** (emails, phone numbers, national IDs, etc.). Stripped client-side before any payload leaves the browser; stripped again server-side in a dedicated drainer.
+
+See [Privacy & redaction](/privacy/redaction) for the complete data model.
+
+## Public API
+
+The SDK exposes these methods on `window.HelpAlive`. Full signatures live in the [API reference](/sdk/api-reference).
+
+| Method | Purpose |
+|--------|---------|
+| `init(options)` | Manual init when loading via npm. Not needed when using the script tag. |
+| `identify(payload)` | Identify the user and tenant. Required before events are accepted by the backend. |
+| `track(name, props?)` | Emit a custom event. |
+| `flush()` | Force-flush queued events to the server. |
+| `reset()` | Clear identity (call this on logout). |
+| `getContext()` | Read the current page, identity, and session state. Used by the chatbot widget. |
+| `setRealTimeMode(enabled)` | Drain queued events immediately. The chatbot turns this on while a chat is active. |
+| `setConsent(consent)` | Set or change the user's consent preferences at runtime. |
+| `notify(payload)` | Push a proactive notification into the widget. |
+| `onNotification(cb)` | Subscribe to notifications. |
+| `startGuide(guide, opts?)` | Lazy-load the guide engine and start an in-app guide. |
+| `getSuggestions()` | Fetch suggested questions for the current page. |
+| `shutdown()` | Tear down the SDK. |
+
+## Event buffering
+
+Events are buffered in memory until `identify()` lands. The buffer holds up to 100 events; if `identify()` is never called, events are dropped on page unload (anonymous sessions are not stored in production).
+
+Once identified, the SDK flushes on a rolling schedule and on `visibilitychange` so events don't get lost when users tab away or close the page.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Identify users and tenants" icon="user-check" href="/sdk/identify">
+    The required first call after authentication.
+  </Card>
+  <Card title="API reference" icon="book" href="/sdk/api-reference">
+    Full method signatures and option types.
+  </Card>
+  <Card title="Configure consent" icon="shield-check" href="/sdk/consent">
+    Pause tracking until your consent banner returns a decision.
+  </Card>
+  <Card title="Privacy posture" icon="lock" href="/privacy/overview">
+    What data the SDK sends, what it doesn't, and where redaction happens.
+  </Card>
+</CardGroup>

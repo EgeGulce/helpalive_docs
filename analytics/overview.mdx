@@ -1,0 +1,102 @@
+---
+title: "Adoption analytics"
+description: HelpAlive surfaces adoption — who's using your product, where they get stuck, and what your assistant can't answer. Per user, per tenant, per page.
+---
+
+The HelpAlive dashboard shows what your users do inside your product. It's not a general analytics platform — we focus on adoption and friction. The goal is to answer "what should we improve?" rather than "what happened?"
+
+If you already run FullStory, Mixpanel, or Amplitude, HelpAlive sits alongside them: they remain your source of truth for analytics; we're where you go to take action.
+
+## What's available
+
+<CardGroup cols={2}>
+  <Card title="User profiles" icon="user" href="/analytics/user-profiles">
+    Per-user activity timeline, platforms, segments, privacy status.
+  </Card>
+  <Card title="Coverage gaps" icon="inbox" href="/analytics/coverage-gaps">
+    The questions your AI assistant can't answer, clustered and ranked.
+  </Card>
+  <Card title="Tenant views" icon="users">
+    List of all tenants, per-tenant detail, prioritization. Live in the dashboard.
+  </Card>
+  <Card title="Chatbot analytics" icon="message-circle">
+    Usage, ratings distribution, per-page chat volume, per-topic drilldown.
+  </Card>
+</CardGroup>
+
+## What's tracked at the event level
+
+The SDK auto-captures a small set of high-signal events. From those, the dashboard rolls up:
+
+| Surface | Source events |
+|---------|---------------|
+| **Users** | identify, pageview, click |
+| **Sessions** | session_start, all events between |
+| **Pages** | pageview |
+| **Elements** | click, exposure |
+| **Friction** | rage_click, dom_error, form_start without submit |
+
+Summary tables refresh hourly. Real-time per-user pages read live event data so admins see fresh activity.
+
+## Tenant-level views
+
+For B2B products, the unit of measurement is usually a tenant (workspace, account, organization), not an individual user. The dashboard surfaces:
+
+- **Audience list** — all tenants ranked by activity, with a prioritization signal (volume × engagement).
+- **Tenant detail** — sessions, users, pages, integrations health, recent activity.
+- **Per-tenant usage** — user counts, session counts, event volume.
+
+Tenants come from the `tenantId` you pass to `identify()`. If your app doesn't have multi-tenancy, all activity rolls under `default`.
+
+## End-user profiles
+
+Drill into any user and see:
+
+- A timeline of their recent activity.
+- Which platforms they use (browser, OS, mobile / desktop).
+- Their plan, role, and account age.
+- Privacy status (consent state, suppression flags).
+- Recent chatbot conversations.
+
+See [User profiles](/analytics/user-profiles) for the full surface.
+
+## Coverage gaps
+
+The most valuable view for product teams. Every user question that goes through the chatbot is classified:
+
+- `no_retrieval` — nothing in the knowledge base matched.
+- `weak_retrieval` — matches were thin or off-topic.
+- `negative_rating` — user thumbed down despite a confident answer.
+
+These are clustered with HDBSCAN into topics and ranked by `volume × gap score`. The result is a working inbox of "things to write next" or "features to fix" — see [Coverage gaps](/analytics/coverage-gaps).
+
+## What's still maturing
+
+| Area | Status |
+|------|--------|
+| Per-feature adoption rates | In progress — depends on automatic feature discovery from event sequences. SDK signals are captured today; the backend pipeline is being built. |
+| Feature health scores | In progress — same dependency. |
+| Custom reports + date ranges | UI exists; full real-data pipeline is partial. |
+| CSV / PDF export | Planned. |
+| Retention and churn-risk views | UI shells exist; risk model is planned. |
+| User segments | Planned — `/analyze/user-segments` is a UI skeleton today. |
+
+We mark these openly because we want you to know what's shipped versus aspirational. Every page in the dashboard either reads real data or shows a "Coming soon" affordance.
+
+## What we don't do
+
+- **Session replay.** No video, no DOM snapshots.
+- **Funnel building.** Adoption metrics come from autocaptured signals, not from manually defined funnels.
+- **Cohort analysis tooling.** We surface adoption directly; if you want to slice by arbitrary cohorts, your dedicated analytics tool is the right place.
+- **Data export to your warehouse.** Webhooks for chat events and DSAR exports exist; bulk warehouse syndication is not on the roadmap.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Coverage gaps" icon="inbox" href="/analytics/coverage-gaps">
+    The "what to write next" inbox.
+  </Card>
+  <Card title="User profiles" icon="user" href="/analytics/user-profiles">
+    Per-user activity, platforms, privacy state.
+  </Card>
+</CardGroup>

@@ -1,205 +1,259 @@
 ---
-title: "Install HelpAlive on React, Vue, Angular, or plain HTML"
-description: Add HelpAlive to any web stack with one script tag and one identify() call. Full examples for React, Vue, Angular, and plain HTML included.
+title: "Installation"
+description: Add HelpAlive to React, Vue, Angular, or plain HTML. Full examples for the script tag, npm package, identify call, and CSP configuration.
 ---
 
-HelpAlive installs entirely in the browser — there is no server SDK to deploy, no database schema to migrate, and no pipeline to configure. You add one script tag and one `identify()` call, and HelpAlive handles the rest. This page walks through the snippet, the identify call, framework-specific patterns, what HelpAlive tracks automatically, and how it protects user privacy.
+HelpAlive installs entirely in the browser. There's no server SDK, no schema migration, no pipeline to deploy. You add one script tag and one `identify()` call, and the SDK handles the rest.
 
-## Script tag
+This page covers:
 
-Paste the snippet into your HTML, either inside `<head>` or immediately before `</body>`. Replace `YOUR_PROJECT_ID` with the value from **Settings → Project** in your dashboard.
+- The script tag and CSP requirements
+- Loading via npm
+- Framework-specific examples (React, Vue, Angular, HTML)
+- Identifying users and tenants
+- What the SDK captures automatically
+
+## Script tag (recommended)
+
+Paste this into your HTML, inside `<head>` or immediately before `</body>`. It loads on every page of your app.
 
 ```html
-<script>
-  (function(h,e,l,p){
-    var a=h.createElement('script');
-    a.src='https://cdn.helpalive.com/v1/ha.min.js';
-    a.dataset.projectId='YOUR_PROJECT_ID';
-    a.async=true;
-    h.head.appendChild(a);
-  })(document);
+<script
+  src="https://cdn.helpalive.com/sdk/helpalive.js"
+  data-api-key="YOUR_API_KEY"
+  async>
 </script>
 ```
 
-The loader is 2 KB, loads asynchronously, and does not block page rendering. It exposes `window.HelpAlive` once ready and queues any calls made before it finishes loading.
+The loader auto-initializes from `data-*` attributes, so no extra `init()` call is needed.
 
-## Identify your users
+| Attribute | Required | Description |
+|-----------|----------|-------------|
+| `data-api-key` | Yes | Your project API key from **Settings → Integration**. |
+| `data-endpoint` | No | Override the events endpoint. Defaults to `https://api.helpalive.com`. |
+| `data-chat-endpoint` | No | Override the chatbot endpoint. Defaults to the chat backend wired to your project. |
+| `data-debug` | No | Set to `"true"` to log SDK activity to the console. |
 
-Call `window.HelpAlive.identify(userId, traits)` once per session, immediately after your authentication flow completes. The `userId` must be a stable, non-PII identifier — a database ID or UUID works well. Pass any traits you want to use for segmentation or to personalize guidance.
+### Content Security Policy
+
+If you ship a CSP header, allow the HelpAlive origins:
+
+```
+script-src  https://cdn.helpalive.com;
+connect-src https://api.helpalive.com;
+```
+
+## npm package
+
+For bundlers and frameworks that prefer ES modules:
+
+```bash
+npm install @helpalive/sdk
+```
 
 ```javascript
-window.HelpAlive.identify('user_8x92k', {
-  name: 'Priya Sharma',
-  email: 'priya@example.com',
-  plan: 'pro',
-  createdAt: '2025-11-03T09:00:00Z'
+import HelpAlive from "@helpalive/sdk";
+
+HelpAlive.init({
+  apiKey: "YOUR_API_KEY"
 });
 ```
 
-Traits are optional but recommended. `plan` and `createdAt` are especially useful — HelpAlive can show different walkthroughs to trial users versus paying customers, and can tailor onboarding guidance based on account age.
+When you load via npm, you must call `init()` yourself — the auto-init only fires for the script-tag form.
+
+<Note>
+  The script tag loads from a CDN with edge caching and is the fastest path for most apps. Use the npm package only if you need the SDK to be part of your bundle (offline-first apps, strict CSP environments).
+</Note>
 
 ## Framework examples
 
-The pattern is the same across every framework: inject the script once on app load, then call `identify()` after the user authenticates.
+The pattern is the same everywhere: load once on app start, call `identify()` after the user authenticates.
 
 <Tabs>
   <Tab title="HTML">
+    ```html
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8" />
+        <title>My App</title>
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>My App</title>
+        <script
+          src="https://cdn.helpalive.com/sdk/helpalive.js"
+          data-api-key="YOUR_API_KEY"
+          async>
+        </script>
+      </head>
+      <body>
+        <!-- your app -->
 
-  <!-- HelpAlive snippet -->
-  <script>
-    (function(h,e,l,p){
-      var a=h.createElement('script');
-      a.src='https://cdn.helpalive.com/v1/ha.min.js';
-      a.dataset.projectId='YOUR_PROJECT_ID';
-      a.async=true;
-      h.head.appendChild(a);
-    })(document);
-  </script>
-</head>
-<body>
-  <!-- your app markup -->
-
-  <script>
-    // Call after your login flow resolves
-    window.HelpAlive.identify('user_8x92k', {
-      name: 'Priya Sharma',
-      email: 'priya@example.com',
-      plan: 'pro',
-      createdAt: '2025-11-03T09:00:00Z'
-    });
-  </script>
-</body>
-</html>
-```
-
+        <script>
+          // Call after your auth flow resolves
+          HelpAlive.identify({
+            userId:   "user_8x92k",
+            tenantId: "acme-corp",
+            email:    "priya@acme.com",
+            plan:     "pro"
+          });
+        </script>
+      </body>
+    </html>
+    ```
   </Tab>
+
   <Tab title="React">
+    ```jsx
+    // src/App.jsx
+    import { useEffect } from "react";
 
-```jsx
-// src/App.jsx
-import { useEffect } from 'react';
+    export default function App({ user }) {
+      // Inject the script once on mount
+      useEffect(() => {
+        const s = document.createElement("script");
+        s.src = "https://cdn.helpalive.com/sdk/helpalive.js";
+        s.dataset.apiKey = "YOUR_API_KEY";
+        s.async = true;
+        document.head.appendChild(s);
+      }, []);
 
-export default function App({ user }) {
-  // Load the HelpAlive script once on mount
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
-    script.dataset.projectId = 'YOUR_PROJECT_ID';
-    script.async = true;
-    document.head.appendChild(script);
-  }, []);
+      // Identify the user once they're available
+      useEffect(() => {
+        if (!user) return;
+        window.HelpAlive?.identify({
+          userId:      user.id,
+          tenantId:    user.tenantId ?? "default",
+          tenantName:  user.tenantName,
+          displayName: user.name,
+          email:       user.email,
+          role:        user.role,
+          plan:        user.plan
+        });
+      }, [user]);
 
-  // Identify the user once they are available
-  useEffect(() => {
-    if (!user) return;
-    window.HelpAlive?.identify(user.id, {
-      name: user.name,
-      email: user.email,
-      plan: user.plan,
-      createdAt: user.createdAt
-    });
-  }, [user]);
-
-  return <>{/* your app */}</>;
-}
-```
-
-  </Tab>
-  <Tab title="Vue">
-
-```javascript
-// src/main.js
-import { createApp } from 'vue';
-import App from './App.vue';
-
-const app = createApp(App);
-app.mount('#app');
-
-// Load the HelpAlive script
-const script = document.createElement('script');
-script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
-script.dataset.projectId = 'YOUR_PROJECT_ID';
-script.async = true;
-document.head.appendChild(script);
-```
-
-```vue
-<!-- Call identify() in your authenticated layout component -->
-<script>
-export default {
-  props: ['user'],
-  mounted() {
-    if (!this.user) return;
-    window.HelpAlive?.identify(this.user.id, {
-      name: this.user.name,
-      email: this.user.email,
-      plan: this.user.plan,
-      createdAt: this.user.createdAt
-    });
-  }
-};
-</script>
-```
-
-  </Tab>
-  <Tab title="Angular">
-
-```typescript
-// src/app/app.component.ts
-import { Component, OnInit, Input } from '@angular/core';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  plan: string;
-  createdAt: string;
-}
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html'
-})
-export class AppComponent implements OnInit {
-  @Input() user?: User;
-
-  ngOnInit(): void {
-    // Load the HelpAlive script
-    const script = document.createElement('script');
-    script.src = 'https://cdn.helpalive.com/v1/ha.min.js';
-    script.dataset['projectId'] = 'YOUR_PROJECT_ID';
-    script.async = true;
-    document.head.appendChild(script);
-
-    // Identify the user once available
-    if (this.user) {
-      (window as any).HelpAlive?.identify(this.user.id, {
-        name: this.user.name,
-        email: this.user.email,
-        plan: this.user.plan,
-        createdAt: this.user.createdAt
-      });
+      return <>{/* your app */}</>;
     }
-  }
-}
-```
+    ```
 
+    For Next.js, drop the `<script>` tag straight into `app/layout.tsx` (or `_document.tsx` on the pages router) instead of injecting it from `useEffect`.
+  </Tab>
+
+  <Tab title="Vue">
+    ```javascript
+    // main.js
+    import { createApp } from "vue";
+    import App from "./App.vue";
+
+    createApp(App).mount("#app");
+
+    const s = document.createElement("script");
+    s.src = "https://cdn.helpalive.com/sdk/helpalive.js";
+    s.dataset.apiKey = "YOUR_API_KEY";
+    s.async = true;
+    document.head.appendChild(s);
+    ```
+
+    ```vue
+    <!-- AuthenticatedLayout.vue -->
+    <script setup>
+    import { watch } from "vue";
+
+    const props = defineProps(["user"]);
+
+    watch(() => props.user, (user) => {
+      if (!user) return;
+      window.HelpAlive?.identify({
+        userId:      user.id,
+        tenantId:    user.tenantId ?? "default",
+        displayName: user.name,
+        email:       user.email,
+        plan:        user.plan
+      });
+    }, { immediate: true });
+    </script>
+    ```
+  </Tab>
+
+  <Tab title="Angular">
+    ```typescript
+    // src/app/app.component.ts
+    import { Component, Input, OnInit } from "@angular/core";
+
+    @Component({ selector: "app-root", templateUrl: "./app.component.html" })
+    export class AppComponent implements OnInit {
+      @Input() user?: { id: string; tenantId: string; name: string; email: string; plan: string };
+
+      ngOnInit(): void {
+        const s = document.createElement("script");
+        s.src = "https://cdn.helpalive.com/sdk/helpalive.js";
+        s.dataset["apiKey"] = "YOUR_API_KEY";
+        s.async = true;
+        document.head.appendChild(s);
+
+        if (this.user) {
+          (window as any).HelpAlive?.identify({
+            userId:      this.user.id,
+            tenantId:    this.user.tenantId,
+            displayName: this.user.name,
+            email:       this.user.email,
+            plan:        this.user.plan
+          });
+        }
+      }
+    }
+    ```
   </Tab>
 </Tabs>
 
-## What gets tracked
+## Identify your users and tenants
 
-<Note>
-HelpAlive infers user behavior automatically — you do not tag events, define funnels, or write tracking code. The script observes clicks, navigation, and UI interactions as they happen and maps them against patterns learned from previous sessions. There is no analytics schema to maintain and no instrumentation gap when you ship new features.
-</Note>
+Call `HelpAlive.identify()` once per session, immediately after authentication. `userId` and `tenantId` are required; everything else is optional but improves analytics and chatbot personalization.
 
-## Zero PII
+```javascript
+HelpAlive.identify({
+  userId:      "user_8x92k",   // required
+  tenantId:    "acme-corp",    // required (use "default" if no multi-tenancy)
+  tenantName:  "Acme Corp",
+  displayName: "Priya Sharma",
+  email:       "priya@acme.com",
+  role:        "admin",
+  plan:        "pro",
+  createdAt:   "2024-11-03T09:00:00Z"
+});
+```
 
-HelpAlive runs [Microsoft Presidio](https://microsoft.github.io/presidio/) directly in the browser before any data leaves the page. Presidio scans observed text for PII patterns — names, email addresses, phone numbers, national identifiers, and more — and strips them before the payload is transmitted. HelpAlive never captures keystrokes or form input values. For a full breakdown of what is and is not collected, see the [privacy and security](/concepts/privacy-security) page.
+See the [identify guide](/sdk/identify) for the full field reference and behavior around tenant switching, anonymous sessions, and event buffering.
+
+## What gets captured automatically
+
+Once the script and `identify()` call are in place, the SDK auto-captures:
+
+- **Pageviews** — including SPA navigations (history API, hash changes).
+- **Clicks** — with redacted selector hashes for grouping.
+- **Form submits and form-start events** — for funnel and abandonment analysis.
+- **Rage clicks** — repeated clicks in a small area.
+- **Scroll depth** — per-page max-scroll telemetry.
+- **DOM errors** — `console.error` and unhandled exceptions.
+- **Per-page exposure** — a summary of visible interactive elements, used by the chatbot for context.
+
+You don't tag events, define funnels, or write per-feature instrumentation. The model is autocapture — the only manual call you ever need is `identify()`.
+
+## Privacy by default
+
+PII is redacted in the browser before any payload is sent, then again on the server in a dedicated drainer. The SDK never captures keystrokes, form input values, or password fields. See the [privacy overview](/privacy/overview) for the full data model.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="SDK API reference" icon="code" href="/sdk/api-reference">
+    All public methods: `track`, `flush`, `reset`, `setConsent`, `notify`, `getContext`.
+  </Card>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    Field reference, anonymous sessions, tenant switching, multi-account apps.
+  </Card>
+  <Card title="Configure consent" icon="shield-check" href="/sdk/consent">
+    Pause tracking until your cookie banner returns consent.
+  </Card>
+  <Card title="Set up the AI chatbot" icon="sparkles" href="/chatbot/overview">
+    Train the assistant on your docs.
+  </Card>
+</CardGroup>

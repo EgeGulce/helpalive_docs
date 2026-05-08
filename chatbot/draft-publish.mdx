@@ -1,0 +1,138 @@
+---
+title: "Draft / publish workflow"
+description: Stage every chatbot change in draft, preview on a Test page, and publish atomically. Unpublished content cannot reach end users.
+---
+
+Every change to the chatbot — appearance, guidance templates, knowledge sources, custom responses — flows through a draft / publish workflow. Drafts are previewed on a dedicated Test page; only an explicit publish makes them live.
+
+This page describes the workflow and the guarantees it gives you.
+
+## Why draft / publish
+
+A misconfigured assistant is worse than no assistant. Without a staging step, a half-written guidance template or a wrong knowledge source could ship to your users instantly. The draft / publish model gives your team:
+
+- A safe place to iterate on tone, knowledge, and appearance.
+- A test loop that uses **draft content** so you can preview the exact answers users will get.
+- An atomic publish so partial changes never reach production.
+- Audit history of who published what, when.
+
+## The data model
+
+Every configurable surface has paired columns: `live_*` for what end users see, and `draft_*` for staged changes. When you publish:
+
+1. The draft values are validated.
+2. Validated drafts are copied into the live columns inside a single transaction.
+3. The retrieval layer rebuilds its filters so any new knowledge sources go live atomically.
+4. The widget's config cache is invalidated; running widgets fetch the new config on their next config refresh.
+
+If validation fails, nothing is copied — your users keep seeing the previous live config until you fix the draft.
+
+## What's gated
+
+| Surface | Drafted? |
+|---------|----------|
+| Appearance (color, position, welcome) | Yes |
+| Guidance templates | Yes |
+| Custom responses | Yes |
+| Knowledge sources (URLs, files) | Yes |
+| Launcher logos | Yes |
+| Color scheme rules | Yes |
+| Tenant rollout exclusions | Yes |
+
+Things that are **not** drafted (changes apply immediately):
+
+- API keys
+- Tenant suppression / DSAR jobs (privacy actions take effect now, not after publish)
+- Team membership
+- Per-customer allowed-domain lists
+
+## The Test page
+
+**Dashboard → AI → Test** runs a chat against your **draft** configuration:
+
+- Reads draft appearance, draft guidance, draft knowledge.
+- Includes unpublished knowledge sources in retrieval.
+- Shows a "Previewing draft" chip so you never confuse it with production traffic.
+- Rate-limited per dashboard user via Redis (so a stuck preview can't run up your bill).
+
+Use it as the last step before every publish.
+
+## Production retrieval guarantees
+
+The retrieval layer filters on `publish_status = 'published'`. This means:
+
+- A draft URL you just crawled — invisible to users until publish.
+- A guidance change you haven't shipped — invisible to users until publish.
+- A custom response you haven't approved — invisible to users until publish.
+
+There is no path for draft content to reach production traffic short of an explicit publish.
+
+## Publishing
+
+**Dashboard → AI → Publish** shows a diff of every drafted change:
+
+- Appearance fields with old → new values.
+- Guidance templates added, edited, removed.
+- Knowledge sources added, re-crawled, archived.
+- Custom responses added, edited, removed.
+
+Publish is admin-only. The action is logged to the audit trail with the actor, timestamp, and a snapshot of the diff. You can roll back from the audit view by re-publishing a previous snapshot.
+
+## Guidance templates
+
+Guidance templates control tone, length, and customer-specific rules. They live in a registry shipped with the product (empathy, simple language, strict grounding) and you can layer your own on top.
+
+| Built-in template | Effect |
+|-------------------|--------|
+| **Empathy** | Adds reassurance language, especially after the user reports an error. |
+| **Simple language** | Drops jargon, prefers short sentences. |
+| **Strict grounding** | Refuses to answer if retrieval is weak, instead of hallucinating. |
+| **Concise** | Keeps responses under three short paragraphs. |
+
+Custom templates layer on top, so you can ship "always answer in the user's plan tier's voice" or "never recommend competitor products" without touching code.
+
+## Audit log
+
+Every publish writes to the audit log:
+
+- Actor (dashboard user)
+- Timestamp
+- Diff snapshot of every changed field
+- Trigger (manual, scheduled, API)
+
+Use this to roll back changes, attribute regressions, or show stakeholders what's shipped.
+
+## Common workflows
+
+<AccordionGroup>
+  <Accordion title="Adding a new knowledge source">
+    1. **Knowledge base → Add source** → enter URL or upload file.
+    2. Wait for the source to finish indexing (status flips to `ready`).
+    3. Open **Test**, ask a question that should be covered by the new source.
+    4. Verify the answer cites the new source.
+    5. **Publish**.
+  </Accordion>
+  <Accordion title="Updating the welcome message">
+    1. **Appearance → Welcome message** → edit text.
+    2. Open **Test** in a new tab.
+    3. Reload the test widget — you should see the new message.
+    4. **Publish**.
+  </Accordion>
+  <Accordion title="Rolling back a bad publish">
+    1. **Audit log** → locate the previous publish entry.
+    2. Click **Restore from this snapshot** to copy that snapshot back into draft.
+    3. Verify on **Test**.
+    4. **Publish**.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Coverage gaps" icon="inbox" href="/analytics/coverage-gaps">
+    Find what to write next, ranked by user demand.
+  </Card>
+  <Card title="Knowledge base" icon="book-open" href="/chatbot/knowledge-base">
+    Manage URLs, files, and indexing.
+  </Card>
+</CardGroup>
