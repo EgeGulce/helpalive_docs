@@ -19,7 +19,7 @@
       "og:site_name": "HelpAlive Documentation",
       "og:image": "/logo/icon.svg",
       "twitter:card": "summary_large_image",
-      "twitter:site": "@helpalive",
+      "twitter:site": "@HelpAliveAI",
       "robots": "index, follow",
       "author": "HelpAlive"
     }
@@ -113,7 +113,8 @@
   "footer": {
     "socials": {
       "website": "https://helpalive.com",
-      "x": "https://x.com/helpalive"
+      "x": "https://x.com/HelpAliveAI",
+      "linkedin": "https://www.linkedin.com/company/helpalive"
     },
     "links": [
       {
