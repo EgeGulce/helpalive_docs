@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "HelpAlive",
-  "description": "HelpAlive is an AI agent that watches every user inside your SaaS, intervenes when they're stuck with in-app guides, and answers their questions in context. One product replaces an analytics tool, an in-app chatbot, and a guide builder.",
+  "description": "HelpAlive is an AI agent for every user in your SaaS — context-aware answers, in-app guides, and adoption insights, from one script tag.",
   "colors": {
     "primary": "#3FACF8",
     "light": "#68cbe9",
