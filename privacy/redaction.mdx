@@ -1,103 +1,85 @@
 ---
 title: "Two-layer PII redaction in browser and on server"
 sidebarTitle: "Redaction"
-description: "HelpAlive redacts personal data twice — once in the browser before transmission, then again on our servers — using industry-standard pattern detection."
+description: "HelpAlive removes personal data twice — once in your users' browsers before anything is sent, then again on our servers before anything is stored."
 keywords:
   - PII redaction
-  - sensitive data redaction
-  - browser PII stripping
+  - sensitive data removal
   - GDPR compliant analytics
   - safe SaaS analytics
+mode: "wide"
 ---
 
-Every event flows through two redaction layers before it reaches durable storage. This page details what each layer strips, what's never captured at all, and what the guarantees mean for your users.
+Personal data is removed in two places before HelpAlive stores anything. This page explains what's removed where, and what's never collected at all.
 
-## Never captured
+## What's never collected
 
-Some fields are never observed by the SDK in the first place:
+Some things never leave your user's browser, ever:
 
-- **Keystroke contents.** The SDK doesn't watch keys typed into inputs (we only react to keyboard shortcuts, never to character data).
-- **Form input values.** Submit events fire when a form is submitted; the values inside the inputs do not flow.
-- **Password fields.** Excluded fully — never captured, never transmitted, no hashing.
-- **Anything you mark as private.** Add `data-helpalive-redact` to any element you want kept out of selectors and exposure data — useful for sensitive labels (account numbers, balances).
+- **What users type into inputs.** We never watch keystrokes.
+- **The values inside forms.** When a user submits a form, we know it happened — but the values they typed are not collected.
+- **Passwords.** Password fields are excluded completely.
+- **Anything you mark private.** Add `data-helpalive-redact` to any element you want excluded — handy for things like account numbers shown on the page.
 
-## Layer 1 — in the browser
+## What's removed in the browser
 
-Before any payload is sent, the SDK runs:
+Before any data leaves your user's browser, HelpAlive cleans it:
 
-### URL hygiene
+### URLs
 
-URLs are normalized before transmission. Anything in the path, query, or fragment that looks like personal data is replaced.
+If a URL contains something that looks personal, it's replaced before being sent.
 
-| Original | After hygiene |
-|----------|---------------|
+| Before | After |
+|--------|-------|
 | `/users/jdoe@example.com/edit` | `/users/:redacted:/edit` |
 | `/billing?email=jdoe@example.com` | `/billing` |
 | `/share#token=eyJhbGc...` | `/share` |
-| `/orders/4827` | `/orders/4827` *(numeric IDs preserved — not PII)* |
+| `/orders/4827` | `/orders/4827` *(plain numeric IDs are kept — they're not personal)* |
 
-### Pattern stripping
+### Captured text
 
-Captured text passes through pattern-based redaction:
+Common personal-data patterns are stripped:
 
-| Pattern | What's stripped |
-|---------|-----------------|
-| Email | `jdoe@example.com` → `[email]` |
-| Phone | `+1 415 555 0123` → `[phone]` |
-| Card number | `4111 1111 1111 1111` → `[card]` |
-| US Social Security number | `123-45-6789` → `[ssn]` |
-| IPv4 | `203.0.113.7` → `[ip]` |
+| Pattern | Replaced with |
+|---------|---------------|
+| Email | `[email]` |
+| Phone number | `[phone]` |
+| Card number | `[card]` |
+| US Social Security number | `[ssn]` |
+| IP address | `[ip]` |
 
-### Anonymous element identifiers
+### Element references
 
-When the SDK records that a user clicked something, it doesn't send the element's class names, IDs, or text content. It sends an anonymous identifier that's stable for analytics grouping but reveals nothing about what the element actually says.
+When the SDK records that a user clicked something, it doesn't send the element's class names, IDs, or text. It sends an anonymous reference — useful for grouping clicks in analytics, but reveals nothing about what the element actually says.
 
-### Fail closed
+### If something goes wrong
 
-If the redaction layer ever throws (it shouldn't — but software), the batch is dropped, not transmitted. Better lost analytics than leaked data.
+If anything in the redaction step fails (rare), the data is dropped instead of sent. Better lost analytics than leaked data.
 
-## Layer 2 — on our servers
+## What's removed on our servers
 
-After the browser pass, events arrive at a private intake process. We apply a heavier pass that catches things the browser layer can't reasonably handle:
+After the browser pass, the data goes through a second cleanup before it's stored. This second pass catches things the browser layer can't reasonably handle on its own:
 
-- Names and addresses (which need a language model to recognize, not a regex).
+- Names and addresses.
 - Locale-specific identifiers (national IDs, regional phone formats, address shapes).
-- Edge cases in punctuation, formatting, or context that pattern matchers miss.
+- Any edge cases the browser pass missed.
 
-Detected entities are replaced with type tokens (`<PERSON>`, `<EMAIL_ADDRESS>`, `<US_SSN>`) before storage.
+Detected items are replaced with type tokens (`<PERSON>`, `<EMAIL_ADDRESS>`, etc.) before storage.
 
-### Why two layers?
+## What's stored
 
-The browser pass is fast and catches the obvious patterns. The server pass is comprehensive — it uses industry-standard PII detection that's far more thorough than what we can ship into a small browser SDK. Together, they cover the cases each one alone would miss.
+| Where | What's in it |
+|-------|--------------|
+| **Adoption analytics** | Cleaned activity events — clicks, pageviews, form submits, friction signals. |
+| **Chat conversations** | Question and answer text, with personal data removed. |
+| **User profiles** | The identity fields you sent through `identify()` — userId, displayName, email, plan. |
 
-### Isolation
+## Where text is intentionally kept
 
-The intake process is the **only** part of our infrastructure with access to raw event data. The dashboard never sees raw events — only the redacted output. This is enforced by infrastructure, not by policy.
+Two places keep the user's words on purpose:
 
-## Storage layout
-
-| Store | What's in it | Redacted |
-|-------|--------------|----------|
-| **Event analytics** | Long-term redacted events | Yes — both layers |
-| **Chat conversations** | Question and answer text | Yes — server-side pass |
-| **User profiles** | Identity and traits you sent (display name, email, plan) | Stored as you sent them |
-
-## Where verbatim text intentionally survives
-
-Two places intentionally keep verbatim user input:
-
-1. **Chat conversations** (after PII redaction). The whole point of the Agent is to read user questions and respond, and the whole point of [Topics](/studio/topics) is to surface what users ask. Personal data is stripped, but the question is otherwise kept.
-2. **Identity fields** (`displayName`, `email`). You provide them through `identify()`. They live on the user profile so admins can search and support, scoped per customer and removable on DSAR request.
-
-## Audit
-
-Every redaction pass logs:
-
-- Counts of detected entity types per minute (no payloads).
-- Internal queue depth and lag.
-- Failed redaction attempts (rare; alerts on threshold).
-
-These are visible internally for HelpAlive operations; they aren't currently exposed to customer dashboards.
+1. **Chat conversations.** The whole point of the AI assistant is to read the user's question and respond. Personal data is stripped, but the question itself is kept so your team can read it in [Topics](/studio/topics).
+2. **Identity fields** (display name, email). You provide these through `identify()`. They live on the user's profile so your team can search and support — and they can be deleted on request, see [Data deletion](/privacy/dsar).
 
 ## Next steps
 

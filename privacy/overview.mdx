@@ -38,9 +38,9 @@ The HelpAlive SDK auto-captures user behavior. The events look like:
 |-------|---------|-------|
 | Event type | `click`, `pageview` | Auto-captured. |
 | Page URL | `/billing` | Cleaned of any IDs, emails, or tokens that look like personal data. |
-| Element identifier | An anonymous hash | We never send raw class names, IDs, or text. |
+| Element identifier | An anonymous reference | We never send the element's class names, IDs, or text content. |
 | Surrounding text | `[redacted email]…Settings` | Personal data is stripped before transmission. |
-| Timestamp | `1715000000` | Unix milliseconds. |
+| Timestamp | `1715000000` | When the event happened. |
 | User identity | `userId`, `tenantId` | From your `identify()` call — your stable IDs, not personal data we collect. |
 | Optional traits | `plan`, `role` | Only what you choose to send. |
 
@@ -52,27 +52,26 @@ The HelpAlive SDK auto-captures user behavior. The events look like:
 - **Common PII patterns** — emails, phone numbers, payment card patterns, national IDs. Stripped before any payload is sent.
 - **Chatbot messages, in event analytics.** Conversations live in their own secure store and never mix with adoption events.
 
-## How redaction works
+## How personal data is removed
 
-We run **two layers** of PII redaction:
+There are two layers of cleanup:
 
-1. **In the browser.** Before any payload is sent, the SDK strips common patterns from URLs and any captured text — emails, phone numbers, tokens, IDs that look personal. If anything goes wrong here, the event is dropped, not transmitted. We fail closed.
+1. **In your user's browser.** Before anything is sent, the SDK strips common patterns from URLs and captured text — emails, phone numbers, tokens, anything that looks personal. If anything goes wrong in this step, the data is dropped instead of sent.
+2. **On our servers.** Before anything is stored, a second cleanup catches names, addresses, regional identifiers, and edge cases the first pass might miss.
 
-2. **On our servers.** Events arrive at a private intake process where they pass through industry-standard PII detection (covering names, addresses, locale-specific identifiers, and edge cases the browser pass might miss) before they're stored.
+Only the cleaned data ever reaches the part of our system your dashboard reads from. Your team cannot see raw, uncleaned events.
 
-Only redacted data ever reaches the part of our system the dashboard reads from. The dashboard cannot see raw events — by infrastructure, not by policy.
-
-See [Redaction](/privacy/redaction) for the full pattern list.
+See [Redaction](/privacy/redaction) for the full list of what's removed.
 
 ## Where data is stored
 
-| Store | What's in it |
+| Where | What's in it |
 |-------|--------------|
-| **Event analytics** | Redacted user behavior — clicks, pageviews, form submits, friction signals. |
-| **Chat conversations** | Question and answer text, redacted of personal data. Never mixed with event analytics. |
-| **User profiles** | Identity and traits you sent through `identify()` — `userId`, `displayName`, `email`, `plan`, etc. |
+| **Adoption analytics** | Cleaned activity — clicks, pageviews, form submits, friction signals. |
+| **Chat conversations** | Question and answer text, with personal data removed. Kept separate from analytics. |
+| **User profiles** | The identity you sent through `identify()` — userId, displayName, email, plan. |
 
-Your data is isolated per customer. For organizations that want defense-in-depth, we offer additional database-level access controls on top of our default isolation.
+Your data is isolated from every other HelpAlive customer's data. For organizations that need extra reassurance, we offer additional access controls on request.
 
 ## Consent
 

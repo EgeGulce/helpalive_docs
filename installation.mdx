@@ -14,7 +14,7 @@ keywords:
   - Content Security Policy chatbot
 ---
 
-HelpAlive installs entirely in the browser. There's no server SDK, no schema migration, no pipeline to deploy. You add one script tag (or one Google Tag Manager tag) and one `identify()` call, and HelpAlive does the rest.
+HelpAlive installs entirely in the browser. There's nothing to deploy on your servers. You add one script tag (or one Google Tag Manager tag) and one `identify()` call after login. That's the whole install.
 
 This page covers:
 
@@ -69,7 +69,7 @@ The simplest method. Paste the snippet into the `<head>` of your HTML, just befo
 </html>
 ```
 
-The script auto-initializes from the `data-api-key` attribute — you don't need to call any setup function.
+That's the whole install. There's no setup function to call — just paste, deploy, and your script is live.
 
 | Attribute | Required | What it does |
 |-----------|----------|--------------|
@@ -149,7 +149,7 @@ Click **Submit** in GTM to publish the container, then verify from your HelpAliv
 
 ## Identify your users and workspaces
 
-`identify()` is the only line of code you have to write yourself. It tells HelpAlive who the user is and which workspace they belong to, and it's required before any events flow to our servers.
+`identify()` is the only line of code you write yourself. It tells HelpAlive who the user is and which workspace they belong to, and it's required before any activity is recorded.
 
 ```javascript
 HelpAlive.identify({
@@ -160,7 +160,7 @@ HelpAlive.identify({
   email:       "priya@acme.com",
   role:        "admin",
   plan:        "pro",
-  createdAt:   1730000000          // optional — signup date in Unix seconds
+  createdAt:   1730000000          // optional — when the user signed up
 });
 ```
 
@@ -173,7 +173,7 @@ HelpAlive.identify({
 | `email` | No | User's email — used for display and search. |
 | `role` | No | User's role (e.g. `"admin"`, `"editor"`, `"viewer"`). Helps segment behavior by permission level. |
 | `plan` | No | Subscription tier (e.g. `"free"`, `"pro"`, `"enterprise"`). Enables plan-segmented insights. |
-| `createdAt` | No | Signup date as Unix timestamp in seconds. Helps the Agent calibrate its tone. |
+| `createdAt` | No | When the user signed up. Helps the Agent tailor its tone for new vs. seasoned users. |
 
 See [Identify](/sdk/identify) for full semantics — anonymous sessions, workspace switching mid-session, logout cleanup.
 

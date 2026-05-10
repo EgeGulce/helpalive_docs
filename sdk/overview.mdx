@@ -16,11 +16,11 @@ The HelpAlive SDK is a small browser script that does three things: auto-capture
 
 | | |
 |---|---|
-| **Size** | ~11 KB gzipped |
-| **Runtime dependencies** | None |
-| **Distribution** | CDN script tag (or via Google Tag Manager) |
-| **Loading** | Async, non-blocking |
-| **Browser support** | Evergreen browsers (Chrome, Edge, Firefox, Safari) |
+| **Where it runs** | In your users' browsers, alongside your product |
+| **Effect on your page** | None — loads in the background, doesn't slow your site |
+| **What you install** | One script tag, or a single Google Tag Manager tag |
+| **What you write** | One `identify()` call after login — nothing else |
+| **Browser support** | Modern browsers (Chrome, Edge, Firefox, Safari) |
 
 ## What the SDK does
 
@@ -56,7 +56,7 @@ The SDK observes user behavior automatically — you don't write tracking code o
 - **Keystrokes.** The SDK never logs what users type into inputs.
 - **Form values.** Submit events fire; the values inside are never transmitted.
 - **Password fields.** Always excluded.
-- **PII patterns** (emails, phone numbers, national IDs, etc.). Stripped in the browser before any payload leaves the page; stripped again on our servers before storage.
+- **Personal data** like emails, phone numbers, and national IDs. Removed in the browser before anything is sent, and again on our servers before anything is stored.
 
 See [Privacy & redaction](/privacy/redaction) for the complete data model.
 
@@ -79,7 +79,7 @@ HelpAlive.identify({
 
 See [Identify](/sdk/identify) for the full field reference.
 
-### `HelpAlive.setConsent(prefs)` — when integrating with your cookie banner
+### `HelpAlive.setConsent(prefs)` — when you have a cookie banner
 
 Pauses or resumes tracking based on the user's consent state.
 
@@ -91,11 +91,9 @@ See [Consent](/sdk/consent) for the full setup.
 
 That's it for the public surface most apps need. Everything else — buffering, flushing, real-time mode while the Agent is open, page-context handoff to the chatbot — happens automatically inside the SDK.
 
-## Event buffering
+## Anonymous activity is dropped
 
-Events are buffered in memory until `identify()` runs. If a user never authenticates, the buffered events are dropped when they leave the page — anonymous sessions are never stored.
-
-Once a user is identified, events are sent on a rolling schedule and whenever the page goes into the background, so events don't get lost when users switch tabs or close the page.
+Until you call `identify()`, the SDK doesn't send anything to our servers. If the user never logs in, the activity is forgotten when they leave the page. This keeps unauthenticated traffic out of your analytics, and keeps anonymous browsing out of HelpAlive entirely.
 
 ## Next steps
 

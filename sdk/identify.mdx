@@ -33,7 +33,7 @@ HelpAlive.identify({
   email?:      string;
   role?:       string;
   plan?:       string;
-  createdAt?:  string;   // ISO 8601
+  createdAt?:  string;   // when the user signed up
 });
 ```
 
@@ -48,7 +48,7 @@ HelpAlive.identify({
 | `email` | No | User's email. Used for display and search. Keep `userId` as the stable identifier. |
 | `role` | No | User's role or permission level (e.g. `"admin"`, `"editor"`, `"viewer"`). Helps segment behavior. |
 | `plan` | No | Subscription tier (e.g. `"free"`, `"pro"`, `"enterprise"`). Enables plan-segmented insights and chatbot behavior. |
-| `createdAt` | No | When the user signed up, in ISO 8601. Used for cohort analysis. |
+| `createdAt` | No | When the user signed up. Helps the AI assistant tailor its tone for new vs. seasoned users. |
 
 ## Why identify() matters
 
@@ -117,7 +117,7 @@ This is intentional: it keeps anonymous traffic out of your adoption metrics and
     Use your database ID, a UUID, or any other non-changing identifier. Don't use email — if a user changes their email later, their analytics will fork into two profiles.
   </Accordion>
   <Accordion title="email is for display, not identity">
-    `email` is searchable in the dashboard but is not the identity key. The SDK and backend both index on `userId`.
+    `email` is searchable in the dashboard, but `userId` is what HelpAlive uses to recognize the user. Always send a stable `userId`.
   </Accordion>
   <Accordion title="tenantId is required even for single-workspace apps">
     Pass `"default"` if your app has no concept of workspaces. HelpAlive isolates analytics by workspace, so a value here is required even if you only have one.

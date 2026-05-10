@@ -31,7 +31,7 @@ This is the same three-step flow your dashboard's **Setup Guide** walks you thro
     Paste it into the `<head>` of your HTML, just before `</head>`, so it loads on every page. Then deploy.
 
     <Note>
-      The script is small (~11 KB gzipped), has no runtime dependencies, and loads asynchronously. It exposes `window.HelpAlive` once ready and queues any calls made before it finishes loading — so you don't need to add a `window.HelpAlive?.` guard.
+      The script loads in the background, so it won't slow your page down. Any calls you make before it finishes loading are queued and replayed automatically — no extra checks needed in your code.
     </Note>
   </Step>
 
