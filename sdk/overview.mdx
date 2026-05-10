@@ -64,7 +64,7 @@ See [Privacy & redaction](/privacy/redaction) for the complete data model.
 
 The SDK exposes a small surface on `window.HelpAlive`. The only methods you'll typically call yourself are:
 
-### `HelpAlive.identify(payload)` — required after login
+### `HelpAlive.identify({ ... })` — required after login
 
 Tells HelpAlive who the user is and which workspace they belong to. Without it, the SDK buffers events but nothing is sent.
 

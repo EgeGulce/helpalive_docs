@@ -36,7 +36,7 @@ This is the same three-step flow your dashboard's **Setup Guide** walks you thro
   </Step>
 
   <Step title="Identify your user after login">
-    Once the user authenticates, call `HelpAlive.identify()` with their stable user ID and a workspace (tenant) ID. **Both are required.** The ingest endpoint rejects events without them, so until identify lands, the SDK buffers events in memory and the Agent stays disabled.
+    Once the user authenticates, call `HelpAlive.identify()` with their stable user ID and a workspace ID. **Both are required.** Until you call identify, HelpAlive doesn't record activity for that user and the AI assistant stays off.
 
     ```javascript
     // Call after login (e.g. in your auth callback or app shell)
@@ -48,7 +48,7 @@ This is the same three-step flow your dashboard's **Setup Guide** walks you thro
       email:       user.email,        // optional: for display/search
       role:        user.role,         // optional: "admin" / "editor" / "viewer"
       plan:        user.plan,         // optional: "free" / "pro" / "enterprise"
-      createdAt:   user.createdAt     // optional: signup date (Unix seconds)
+      createdAt:   user.createdAt     // optional: when the user signed up
     });
     ```
 
@@ -57,7 +57,7 @@ This is the same three-step flow your dashboard's **Setup Guide** walks you thro
     See [Identify](/sdk/identify) for the full field reference, anonymous-session behavior, and tenant-switching patterns.
 
     <Tip>
-      If `identify()` runs before the SDK finishes loading, the call is queued and replayed once `window.HelpAlive` is available — no race-condition handling required on your side.
+      If you call `identify()` before the script has finished loading, the call is queued and replayed automatically. You don't need any extra checks in your code.
     </Tip>
   </Step>
 

@@ -123,7 +123,7 @@ This is intentional: it keeps anonymous traffic out of your adoption metrics and
     Pass `"default"` if your app has no concept of workspaces. HelpAlive isolates analytics by workspace, so a value here is required even if you only have one.
   </Accordion>
   <Accordion title="Calling identify() multiple times">
-    Safe and expected. Each call updates the in-memory identity. Identical calls are deduplicated server-side.
+    Safe and expected. Each call updates the user's identity. Identical calls are recognized as duplicates and don't create extra records.
   </Accordion>
   <Accordion title="PII in displayName or email">
     Both fields flow through the redaction pipeline like every other event. They're stored against the user profile so you can search and segment, but they don't appear in raw event logs.

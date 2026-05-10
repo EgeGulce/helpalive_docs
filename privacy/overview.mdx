@@ -49,7 +49,7 @@ The HelpAlive SDK auto-captures user behavior. The events look like:
 - **Keystroke contents.** We don't watch what users type into inputs.
 - **Form values.** Submit events fire; the values inside the form do not flow to us.
 - **Password fields.** Always excluded.
-- **Common PII patterns** — emails, phone numbers, payment card patterns, national IDs. Stripped before any payload is sent.
+- **Common personal data** — emails, phone numbers, payment card numbers, national IDs. Removed before anything is sent.
 - **Chatbot messages, in event analytics.** Conversations live in their own secure store and never mix with adoption events.
 
 ## How personal data is removed
@@ -111,7 +111,7 @@ HelpAlive ships with compliance defaults appropriate for B2B SaaS:
 You can verify our privacy posture in three ways:
 
 - **From your dashboard** — see the consent state, suppression flags, and deletion jobs for any user.
-- **From your network tab** — inspect what payloads the SDK sends, and confirm what's not in them.
+- **From your browser's network tab** — open developer tools and see exactly what HelpAlive sends, and what it doesn't.
 - **From our security policy** — request the security overview from your account contact at any time.
 
 ## Next steps
