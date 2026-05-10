@@ -15,12 +15,12 @@ The **Insight → Audience** tab is where your team browses every workspace and 
 
 ## Where to find it
 
-Open your dashboard and go to **Insight → Audience**. You'll see two panes:
+Open your dashboard and go to **Insight → Audience**. The page has two panes:
 
-- **Workspace rail (left)** — every workspace, sorted by activity, with a prioritization signal.
-- **User table (right)** — every user across all workspaces (or filtered to a single workspace when one is selected).
+- A **list of workspaces** on the left, sorted by activity so the most active customers float to the top.
+- A **list of users** on the right — all of them, or just the workspace you've selected.
 
-Click any workspace to see its detail drawer. Click any user to see a full activity timeline.
+Click any workspace or user to open its detail panel.
 
 ## What's on a user's timeline
 
@@ -28,105 +28,105 @@ When you open a user, you see:
 
 <CardGroup cols={2}>
   <Card title="Identity" icon="user">
-    `userId`, workspace, display name, email, role, plan, account age — sourced from your most recent `identify()` call.
+    Display name, email, role, plan, workspace, account age — pulled from your `identify()` call.
   </Card>
   <Card title="Activity timeline" icon="clock">
-    A reverse-chronological log of pageviews, clicks, errors, rage clicks, and Agent conversations.
+    Pages they viewed, things they clicked, errors they saw, conversations with the AI assistant — newest first.
   </Card>
-  <Card title="Platforms" icon="monitor">
-    Browsers, operating systems, mobile vs desktop, time zones.
+  <Card title="Devices" icon="monitor">
+    Browsers, operating systems, mobile vs. desktop, time zones.
   </Card>
   <Card title="Privacy state" icon="shield-check">
-    Consent state, suppression flags, any DSAR jobs in flight.
+    Their consent state, whether tracking is paused, and any deletion requests.
   </Card>
 </CardGroup>
 
-## Activity timeline detail
+## What you'll see in the timeline
 
-The timeline aggregates the most recent events for the user. Common entries:
+The timeline lists the user's most recent activity, newest first.
 
 | Event | Shown as |
 |-------|----------|
-| Pageview | A row with the page title and URL. |
-| Click | A row with the anonymized element identifier and surrounding page context. |
-| Form submit | A row with the form's surrounding context. (Field values are never captured.) |
-| Rage click | Highlighted as a friction signal. |
-| DOM error | Highlighted as a quality signal, with the error message. |
-| Agent conversation | Expandable; shows the full message thread and rating. |
+| Page view | A row with the page title and URL. |
+| Click | A row showing what kind of element they clicked, with the surrounding page context. |
+| Form submit | A row noting the form was submitted. (We never capture what they typed.) |
+| Rage click | Highlighted as a frustration signal. |
+| Page error | Highlighted as a quality signal, with the error message. |
+| Conversation | Expandable; shows the full message thread and rating. |
 
-Events are clipped to the most recent few hundred for performance.
+The timeline shows the most recent few hundred events.
 
 ## Sessions
 
-Activity is grouped into **sessions** — contiguous bursts of activity separated by idle gaps. The default idle threshold is 30 minutes; this is configurable per customer in **Settings → Security & Access**.
+Activity is grouped into **sessions** — bursts of usage separated by quiet periods. By default, 30 minutes of inactivity ends a session; you can change this in **Settings → Security & Access**.
 
-Each session shows start time, end time, page count, event count, and whether the user opened the Agent.
+Each session shows when it started, when it ended, how many pages were visited, and whether the user opened the Agent.
 
 ## Recent Agent conversations
 
-Conversations are linked from the activity timeline so support staff can see what the user asked the Agent and what answer they got. Each conversation shows:
+Conversations are linked from the timeline so your support team can see what the user asked and what the Agent said back. For each conversation you'll see:
 
 - The page where the chat started.
-- The full message thread.
+- The full back-and-forth.
 - The user's rating, if they gave one.
-- Coverage classification (was the answer well-grounded?) — useful for spotting where the Agent let this user down.
+- A note on whether the Agent had a confident answer — useful for spotting moments where the Agent fell short.
 
-## What's on a workspace detail
+## What you'll see on a workspace
 
-Click a workspace from the rail to see:
+Click any workspace to see:
 
-- **Members** — every user in that workspace and their activity.
-- **Recent activity** — the workspace's collective event timeline.
-- **Sessions and conversations** — aggregate counts by day.
-- **Plan and traits** — what was reported through `identify()`.
+- **Members** — every user in that workspace and how active they are.
+- **Recent activity** — what the workspace as a whole has been doing.
+- **Sessions and conversations** — daily counts.
+- **Plan and traits** — whatever you sent through `identify()`.
 
 ## Privacy state
 
-The user profile surfaces privacy at a glance:
+The user's profile shows their privacy state at a glance:
 
-- **Consent** — `analytics: on/off`, `chat: on/off` from the most recent `setConsent()` call.
-- **Workspace suppression** — if the user's workspace has been suppressed (capture paused).
-- **User suppression** — if this specific user has been suppressed.
-- **DSAR** — any in-flight or completed deletion jobs, with status.
+- **Consent** — whether they've opted in to analytics and chat.
+- **Workspace suppression** — if recording is paused for their whole workspace.
+- **User suppression** — if recording is paused just for them.
+- **Deletion requests** — any in-progress or completed deletions and when they finished.
 
-If a user has been deleted via DSAR, the profile shows a placeholder with the deletion timestamp instead of activity.
+If a user has been deleted, their profile shows the deletion timestamp instead of activity.
 
 ## Searching
 
-The user search supports:
+The search box accepts:
 
-- **Display name** (case-insensitive substring).
-- **Email** (case-insensitive substring).
-- **`userId`** (exact match — useful for engineers debugging from logs).
+- A user's **display name** — partial matches work.
+- A user's **email** — partial matches work.
+- A user's exact **`userId`** — handy when an engineer is investigating from your logs.
 
-Search is scoped to your customer; you only see your own users.
+You only ever see your own users — never another HelpAlive customer's.
 
 ## Common workflows
 
 <AccordionGroup>
-  <Accordion title="Support looking up a customer who reports a bug">
+  <Accordion title="Support is looking up a customer who reported a bug">
     1. Search by email.
-    2. Open the profile → scroll the activity timeline to the time the user reported the issue.
-    3. Look for `dom_error`, `rage_click`, or repeated form submits near that time.
-    4. If they used the Agent, expand the conversation to see what they asked.
+    2. Open the profile and scroll the timeline to roughly when the user reported the issue.
+    3. Look for page errors, rage clicks, or repeated form submits around that time.
+    4. If the user opened the Agent, expand the conversation to see what they asked.
   </Accordion>
-  <Accordion title="Success reviewing an at-risk account">
-    1. Open the workspace from the rail.
-    2. Sort users by activity (most active first) → spot which seats are quiet.
-    3. Click a quiet user → confirm they really aren't using the product.
-    4. Cross-reference with their plan and role to spot upsell or churn risk.
+  <Accordion title="Customer success is reviewing an at-risk account">
+    1. Open the workspace from the rail on the left.
+    2. Sort users by activity, most active first.
+    3. Click a quiet user to confirm they really aren't using the product.
+    4. Cross-reference with their plan and role to flag upsell or churn risk.
   </Accordion>
   <Accordion title="Honoring a delete request">
-    See [Data deletion](/privacy/dsar) for the full flow — initiated from the user profile.
+    See [Data deletion](/privacy/dsar) for the full flow — start it from the user's profile.
   </Accordion>
 </AccordionGroup>
 
-## Privacy guarantees on the profile
+## What's safe to look at
 
-- Display name and email are visible to dashboard admins by design — you need them to do support and success work.
-- Raw event content (clicked text, form values) is **never** shown — only redacted identifiers and page metadata.
-- Agent question text is shown because it's the only way to do support; question text is itself PII-redacted on storage.
-- Profile data is scoped per customer. Cross-customer access is impossible by construction.
+- Display name and email are visible to your dashboard admins because your team needs them to do support work.
+- The actual text users click on, or the values they typed into forms, is never shown — only generic page context.
+- The text of user questions to the Agent is shown (so you can support them), with personal data already removed.
+- You only see data from your own users. Other HelpAlive customers can't see yours either.
 
 ## Next steps
 

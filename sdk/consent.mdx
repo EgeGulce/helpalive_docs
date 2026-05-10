@@ -16,10 +16,10 @@ HelpAlive supports two consent modes and a runtime toggle so you can integrate w
 
 | Mode | Behavior |
 |------|----------|
-| **Auto** (default) | The SDK starts capturing as soon as the script loads. Use this when your jurisdiction doesn't require prior consent (e.g. legitimate-interest analytics). |
-| **Consent required** | The SDK loads but does not send events until you call `setConsent()` with explicit permission. |
+| **Auto** (default) | HelpAlive starts capturing as soon as the script loads. Use this where your local rules don't require prior consent. |
+| **Consent required** | HelpAlive loads but stays silent until you call `setConsent()` with permission. |
 
-Set the default mode in **Settings → Privacy** in your dashboard. The SDK reads this on init.
+Set the default in **Settings → Privacy Management** in your dashboard. HelpAlive picks it up automatically.
 
 ## Runtime toggle
 
@@ -38,16 +38,16 @@ HelpAlive.setConsent({ analytics: false, chat: false });
 
 | Field | Effect when `false` |
 |-------|---------------------|
-| `analytics` | Stops sending behavioral events to the analytics pipeline. Existing buffered events are dropped. |
-| `chat` | Hides the chatbot widget. Outstanding messages are not sent. |
+| `analytics` | HelpAlive stops recording activity for this user. Anything queued but unsent is dropped. |
+| `chat` | The AI assistant disappears entirely until consent is granted again. |
 
-## Pattern: cookie banner integration
+## Wiring it to your cookie banner
 
 ```javascript
-// 1. Load the SDK with consent gating enabled (set in dashboard)
-//    The script loads but stays silent.
+// 1. Set consent mode to "Required" in your HelpAlive dashboard so the
+//    script loads but stays silent until you call setConsent().
 
-// 2. Show your consent banner.
+// 2. Show your cookie banner and pass the choices through.
 showConsentBanner({
   onAccept: (choices) => {
     HelpAlive.setConsent({
@@ -61,7 +61,7 @@ showConsentBanner({
 });
 ```
 
-## Pattern: GDPR-style explicit opt-in
+## GDPR-style explicit opt-in
 
 For EU traffic where prior consent is required:
 
@@ -90,23 +90,23 @@ function logout() {
 }
 ```
 
-## What gets stored when consent is denied
+## What's stored when the user says no
 
 Nothing. With `analytics: false`:
 
-- No events are sent.
-- No session record is created on our servers.
-- No device fingerprint, IP, or browser data is logged.
+- No activity is recorded.
+- No session is created.
+- No device fingerprint, IP, or browser data is collected.
 
-The chatbot widget hides entirely with `chat: false` — it doesn't even mount.
+With `chat: false`, the AI assistant doesn't appear at all — the widget never loads on the page.
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Privacy overview" icon="shield-check" href="/privacy/overview">
-    The full data model — what's captured, what's redacted, where storage happens.
+    What we collect, what we don't, and where personal data is removed.
   </Card>
-  <Card title="DSAR deletion" icon="trash" href="/privacy/dsar">
-    Delete a user's data on request, with audit trail.
+  <Card title="Data deletion" icon="trash" href="/privacy/dsar">
+    Delete a user's data on request, with a full audit trail.
   </Card>
 </CardGroup>

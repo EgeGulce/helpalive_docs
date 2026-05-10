@@ -1,119 +1,112 @@
 ---
-title: "Data deletion: GDPR and CCPA DSAR pipeline"
+title: "Data deletion: handling user delete requests"
 sidebarTitle: "Data deletion"
-description: "Honor a user's right-to-be-forgotten request. Async deletion jobs with status, audit trail, and irreversible cleanup of events, profile, and chat history."
+description: "Honor a user's right-to-be-forgotten request with a few clicks. HelpAlive removes their data, keeps an audit record, and runs at your scale."
 keywords:
-  - DSAR data deletion
   - GDPR right to be forgotten
   - data subject request SaaS
-  - user data deletion API
+  - user data deletion
   - CCPA data deletion
   - privacy automation
+mode: "wide"
 ---
 
-When a user invokes their right to deletion under GDPR, CCPA, or your own privacy policy, HelpAlive ships an async DSAR pipeline that removes their data and writes an audit record.
+When a user asks you to delete their data — under GDPR, CCPA, or your own privacy policy — HelpAlive removes it for you, keeps an audit record so you can prove it happened, and runs as a background job so even large customers complete in seconds.
 
 ## What gets deleted
 
-A DSAR job removes:
+- **The user's profile** — display name, email, role, plan, and other traits you sent through `identify()`.
+- **The user's activity** — every event tied to their `userId`.
+- **Their conversations with the AI assistant** — every message they sent and every reply.
+- **Their questions in the Topics inbox** — removed from your team's review queue.
+- **Any suppression flags** for the user — cleared, since there's no user left to suppress.
 
-- **Identity** — the row in user profiles for the targeted `(tenantId, userId)`.
-- **Events** — every captured event tied to that `userId`.
-- **Chatbot history** — every message the user sent or received.
-- **Coverage-gap contributions** — the user's questions are removed from the inbox.
-- **Suppression entries** — any prior suppression flags are cleared (since there's no user left to suppress).
+## What's kept
 
-What's preserved:
+- **The deletion record itself** — when it ran, who triggered it, what was removed. Immutable, never deleted by later requests.
+- **Aggregate counts** that can no longer be tied to the user — for example, the workspace's total event count from before the deletion.
 
-- **The DSAR job audit record itself** — date, actor, target, completion status.
-- **Aggregated counts** that can no longer be tied back to the user (e.g. workspace-level event totals from before the deletion).
+## User-level vs workspace-level
 
-## Workspace-level vs user-level
+| Scope | When to use |
+|-------|-------------|
+| **User** | A single end user wants their data removed. |
+| **Workspace** | A whole customer organization is offboarding — remove everyone in the workspace at once. |
 
-| Scope | Use case |
-|-------|----------|
-| **User-level** | Standard right-to-be-forgotten request from a single end user. |
-| **Workspace-level** | A whole customer organization is offboarding — remove all users and events under that tenant. |
+A workspace deletion cascades automatically to every user inside it.
 
-Workspace-level deletion cascades to every user in the tenant.
+## How to delete a user's data
 
-## Triggering a deletion
+From your dashboard:
 
-### From the dashboard
+1. Open **Insight → Audience**, find the user, and click **Delete user data** in the user detail panel. For a whole workspace, do the same from the workspace panel.
+2. Confirm in the dialog. You'll be asked to re-authenticate if it's been more than 15 minutes since you last logged in — protection against accidental deletion from an unlocked tab.
+3. The deletion runs in the background. Status appears in **Settings → Privacy Management** right away.
 
-1. Open **Insight → Audience**, find the user, and click **Delete user data** in the user detail drawer. Or, for a workspace-level delete, do the same from the workspace detail.
-2. Confirm in the modal — this requires a **step-up** elevation. Sensitive actions like delete and key regen require you to re-authenticate within the last 15 minutes.
-3. The job is enqueued. Status appears immediately in **Settings → Privacy Management**.
+If you want to trigger deletions from your own privacy center programmatically, our privacy API supports that — talk to your account contact for the API key and details.
 
-### From the API
+## Job status
 
-If you've integrated DSAR triggering into your own privacy center, use the privacy API. (API key required; ask your account manager for the spec.)
+| State | What it means |
+|-------|---------------|
+| **Queued** | Accepted, waiting to start. |
+| **Running** | HelpAlive is removing the user's data. |
+| **Complete** | Everything deleted. |
+| **Failed** | Something went wrong. The error is recorded; nothing partial is left behind. |
 
-## Job lifecycle
-
-| State | Meaning |
-|-------|---------|
-| `queued` | Accepted, waiting for the worker. |
-| `running` | Worker is removing rows across stores. |
-| `complete` | All target rows removed. |
-| `failed` | Something went wrong. The audit record holds the error; no partial deletion is left in place — failures roll back. |
-
-Most jobs complete in seconds. Workspace-level deletions for very active tenants can take minutes.
+Most deletions complete in seconds. Workspace-level deletes for very active customers can take a minute or two.
 
 ## Audit trail
 
-Every job writes an audit record:
+Every deletion writes a permanent record:
 
-- Actor (dashboard user who triggered it).
-- Target (tenant + optional user).
-- Trigger (manual, API).
-- Outcome (`complete`, `failed`).
-- Counts of rows removed per store.
+- Who triggered it (the dashboard user).
+- When it ran.
+- What was removed (user or workspace, plus counts).
+- Whether it completed or failed.
 
-The audit record itself is immutable and is *not* deleted by subsequent DSARs.
+You can show this record to your privacy team to prove the request was honored.
 
-## Suppression — the lighter alternative
+## Lighter alternative: suppression
 
-If a user wants you to **stop processing** their data without permanently deleting history, use suppression instead:
+If a user wants you to **stop processing** their data without permanently deleting it, use **suppression** instead. It pauses recording for the user (or the whole workspace) and you can turn it back on any time.
 
-| Action | Effect | Reversible |
-|--------|--------|------------|
-| **User suppression** | Future events for the user stop being captured. Existing events are preserved. | Yes |
-| **Workspace suppression** | Same, scoped to a whole tenant. | Yes |
-| **DSAR deletion** | All data for the user / tenant removed. | **No** — destructive |
+| Action | Effect | Reversible? |
+|--------|--------|-------------|
+| **Suppress user** | Stops recording activity for the user. Keeps existing data. | Yes |
+| **Suppress workspace** | Same, for everyone in the workspace. | Yes |
+| **Delete** | Removes everything for the user or workspace. | No |
 
-Use suppression when "I want to stop being tracked" is the request. Use DSAR when "I want my data deleted" is the request.
+Suppression lives in **Settings → Privacy Management**. Use it for "stop tracking me" requests; use deletion for "remove my data" requests.
 
-Suppression lives in **Settings → Privacy Management**.
+## Sensitive actions are protected
 
-## Step-up authentication
+Deletion, API key regen, password change, and account delete all require recent authentication. After your last login you have a 15-minute window for these actions; after that, you're prompted to re-authenticate.
 
-Sensitive actions (DSAR delete, API-key regen, password change, account delete) require a step-up. After your last successful login, you have a 15-minute elevation window — sensitive actions inside the window go through; outside the window you're prompted to re-authenticate.
+This protects against someone walking up to an unlocked dashboard and clicking the wrong button.
 
-This protects against an attacker who borrows an unlocked dashboard tab from accidentally triggering destructive privacy actions.
+## Working with privacy platforms
 
-## Handling DSAR requests at scale
-
-If you receive DSAR requests via a third-party privacy platform (OneTrust, DataGrail, Transcend), the typical pattern is:
+If your team handles privacy requests through OneTrust, DataGrail, Transcend, or a similar tool, the typical flow is:
 
 1. The platform receives the user's request.
-2. Your privacy ops engineer reviews and approves.
-3. Trigger the deletion in HelpAlive via dashboard or API.
-4. Capture the resulting audit record ID and attach it to the upstream privacy ticket.
+2. Your privacy team reviews and approves.
+3. They click **Delete user data** in HelpAlive (or trigger it through the privacy API).
+4. The audit record ID gets attached to the upstream ticket as proof.
 
-We're happy to wire your privacy platform directly to the HelpAlive DSAR API if you're seeing significant volume — talk to your account manager.
+We're happy to wire your privacy platform directly to HelpAlive if you're seeing significant volume. Talk to your account contact.
 
 ## Data export
 
-Self-serve user data export (the other half of DSAR — right of access) is on the roadmap. Today, request an export through your account manager and we'll generate one out-of-band.
+Self-serve exports of a user's data — the other half of the right of access — are on the roadmap. Today, request an export through your account contact and we'll generate one for you.
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Privacy overview" icon="shield-check" href="/privacy/overview">
-    The full data and access model.
+    What we collect, what we don't, and where personal data is removed.
   </Card>
   <Card title="Configure consent" icon="lock" href="/sdk/consent">
-    Pause tracking proactively, before a DSAR is needed.
+    Pause tracking proactively, before a deletion request comes in.
   </Card>
 </CardGroup>

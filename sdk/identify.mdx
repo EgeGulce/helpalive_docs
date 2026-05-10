@@ -14,13 +14,13 @@ keywords:
 
 ## When to call it
 
-Call `identify()` once per session, immediately after your authentication flow resolves. Good places to call it:
+Call `identify()` once per session, right after the user logs in. Common places to put it:
 
-- Your auth callback or session-init code.
-- The mount of an authenticated layout component.
-- The first server-rendered page that has the user's session.
+- Your login callback.
+- The first authenticated page or layout that loads after sign-in.
+- Anywhere the user object becomes available on the client.
 
-If `identify()` runs before the SDK script finishes loading, the call is queued and replayed once `window.HelpAlive` is available.
+If `identify()` runs before the script has finished loading, the call is queued and replayed automatically — you don't need to add any extra checks.
 
 ## Signature
 
@@ -52,12 +52,12 @@ HelpAlive.identify({
 
 ## Why identify() matters
 
-Without `identify()`, events buffer in the browser but never make it to your dashboard. Calling `identify()` lets HelpAlive:
+Until you call `identify()`, HelpAlive doesn't record any activity for that user. Once you call it, HelpAlive can:
 
-- **Connect behavior to real users and organizations** across sessions and devices.
-- **Group users by workspace** for workspace-level adoption views.
-- **Personalize chatbot greetings and suggestions** based on plan, role, and recent activity.
-- **Power per-user profiles** in the dashboard so you can see what an individual customer is doing.
+- **Connect activity to real users** across sessions and devices.
+- **Group users by workspace** so your dashboard reflects the way you actually think about customers.
+- **Personalize the AI assistant's greetings and suggestions** based on the user's plan, role, and recent activity.
+- **Show per-user profiles** in your dashboard so you can see what any individual customer has been doing.
 
 ## Example
 
@@ -74,9 +74,9 @@ HelpAlive.identify({
 });
 ```
 
-## Apps without multi-tenancy
+## Apps without workspaces
 
-If your product has one user per account and no concept of workspaces, pass a constant tenant ID:
+If your product has one user per account and no concept of workspaces, pass a fixed value for `tenantId`:
 
 ```javascript
 HelpAlive.identify({
@@ -85,11 +85,11 @@ HelpAlive.identify({
 });
 ```
 
-You can switch to real tenant IDs later — existing events and profiles will be re-grouped automatically.
+You can switch to real workspace IDs later. Existing activity and profiles will be re-grouped automatically.
 
 ## Workspace switching mid-session
 
-If a user changes workspaces inside your product without a full reload (common in B2B apps with a workspace switcher), call `identify()` again with the new `tenantId`. The SDK detects the change and re-roots subsequent events under the new workspace.
+If a user switches workspaces without reloading the page (common in B2B apps with a workspace switcher), call `identify()` again with the new `tenantId`. HelpAlive will start recording their activity under the new workspace from that point on.
 
 ```javascript
 // User clicks "Switch to Beta Inc."
@@ -106,27 +106,25 @@ When the user logs out, the SDK clears identity automatically when the session e
 
 ## Anonymous sessions
 
-If `identify()` is never called, the SDK buffers up to 100 events in memory. If the user authenticates within the same page load, the buffered events are flushed under their identity. If they leave the page first, the events are dropped — anonymous sessions are not stored.
+If you never call `identify()`, HelpAlive doesn't record any activity for that user. Anonymous browsing isn't stored — by design. This keeps your analytics clean and keeps unauthenticated traffic out of the AI assistant.
 
-This is intentional: it keeps anonymous traffic out of your adoption metrics and out of the chatbot's session-history search.
-
-## Field rules and gotchas
+## Things to know
 
 <AccordionGroup>
-  <Accordion title="userId must be stable">
-    Use your database ID, a UUID, or any other non-changing identifier. Don't use email — if a user changes their email later, their analytics will fork into two profiles.
+  <Accordion title="userId must stay the same for the same user">
+    Use your database ID, a UUID, or any other ID that doesn't change. Don't use email — if a user changes their email later, their activity will end up under two separate profiles.
   </Accordion>
   <Accordion title="email is for display, not identity">
-    `email` is searchable in the dashboard, but `userId` is what HelpAlive uses to recognize the user. Always send a stable `userId`.
+    `email` makes the user searchable in your dashboard, but HelpAlive uses `userId` to recognize them. Always send a stable `userId`.
   </Accordion>
   <Accordion title="tenantId is required even for single-workspace apps">
-    Pass `"default"` if your app has no concept of workspaces. HelpAlive isolates analytics by workspace, so a value here is required even if you only have one.
+    Pass `"default"` if your app has no concept of workspaces. HelpAlive groups activity by workspace, so a value is required even if you only have one.
   </Accordion>
-  <Accordion title="Calling identify() multiple times">
-    Safe and expected. Each call updates the user's identity. Identical calls are recognized as duplicates and don't create extra records.
+  <Accordion title="You can call identify() more than once">
+    Safe and expected. Each call updates the user's identity. Identical calls don't create duplicates.
   </Accordion>
-  <Accordion title="PII in displayName or email">
-    Both fields flow through the redaction pipeline like every other event. They're stored against the user profile so you can search and segment, but they don't appear in raw event logs.
+  <Accordion title="What happens to personal data in displayName or email">
+    These two fields are stored on the user profile so your team can search and support. They never appear in raw activity records, and the user can be deleted on request.
   </Accordion>
 </AccordionGroup>
 
