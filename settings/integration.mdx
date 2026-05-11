@@ -1,0 +1,84 @@
+---
+title: "Integration & API key: install snippet and health check"
+sidebarTitle: "Integration & API key"
+description: "Grab your personalized install snippet, check whether HelpAlive is receiving events from your app, and regenerate your API key when you need to."
+keywords:
+  - HelpAlive API key
+  - install snippet
+  - integration health
+  - SDK status
+  - regenerate API key
+mode: "wide"
+---
+
+The **Integration & API key** tab in **Settings** is where you check whether HelpAlive is receiving data from your product, copy your personalized install snippet, and manage your project's API key.
+
+Open your dashboard and go to **Settings → Integration & API key**.
+
+## Integration health
+
+The top card on this tab shows whether HelpAlive is hearing from your app, broken into two checks:
+
+| Check | What it tells you |
+|-------|-------------------|
+| **Event ingestion** | Your script is loaded and we're receiving activity from your users. |
+| **Identity events** | Your code is calling `identify()` after login, so the activity is being tied to real users and workspaces. |
+
+Each shows the status over rolling windows (last 5 minutes, last hour, last 24 hours), so a brief blip won't make the whole thing turn red.
+
+If a check is failing, click the **Help** button on it for diagnosis steps tailored to what's going wrong. The most common causes:
+
+- **Snippet not deployed** — paste the snippet (below) into your app and ship it.
+- **CSP blocking the script** — see the CSP note inside the snippet card.
+- **`identify()` never called** — the script loads fine but won't record activity until you tell it who the user is.
+
+## Other setup tasks
+
+A checklist of remaining onboarding tasks shows up next to integration health — for example "Enable the Agent" or "Train the Agent on your docs". Items disappear from the list as you complete them.
+
+## Project API key
+
+This is the key your script uses to authenticate with HelpAlive. There's exactly one active key per project.
+
+### Creating the key
+
+If your project doesn't have a key yet, click **Create API key** to generate one. The first key creation is free of restrictions.
+
+### Regenerating
+
+Click **Regenerate** if you suspect the key has been exposed. This invalidates the old key immediately — anywhere you've deployed the old key will stop sending events until you update the snippet.
+
+To prevent accidents, regeneration has a **1-hour cooldown**. After regenerating, you can't regenerate again for an hour.
+
+### Who can see and rotate the key
+
+- **Admins** can create, view, and regenerate the key.
+- **Members** see that a key exists but cannot reveal it or change it.
+
+## Quick reference snippet
+
+The card on the right gives you the **personalized script** for your project — the same snippet the Setup Guide shows on first login. Two tabs:
+
+| Tab | What you copy |
+|-----|---------------|
+| **JavaScript** | The HTML `<script>` tag to paste before `</head>`. |
+| **Google Tag Manager** | The Custom HTML tag to paste into GTM, plus the Data Layer push for `identify()`. |
+
+Click the copy button to grab the snippet. The CSP callout right below tells you which directives to add if your app uses a Content Security Policy.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    The 5-minute install flow.
+  </Card>
+  <Card title="Installation" icon="terminal" href="/installation">
+    Framework examples (React, Vue, Angular, plain HTML, GTM).
+  </Card>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    The required call after login.
+  </Card>
+  <Card title="Security & Access" icon="lock" href="/settings/security">
+    Allowed email domains and session policies.
+  </Card>
+</CardGroup>

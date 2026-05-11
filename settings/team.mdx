@@ -1,0 +1,75 @@
+---
+title: "Team: invite, promote, and deactivate members"
+sidebarTitle: "Team"
+description: "Manage who has access to your HelpAlive dashboard. Invite teammates, promote members to admin, deactivate accounts that no longer need access."
+keywords:
+  - invite teammates
+  - team management
+  - admin role
+  - deactivate user
+  - dashboard access control
+mode: "wide"
+---
+
+The **Team** tab in **Settings** is where you manage who has access to your HelpAlive dashboard — your teammates, not your end users.
+
+Open your dashboard and go to **Settings → Team**.
+
+## Three sections, one screen
+
+| Section | What it's for |
+|---------|---------------|
+| **Team Members** | Everyone currently active on your dashboard. |
+| **Invites** | Invitations you've sent that haven't been used yet. |
+| **Inactive Members** | Members who've been deactivated and don't have access right now. |
+
+## Inviting a teammate
+
+Click **Invite** to send a new invitation. You can invite one person at a time or several at once.
+
+Each invite needs:
+
+- An **email address** in a domain allowed by your organization (see [Security & Access](/settings/security)).
+- A **role** — Admin or Member.
+
+HelpAlive emails the invitee a link to set their password and join. Invites appear in the **Invites** section with a status:
+
+| Status | What it means |
+|--------|---------------|
+| **Pending** | Waiting for the invitee to accept. You can resend or revoke. |
+| **Used** | They joined. They're now in **Team Members**. |
+| **Expired** | The link timed out. You can resend it as a fresh invite. |
+
+## Roles
+
+| Role | What they can do |
+|------|------------------|
+| **Admin** | Everything. Invite teammates, change Agent config, manage billing, trigger data deletions, change security and session policies. |
+| **Member** | Use the dashboard. Read everything; can't make administrative changes (invite users, regenerate API keys, edit domain allowlist, change session policy). |
+
+Only admins can promote a member to admin, or demote an admin (including themselves). You can't accidentally lock the organization out — there must always be at least one admin.
+
+## Editing or deactivating a member
+
+In **Team Members**, click the menu on any row to:
+
+- **Edit their role** — promote to admin or demote to member.
+- **Edit their job role** — the descriptive field (e.g. "Product Manager"). Admin-only.
+- **Deactivate** — revokes their access without deleting them. They move to **Inactive Members**.
+
+Deactivation is reversible. Click **Reactivate** in the **Inactive Members** section to give a former teammate access back, subject to your plan's seat limit.
+
+## Seat limits
+
+Your plan caps the number of active members. If you've hit the limit, **Reactivate** and **Invite** are blocked until you deactivate someone else or upgrade. See [Billing](/settings/billing) for the current count.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Integration & API key" icon="key" href="/settings/integration">
+    Where your script tag and API key live, plus integration health.
+  </Card>
+  <Card title="Security & Access" icon="lock" href="/settings/security">
+    Allowed email domains and session policies.
+  </Card>
+</CardGroup>

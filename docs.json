@@ -92,6 +92,17 @@
         ]
       },
       {
+        "group": "Settings",
+        "icon": "settings",
+        "pages": [
+          "settings/account",
+          "settings/team",
+          "settings/integration",
+          "settings/security",
+          "settings/billing"
+        ]
+      },
+      {
         "group": "Privacy",
         "icon": "shield-check",
         "pages": [

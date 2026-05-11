@@ -60,6 +60,13 @@ The dashboard has three main sections, plus settings:
 - [Overview](/insight/overview) — adoption analytics layer
 - [Audience](/insight/audience) — workspace and per-user analytics with full activity timeline
 
+### Settings
+- [Account](/settings/account) — profile, password, sessions, notifications, dashboard light/dark mode, account deletion
+- [Team](/settings/team) — invite teammates, manage roles, deactivate members
+- [Integration & API key](/settings/integration) — install snippet, integration health, API key management
+- [Security & Access](/settings/security) — email domain allowlist, session policy
+- [Billing](/settings/billing) — seat usage, plan limits
+
 ### Privacy & security
 - [Privacy overview](/privacy/overview) — guarantees, what's captured, what's not
 - [Redaction](/privacy/redaction) — two-layer PII redaction details

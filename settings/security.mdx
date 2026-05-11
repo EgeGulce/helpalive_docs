@@ -1,0 +1,75 @@
+---
+title: "Security & Access: domain allowlist and session policy"
+sidebarTitle: "Security & Access"
+description: "Control who can join your organization by email domain, set how long dashboard sessions stay signed in, and see your current security posture at a glance."
+keywords:
+  - email domain allowlist
+  - session timeout
+  - SaaS security settings
+  - dashboard session policy
+  - HelpAlive security
+mode: "wide"
+---
+
+The **Security & Access** tab in **Settings** is where you control two things: which email domains can join your organization, and how long your team's dashboard sessions stay signed in.
+
+Open your dashboard and go to **Settings → Security & Access**.
+
+## Domain allowlist
+
+The **Domain allowlist** is a list of email domains that can be invited to your organization, or self-sign up. Anyone with an email outside the list can't join.
+
+- **Add a domain** — type a domain (e.g. `acme.com`) and click **Add**. You'll be reminded that this affects who can be invited or sign up going forward.
+- **Remove a domain** — click the trash icon next to it. At least one domain must remain on the list.
+
+Domain changes are admin-only. Members see the list but can't change it.
+
+<Note>
+  Adding or removing a domain affects **future** invites and sign-ups. People already in your team aren't kicked out if their domain is removed.
+</Note>
+
+## Session policy
+
+The **Session policy** sets how long someone stays signed in to the dashboard before being asked to log in again. Two values:
+
+| Setting | What it controls | Range |
+|---------|------------------|-------|
+| **Idle timeout** | How long without activity before the session ends. | 15 minutes — 30 days |
+| **Maximum session lifetime** | The longest a single session can last, even if it's active the whole time. | 1 hour — 90 days |
+
+A badge tells you whether the current values are **Default** or **Custom**.
+
+If you set values that don't make sense (e.g. an idle timeout longer than the maximum lifetime), HelpAlive shows a warning before saving.
+
+Session policy changes are admin-only. Members see the current policy but can't change it.
+
+## Security overview
+
+A read-only card shows your organization's baseline security posture:
+
+- **HTTPS required** — all dashboard and API traffic uses HTTPS.
+- **CSRF protection** — dashboard requests are protected from cross-site forgery.
+
+These are always on. The card is there so your security team can confirm at a glance.
+
+## Access control summary
+
+The bottom card summarizes what each role can do:
+
+| Role | Access |
+|------|--------|
+| **Admin** | Full access — invite, edit roles, regenerate API key, change security settings, trigger deletions. |
+| **Member** | Standard access — use the dashboard, see analytics, read settings; can't make administrative changes. |
+
+To change someone's role, go to [Team](/settings/team).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Team" icon="users" href="/settings/team">
+    Invite teammates and manage their access.
+  </Card>
+  <Card title="Privacy" icon="shield-check" href="/privacy/overview">
+    What we collect, what we don't, and where personal data is removed.
+  </Card>
+</CardGroup>
