@@ -1,0 +1,93 @@
+---
+title: "Configuration: visibility, rate limits, and danger zone"
+sidebarTitle: "Configuration"
+description: "Turn the Agent on and off for your users, set rate limits to keep usage predictable, and use the danger zone to reset training or remove the Agent entirely."
+keywords:
+  - chatbot rate limits
+  - disable chatbot
+  - chatbot reset
+  - chatbot configuration
+mode: "wide"
+---
+
+The **Agent → Configuration** tab is the Agent's operational dial. It's where you turn the Agent on or off, control how often individual users can ask questions, and (if needed) wipe its training or remove it entirely.
+
+Open your dashboard and go to **Agent → Configuration**.
+
+<Note>
+  Changes on this tab — visibility and rate limits — take effect **immediately** for your users. They don't go through the draft / publish flow like Train, Personalization, and Appearance do.
+</Note>
+
+## General
+
+The top card is one switch: **Agent enabled / disabled**.
+
+- **Enabled** — the Agent appears in your product for all users who match your visibility rules.
+- **Disabled** — the launcher button stops appearing. Existing chat sessions end. The Agent is completely hidden until you re-enable it.
+
+Useful when you're between training cycles, when you've spotted a problem and want to take the Agent offline while you fix it, or when you simply don't want the Agent active yet.
+
+## Rate limits
+
+Rate limits stop a single user — or your whole organization — from generating runaway Agent usage in a short window. Two values:
+
+| Limit | What it controls | Range |
+|-------|------------------|-------|
+| **Per user, per hour** | The most messages one user can send to the Agent in one hour. | 1 — 500 |
+| **Per organization, per day** | The most messages your whole organization can send in one day. | 1 — 50,000 |
+
+If a user hits the per-user limit, the Agent politely tells them to wait. If your organization hits the daily cap, the Agent gracefully pauses for everyone until the next day.
+
+Both are immediate — change them and the new values apply on the next message. Most teams leave these on defaults; raise them if you're scaling up.
+
+## Danger zone
+
+The bottom card holds two destructive actions. Both require an extra confirmation step before they run.
+
+### Reset training data
+
+Deletes every knowledge source you've added. Your URL crawls, file uploads, and pasted text — all gone. Your tone, custom responses, and appearance settings stay in place; only the knowledge base resets.
+
+Use this when:
+
+- You've trained on the wrong content and want a clean start.
+- Your docs have changed so much that re-training from scratch is easier than re-crawling each source.
+
+You can't undo a reset. After it runs, the Agent has nothing to answer from until you add sources back in **Agent → Train**.
+
+### Remove the Agent
+
+The nuclear option. Deletes:
+
+- All training data.
+- All personalization (custom responses, templates, tone).
+- All appearance settings.
+- The Agent itself — the launcher button disappears for every user.
+
+Your event analytics, your team, your API keys, and the rest of your HelpAlive account stay. Only the Agent is wiped.
+
+Use this only when you're decommissioning the Agent entirely, or when you want to start over completely. You'll be asked to confirm twice.
+
+## Visibility scoping (coming soon)
+
+Today, the Agent is either fully on or fully off. We're adding the ability to:
+
+- Turn the Agent on for specific workspaces only.
+- Turn the Agent on for specific user roles or plans.
+- Schedule the Agent on or off by time of day or day of week.
+
+These will live on this tab when they ship.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Train" icon="book-open" href="/agent/train">
+    Add knowledge after a reset.
+  </Card>
+  <Card title="Personalization" icon="message-square" href="/agent/personalization">
+    Tone, custom responses, guidance templates.
+  </Card>
+  <Card title="Appearance" icon="palette" href="/agent/appearance">
+    How the Agent looks in your product.
+  </Card>
+</CardGroup>

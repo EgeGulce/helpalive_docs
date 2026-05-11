@@ -47,7 +47,10 @@ The dashboard has three main sections, plus settings:
 ### Agent
 - [Overview](/agent/overview) — what makes the Agent context-aware
 - [Train](/agent/train) — load your knowledge: URL crawl, PDF / DOCX / Markdown upload, pasted text
+- [Personalization](/agent/personalization) — tone, custom responses, guidance templates
+- [Test](/agent/test) — preview draft answers, batch tests, simulate user context
 - [Appearance](/agent/appearance) — colors, layout, welcome message, color scheme
+- [Configuration](/agent/configuration) — visibility on/off, rate limits, danger zone (reset / remove)
 - [Publishing](/agent/publishing) — atomic draft → preview → publish workflow
 
 ### Studio
@@ -59,6 +62,7 @@ The dashboard has three main sections, plus settings:
 ### Insight
 - [Overview](/insight/overview) — adoption analytics layer
 - [Audience](/insight/audience) — workspace and per-user analytics with full activity timeline
+- [Reports](/insight/reports) — date-range summaries (live: users today, total users, sentiment trend; coming soon: churn, onboarding, recommendation impact, coverage gaps)
 
 ### Settings
 - [Account](/settings/account) — profile, password, sessions, notifications, dashboard light/dark mode, account deletion

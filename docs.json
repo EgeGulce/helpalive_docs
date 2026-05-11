@@ -69,7 +69,10 @@
         "pages": [
           "agent/overview",
           "agent/train",
+          "agent/personalization",
+          "agent/test",
           "agent/appearance",
+          "agent/configuration",
           "agent/publishing"
         ]
       },
@@ -88,7 +91,8 @@
         "icon": "compass",
         "pages": [
           "insight/overview",
-          "insight/audience"
+          "insight/audience",
+          "insight/reports"
         ]
       },
       {
