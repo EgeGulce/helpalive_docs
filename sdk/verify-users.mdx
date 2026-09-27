@@ -1,0 +1,243 @@
+---
+title: "Verify your users: sign each user id on your server"
+sidebarTitle: "Verify your users"
+description: "Optional, and recommended for security. Your server signs each user id with a secret only you and HelpAlive know, so nobody can use the agent as someone else once Only allow verified users is on. Code in eight languages."
+keywords:
+  - HelpAlive verify users
+  - identity verification JWT
+  - user token HS256
+  - signed user id
+  - chat widget identity verification
+---
+
+<Note>
+  **Optional, and recommended for security.** HelpAlive works fully without this step. Without it, HelpAlive trusts the user id your page sends, so someone who edits the page in their browser could send another person's id and read that person's chats. With it, your server signs each id, and once you turn on **Only allow verified users**, nobody can pretend to be someone else. Add it before you open the agent to all your users.
+</Note>
+
+Your developer, about 15 minutes. You'll find everything below, with your own secret, on **Settings → Setup & API Key**, step 4.
+
+## 1. Your signing secret
+
+Click **Create your signing secret** on the setup page. Keep it on your server, like a password, wherever you keep other secrets. The code below reads it from `HELPALIVE_SIGNING_SECRET`; the name is up to you.
+
+The secret never goes into your pages, and never into a prompt for an AI coding agent. Set its value yourself.
+
+## 2. Make a user token on your server
+
+Where your server knows the signed-in person, add these lines. They make a short signed text, the user token. `user` stands for your app's signed-in person.
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    // npm install jsonwebtoken
+    import jwt from "jsonwebtoken"
+
+    const userToken = jwt.sign(
+      {
+        sub: String(user.id), // this person's id in your app
+        // Optional: delete the next line if your app has no companies or workspaces.
+        tenant: String(user.companyId), // their company or workspace id
+      },
+      process.env.HELPALIVE_SIGNING_SECRET,
+      { algorithm: "HS256" },
+    )
+    ```
+  </Tab>
+
+  <Tab title="Python">
+    ```python
+    # pip install PyJWT
+    import os
+    import jwt
+
+    user_token = jwt.encode(
+        {
+            "sub": str(user.id),  # this person's id in your app
+            # Optional: delete the next line if your app has no companies or workspaces.
+            "tenant": str(user.company_id),  # their company or workspace id
+        },
+        os.environ["HELPALIVE_SIGNING_SECRET"],
+        algorithm="HS256",
+    )
+    ```
+  </Tab>
+
+  <Tab title="Ruby">
+    ```ruby
+    # gem install jwt  (or add gem "jwt" to your Gemfile)
+    require "jwt"
+
+    user_token = JWT.encode(
+      {
+        sub: user.id.to_s, # this person's id in your app
+        # Optional: delete the next line if your app has no companies or workspaces.
+        tenant: user.company_id.to_s, # their company or workspace id
+      },
+      ENV.fetch("HELPALIVE_SIGNING_SECRET"),
+      "HS256"
+    )
+    ```
+  </Tab>
+
+  <Tab title="PHP">
+    ```php
+    // composer require firebase/php-jwt
+    use Firebase\JWT\JWT;
+
+    $userToken = JWT::encode(
+        [
+            'sub' => (string) $user->id, // this person's id in your app
+            // Optional: delete the next line if your app has no companies or workspaces.
+            'tenant' => (string) $user->company_id, // their company or workspace id
+        ],
+        getenv('HELPALIVE_SIGNING_SECRET'),
+        'HS256'
+    );
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    ```java
+    // Maven: com.auth0:java-jwt
+    import com.auth0.jwt.JWT;
+    import com.auth0.jwt.algorithms.Algorithm;
+
+    String userToken = JWT.create()
+        .withSubject(String.valueOf(user.getId())) // this person's id in your app
+        // Optional: delete the next line if your app has no companies or workspaces.
+        .withClaim("tenant", String.valueOf(user.getCompanyId())) // their company or workspace id
+        .sign(Algorithm.HMAC256(System.getenv("HELPALIVE_SIGNING_SECRET")));
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    ```go
+    // go get github.com/golang-jwt/jwt/v5
+    import (
+    	"os"
+
+    	"github.com/golang-jwt/jwt/v5"
+    )
+
+    userToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+    	"sub": user.ID, // this person's id in your app, as a string
+    	// Optional: delete the next line if your app has no companies or workspaces.
+    	"tenant": user.CompanyID, // their company or workspace id, as a string
+    }).SignedString([]byte(os.Getenv("HELPALIVE_SIGNING_SECRET")))
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    ```csharp
+    // dotnet add package Microsoft.IdentityModel.JsonWebTokens
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using Microsoft.IdentityModel.JsonWebTokens;
+    using Microsoft.IdentityModel.Tokens;
+
+    var secret = Environment.GetEnvironmentVariable("HELPALIVE_SIGNING_SECRET")!;
+    var handler = new JsonWebTokenHandler { SetDefaultTimesOnTokenCreation = false };
+    var userToken = handler.CreateToken(new SecurityTokenDescriptor
+    {
+        Claims = new Dictionary<string, object>
+        {
+            ["sub"] = user.Id.ToString(), // this person's id in your app
+            // Optional: delete the next line if your app has no companies or workspaces.
+            ["tenant"] = user.CompanyId.ToString(), // their company or workspace id
+        },
+        SigningCredentials = new SigningCredentials(
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)), SecurityAlgorithms.HmacSha256),
+    });
+    ```
+  </Tab>
+
+  <Tab title="Edge / Deno / Bun">
+    ```javascript
+    // npm install jose  (Vercel Edge, Cloudflare Workers, Deno, Bun)
+    import { SignJWT } from "jose"
+
+    const userToken = await new SignJWT({
+      sub: String(user.id), // this person's id in your app
+      // Optional: delete the next line if your app has no companies or workspaces.
+      tenant: String(user.companyId), // their company or workspace id
+    })
+      .setProtectedHeader({ alg: "HS256" })
+      // On Cloudflare Workers, read the secret from env instead of process.env
+      .sign(new TextEncoder().encode(process.env.HELPALIVE_SIGNING_SECRET))
+    ```
+  </Tab>
+</Tabs>
+
+The token is a JWT signed with HS256, keyed on the text of your secret:
+
+| Claim | What goes in it |
+|-------|-----------------|
+| `sub` | The same id your page passes to `identify()` as `userId`, as a string. |
+| `tenant` | Optional: the same id your page passes as `tenantId`, as a string. Leave it out if your app has no companies or workspaces. |
+
+Don't add an expiry (`exp`) or a key id (`kid`). A token that expires stops working in a tab left open, and rotating the secret (below) is how you cut old tokens off.
+
+## 3. Pass the token to identify()
+
+Get the token to the page for that person: print it into the page from your template, or add it to an endpoint your app already has for the current user. Send it with `Cache-Control: no-store`. Then pass it to `identify()`:
+
+```javascript
+// Lets the calls below run before our script has finished loading. Keep it first.
+window.HelpAlive = window.HelpAlive || { q: [] };
+["identify", "reset", "setConsent", "track"].forEach((m) => {
+  if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
+});
+
+// In place of your identify() call from step 1.
+// The token already says who the person is and which company they belong to.
+HelpAlive.identify({
+  userToken,                    // the token your server made for this person
+  tenantName: company.name,     // optional: the company's name, shown in your dashboard
+  displayName: user.name,       // optional
+  email: user.email,            // optional
+  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+  createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+})
+```
+
+The token says who the person is and which company they belong to, so you no longer pass `userId` or `tenantId`. If you pass a different one beside the token, the token wins and the browser console shows a warning.
+
+## With an AI coding agent
+
+Step 4 of the setup page has a prompt for Claude Code, Codex, Cursor or GitHub Copilot. It makes the token on your server, passes it to `identify()`, and adds `HELPALIVE_SIGNING_SECRET` to your list of environment variables with no value. You add the secret's value yourself, so it never goes into a prompt.
+
+## 4. Check that it works
+
+Sign in to your app and open the agent. Then press the refresh button on the setup page. The **Users are verified** line says what arrived:
+
+| The line says | What it means |
+|---------------|---------------|
+| Verified people are arriving | Valid user tokens are reaching HelpAlive. |
+| No token yet | Your pages don't send a token yet. |
+| Tokens arrive but don't check out | Use the current signing secret, and make the token's `sub` the same id your page passes as `userId`. |
+| Tokens arrive but have expired | Leave the expiry out of the token. |
+
+HelpAlive records each kind of result at most every 15 minutes, so a fix you just made can take up to 15 minutes to show.
+
+## 5. Only allow verified users
+
+Once verified people are arriving, you can turn on **Only allow verified users**, below the check. Until you turn it on, nobody is turned away.
+
+With it on, the agent refuses anyone whose page sends a user id without a valid user token. Turn it on once every page that calls `identify()` sends a token.
+
+## Rotating the secret
+
+Click **Rotate** next to your secret and put the new one in `HELPALIVE_SIGNING_SECRET` on your server. Nothing in your code changes. The previous secret keeps working until you rotate again, so nobody is refused while you roll it out. If you are rotating because a secret leaked, rotate once more after your server uses the new one, and the leaked one stops working.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Identify" icon="user-check" href="/sdk/identify">
+    Every identify() field.
+  </Card>
+  <Card title="Installation" icon="terminal" href="/installation">
+    The tag and how to check it works.
+  </Card>
+</CardGroup>

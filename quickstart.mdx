@@ -1,135 +1,80 @@
 ---
-title: "HelpAlive quickstart: install and identify in 5 minutes"
+title: "HelpAlive quickstart: live in three steps"
 sidebarTitle: "Quickstart"
-description: "Install HelpAlive in five minutes — paste the script tag, call identify() after login, and verify the connection from your dashboard Setup Guide."
+description: "Go live with HelpAlive in three steps: add one tag and one identify() call, teach the agent your product, then switch it on and try it. A fourth step, verifying your users, is optional and recommended for security."
 keywords:
   - HelpAlive quickstart
-  - install AI chatbot SaaS
-  - 5 minute setup SaaS
-  - in-app AI assistant install
-  - tracking SDK quickstart
-  - context-aware chatbot setup
+  - install AI agent SaaS
+  - in-app AI agent install
+  - identify signed-in users
+  - verify users HelpAlive
 ---
 
-This is the same three-step flow your dashboard's **Setup Guide** walks you through the first time you log in. You can do it from this page, or from the Setup Guide modal in the dashboard — both end up at the same place.
+These are the same steps as the setup page in your dashboard: **Settings → Setup & API Key**. The page fills in your project key for you and turns each step green by itself once it sees that step working.
 
 <Steps>
-  <Step title="Get your script tag">
-    Open your dashboard. The first time you log in as an admin, the **Setup Guide** opens automatically. You can also reopen it any time from **Settings → Integration & API Key**.
+  <Step title="Add HelpAlive to your app">
+    Your developer, about 10 minutes. Two pieces of code: a tag that loads HelpAlive on every page, and one call that tells it who is signed in. The agent only appears for signed-in people.
 
-    The script will look like this — but use the **personalized snippet** from your dashboard, which has your project's API key already filled in:
+    Paste the tag into the `<head>` of every page. Copy it from the setup page, where your project key is already in it:
 
     ```html
     <!-- Paste before </head> -->
-    <script
-      src="https://cdn.helpalive.com/sdk/helpalive.js"
-      data-api-key="YOUR_API_KEY"
-      async>
-    </script>
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
     ```
 
-    Paste it into the `<head>` of your HTML, just before `</head>`, so it loads on every page. Then deploy.
-
-    <Note>
-      The script loads in the background, so it won't slow your page down. Any calls you make before it finishes loading are queued and replayed automatically — no extra checks needed in your code.
-    </Note>
-  </Step>
-
-  <Step title="Identify your user after login">
-    Once the user authenticates, call `HelpAlive.identify()` with their stable user ID and a workspace ID. **Both are required.** Until you call identify, HelpAlive doesn't record activity for that user and the AI assistant stays off.
+    Then, wherever your app already knows the signed-in person, tell HelpAlive who they are:
 
     ```javascript
-    // Call after login (e.g. in your auth callback or app shell)
-    HelpAlive.identify({
-      userId:      user.id,           // required: your app's stable user ID
-      tenantId:    tenant.id,         // required: workspace/org ID, or "default"
-      tenantName:  tenant.name,       // optional: workspace display name
-      displayName: user.name,         // optional: full name
-      email:       user.email,        // optional: for display/search
-      role:        user.role,         // optional: "admin" / "editor" / "viewer"
-      plan:        user.plan,         // optional: "free" / "pro" / "enterprise"
-      createdAt:   user.createdAt     // optional: when the user signed up
+    // Lets the calls below run before our script has finished loading. Keep it first.
+    window.HelpAlive = window.HelpAlive || { q: [] };
+    ["identify", "reset", "setConsent", "track"].forEach((m) => {
+      if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
     });
+
+    // On every page while someone is logged in, starting right after login
+    HelpAlive.identify({
+      userId: user.id,              // your own id for this person
+      tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
+    })
+
+    // When they log out, and when their session times out.
+    HelpAlive.reset()
     ```
 
-    For B2C apps without workspaces, pass `tenantId: "default"`.
-
-    See [Identify](/sdk/identify) for the full field reference, anonymous-session behavior, and tenant-switching patterns.
-
-    <Tip>
-      If you call `identify()` before the script has finished loading, the call is queued and replayed automatically. You don't need any extra checks in your code.
-    </Tip>
+    Only `userId` is required. [Installation](/installation) has the optional fields, where the tag goes in each framework, Google Tag Manager, and a prompt for your AI coding agent.
   </Step>
 
-  <Step title="Verify the connection">
-    Visit a few pages of your app while logged in. Then open the dashboard and check the Setup Guide's **Verify Connection** step — it polls every few seconds and shows three things:
+  <Step title="Teach the agent your product">
+    Anyone on your team. Add your help center, docs site or files on **Agent → Train**, then publish them. The agent answers your users from them, and HelpAlive keeps them up to date. See [Train](/agent/train).
+  </Step>
 
-    | Check | What it means |
-    |-------|---------------|
-    | **Event ingestion** | Your script is loaded and we're receiving events. |
-    | **Identity coverage** | We're seeing `userId` and `tenantId` from your `identify()` call. |
-    | **Profile enrichment** | Optional fields (`displayName`, `email`) are being sent. Improves Agent personalization. |
+  <Step title="Turn it on and try it">
+    Anyone on your team. Switch the agent on and choose who sees it in the rollout settings, on **Agent → Configuration**. Then open your app in another tab, sign in, open the agent and ask it something.
+  </Step>
 
-    Verification typically takes under a minute. If you wait 10+ minutes and still see "Pending", check the [common stumbles](#common-stumbles) below.
+  <Step title="Verify your users (optional, recommended)">
+    Your developer, about 15 minutes. HelpAlive works fully without this step. With it, your server signs each user id, and once you turn on **Only allow verified users**, nobody can pretend to be someone else. See [Verify your users](/sdk/verify-users).
   </Step>
 </Steps>
 
-## What you get with the two-step setup
+## Check that it works
 
-Once the script and `identify()` call are in place, HelpAlive starts:
-
-- **Auto-capturing** clicks, form submits, pageviews, rage clicks, and DOM errors — no event tagging required.
-- **Building user and workspace profiles** so adoption metrics tie to real accounts.
-- **Powering the Agent** if you've enabled it (the chatbot widget loads automatically).
-
-## Prefer Google Tag Manager?
-
-The dashboard Setup Guide also offers a Google Tag Manager flow — useful if you already manage other scripts through GTM. The GTM method uses a Custom HTML tag plus a Data Layer push for `identify()`. See [Installation → Google Tag Manager](/installation#google-tag-manager) for the full walkthrough.
-
-## Common stumbles
-
-<AccordionGroup>
-  <Accordion title="Content Security Policy blocks the script">
-    Add the HelpAlive origins to your CSP header:
-
-    ```
-    script-src  https://cdn.helpalive.com;
-    connect-src https://api.helpalive.com;
-    ```
-
-    Open your app, press F12 → Console, and look for a red error mentioning `helpalive.js` or `Content Security Policy`. If you see one, that's the fix.
-  </Accordion>
-
-  <Accordion title="Not seeing events after 10 minutes">
-    Run through this list:
-    1. **Snippet not deployed yet.** Make sure the build with the snippet is live in the environment you're testing.
-    2. **CSP blocking** — see above.
-    3. **`identify()` was never called.** The script can load fine, but no events are sent until you call identify after login.
-    4. **Browser blockers.** Some ad blockers and privacy extensions block analytics scripts. Try in an incognito window with extensions disabled.
-  </Accordion>
-
-  <Accordion title="Single-page apps and route changes">
-    The SDK detects history-API navigations automatically — no manual `pageview` call needed when your router changes the URL.
-  </Accordion>
-
-  <Accordion title="No workspace ID in your app">
-    Pass `tenantId: "default"`. You can switch to real workspace IDs later without re-identifying users.
-  </Accordion>
-</AccordionGroup>
+The setup page's **Is it working?** panel has one line per step. Press the refresh button after trying your app to check again. [Installation → Check that it works](/installation#check-that-it-works) says how each line decides.
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Full installation guide" icon="terminal" href="/installation">
-    Framework examples for React, Vue, Angular, plain HTML, plus the Google Tag Manager method.
+  <Card title="Installation" icon="terminal" href="/installation">
+    The tag, identify(), frameworks, Google Tag Manager and CSP.
   </Card>
-  <Card title="Identify users" icon="user-check" href="/sdk/identify">
-    Field reference, anonymous sessions, multi-workspace apps.
+  <Card title="Identify" icon="user-check" href="/sdk/identify">
+    Every identify() field, and logging out.
   </Card>
-  <Card title="Set up the Agent" icon="sparkles" href="/agent/overview">
-    Train the AI assistant on your docs.
+  <Card title="Verify your users" icon="shield-check" href="/sdk/verify-users">
+    Sign each user id on your server.
   </Card>
-  <Card title="Privacy posture" icon="shield-check" href="/privacy/overview">
-    What's redacted, where, and what data leaves the browser.
+  <Card title="Train the agent" icon="sparkles" href="/agent/train">
+    Add your docs and publish them.
   </Card>
 </CardGroup>

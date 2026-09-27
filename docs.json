@@ -60,6 +60,7 @@
         "pages": [
           "sdk/overview",
           "sdk/identify",
+          "sdk/verify-users",
           "sdk/consent"
         ]
       },

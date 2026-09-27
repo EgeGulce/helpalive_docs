@@ -66,12 +66,12 @@ The SDK exposes a small surface on `window.HelpAlive`. The only methods you'll t
 
 ### `HelpAlive.identify({ ... })` — required after login
 
-Tells HelpAlive who the user is and which workspace they belong to. Without it, the SDK buffers events but nothing is sent.
+Tells HelpAlive who the user is and, if your app has them, which company or workspace they belong to. Without it, the SDK holds events and sends nothing. Keep the four queue lines from [Installation](/installation#2-tell-helpalive-who-is-signed-in) above your first call.
 
 ```javascript
 HelpAlive.identify({
   userId:   user.id,           // required
-  tenantId: tenant.id,         // required (use "default" if no workspaces)
+  tenantId: company.id,        // optional: leave out if your app has no companies or workspaces
   email:    user.email,
   plan:     user.plan
 });

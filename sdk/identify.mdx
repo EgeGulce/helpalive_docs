@@ -1,140 +1,88 @@
 ---
-title: "identify(): tie events to users and tenants"
+title: "identify(): tell HelpAlive who is signed in"
 sidebarTitle: "Identify"
-description: "Call HelpAlive.identify() after login to tie events to real users and tenants. userId and tenantId are required; traits power segmentation and personalization."
+description: "Call HelpAlive.identify() for the signed-in person on every page. Only userId is required; tenantId is for apps with companies or workspaces, and the other fields are optional. Call reset() on logout."
 keywords:
-  - identify SaaS users
-  - user identification SDK
-  - multi-tenant analytics
-  - identify userId tenantId
-  - B2B SaaS user tracking
+  - identify signed-in users
+  - HelpAlive identify
+  - userId tenantId
+  - multi-tenant SaaS
+  - reset on logout
 ---
 
-`identify()` is the only call you have to make beyond the script tag. It tells HelpAlive which user is using your product, which workspace they belong to, and what traits to use for segmentation and personalization.
+`identify()` is the one call you write yourself, besides the tag. It tells HelpAlive who is signed in, and the agent only appears once it has run.
 
 ## When to call it
 
-Call `identify()` once per session, right after the user logs in. Common places to put it:
+Wherever your app already knows the signed-in person: right after login, and on every page load while they stay signed in. Calling it again with the same details is safe.
 
-- Your login callback.
-- The first authenticated page or layout that loads after sign-in.
-- Anywhere the user object becomes available on the client.
-
-If `identify()` runs before the script has finished loading, the call is queued and replayed automatically — you don't need to add any extra checks.
-
-## Signature
-
-```typescript
-HelpAlive.identify({
-  userId:      string;   // required — your stable app user ID
-  tenantId:    string;   // required — workspace/org ID, or "default"
-  tenantName?: string;
-  displayName?:string;
-  email?:      string;
-  role?:       string;
-  plan?:       string;
-  createdAt?:  string;   // when the user signed up
-});
-```
-
-## Field reference
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `userId` | Yes | Your app's stable user ID. Must not change across sessions. Avoid using email if it can change. |
-| `tenantId` | Yes | Workspace or organization ID. If your app doesn't have multi-tenancy, pass `"default"`. |
-| `tenantName` | No | Display name for the workspace. Shown in **Insight → Audience** in your dashboard instead of the raw ID. |
-| `displayName` | No | Full name of the user (e.g. `"Priya Sharma"`). Recommend `firstName + " " + lastName`. |
-| `email` | No | User's email. Used for display and search. Keep `userId` as the stable identifier. |
-| `role` | No | User's role or permission level (e.g. `"admin"`, `"editor"`, `"viewer"`). Helps segment behavior. |
-| `plan` | No | Subscription tier (e.g. `"free"`, `"pro"`, `"enterprise"`). Enables plan-segmented insights and chatbot behavior. |
-| `createdAt` | No | When the user signed up. Helps the AI assistant tailor its tone for new vs. seasoned users. |
-
-## Why identify() matters
-
-Until you call `identify()`, HelpAlive doesn't record any activity for that user. Once you call it, HelpAlive can:
-
-- **Connect activity to real users** across sessions and devices.
-- **Group users by workspace** so your dashboard reflects the way you actually think about customers.
-- **Personalize the AI assistant's greetings and suggestions** based on the user's plan, role, and recent activity.
-- **Show per-user profiles** in your dashboard so you can see what any individual customer has been doing.
-
-## Example
+Keep these four lines above your first call. They let your code call HelpAlive before our script has finished loading, and our script replays the calls in order:
 
 ```javascript
-HelpAlive.identify({
-  userId:      "user_8x92k",
-  tenantId:    "acme-corp",
-  tenantName:  "Acme Corp",
-  displayName: "Priya Sharma",
-  email:       "priya@acme.com",
-  role:        "admin",
-  plan:        "pro",
-  createdAt:   "2024-11-03T09:00:00Z"
+// Lets the calls below run before our script has finished loading. Keep it first.
+window.HelpAlive = window.HelpAlive || { q: [] };
+["identify", "reset", "setConsent", "track"].forEach((m) => {
+  if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
 });
 ```
 
-## Apps without workspaces
-
-If your product has one user per account and no concept of workspaces, pass a fixed value for `tenantId`:
+## The call
 
 ```javascript
+// On every page while someone is logged in, starting right after login
 HelpAlive.identify({
-  userId:   "user_8x92k",
-  tenantId: "default"
-});
+  userId: user.id,              // your own id for this person
+  tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
+  tenantName: company.name,     // optional: the company's name, shown in your dashboard
+  displayName: user.name,       // optional
+  email: user.email,            // optional
+  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+  createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+})
 ```
 
-You can switch to real workspace IDs later. Existing activity and profiles will be re-grouped automatically.
+Only `userId` is required. Fill the optional fields your app has, and delete the others.
 
-## Workspace switching mid-session
+| Field | Required | What it is |
+|-------|----------|------------|
+| `userId` | Yes | Your own id for this person. It must not change, so don't use an email address if people can change theirs. |
+| `tenantId` | No | Their company, workspace or account id, if your app has them. Leave it out if it doesn't: everyone then belongs to one group, `"default"`. |
+| `tenantName` | No | The company's name, shown in your dashboard in place of the id. |
+| `displayName` | No | The person's name, for example `"Priya Sharma"`. |
+| `email` | No | Their email address, shown and searchable in your dashboard. |
+| `role` | No | Their role in your app, for example `"admin"`, `"editor"` or `"viewer"`. |
+| `plan` | No | Their plan, for example `"free"`, `"pro"` or `"enterprise"`. |
+| `createdAt` | No | When they signed up, as Unix time in seconds (for example `1704067200` for 1 January 2024). Other formats are ignored with a console warning. |
+| `userToken` | No | The user token your server makes, once you [verify your users](/sdk/verify-users). With a token, `userId` and `tenantId` come from the token, so you don't pass them. |
 
-If a user switches workspaces without reloading the page (common in B2B apps with a workspace switcher), call `identify()` again with the new `tenantId`. HelpAlive will start recording their activity under the new workspace from that point on.
+## Logging out
+
+Call `reset()` when the person logs out, and when their session times out:
 
 ```javascript
-// User clicks "Switch to Beta Inc."
-HelpAlive.identify({
-  userId:   "user_8x92k",
-  tenantId: "beta-inc",
-  tenantName: "Beta Inc."
-});
+// When they log out, and when their session times out. Until this runs,
+// the browser keeps the person, and the next visitor's events count as theirs.
+HelpAlive.reset()
 ```
 
-## Logout
+It also closes the agent, so the next person on the same browser never sees the last one's chat.
 
-When the user logs out, the SDK clears identity automatically when the session ends. If your app doesn't fully reload between users (a shared device, for example), you can clear it manually with `HelpAlive.reset()` to prevent the next user inheriting the previous identity. For most apps, this isn't needed.
+## Switching company without reloading
 
-## Anonymous sessions
+If people can switch company or workspace without a page reload, call `identify()` again with the new `tenantId` after the switch. HelpAlive counts what they do from then on under the new one.
 
-If you never call `identify()`, HelpAlive doesn't record any activity for that user. Anonymous browsing isn't stored — by design. This keeps your analytics clean and keeps unauthenticated traffic out of the AI assistant.
+## Before identify() runs
 
-## Things to know
-
-<AccordionGroup>
-  <Accordion title="userId must stay the same for the same user">
-    Use your database ID, a UUID, or any other ID that doesn't change. Don't use email — if a user changes their email later, their activity will end up under two separate profiles.
-  </Accordion>
-  <Accordion title="email is for display, not identity">
-    `email` makes the user searchable in your dashboard, but HelpAlive uses `userId` to recognize them. Always send a stable `userId`.
-  </Accordion>
-  <Accordion title="tenantId is required even for single-workspace apps">
-    Pass `"default"` if your app has no concept of workspaces. HelpAlive groups activity by workspace, so a value is required even if you only have one.
-  </Accordion>
-  <Accordion title="You can call identify() more than once">
-    Safe and expected. Each call updates the user's identity. Identical calls don't create duplicates.
-  </Accordion>
-  <Accordion title="What happens to personal data in displayName or email">
-    These two fields are stored on the user profile so your team can search and support. They never appear in raw activity records, and the user can be deleted on request.
-  </Accordion>
-</AccordionGroup>
+Nothing is sent for a visitor until `identify()` runs. Events wait in the page and are dropped if the visitor leaves without signing in, and the agent doesn't appear for them.
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Configure consent" icon="shield-check" href="/sdk/consent">
-    Pause tracking until your cookie banner returns a decision.
+  <Card title="Verify your users" icon="shield-check" href="/sdk/verify-users">
+    Optional, and recommended for security.
   </Card>
-  <Card title="Set up the Agent" icon="sparkles" href="/agent/overview">
-    Train the AI assistant on your docs.
+  <Card title="Consent" icon="cookie" href="/sdk/consent">
+    Wait for your cookie banner before tracking.
   </Card>
 </CardGroup>

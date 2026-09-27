@@ -15,7 +15,7 @@
 
 HelpAlive is a guidance layer for B2B SaaS, NOT a session-replay or general analytics tool. Three shipped components:
 
-1. **The SDK** (`@helpalive/sdk`, ~11 KB) — script tag at `https://cdn.helpalive.com/sdk/helpalive.js`, `data-api-key` attribute. Public API: `init`, `identify`, `track`, `flush`, `reset`, `getContext`, `setRealTimeMode`, `setConsent`, `notify`, `startGuide`, `getSuggestions`, `shutdown`. **`userId` and `tenantId` are both required by `identify()`**.
+1. **The SDK** (`@helpalive/sdk`, ~11 KB) — script tag at `https://cdn.helpalive.com/sdk/helpalive.js`, `data-api-key` attribute. Public API: `init`, `identify`, `track`, `flush`, `reset`, `getContext`, `setRealTimeMode`, `setConsent`, `notify`, `startGuide`, `getSuggestions`, `shutdown`. **Only `userId` is required by `identify()`**; `tenantId` is optional (`"default"` when left out), and a `userToken` from the customer's server can replace both (see `sdk/verify-users.mdx`).
 2. **The AI chatbot** — Preact widget in Shadow DOM (~25 KB), hybrid retrieval (vector + BM25 + RRF) with cross-encoder rerank, Claude streaming over SSE. Knowledge sources: crawled URLs and uploaded files. Draft/publish workflow.
 3. **Adoption analytics dashboard** — per-user/tenant/page views, coverage-gaps inbox (HDBSCAN-clustered).
 

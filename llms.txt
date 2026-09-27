@@ -11,11 +11,11 @@ The dashboard has three main sections, plus settings:
 - **Agent** — train the AI assistant on your docs, customize its tone, design, and behavior, then publish. Five tabs: Train, Personalization, Test, Appearance, Configuration.
 - **Studio** — work the Topics inbox of unanswered questions, manage the pages your Agent runs on, ship in-app guides. Tabs: Pages, Topics, Guides (plus Features and Configuration coming soon).
 - **Insight** — browse workspaces and users, see adoption reports, monitor Agent sentiment. Tabs: Audience, Reports, Sentiment.
-- **Settings** — Team, Integration & API Key, Security & Access, Billing, Privacy Management.
+- **Settings** — Team, Setup & API Key, Security & Access, Billing, Privacy Management.
 
 ## What's available today
 
-- **One-script SDK** — auto-captures clicks, pageviews, form submits, rage clicks, and DOM errors. No event tagging required. Works with React, Vue, Angular, plain HTML, or via Google Tag Manager. The only required code call is `HelpAlive.identify({ userId, tenantId })` after login.
+- **One-script SDK** — auto-captures clicks, pageviews, form submits, rage clicks, and DOM errors. No event tagging required. Works with React, Vue, Angular, plain HTML, or via Google Tag Manager. The only required code call is `HelpAlive.identify({ userId })` for the signed-in person.
 - **AI Agent** — a context-aware assistant inside your product. Trained on your docs (URL crawl or file upload), aware of the user's current page, identity, and recent activity.
 - **Topics inbox** — every question the Agent can't answer well, grouped into topics, ranked by volume and severity. Your team's working backlog of doc improvements.
 - **Audience analytics** — per-user, per-workspace activity views with friction signals (rage clicks, errors).
@@ -41,7 +41,8 @@ The dashboard has three main sections, plus settings:
 
 ### SDK
 - [SDK overview](/sdk/overview) — what's auto-captured and the public API at a glance
-- [Identify](/sdk/identify) — `identify({ userId, tenantId, ... })` — both required
+- [Identify](/sdk/identify) — `identify({ userId, ... })` — only userId is required; tenantId for apps with companies or workspaces
+- [Verify your users](/sdk/verify-users) — optional, recommended: sign each user id on your server (HS256 user token), then Only allow verified users
 - [Consent](/sdk/consent) — auto / required modes, runtime toggle
 
 ### Agent
@@ -67,7 +68,7 @@ The dashboard has three main sections, plus settings:
 ### Settings
 - [Account](/settings/account) — profile, password, sessions, notifications, dashboard light/dark mode, account deletion
 - [Team](/settings/team) — invite teammates, manage roles, deactivate members
-- [Integration & API key](/settings/integration) — install snippet, integration health, API key management
+- [Setup & API key](/settings/integration) — the setup page: three steps to go live plus optional user verification, a live check of each, the project key
 - [Security & Access](/settings/security) — email domain allowlist, session policy
 - [Billing](/settings/billing) — seat usage, plan limits
 
