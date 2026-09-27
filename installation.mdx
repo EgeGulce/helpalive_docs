@@ -47,6 +47,13 @@ Copy it from the setup page, where `YOUR_PROJECT_KEY` is already your key. Put i
 
 The tag loads in the background (`async`), so it never slows your page down.
 
+| Attribute | Required | What it does |
+|-----------|----------|--------------|
+| `data-api-key` | Yes | Your project key, from **Settings → Setup & API Key**. |
+| `async` | Recommended | Loads the script without holding up your page. |
+| `data-debug` | No | Logs what HelpAlive does to the browser console, including why it ignored a value. For development only. |
+| `data-consent="required"` | No | Records nothing until your page calls `HelpAlive.setConsent({ analytics: true })`. See [Consent](/sdk/consent). |
+
 ### 2. Tell HelpAlive who is signed in
 
 Put this wherever your app already knows the signed-in person: right after login, and on every page load while they stay signed in.
@@ -69,15 +76,38 @@ HelpAlive.identify({
   plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
   createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
 })
-
-// When they log out, and when their session times out. Until this runs,
-// the browser keeps the person, and the next visitor's events count as theirs.
-HelpAlive.reset()
 ```
 
 Only `userId` is required. Use `tenantId` if your app has companies or workspaces. The rest are optional: fill what your app has, and delete the others. [Identify](/sdk/identify) describes each field.
 
 The first four lines let your code call HelpAlive before our script has finished loading. Keep them above your first call.
+
+<Accordion title="Is this file TypeScript?">
+  Tell TypeScript about HelpAlive once, in a `.d.ts` file your project includes:
+
+  ```typescript
+  // In a .d.ts file your project includes, for example helpalive.d.ts
+  declare var HelpAlive: any
+  ```
+
+  and give the queue line a type:
+
+  ```typescript
+  if (!HelpAlive[m]) HelpAlive[m] = (...args: unknown[]) => HelpAlive.q.push([m, args]);
+  ```
+</Accordion>
+
+### 3. Forget them when they log out
+
+Put this in your logout code, apart from the code above, and wherever your app ends a session (for example where it notices a request came back signed out):
+
+```javascript
+// In your logout code, and wherever your app ends a session. Until this runs,
+// the browser keeps the person, and the next visitor's events count as theirs.
+HelpAlive.reset()
+```
+
+Pasted straight after `identify()`, it would forget the person at once.
 
 ## Google Tag Manager
 
@@ -113,19 +143,17 @@ dataLayer.push({
   helpalive_role: user.role,                     // optional; e.g. "admin", "editor"
   helpalive_plan: user.plan,                     // optional; e.g. "free", "pro"
   helpalive_created_at: user.createdAt,          // optional; signup date (Unix seconds)
-  helpalive_user_token: userToken,               // after Verify Users: the token your server signs
 });
 ```
 
 ### 3. Add a second tag that passes it on
 
-Custom HTML again, triggered by the custom event `helpalive_identify`. Create a **Data Layer Variable** for each `helpalive_` field you push (Variables → New → Data Layer Variable, version 2).
+Custom HTML again, triggered by the custom event `helpalive_identify`. Create a **Data Layer Variable** for each `helpalive_` name in it (Variables → New → Data Layer Variable, version 2), and delete the lines for fields you don't push. Tag Manager won't publish a tag that names a variable you haven't created.
 
 ```html
 <script>window.HelpAlive=window.HelpAlive||{q:[]};["identify","reset","setConsent","track"].forEach(function(m){HelpAlive[m]=HelpAlive[m]||function(){HelpAlive.q.push([m,[].slice.call(arguments)])}})</script>
 <script>
   window.HelpAlive.identify({
-    userToken: {{helpalive_user_token}},
     userId: {{helpalive_user_id}},
     tenantId: {{helpalive_tenant_id}},
     tenantName: {{helpalive_tenant_name}},
@@ -138,7 +166,25 @@ Custom HTML again, triggered by the custom event `helpalive_identify`. Create a 
 </script>
 ```
 
-Then **Submit** the container in Tag Manager.
+### 4. Forget them when they log out
+
+In your logout code, and wherever your app ends a session, push this:
+
+```javascript
+// In your logout code, and wherever your app ends a session
+dataLayer.push({ event: "helpalive_reset" });
+```
+
+Then add a third Custom HTML tag, triggered by the custom event `helpalive_reset`:
+
+```html
+<script>window.HelpAlive=window.HelpAlive||{q:[]};["identify","reset","setConsent","track"].forEach(function(m){HelpAlive[m]=HelpAlive[m]||function(){HelpAlive.q.push([m,[].slice.call(arguments)])}})</script>
+<script>
+  window.HelpAlive.reset();
+</script>
+```
+
+Then **Submit** the container in Tag Manager. To verify your users through Tag Manager, see [Verify your users](/sdk/verify-users#with-google-tag-manager).
 
 ## Content Security Policy
 
@@ -147,9 +193,10 @@ Most apps don't need this. If your app sends a `Content-Security-Policy` header,
 ```
 script-src https://cdn.helpalive.com;
 connect-src https://api.helpalive.com https://chat.helpalive.com;
+style-src 'unsafe-inline';
 ```
 
-The `chat.helpalive.com` source is the agent's. Without it, the tag loads and events arrive, but the agent can't answer.
+The `chat.helpalive.com` source is the agent's. Without it, the tag loads and events arrive, but the agent can't answer. The `style-src` line lets the agent draw its own styles. Without it, the agent's button shows unstyled at the top of your page.
 
 ## Check that it works
 
@@ -175,7 +222,7 @@ When every needed line is green, the panel says **Everything is working.**
     `identify()` isn't running. Check that it runs after login and on every page load while the person stays signed in, and that the four queue lines come before it.
   </Accordion>
   <Accordion title="The agent doesn't appear">
-    The agent only appears for signed-in people, once it is switched on in the rollout settings on **Agent → Configuration**, and only for the people you chose there.
+    The agent only appears for signed-in people, once it is switched on in the rollout settings on **Agent → Configuration** and you pressed **Save changes**, and only for the people you chose there. A page that was already open picks up the change on the next page load, so load one more page.
   </Accordion>
 </AccordionGroup>
 

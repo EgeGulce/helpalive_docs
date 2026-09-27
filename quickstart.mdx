@@ -37,8 +37,13 @@ These are the same steps as the setup page in your dashboard: **Settings → Set
       userId: user.id,              // your own id for this person
       tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
     })
+    ```
 
-    // When they log out, and when their session times out.
+    And in your logout code, apart from the code above:
+
+    ```javascript
+    // In your logout code, and wherever your app ends a session. Until this runs,
+    // the browser keeps the person, and the next visitor's events count as theirs.
     HelpAlive.reset()
     ```
 
@@ -50,7 +55,7 @@ These are the same steps as the setup page in your dashboard: **Settings → Set
   </Step>
 
   <Step title="Turn it on and try it">
-    Anyone on your team. Switch the agent on and choose who sees it in the rollout settings, on **Agent → Configuration**. Then open your app in another tab, sign in, open the agent and ask it something.
+    Anyone on your team. Switch the agent on and choose who sees it in the rollout settings, on **Agent → Configuration**, then press **Save changes**. Open your app in another tab and sign in, or load one more page if it was already open. Then open the agent and ask it something.
   </Step>
 
   <Step title="Verify your users (optional, recommended)">

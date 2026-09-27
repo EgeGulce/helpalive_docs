@@ -169,6 +169,8 @@ Where your server knows the signed-in person, add these lines. They make a short
   </Tab>
 </Tabs>
 
+On a CommonJS server, write `const jwt = require("jsonwebtoken")` in place of the Node.js `import` line.
+
 The token is a JWT signed with HS256, keyed on the text of your secret:
 
 | Claim | What goes in it |
@@ -204,6 +206,18 @@ HelpAlive.identify({
 
 The token says who the person is and which company they belong to, so you no longer pass `userId` or `tenantId`. If you pass a different one beside the token, the token wins and the browser console shows a warning.
 
+### With Google Tag Manager
+
+Pass the token through the data layer. Create a Data Layer Variable named `helpalive_user_token`, then add these lines:
+
+```javascript
+// In your dataLayer.push, next to helpalive_user_id:
+helpalive_user_token: userToken,   // the token your server made for this person
+
+// In the identify tag, as its first line:
+userToken: {{helpalive_user_token}},
+```
+
 ## With an AI coding agent
 
 Step 4 of the setup page has a prompt for Claude Code, Codex, Cursor or GitHub Copilot. It makes the token on your server, passes it to `identify()`, and adds `HELPALIVE_SIGNING_SECRET` to your list of environment variables with no value. You add the secret's value yourself, so it never goes into a prompt.
@@ -225,11 +239,11 @@ HelpAlive records each kind of result at most every 15 minutes, so a fix you jus
 
 Once verified people are arriving, you can turn on **Only allow verified users**, below the check. Until you turn it on, nobody is turned away.
 
-With it on, only people with a valid user token can use the agent and its guides. HelpAlive refuses every request without one, whether it names a user or not. Turn it on once every page that calls `identify()` sends a token.
+With it on, only people with a valid user token can use the agent and its guides. HelpAlive refuses every request without one, whether it names a user or not. That includes the activity your pages record, so a page that sends no token also stops showing up in **Insight** and in the setup page's checks. Turn it on once every page that calls `identify()` sends a token.
 
 ## Rotating the secret
 
-Click **Rotate** next to your secret and put the new one in `HELPALIVE_SIGNING_SECRET` on your server. Nothing in your code changes. The previous secret keeps working until you rotate again, so nobody is refused while you roll it out. If you are rotating because a secret leaked, rotate once more after your server uses the new one, and the leaked one stops working.
+Click **Rotate** next to your secret and put the new one in `HELPALIVE_SIGNING_SECRET` on your server. Nothing in your code changes. The previous secret keeps working until you rotate again, so nobody is refused while you roll it out. If you are rotating because a secret leaked, rotate once more after your server uses the new one, and the leaked one stops working. Then put that newest secret on your server too, or the next rotation will cut your server off.
 
 ## Next steps
 

@@ -42,7 +42,7 @@ HelpAlive.identify({
 })
 ```
 
-Only `userId` is required. Fill the optional fields your app has, and delete the others.
+Only `userId` is required. Fill the optional fields your app has, and delete the others. In a TypeScript file, see [Installation](/installation#2-tell-helpalive-who-is-signed-in) for the one declaration it needs.
 
 | Field | Required | What it is |
 |-------|----------|------------|
@@ -53,15 +53,15 @@ Only `userId` is required. Fill the optional fields your app has, and delete the
 | `email` | No | Their email address, shown and searchable in your dashboard. |
 | `role` | No | Their role in your app, for example `"admin"`, `"editor"` or `"viewer"`. |
 | `plan` | No | Their plan, for example `"free"`, `"pro"` or `"enterprise"`. |
-| `createdAt` | No | When they signed up, as Unix time in seconds (for example `1704067200` for 1 January 2024). Other formats are ignored with a console warning. |
+| `createdAt` | No | When they signed up, as Unix time in seconds (for example `1704067200` for 1 January 2024). Milliseconds and date strings are ignored; with `data-debug` on the tag, the console says why. |
 | `userToken` | No | The user token your server makes, once you [verify your users](/sdk/verify-users). With a token, `userId` and `tenantId` come from the token, so you don't pass them. |
 
 ## Logging out
 
-Call `reset()` when the person logs out, and when their session times out:
+Call `reset()` in your logout code, apart from your `identify()` call, and wherever your app ends a session (for example where it notices a request came back signed out):
 
 ```javascript
-// When they log out, and when their session times out. Until this runs,
+// In your logout code, and wherever your app ends a session. Until this runs,
 // the browser keeps the person, and the next visitor's events count as theirs.
 HelpAlive.reset()
 ```
@@ -71,6 +71,8 @@ It also closes the agent, so the next person on the same browser never sees the 
 ## Switching company without reloading
 
 If people can switch company or workspace without a page reload, call `identify()` again with the new `tenantId` after the switch. HelpAlive counts what they do from then on under the new one.
+
+Once you [verify your users](/sdk/verify-users), the company comes from the user token, and a `tenantId` passed beside it is ignored. Get a new token for the new company from your server and pass that to `identify()` instead.
 
 ## Before identify() runs
 
