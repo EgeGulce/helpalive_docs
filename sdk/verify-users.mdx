@@ -225,7 +225,7 @@ HelpAlive records each kind of result at most every 15 minutes, so a fix you jus
 
 Once verified people are arriving, you can turn on **Only allow verified users**, below the check. Until you turn it on, nobody is turned away.
 
-With it on, the agent refuses anyone whose page sends a user id without a valid user token. Turn it on once every page that calls `identify()` sends a token.
+With it on, only people with a valid user token can use the agent and its guides. HelpAlive refuses every request without one, whether it names a user or not. Turn it on once every page that calls `identify()` sends a token.
 
 ## Rotating the secret
 
