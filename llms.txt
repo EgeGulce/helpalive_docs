@@ -99,4 +99,4 @@ The dashboard has three main sections, plus settings:
 
 ## Pricing model
 
-Each plan includes a number of guides and chat messages a month. Past that, the agent stops by default; a customer can allow a limited overage, billed at the end of the month, or buy extra packs. Plans are paid through Stripe from the dashboard. Prices are shown in the dashboard; for questions, see https://helpalive.com.
+Each plan includes a number of guides and chat messages a month. Past that, the agent stops by default; a customer can allow a limited overage, billed at the end of the month, or buy extra packs, which carry over from month to month while the subscription continues. Plans are paid through Stripe from the dashboard. Prices are shown in the dashboard; for questions, see https://helpalive.com.
