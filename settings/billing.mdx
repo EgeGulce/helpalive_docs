@@ -1,53 +1,63 @@
 ---
-title: "Billing: seat usage and plan limits"
+title: "Billing: your plan, payment and seats"
 sidebarTitle: "Billing"
-description: "See how many active team members you have against your plan's seat limit, with a warning before you hit the cap. Self-serve billing is coming soon."
+description: "Subscribe to HelpAlive, manage your card and invoices through Stripe, see what your plan includes each month, and track your team's seats."
 keywords:
   - HelpAlive billing
+  - HelpAlive subscription
+  - Stripe billing portal
   - team seats
-  - user limit
   - plan usage
 mode: "wide"
 ---
 
-The **Billing** tab in **Settings** is where you'll manage your subscription — plans, payment methods, invoices, downloadable receipts. Today, while we're in early access, full self-serve billing isn't live yet, so this tab is light. Your account contact handles plan changes directly.
-
-What does ship today: a **user limits** card that tracks how many active members you have against your plan's seat limit.
+The **Billing** tab in **Settings** is where you subscribe, manage payment, and see what your plan includes.
 
 Open your dashboard and go to **Settings → Billing**.
 
-## User limits
+## Plan
 
-The card shows:
+The **Plan** card says where your subscription stands and has one button.
 
-- **Active team members** — how many of your seats are currently in use.
-- **Plan maximum** — how many seats your plan allows.
-- **Usage bar** — a visual indicator of how close you are to the cap.
+| What the card says | The button | What it opens |
+|--------------------|------------|---------------|
+| **Not subscribed yet.** | **Subscribe** | Stripe Checkout, to pay for your plan. |
+| **Subscribed.** | **Manage billing** | Stripe's billing portal: your card, your invoices and receipts, and cancelling. |
 
-Warnings appear at two thresholds:
+After you pay, the card shows your plan within a few seconds. If you close Checkout without paying, nothing is charged.
 
-| Threshold | Warning |
+When your plan needs a subscription, the card says **Your agent turns on for your users once you subscribe**, and the agent stays off for them until you do. You can still install HelpAlive and train the agent first.
+
+The card also tells you when something needs your attention:
+
+- **Your last payment did not go through.** Stripe tries again; open **Manage billing** to update your card.
+- **Subscribed until a date, then it ends.** You cancelled, and the plan runs to the end of the period you paid for.
+- **Your subscription has ended.** Press **Subscribe** to start again.
+
+Below the button, the card lists what your plan includes each month: a number of guides and a number of chat messages. What you have used this month, how far past your plan the agent may go, and extra packs are on [Agent → Configuration](/agent/configuration#usage-and-limits).
+
+## Team seats
+
+The **User Limits** card shows how many active teammates you have against your plan's seat limit, with a bar.
+
+| Threshold | What the card says |
 |-----------|---------|
-| **80% or more used** | Yellow notice: you're approaching the limit. |
-| **100% used** | Red notice: you can't invite or reactivate anyone until a seat opens up. |
+| **80% or more used** | Approaching user limit. |
+| **100% used** | User limit reached. You can't invite or reactivate anyone until a seat opens up. |
 
-When you hit the limit, the **Invite** and **Reactivate** actions in [Team](/settings/team) are blocked until either a seat frees up (by deactivating someone) or your plan is upgraded.
+To free a seat, deactivate someone in [Team](/settings/team).
 
-## What's coming
+## Questions
 
-Self-serve plans, payment methods, invoices, and receipts will live on this tab once they ship. While we're in early access, all of that is handled directly with your account contact.
-
-## Plan upgrades and questions
-
-For plan changes, billing questions, or to add seats, [get in touch](https://helpalive.com/#early-access) — we'll size the next step with you.
+For billing questions, or a plan that fits a larger team, [get in touch](https://helpalive.com/#early-access).
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Team" icon="users" href="/settings/team">
-    Manage who counts as an active member.
+  <Card title="Configuration" icon="sliders-horizontal" href="/agent/configuration">
+    This month's usage, overage and extra packs.
   </Card>
-  <Card title="Plans" icon="credit-card" href="/plans/overview">
-    How HelpAlive pricing works overall.
+  <Card title="Team" icon="users" href="/settings/team">
+    Manage who counts as an active teammate.
   </Card>
 </CardGroup>

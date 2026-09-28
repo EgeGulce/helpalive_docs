@@ -1,82 +1,66 @@
 ---
-title: "Configuration: visibility, rate limits, and danger zone"
+title: "Configuration: rollout, usage and limits"
 sidebarTitle: "Configuration"
-description: "Turn the Agent on and off for your users, set rate limits to keep usage predictable, and use the danger zone to reset training or remove the Agent entirely."
+description: "Switch the agent on, choose who gets it and what it does for them, see this month's guides and chat messages, set how far past your plan it may go, buy extra, and set limits per person, tenant or organisation."
 keywords:
-  - chatbot rate limits
+  - chatbot rollout
   - disable chatbot
-  - chatbot reset
+  - chatbot usage limits
+  - AI agent overage
   - chatbot configuration
 mode: "wide"
 ---
 
-The **Agent → Configuration** tab is the Agent's operational dial. It's where you turn the Agent on or off, control how often individual users can ask questions, and (if needed) wipe its training or remove it entirely.
+The **Agent → Configuration** page decides whether the agent is on, who sees it, what it does for them, and how much they can use.
 
-Open your dashboard and go to **Agent → Configuration**.
+Open your dashboard and go to **Agent → Configuration**. If the agent has no settings yet, press **Set up the agent** first.
 
 <Note>
-  Changes on this tab — visibility and rate limits — take effect **immediately** for your users. They don't go through the draft / publish flow like Train, Personalization, and Appearance do.
+  Changes here are a draft until you press **Save changes** in the bar at the bottom of the page. **Discard** puts back what was saved. They don't go through the draft and publish flow of Train, Personalization and Appearance. A page of your app that was already open picks up a saved change on its next page load.
 </Note>
 
-## General
+## Rollout
 
-The top card is one switch: **Agent enabled / disabled**.
+| Row | What it decides |
+|-----|-----------------|
+| **Agent** | The switch. Off, nobody sees the agent and your analytics keep running. |
+| **Who gets it** | **Everyone** who signs in to your app, **A percentage** of them, or **Selected** tenants and people only. |
+| **What it does** | **Does the steps**: it fills in the form and presses the buttons for them. **Shows how**: it points at each field and waits while they do it. |
 
-- **Enabled** — the Agent appears in your product for all users who match your visibility rules.
-- **Disabled** — the launcher button stops appearing. Existing chat sessions end. The Agent is completely hidden until you re-enable it.
+With **A percentage**, the same people get it each time, so raising the number only adds more. Tenants and people you add to the list always have it.
 
-Useful when you're between training cycles, when you've spotted a problem and want to take the Agent offline while you fix it, or when you simply don't want the Agent active yet.
+With **Selected**, add tenants and people from the list of those your app has sent through `identify()`, or type the `tenantId` or `userId` your app passes. Anyone in the list can have their own **What it does**.
 
-## Rate limits
+## Usage and limits
 
-Rate limits stop a single user — or your whole organization — from generating runaway Agent usage in a short window. Two values:
+| Row | What it shows |
+|-----|---------------|
+| **Guides this month** | Guides started against what your plan includes, and the day it starts again. |
+| **Chat messages** | Chat messages against what your plan includes. |
+| **How far over your package** | How much past your plan the agent may go this month. |
+| **Buy extra** | Packs of guides or chat messages for this month. |
+| **Limits** | The most one person, one tenant or your whole organisation can use. |
 
-| Limit | What it controls | Range |
-|-------|------------------|-------|
-| **Per user, per hour** | The most messages one user can send to the Agent in one hour. | 1 — 500 |
-| **Per organization, per day** | The most messages your whole organization can send in one day. | 1 — 50,000 |
+Warnings appear at the top of this section when you reach 80% of a month's guides or chat messages, when you have used what your plan includes, and when the agent has stopped.
 
-If a user hits the per-user limit, the Agent politely tells them to wait. If your organization hits the daily cap, the Agent gracefully pauses for everyone until the next day.
+### Past your plan
 
-Both are immediate — change them and the new values apply on the next message. Most teams leave these on defaults; raise them if you're scaling up.
+Set **How far over your package** from 0% up to the most your plan allows. At 0%, the agent stops at your plan: once it is used, no new guides are offered and new chat messages get "I can't answer right now." until the month starts again, and nothing extra is billed. Above 0%, it keeps working up to that much more, billed at the end of the month, and the row shows the most that can cost.
+
+### Buy extra
+
+Each pack adds guides or chat messages to this month, on top of what your plan includes. Pressing one opens Stripe Checkout. Once you've paid, the pack shows here in a few seconds. If you close Checkout without paying, nothing is charged.
+
+### Limits
+
+A table of chat messages and guides started, for **Each person**, **Each tenant** and **Your organisation**, each over an hour or a day as the table shows. An empty box uses our default. When someone reaches a limit, the chat says "I can't answer right now. Try again in a little while."
 
 ## Danger zone
 
-The bottom card holds two destructive actions. Both require an extra confirmation step before they run.
+Both actions ask you to confirm first.
 
-### Reset training data
-
-Deletes every knowledge source you've added. Your URL crawls, file uploads, and pasted text — all gone. Your tone, custom responses, and appearance settings stay in place; only the knowledge base resets.
-
-Use this when:
-
-- You've trained on the wrong content and want a clean start.
-- Your docs have changed so much that re-training from scratch is easier than re-crawling each source.
-
-You can't undo a reset. After it runs, the Agent has nothing to answer from until you add sources back in **Agent → Train**.
-
-### Remove the Agent
-
-The nuclear option. Deletes:
-
-- All training data.
-- All personalization (custom responses, templates, tone).
-- All appearance settings.
-- The Agent itself — the launcher button disappears for every user.
-
-Your event analytics, your team, your API keys, and the rest of your HelpAlive account stay. Only the Agent is wiped.
-
-Use this only when you're decommissioning the Agent entirely, or when you want to start over completely. You'll be asked to confirm twice.
-
-## Visibility scoping (coming soon)
-
-Today, the Agent is either fully on or fully off. We're adding the ability to:
-
-- Turn the Agent on for specific workspaces only.
-- Turn the Agent on for specific user roles or plans.
-- Schedule the Agent on or off by time of day or day of week.
-
-These will live on this tab when they ship.
+- **Reset training data** deletes every knowledge source and its indexed content. Your personalization and appearance stay. After a reset, the agent has nothing to answer from until you add sources in **Agent → Train**. You can't undo it.
+- **Remove** switches the agent off and resets its configuration to the defaults. Your training data is kept.
 
 ## Next steps
 
