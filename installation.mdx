@@ -193,10 +193,17 @@ Most apps don't need this. If your app sends a `Content-Security-Policy` header,
 ```
 script-src https://cdn.helpalive.com;
 connect-src https://api.helpalive.com https://chat.helpalive.com;
-style-src 'unsafe-inline';
 ```
 
-The `chat.helpalive.com` source is the agent's. Without it, the tag loads and events arrive, but the agent can't answer. The `style-src` line lets the agent draw its own styles. Without it, the agent's button shows unstyled at the top of your page.
+The `chat.helpalive.com` source is the agent's. Without it, the tag loads and events arrive, but the agent can't answer. You don't need `'unsafe-inline'` for HelpAlive: the agent draws its own styles under any `style-src`.
+
+If your policy uses a nonce (`script-src 'nonce-...'`), put the page's nonce on our tag too, the same way you do on your own scripts:
+
+```html
+<script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" nonce="YOUR_PAGE_NONCE" async></script>
+```
+
+The agent and its guides load with that nonce, so nothing else changes. With Google Tag Manager under a nonce policy, your policy needs `'strict-dynamic'`, which Google also asks for, so that the tags Tag Manager adds can load ours.
 
 ## Check that it works
 
