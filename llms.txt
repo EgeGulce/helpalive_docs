@@ -77,7 +77,7 @@ The dashboard has three main sections, plus settings:
 - [Data deletion](/privacy/dsar) — async DSAR jobs with audit trail
 
 ### Plans
-- [Plans](/plans/overview) — what a plan includes, overage and extra packs
+- [Plans](/plans/overview) — what a plan includes
 - [FAQ](/plans/faq) — trial options, payment, what counts toward usage
 
 ## What customers get, in detail
@@ -99,4 +99,4 @@ The dashboard has three main sections, plus settings:
 
 ## Pricing model
 
-Each plan includes a number of guides and chat messages a month. Past that, the agent stops by default; a customer can allow a limited overage, billed at the end of the month, or buy extra packs. Plans are paid through Stripe from the dashboard. Prices are shown in the dashboard; for questions, see https://helpalive.com.
+Each plan includes a number of guides and chat messages a month. For plans, see https://helpalive.com.
