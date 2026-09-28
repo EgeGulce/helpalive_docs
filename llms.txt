@@ -19,12 +19,11 @@ The dashboard has three main sections, plus settings:
 - **AI Agent** — a context-aware assistant inside your product. Trained on your docs (URL crawl or file upload), aware of the user's current page, identity, and recent activity.
 - **Topics inbox** — every question the Agent can't answer well, grouped into topics, ranked by volume and severity. Your team's working backlog of doc improvements.
 - **Audience analytics** — per-user, per-workspace activity views with friction signals (rage clicks, errors).
-- **In-app guide runtime** — multi-step walkthroughs with spotlight highlights on real elements in your product. Authoring UI is in active development.
+- **In-app guides** — the agent makes each guide on the spot for what the user asks, then does the steps for them or shows how, on the real elements of your product. There is nothing to author.
 - **Privacy & security** — two-layer PII redaction, per-customer data isolation, DSAR-ready async deletion jobs with audit trail, consent modes (auto / required) with runtime toggle.
 
 ## What's in active development
 
-- Dashboard guide editor with record-mode authoring (click through your product to capture a guide).
 - Agent-launched guides — the Agent identifies a goal during chat and runs the matching guide.
 - Auto-suggested guides based on what your users actually try to do.
 - Automatic feature discovery and feature-health scores.
@@ -34,7 +33,7 @@ The dashboard has three main sections, plus settings:
 
 ### Get started
 - [Introduction](/introduction) — what HelpAlive does and who it's for
-- [Quickstart](/quickstart) — install in 5 minutes
+- [Quickstart](/quickstart) — live in three steps
 - [Installation](/installation) — JavaScript script tag, Google Tag Manager, framework examples (React, Vue, Angular, plain HTML)
 - [Use cases](/use-cases) — activation, churn, ticket deflection, upsell, visibility
 - [Compare](/compare) — vs Pendo, Intercom Fin, WalkMe, FullStory, Userpilot, Appcues
@@ -78,7 +77,7 @@ The dashboard has three main sections, plus settings:
 - [Data deletion](/privacy/dsar) — async DSAR jobs with audit trail
 
 ### Plans
-- [Plans](/plans/overview) — per-session + AI-usage pricing model, early-access program
+- [Plans](/plans/overview) — what a plan includes, overage and extra packs
 - [FAQ](/plans/faq) — trial options, payment, what counts toward usage
 
 ## What customers get, in detail
@@ -100,6 +99,4 @@ The dashboard has three main sections, plus settings:
 
 ## Pricing model
 
-HelpAlive is priced per end-user session captured by the SDK + AI usage on top, with a per-resolution charge layered in once outcome data exists. The model aligns customer outcomes with revenue — customers pay more only when more friction is being resolved.
-
-In early access — pricing tiers are calibrated with design partners. Apply for early access at https://helpalive.com/#early-access for a pilot quote.
+Each plan includes a number of guides and chat messages a month. Past that, the agent stops by default; a customer can allow a limited overage, billed at the end of the month, or buy extra packs. Plans are paid through Stripe from the dashboard. Prices are shown in the dashboard; for questions, see https://helpalive.com.

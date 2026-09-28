@@ -1,7 +1,7 @@
 ---
 title: "Train the Agent on your docs and content"
 sidebarTitle: "Train"
-description: "Train the HelpAlive Agent on your documentation. Crawl a URL, upload PDFs and Word documents, or paste your own custom answers. Setup takes minutes."
+description: "Train the HelpAlive Agent on your documentation. Crawl your docs site or help center, or upload PDF, Markdown, TXT and Word files."
 keywords:
   - train AI agent
   - chatbot knowledge
@@ -11,51 +11,34 @@ keywords:
   - chatbot setup
 ---
 
-The **Agent → Train** tab is where you give your Agent the knowledge it answers from. Point HelpAlive at your existing content — a docs site, files, or pasted text — and we handle the rest.
+The **Agent → Train** tab is where you give your Agent the knowledge it answers from. Point HelpAlive at your docs site or upload files, and we handle the rest.
 
 ## What you can add
 
 | Source | How to add | Best for |
 |--------|------------|----------|
-| **Docs site** | Crawl from a URL | Existing public help center or product docs |
-| **PDF** | Upload a file | Onboarding guides, internal manuals, contracts |
-| **Word documents (DOCX)** | Upload a file | Knowledge articles your team writes in Word |
-| **Markdown** | Upload or paste | Technical docs you keep alongside your code |
-| **Plain text** | Paste in the dashboard | Short FAQs, custom answers, special-case responses |
+| **Website** | **Website URL**: the public web address of your docs or help center | An existing help center or product docs |
+| **File** | **Upload file**: PDF, Markdown, TXT or DOCX, up to 10 MB each | Guides, manuals and articles that aren't on a public site |
+
+The third card, **Internal article** (writing articles inside HelpAlive), is coming soon.
 
 ## Adding a source
 
-Open your dashboard and go to **Agent → Train**. From there:
+Open your dashboard and go to **Agent → Train**.
 
-### Crawling a URL
+### Adding a website
 
-Use this when you already have a docs site or help center. Configure:
+Press **Add URL**, enter the address, starting with `https://`, and a name for the source, then press **Add Source**. HelpAlive discovers the site's pages by itself. The crawl runs in the background; you can keep working while it runs.
 
-- **Start URL** — the page to begin from.
-- **Crawl depth** — how many link-hops deep to follow.
-- **Stay on domain** — when on, the crawler ignores cross-domain links.
-- **Include / exclude paths** — narrow the crawl with patterns like `/blog/**` or `/api/v2/*`.
-
-Crawls run in the background. Most sites finish in a few minutes; you can keep working while they run.
+Each website re-crawls on a schedule you pick on its row: **Off** (manual refresh only), **Every 3 days**, **Weekly**, **Every 2 weeks** or **Monthly**.
 
 ### Uploading files
 
-Drag and drop one or many PDFs, DOCX files, or Markdown files. Each file becomes its own source with metadata you can manage. Re-uploading the same file replaces the existing version — no duplication.
-
-### Pasted text
-
-For short content — FAQs, plan-specific answers, internal policies — paste it directly. Useful when something isn't in your public docs but you still want the Agent to know about it.
+Press **Choose file**, or drop files on the upload area. Each file becomes its own source.
 
 ## Managing sources
 
-Each source shows:
-
-- **Status** — `crawling`, `indexing`, `ready`, or `error`.
-- **Pages or sections** — what was discovered.
-- **Last indexed** — useful for re-crawling stale content.
-- **Publish status** — `draft` or `published`.
-
-You can re-crawl, archive, or delete a source any time. Deleting removes its contribution to Agent answers immediately.
+Each source shows whether it is crawling, ready or failed, when it was last crawled or uploaded, and whether it is published. From its row you can re-crawl a website, stop a re-crawl, view its indexed pages, rename it or delete it. Deleting removes its contribution to Agent answers.
 
 ## How the Agent finds answers
 

@@ -51,7 +51,7 @@ The tag loads in the background (`async`), so it never slows your page down.
 |-----------|----------|--------------|
 | `data-api-key` | Yes | Your project key, from **Settings → Setup & API Key**. |
 | `async` | Recommended | Loads the script without holding up your page. |
-| `data-debug` | No | Logs what HelpAlive does to the browser console, including why it ignored a value. For development only. |
+| `data-debug` | No | Logs what HelpAlive does to the browser console. For development only. |
 | `data-consent="required"` | No | Records nothing until your page calls `HelpAlive.setConsent({ analytics: true })`. See [Consent](/sdk/consent). |
 
 ### 2. Tell HelpAlive who is signed in
@@ -222,7 +222,7 @@ When every needed line is green, the panel says **Everything is working.**
     `identify()` isn't running. Check that it runs after login and on every page load while the person stays signed in, and that the four queue lines come before it.
   </Accordion>
   <Accordion title="The agent doesn't appear">
-    The agent only appears for signed-in people, once it is switched on in the rollout settings on **Agent → Configuration** and you pressed **Save changes**, and only for the people you chose there. A page that was already open picks up the change on the next page load, so load one more page.
+    The agent only appears for signed-in people, once it is set up and switched on in the rollout settings on **Agent → Configuration** and you pressed **Save changes**, and only for the people you chose there. A page that was already open picks up the change on the next page load, so load one more page.
   </Accordion>
 </AccordionGroup>
 

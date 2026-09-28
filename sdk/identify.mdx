@@ -53,7 +53,7 @@ Only `userId` is required. Fill the optional fields your app has, and delete the
 | `email` | No | Their email address, shown and searchable in your dashboard. |
 | `role` | No | Their role in your app, for example `"admin"`, `"editor"` or `"viewer"`. |
 | `plan` | No | Their plan, for example `"free"`, `"pro"` or `"enterprise"`. |
-| `createdAt` | No | When they signed up, as Unix time in seconds (for example `1704067200` for 1 January 2024). Milliseconds and date strings are ignored; with `data-debug` on the tag, the console says why. |
+| `createdAt` | No | When they signed up, as Unix time in seconds (for example `1704067200` for 1 January 2024). Milliseconds and date strings are ignored. |
 | `userToken` | No | The user token your server makes, once you [verify your users](/sdk/verify-users). With a token, `userId` and `tenantId` come from the token, so you don't pass them. |
 
 ## Logging out
@@ -76,7 +76,7 @@ Once you [verify your users](/sdk/verify-users), the company comes from the user
 
 ## Before identify() runs
 
-Nothing is sent for a visitor until `identify()` runs. Events wait in the page and are dropped if the visitor leaves without signing in, and the agent doesn't appear for them.
+No events are sent for a visitor until `identify()` runs. Events wait in the page and are dropped if the visitor leaves without signing in, and the agent doesn't appear for them. The one request before sign-in is a small start-up check: our script's version and the page's host and path.
 
 ## Next steps
 

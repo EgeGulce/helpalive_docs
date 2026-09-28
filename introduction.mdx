@@ -15,11 +15,11 @@ keywords:
 
 **HelpAlive is an AI agent for every user in your SaaS.** It watches what users do inside your product, learns what your *best* users do, and steps in when others go off track — with guided in-app walkthroughs in the moment, and context-aware answers when they ask for help.
 
-You install one script tag, call `identify()` after login, and HelpAlive does the rest. Your team supervises outcomes; HelpAlive runs the work.
+You add one script tag, call `identify()` for the signed-in person and `reset()` on logout, and HelpAlive does the rest. Your team supervises outcomes; HelpAlive runs the work.
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/quickstart">
-    One script tag, one identify call, you're live in five minutes.
+    One tag and a few lines of code, live in three steps.
   </Card>
   <Card title="How it works" icon="circuit-board" href="/sdk/overview">
     The SDK, what it captures, and how the Agent stays context-aware.
@@ -83,11 +83,11 @@ Your dashboard has three main sections, plus settings:
 ## Get started
 
 <CardGroup cols={2}>
-  <Card title="Install in 5 minutes" icon="rocket" href="/quickstart">
-    Paste one `<script>` tag, call `identify()` once, you're done.
+  <Card title="Install HelpAlive" icon="rocket" href="/quickstart">
+    Paste one tag, tell it who is signed in, and forget them on logout.
   </Card>
-  <Card title="Get Early Access" icon="message-circle" href="https://helpalive.com/#early-access">
-    HelpAlive is in early access — pilots are sized to your team and traffic.
+  <Card title="Talk to us" icon="message-circle" href="https://helpalive.com/#early-access">
+    Questions about plans or fit? Get in touch.
   </Card>
 </CardGroup>
 
@@ -95,10 +95,9 @@ Your dashboard has three main sections, plus settings:
 
 - The SDK and the in-app AI Agent — Train, Personalization, Test, Appearance, Configuration.
 - The Topics inbox of unanswered questions and the Audience view of users and workspaces.
-- In-app Guides that walk users through tasks step by step.
+- In-app guides the agent makes on the spot for what the user asks, doing the steps for them or showing how.
 - Personal-data removal in the browser and on our servers, plus deletion on request.
 
 ## In active development
 
-- The Studio editor for authoring Guides yourself — until then, we author Guides for early-access customers on request.
 - Automatic feature discovery and proactive in-product recommendations driven by what your users actually do.

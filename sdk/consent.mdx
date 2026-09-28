@@ -17,46 +17,45 @@ HelpAlive supports two consent modes and a runtime toggle so you can integrate w
 | Mode | Behavior |
 |------|----------|
 | **Auto** (default) | HelpAlive starts capturing as soon as the script loads. Use this where your local rules don't require prior consent. |
-| **Consent required** | HelpAlive loads but stays silent until you call `setConsent()` with permission. |
+| **Consent required** | HelpAlive loads but stays silent until you call `setConsent({ analytics: true })`. |
 
-Set the default in **Settings → Privacy Management** in your dashboard. HelpAlive picks it up automatically.
+Choose the mode on the tag itself: add `data-consent="required"` to the script tag for **Consent required**, and leave it out for **Auto**.
+
+```html
+<script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" data-consent="required" async></script>
+```
 
 ## Runtime toggle
 
 Even in auto mode, you can change consent at any time — useful when a user updates their preferences in your privacy center.
 
 ```javascript
-// User accepts cookies
-HelpAlive.setConsent({ analytics: true, chat: true });
+// User accepts
+HelpAlive.setConsent({ analytics: true });
 
-// User rejects analytics but allows the chatbot
-HelpAlive.setConsent({ analytics: false, chat: true });
-
-// User rejects everything
-HelpAlive.setConsent({ analytics: false, chat: false });
+// User rejects
+HelpAlive.setConsent({ analytics: false });
 ```
 
 | Field | Effect when `false` |
 |-------|---------------------|
 | `analytics` | HelpAlive stops recording activity for this user. Anything queued but unsent is dropped. |
-| `chat` | The AI assistant disappears entirely until consent is granted again. |
+
+`analytics` is the only field. There is no separate switch for the agent: to keep it away from some people, leave them out of the rollout on **Agent → Configuration**.
 
 ## Wiring it to your cookie banner
 
 ```javascript
-// 1. Set consent mode to "Required" in your HelpAlive dashboard so the
-//    script loads but stays silent until you call setConsent().
+// 1. Add data-consent="required" to the HelpAlive tag so the script
+//    loads but stays silent until you call setConsent().
 
 // 2. Show your cookie banner and pass the choices through.
 showConsentBanner({
   onAccept: (choices) => {
-    HelpAlive.setConsent({
-      analytics: choices.analytics === true,
-      chat:      choices.chat === true
-    });
+    HelpAlive.setConsent({ analytics: choices.analytics === true });
   },
   onReject: () => {
-    HelpAlive.setConsent({ analytics: false, chat: false });
+    HelpAlive.setConsent({ analytics: false });
   }
 });
 ```
@@ -65,13 +64,13 @@ showConsentBanner({
 
 For EU traffic where prior consent is required:
 
-1. Set the project's default consent mode to **Required** in the dashboard.
+1. Add `data-consent="required"` to the HelpAlive tag.
 2. Don't call `identify()` until the user accepts.
-3. Call `setConsent({ analytics: true, chat: true })` and then `identify()` in your accept handler.
+3. Call `setConsent({ analytics: true })` and then `identify()` in your accept handler.
 
 ```javascript
 function onAccept(user) {
-  HelpAlive.setConsent({ analytics: true, chat: true });
+  HelpAlive.setConsent({ analytics: true });
   HelpAlive.identify({
     userId:   user.id,
     tenantId: user.tenantId
@@ -81,11 +80,12 @@ function onAccept(user) {
 
 ## Logout
 
-Logging the user out clears identity automatically. If you want to also revoke consent on logout (useful for shared-device scenarios), call `setConsent` with both flags off as part of your logout flow:
+Logging out of your app doesn't tell HelpAlive by itself. Call `reset()` in your logout code, as [Identify](/sdk/identify#logging-out) shows, so the browser forgets the person. To also withdraw consent on logout (useful on shared devices), call `setConsent` there too:
 
 ```javascript
 function logout() {
-  HelpAlive.setConsent({ analytics: false, chat: false });
+  HelpAlive.reset();
+  HelpAlive.setConsent({ analytics: false });
   // …your logout logic
 }
 ```
@@ -97,8 +97,6 @@ Nothing. With `analytics: false`:
 - No activity is recorded.
 - No session is created.
 - No device fingerprint, IP, or browser data is collected.
-
-With `chat: false`, the AI assistant doesn't appear at all — the widget never loads on the page.
 
 ## Next steps
 

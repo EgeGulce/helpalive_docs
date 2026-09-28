@@ -10,7 +10,7 @@ keywords:
   - one-script SaaS analytics
 ---
 
-The HelpAlive SDK is a small browser script that does three things: auto-captures user behavior, ties activity to real users and workspaces, and feeds the AI Agent fresh page context whenever a user opens it. **One script tag, one `identify()` call, and you're done.**
+The HelpAlive SDK is a small browser script that does three things: auto-captures user behavior, ties activity to real users and workspaces, and feeds the AI Agent fresh page context whenever a user opens it. **One script tag, an `identify()` call for the signed-in person, and `reset()` on logout.**
 
 ## At a glance
 
@@ -18,15 +18,15 @@ The HelpAlive SDK is a small browser script that does three things: auto-capture
 |---|---|
 | **Where it runs** | In your users' browsers, alongside your product |
 | **Effect on your page** | None — loads in the background, doesn't slow your site |
-| **What you install** | One script tag, or a single Google Tag Manager tag |
-| **What you write** | One `identify()` call after login — nothing else |
+| **What you install** | One script tag, or three Google Tag Manager tags |
+| **What you write** | `identify()` for the signed-in person, and `reset()` in your logout code |
 | **Browser support** | Modern browsers (Chrome, Edge, Firefox, Safari) |
 
 ## What the SDK does
 
 <CardGroup cols={3}>
   <Card title="Autocapture" icon="zap">
-    Clicks, pageviews, form submits, rage clicks, DOM errors — captured automatically with no tagging.
+    Clicks, pageviews, form submits, rage clicks, error states on the page — captured automatically with no tagging.
   </Card>
   <Card title="Identity" icon="user-check">
     `identify()` ties events to a stable user and workspace so analytics and Agent personalization are accurate.
@@ -44,11 +44,10 @@ The SDK observes user behavior automatically — you don't write tracking code o
 |-------|-----------------|
 | `pageview` | Page loads, including in-app navigations (single-page apps work out of the box). |
 | `click` | Clicks on buttons, links, and other interactive elements. Element identifiers are anonymized; text content is redacted. |
-| `form_start` | The user begins filling out a form. Useful for abandonment analysis. |
 | `form_submit` | The user submits a form. (We never capture the field values.) |
+| `change` | The user changes a field: a text box, a select, a checkbox. |
 | `rage_click` | Repeated clicks on the same element — a strong frustration signal. |
-| `scroll_depth` | How far a user scrolled on each page. |
-| `dom_error` | JavaScript errors and console errors that occurred while the user was interacting. |
+| `dom_error` | An error state appears on the page: an alert, a field marked invalid, or a browser validation message. JavaScript errors are not captured. |
 | `exposure` | A summary of which interactive elements were visible on the page. Helps the Agent know what's on screen when a user asks a question. |
 
 ## What's not captured
@@ -60,13 +59,13 @@ The SDK observes user behavior automatically — you don't write tracking code o
 
 See [Privacy & redaction](/privacy/redaction) for the complete data model.
 
-## The two calls you need to make
+## The calls you need to make
 
 The SDK exposes a small surface on `window.HelpAlive`. The only methods you'll typically call yourself are:
 
 ### `HelpAlive.identify({ ... })` — required after login
 
-Tells HelpAlive who the user is and, if your app has them, which company or workspace they belong to. Without it, the SDK holds events and sends nothing. Keep the four queue lines from [Installation](/installation#2-tell-helpalive-who-is-signed-in) above your first call.
+Tells HelpAlive who the user is and, if your app has them, which company or workspace they belong to. Without it, the SDK holds events and sends none. Keep the four queue lines from [Installation](/installation#2-tell-helpalive-who-is-signed-in) above your first call.
 
 ```javascript
 HelpAlive.identify({
@@ -79,12 +78,16 @@ HelpAlive.identify({
 
 See [Identify](/sdk/identify) for the full field reference.
 
+### `HelpAlive.reset()` — in your logout code
+
+Forgets the signed-in person, so the next person on the same browser starts fresh. See [Identify → Logging out](/sdk/identify#logging-out).
+
 ### `HelpAlive.setConsent(prefs)` — when you have a cookie banner
 
 Pauses or resumes tracking based on the user's consent state.
 
 ```javascript
-HelpAlive.setConsent({ analytics: true, chat: true });
+HelpAlive.setConsent({ analytics: true });
 ```
 
 See [Consent](/sdk/consent) for the full setup.
@@ -93,7 +96,7 @@ That's it for the public surface most apps need. Everything else — buffering, 
 
 ## Anonymous activity is dropped
 
-Until you call `identify()`, the SDK doesn't send anything to our servers. If the user never logs in, the activity is forgotten when they leave the page. This keeps unauthenticated traffic out of your analytics, and keeps anonymous browsing out of HelpAlive entirely.
+Until you call `identify()`, the SDK sends no events. The only request before sign-in is a small start-up check: our script's version and the page's host and path. If the user never logs in, their activity is forgotten when they leave the page. This keeps unauthenticated traffic out of your analytics, and keeps anonymous browsing out of HelpAlive entirely.
 
 ## Next steps
 

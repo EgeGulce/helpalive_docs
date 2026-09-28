@@ -9,7 +9,7 @@ keywords:
   - chatbot testing
 ---
 
-Every change you make to the Agent — Train sources, Personalization, Appearance, Configuration — is staged as a **draft** until you publish. Drafts never reach end users until you ship them.
+Every change you make to the Agent's knowledge and look — Train sources, Personalization, Appearance — is staged as a **draft** until you publish. Drafts never reach end users until you ship them.
 
 ## How it works
 
@@ -23,10 +23,10 @@ When you have unsaved changes, a **draft banner** appears at the top of every Ag
 
 | Surface | Drafted? |
 |---------|----------|
-| **Train** — knowledge sources (URLs, files, pasted text) | Yes |
+| **Train** — knowledge sources (websites and files) | Yes |
 | **Personalization** — tone, length, custom answers, guidance rules | Yes |
 | **Appearance** — colors, position, welcome message, layout, logos | Yes |
-| **Configuration** — visibility, rate limits | Yes |
+| **Configuration** — rollout, usage and limits | No: it applies when you press **Save changes** on that page |
 
 Things that are **not** drafted (changes apply immediately):
 
@@ -42,7 +42,6 @@ Click **Publish** in the draft banner. A confirmation dialog shows you which sec
 - Knowledge sources added, re-crawled, or removed.
 - Personalization fields edited.
 - Appearance fields edited.
-- Configuration fields edited.
 
 Publish is **admin-only**. Non-admins see the banner but cannot publish. The action is logged with the actor, the timestamp, and a snapshot of what changed.
 
