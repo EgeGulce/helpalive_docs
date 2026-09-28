@@ -47,7 +47,7 @@ The SDK observes user behavior automatically — you don't write tracking code o
 | `form_submit` | The user submits a form. (We never capture the field values.) |
 | `change` | The user changes a field: a text box, a select, a checkbox. |
 | `rage_click` | Repeated clicks on the same element — a strong frustration signal. |
-| `dom_error` | An error state appears on the page: an alert, a field marked invalid, or a browser validation message. JavaScript errors are not captured. |
+| `dom_error` | An error state appears on the page (an alert, a field marked invalid, or a browser validation message), or a request your app sends to save or change something comes back with a 4xx error. JavaScript errors are not captured. |
 | `exposure` | A summary of which interactive elements were visible on the page. Helps the Agent know what's on screen when a user asks a question. |
 
 ## What's not captured
