@@ -1,11 +1,10 @@
 ---
-title: "Team: invite, promote, and deactivate members"
+title: "Team: invite and deactivate teammates"
 sidebarTitle: "Team"
-description: "Manage who has access to your HelpAlive dashboard. Invite teammates, promote members to admin, deactivate accounts that no longer need access."
+description: "Manage who has access to your HelpAlive dashboard. Invite teammates, resend or revoke invites, and deactivate accounts that no longer need access. Everyone on your team is an admin."
 keywords:
   - invite teammates
   - team management
-  - admin role
   - deactivate user
   - dashboard access control
 mode: "wide"
@@ -21,47 +20,37 @@ Open your dashboard and go to **Settings → Team**.
 |---------|---------------|
 | **Team Members** | Everyone currently active on your dashboard. |
 | **Invites** | Invitations you've sent that haven't been used yet. |
-| **Inactive Members** | Members who've been deactivated and don't have access right now. |
+| **Inactive Members** | Teammates who've been deactivated and don't have access right now. |
 
 ## Inviting a teammate
 
-Click **Invite** to send a new invitation. You can invite one person at a time or several at once.
+Click **Invite Teammates**. Add one or more email addresses, then send all the invites at once. The dialog shows how many spots your plan has left.
 
-Each invite needs:
+Each address must be in a domain your organization allows (see [Security & Access](/settings/security)).
 
-- An **email address** in a domain allowed by your organization (see [Security & Access](/settings/security)).
-- A **role** — Admin or Member.
-
-HelpAlive emails the invitee a link to set their password and join. Invites appear in the **Invites** section with a status:
+HelpAlive emails each invitee a link to set their password and join. The link lasts 3 days. Invites appear in the **Invites** section with a status:
 
 | Status | What it means |
 |--------|---------------|
-| **Pending** | Waiting for the invitee to accept. You can resend or revoke. |
+| **Pending** | Waiting for the invitee to accept. You can resend it or revoke it. |
 | **Used** | They joined. They're now in **Team Members**. |
-| **Expired** | The link timed out. You can resend it as a fresh invite. |
+| **Expired** | The link timed out. Resend it to send a fresh link for another 3 days. |
 
-## Roles
+**Clear Old Invites** removes the used and expired ones from the list.
 
-| Role | What they can do |
-|------|------------------|
-| **Admin** | Everything. Invite teammates, change Agent config, manage billing, trigger data deletions, change security and session policies. |
-| **Member** | Use the dashboard. Read everything; can't make administrative changes (invite users, regenerate API keys, edit domain allowlist, change session policy). |
+## Everyone is an admin
 
-Only admins can promote a member to admin, or demote an admin (including themselves). You can't accidentally lock the organization out — there must always be at least one admin.
+Everyone on your team has full access to the dashboard: they can invite teammates, train and publish the agent, change settings and billing, and delete data. There are no member roles to assign.
 
-## Editing or deactivating a member
+## Deactivating a teammate
 
-In **Team Members**, click the menu on any row to:
+In **Team Members**, press the deactivate button on their row. It revokes their access without deleting them, and they move to **Inactive Members**. You can't deactivate yourself.
 
-- **Edit their role** — promote to admin or demote to member.
-- **Edit their job role** — the descriptive field (e.g. "Product Manager"). Admin-only.
-- **Deactivate** — revokes their access without deleting them. They move to **Inactive Members**.
-
-Deactivation is reversible. Click **Reactivate** in the **Inactive Members** section to give a former teammate access back, subject to your plan's seat limit.
+Deactivation is reversible. Press **Reactivate** in the **Inactive Members** section to give a former teammate access back, subject to your plan's seat limit.
 
 ## Seat limits
 
-Your plan caps the number of active members. If you've hit the limit, **Reactivate** and **Invite** are blocked until you deactivate someone else or upgrade. See [Billing](/settings/billing) for the current count.
+Your plan caps the number of active teammates. If you've hit the limit, **Reactivate** and **Invite Teammates** are blocked until you deactivate someone else or change your plan. See [Billing](/settings/billing) for the current count.
 
 ## Next steps
 

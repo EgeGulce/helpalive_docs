@@ -66,7 +66,7 @@ The dashboard has three main sections, plus settings:
 
 ### Settings
 - [Account](/settings/account) — profile, password, sessions, notifications, dashboard light/dark mode, account deletion
-- [Team](/settings/team) — invite teammates, manage roles, deactivate members
+- [Team](/settings/team) — invite and deactivate teammates (everyone is an admin)
 - [Setup & API key](/settings/integration) — the setup page: three steps to go live plus optional user verification, a live check of each, the project key
 - [Security & Access](/settings/security) — email domain allowlist, session policy
 - [Billing](/settings/billing) — seat usage, plan limits
