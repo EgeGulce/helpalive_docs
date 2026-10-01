@@ -28,7 +28,7 @@ Follow all of these. A missed rule usually fails without any error on screen.
 1. Put the tag in the `<head>` of every page, with `data-api-key` set to your project key.
 2. Keep the four queue lines above your first `HelpAlive` call.
 3. Call `identify()` for the signed-in user right after login, and on every page load while they stay signed in.
-4. Pass `userId` as text, never a number. If your ids are numbers, wrap them: `String(user.id)`. The same goes for `tenantId`.
+4. Pass `userId` and `tenantId` as text or a number. `42` and `"42"` are the same person.
 5. Use a `userId` that never changes. Don't use an email address if users can change theirs.
 6. Pass `tenantId` only if your app has companies, workspaces or accounts. Leave it out otherwise.
 7. Pass `role`, `plan`, `displayName`, `email` and `tenantName` as text. Pass `createdAt` as Unix time in seconds.
@@ -80,7 +80,7 @@ Follow all of these. A missed rule usually fails without any error on screen.
     })
     ```
 
-    Only `userId` is required. Use `tenantId` if your app has companies or workspaces. The rest are optional: fill what your app has, and delete the others. If `user.id` is a number in your app, write `userId: String(user.id)`.
+    Only `userId` is required. Use `tenantId` if your app has companies or workspaces. The rest are optional: fill what your app has, and delete the others.
 
     The first four lines let your code call HelpAlive before our script has loaded. Our script replays the calls in order when it arrives. [Identify users](/sdk/identify) describes each field.
   </Step>

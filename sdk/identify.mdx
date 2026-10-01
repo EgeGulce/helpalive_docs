@@ -65,7 +65,7 @@ A tenant is one of your customers: the company, workspace or account a user belo
 
 ### Types matter
 
-- Pass `userId` and `tenantId` as text. A number is refused and nobody is identified. If your ids are numbers, write `String(user.id)`.
+- `userId` and `tenantId` can be text or a number. `42` and `"42"` are the same person.
 - Pass `displayName`, `email`, `role` and `plan` as text. A value of another type stops the call partway, and the agent doesn't load on that page. Keep `role` and `plan` short, as a name rather than a description.
 - An empty `userId` is refused too.
 

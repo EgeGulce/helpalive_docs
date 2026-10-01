@@ -61,7 +61,7 @@ This page helps developers find out why HelpAlive isn't working in their app. Mo
   <Accordion title="identify() is refused">
     **What you see:** the same as above, although your code calls `identify()`. With `data-debug`, the console says why.
 
-    **Fix:** pass `userId` and `tenantId` as text, not numbers: `String(user.id)`. Pass `displayName`, `email`, `role` and `plan` as text too. Don't pass an empty `userId`.
+    **Fix:** pass `userId` and `tenantId` as text or a number. Pass `displayName`, `email`, `role` and `plan` as text too. Don't pass an empty `userId`.
   </Accordion>
 
   <Accordion title="reset() runs straight after identify()">
