@@ -1,0 +1,83 @@
+---
+title: "Home"
+sidebarTitle: "Home"
+description: "What the Home page of the HelpAlive dashboard shows: the agent's state, what needs you, this month against your plan, and the last 7 days."
+keywords:
+  - HelpAlive dashboard home
+  - agent status
+  - HelpAlive usage this month
+---
+
+**Home** is the first page of the dashboard and the first item in the sidebar. It tells you in one screen whether the agent is on, what needs your attention, and how much of your plan you have used.
+
+## What is on the page
+
+### Your agent
+
+The band at the top says the agent's state in one sentence, with one button.
+
+| State | What it says | Button |
+| --- | --- | --- |
+| No source published | **Off: no docs published.** It can turn on once one source is published on Train. | **Add them on Train** |
+| Switched off | **Off, by your switch.** It says how many people would get it, or "Nobody sees it; your analytics keep running." | **Turn on** (opens Controls) |
+| On | **On for everyone**, **On for 25% of tenants**, or **On for** the tenants and people in your list. It adds "showing how" when the agent shows the steps rather than doing them. | **Change who gets it** (opens Controls) |
+
+While the agent is on, the second line says how many sources it answers from and when you last published.
+
+### Needs you
+
+Under the band, **Needs you** lists anything that waits for a person, each with a link. You can **Hide** or **Show** the list. It can hold:
+
+- a Setup step not done yet, with **Open step 1** to **Open step 4**;
+- a source whose crawl or re-crawl failed, with **See on Train**;
+- a finished re-crawl that waits for **Publish** in the bar at the top;
+- guides or chat messages at 80% or more of your plan, or in the last 7 days of your plan period. **Add guides** or **Add chat messages** shows when packs are on sale;
+- an invite that ends within 3 days and has not been taken, with **Resend invite**;
+- a card on file that expires within 30 days or has expired, with **Update card**.
+
+### This month against your plan
+
+Your plan's name and period, and for guides and chat messages: how many are used, how many your plan includes, and a projection once there is enough of the month to go on. Use **Add guides** or **Add chat messages** to buy a pack on **Settings → Billing and usage**.
+
+### Last 7 days: What the agent did
+
+Five figures for the last 7 days, each compared with the 7 days before:
+
+- **People helped**: people who started at least one guide.
+- **Guides started**
+- **Finished**: the share of guides started that the agent took to the end.
+- **Conversations**
+- **Messages**: chat messages, as your plan counts them.
+
+**Open in Reports** opens the same figures in **Reports**, where you can pick another period.
+
+### Guides per day and how they ended
+
+A bar a day for the last 7 days, split by how each guide ended. Before anyone has started a guide, it says "Guides show here once the agent is on and people start them."
+
+### Latest activity
+
+Guides and chats across your tenants, newest first, with a link into **Audience**.
+
+## Check it works
+
+Once Setup is done and the agent is on, the band reads "On for ..." and **Needs you** has no Setup lines. The figures fill in as people use the agent in your app.
+
+## Troubleshooting
+
+- **The band says "Off: no docs published." although you added sources.** A source counts only once it is published. Press **Publish** in the bar at the top.
+- **The figures stay at zero.** Guides count when someone starts one, and chat messages when the agent answers. The **Test** page never counts. See [Limits and usage](/dashboard/usage).
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Controls" icon="sliders" href="/dashboard/controls">
+    Turn the agent on and choose who gets it.
+  </Card>
+  <Card title="Audience and Reports" icon="chart-bar" href="/dashboard/audience-and-reports">
+    Who used the agent, and how it went.
+  </Card>
+  <Card title="Limits and usage" icon="gauge" href="/dashboard/usage">
+    How we count, and what happens at a limit.
+  </Card>
+</CardGroup>

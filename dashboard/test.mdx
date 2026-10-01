@@ -1,0 +1,79 @@
+---
+title: "Test"
+sidebarTitle: "Test"
+description: "Run a batch of test questions against the HelpAlive agent, including your unpublished changes, and compare runs to spot regressions."
+keywords:
+  - test HelpAlive agent
+  - batch test questions
+  - compare chatbot answers
+  - preview draft
+---
+
+**Test** lets you run a batch of questions through the agent and read its answers before your users do. It is the third item in the sidebar. Use it after you change sources, tone, length or custom responses on **Train**, before you press **Publish**.
+
+## What it tests
+
+- The page runs your questions through the same answering steps as the chat in your app.
+- While you have unpublished changes, it uses them, and the page shows **Previewing draft**. The input card says "Unpublished changes will be included."
+- With nothing unpublished, it runs against what is live, "the same setup end users get on your site."
+- Test runs never count against your plan.
+
+It won't:
+
+- run a guide or act on a page. It tests chat answers only.
+- show your users anything. Nothing reaches your app until you **Publish**.
+
+## Run a test
+
+<Steps>
+  <Step title="Start a new test">
+    Press **New test**. Give it a **Test name (optional)**.
+  </Step>
+  <Step title="Add questions">
+    Type one question per line under **Questions (one per line)**. To test follow-ups, press **Add conversation** and add an **Opening question** with up to four **Follow-up** questions. A run holds up to 50 questions and follow-ups in all.
+  </Step>
+  <Step title="Or load questions">
+    **Load set** opens a set you saved before. **Upload CSV** reads a file with columns `turn_1`, `turn_2` and so on, one conversation per row.
+  </Step>
+  <Step title="Run it">
+    Press **Run test**. Answers stream into the results table as each question finishes. **Cancel** stops the run after the current question.
+  </Step>
+</Steps>
+
+## Read the results
+
+Each run appears in the list on the left with its state: **Queued**, **Running**, **Done**, **Cancelled** or **Error**. Open a run to see each question and the agent's answer. Click a row for **Question detail**, including the sections of your docs the answer drew on.
+
+The summary strip at the top says how the run went, for example "Finished all 12 questions". From there you can:
+
+- save the questions as a reusable set, to run them again later;
+- export the results as a CSV file;
+- **Compare** it with another run.
+
+## Compare two runs
+
+Open a finished run and press **Compare** in its summary strip. The **Compare runs** view opens. Pick a second run under **Pick a run to compare…**. HelpAlive pairs the answers by question and marks each pair **Identical**, **Different**, **Only in A** or **Only in B**. Run the same set before and after a change on **Train** to see what the change did.
+
+## Check it works
+
+Run one question your docs answer. The row turns **Done** and shows an answer drawn from your sources.
+
+## Troubleshooting
+
+- **"Run test" is disabled.** The run is over the 50-turn cap. Remove some questions or a conversation.
+- **A CSV row was skipped.** Rows with more than five turns are skipped. Rows past the 50-turn cap are dropped.
+- **The answer ignores a source you just added.** Check that its crawl finished on **Train**. A source still crawling is not part of the draft yet.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Train" icon="graduation-cap" href="/dashboard/train">
+    Change what the agent knows.
+  </Card>
+  <Card title="Publishing" icon="upload" href="/dashboard/publishing">
+    Take your tested changes live.
+  </Card>
+  <Card title="Appearance" icon="palette" href="/dashboard/appearance">
+    Style the widget your users see.
+  </Card>
+</CardGroup>

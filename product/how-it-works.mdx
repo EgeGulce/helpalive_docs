@@ -1,0 +1,88 @@
+---
+title: "How HelpAlive works"
+sidebarTitle: "How it works"
+description: "The five stages HelpAlive's agent goes through inside your app, from reading the page to handing back what only the user can do, and the guarantees at each stage."
+keywords:
+  - how HelpAlive works
+  - AI agent stages
+  - in-app AI guarantees
+  - AI agent reads the DOM
+  - AI does tasks in web app
+---
+
+This page explains what HelpAlive's agent does inside your app, stage by stage, and what it guarantees at each one. It is for anyone deciding whether to put HelpAlive in front of their users.
+
+HelpAlive runs in your user's browser, inside your app, through the one script your developer adds. It appears only for people you identify with `identify()`, and only for the people you choose on **Controls**.
+
+## 1. It reads the page
+
+When a user opens the chat or starts a guide, the agent reads the page they are on as structured text. It sees the page's title and headings, the visible text, and each button, link and field with its label and state. It also sees the values in fields, except passwords, file uploads and hidden fields.
+
+It also knows what the user just did on this visit, including any errors they hit, and the role and plan you pass in `identify()`.
+
+- It never takes screenshots or records the screen.
+- It reads the page again at every step, so it works from what is on screen now.
+
+Because it reads the page's structure, it works on any web app. You don't tag elements or describe your screens. Plain, visible labels on your controls help it, as they help screen readers. See [Make your app easy for the agent](/sdk/agent-ready).
+
+## 2. It answers from your published docs
+
+The agent answers from the sources you add and publish on **Train**: your help site and the files you upload. Drafts are never used for your users' answers. Where your docs are silent, it can use general knowledge of your product, and your docs always win when the two disagree.
+
+- It answers what was asked, briefly, in plain words.
+- It says plainly when your app can't do something, then helps with the parts it can.
+- It never tells a user to "contact support".
+- It doesn't invent links, ids or quoted text that aren't in your docs or on the page.
+
+See [Chat](/product/chat) for what the user sees.
+
+## 3. It decides whether the task can be done here, and offers
+
+When a user wants something done, the agent checks three things before it offers to help:
+
+1. The user wants the task done, not only explained.
+2. The task can be done in your app, and the agent can name where.
+3. The user hasn't already turned the offer down or done the task.
+
+When all three hold, an offer card appears under the answer. The card starts nothing by itself. The user presses it, or ignores it. If any check fails, the user gets a plain answer and no card.
+
+## 4. It does the steps, or shows how, one step at a time
+
+What happens next depends on the mode you set on **Controls**:
+
+- **Does the steps.** The agent clicks, types, picks and scrolls on the user's behalf, including Save, Submit and Delete.
+- **Shows how.** The agent highlights each control and says what to do, and the user does every click.
+
+Either way, it works one step at a time. After each step it reads the page again to check the step landed. If a press didn't land, it hands that step to the user instead of pressing again. The user can ask a question, change direction, take over or pause at any point. See [Guides](/product/guides).
+
+## 5. It hands back what only the user can do
+
+Some steps belong to the user, and the agent hands them back and says so. These include uploading a file, a code from their phone or email, and a password it was not given. They also include downloads, other apps, and anything it can't read or name. It asks the user for content only they can give, such as a message's wording. Before deleting records chosen by a rule, such as "delete all drafts", it lists them and asks once.
+
+See [What the agent won't do](/product/what-it-wont-do) for the full list.
+
+## Check it works
+
+1. Publish at least one source on **Train**.
+2. Turn the agent on for yourself on **Controls**.
+3. In your app, open the chat and ask for a task your docs describe, such as "Can you set this up for me?"
+4. An offer card should appear under the answer. Press it and watch the bar at the bottom of the page.
+
+## Troubleshooting
+
+- **No offer card appears.** The agent offers only when the task can be done in your app and it can name where. Ask for a task your published docs describe. Offers also stop once your guides for the month are used up; answers keep coming.
+- **The agent answers from old content.** Changes on **Train** wait for **Publish**. Use **Test** to try drafts before you publish.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Chat" icon="messages-square" href="/product/chat">
+    What users see when they open the chat.
+  </Card>
+  <Card title="Guides" icon="route" href="/product/guides">
+    The offer, the bar, and the recap.
+  </Card>
+  <Card title="What the agent won't do" icon="hand" href="/product/what-it-wont-do">
+    Every hand-back and limit, in one place.
+  </Card>
+</CardGroup>

@@ -1,0 +1,101 @@
+---
+title: "Team & access"
+sidebarTitle: "Team & access"
+description: "Invite your team to the HelpAlive dashboard, choose which email domains can join, and set how long a sign-in lasts."
+keywords:
+  - HelpAlive team
+  - invite teammates
+  - allowed domains
+  - session length
+---
+
+**Team & access** is where you invite your team, choose who can join, and set how long a sign-in lasts. It is the first tab of **Settings**, at **Settings → Team & access**. **Settings** is the last item in the sidebar.
+
+Everyone on your team is an admin: "Everyone on your team can change every setting."
+
+## Invite your team
+
+<Steps>
+  <Step title="Open the invite dialog">
+    On **Your team**, press **Invite teammates**.
+  </Step>
+  <Step title="Add email addresses">
+    Type an address, such as `teammate@company.com`, and press **Add** or Enter. Add as many as you need.
+  </Step>
+  <Step title="Send">
+    Press **Send Invites**. Each person gets an email with a link to join your workspace.
+  </Step>
+</Steps>
+
+If an email can't be sent, the toast offers **Copy link**, so you can send the link yourself.
+
+### Manage invites
+
+The **Invites** panel lists each invite with its **Status** (**Waiting**, **Joined** or **Expired**), when it **Expires**, and who sent it.
+
+- An invite lasts 3 days. **Home** reminds you of one that ends soon.
+- **Resend** sends it again with a fresh link and a new expiry date.
+- **Revoke** cancels an invite that is still waiting. **Delete** removes a joined or expired one.
+- **Clear joined and expired** tidies the list.
+
+Each person on your team can send a limited number of invite emails a day, new invites and resends together.
+
+### Manage your team
+
+**Your team** lists each person's **Name**, **Email**, **Job role** and **Last sign-in**.
+
+- **Deactivate** opens **Remove team member?**. Press **Remove**: they lose access to the dashboard at once and stay in the list as deactivated. You can't deactivate yourself.
+- Open the deactivated people under the list and press **Reactivate** to give someone access again.
+
+## Who can join
+
+**Who can join** lists **Your allowed domains**: "Only these domains can be invited or sign up."
+
+- With no domains, anyone with a work email address can be invited.
+- Type a domain under **Domain to allow**, such as `company.com`, and press **Add domain**.
+- Wildcards such as `*` can't be added. Add each domain you want to allow.
+- Removing a domain doesn't remove the people who already joined with it.
+
+## How long a sign-in lasts
+
+Our defaults sign your team out after 7 days without activity, and after 30 days at most, whichever comes first.
+
+<Steps>
+  <Step title="Change it">
+    On **How long a sign-in lasts**, press **Change**.
+  </Step>
+  <Step title="Pick the times">
+    **Without activity**: from 15 minutes to 30 days. **At most**: from 1 hour to 90 days. The time without activity can't be longer than the most.
+  </Step>
+  <Step title="Save">
+    Press **Save changes** and confirm your password. Anyone already past the new limits is signed out at once.
+  </Step>
+</Steps>
+
+**Use our defaults** puts it back to 7 days and 30 days.
+
+## Check it works
+
+Your invitee's row turns **Joined** once they finish signing up. They appear under **Your team**.
+
+## Troubleshooting
+
+- **An invite says Expired.** Press **Resend** for a fresh link.
+- **"You've sent as many invite emails as one day allows."** You reached today's limit on invite emails. Try again tomorrow, or ask a teammate to send it.
+- **The invitee can't sign up from the link.** They must use the email address the invite was sent to. Their domain must be in **Your allowed domains**, if you set any.
+- **The invite page says "Your company has reached the user limit".** Deactivate someone you no longer need, or write to support@helpalive.com.
+- **You are asked for your password.** Some actions here ask you to confirm it. See [Your account](/dashboard/account#confirm-your-password).
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Your account" icon="user" href="/dashboard/account">
+    Your name, password and devices.
+  </Card>
+  <Card title="Setup & API Key" icon="key" href="/dashboard/setup">
+    Your project key and signing secret.
+  </Card>
+  <Card title="Security" icon="lock" href="/trust/security">
+    Keys, sessions and confirmations.
+  </Card>
+</CardGroup>

@@ -1,0 +1,115 @@
+---
+title: "Guides: the agent does the task or shows how"
+sidebarTitle: "Guides"
+description: "What your users see when HelpAlive does a task for them or shows them how: the offer card, the bar with Your turn and HelpAlive, Flightpath, Ask or steer, Take over, Pause, and the recap."
+keywords:
+  - in-app guide
+  - AI walkthrough
+  - AI does tasks for users
+  - interactive product walkthrough
+  - HelpAlive guide bar
+---
+
+A guide is HelpAlive doing a task in your app for a user, or showing them how, one step at a time. This page shows what the user sees from the offer to the recap, in the widget's own words. Inside the widget, users also see a guide called a "walkthrough".
+
+## Prerequisites
+
+- The agent is on for the user on **Controls**, and you have published at least one source on **Train**.
+- On **Controls**, you have chosen **Does the steps** or **Shows how** for this user, their tenant, or everyone.
+
+Every guide starts from the chat. Each one is put together for the user's request and the page in front of them.
+
+## Does the steps, or shows how
+
+| Mode on **Controls** | Offer button | What happens |
+|---|---|---|
+| **Does the steps** | **Let's do it** | HelpAlive clicks, types, picks and scrolls for the user, including Save, Submit and Delete. It hands back the steps only the user can do. |
+| **Shows how** | **Guide me** | HelpAlive highlights each control and says what to do. The user does every click. |
+
+## Starting a guide
+
+1. The user asks for something in the chat, such as "Can you add a teammate for me?"
+2. An offer card appears under the answer with the task's name and **My plan**, the rough steps.
+3. The user presses **Let's do it** or **Guide me**. The button reads "Preparing your guide…" while it gets ready.
+
+The card then shows **In progress** while the guide runs.
+
+## The bar
+
+A bar sits at the bottom of the page for the whole guide. On its left, a line says who is acting:
+
+- **HelpAlive:** followed by what it's doing, such as working out the next step or waiting for the page.
+- **Your turn:** followed by what the user should do. A **Your turn** tag also shows.
+
+The current part of the task shows above that line.
+
+When it's the user's turn, the control is highlighted on the page with a short instruction. If there's text to type, it shows with a copy button. **Done** tells HelpAlive the user did the step. **Skip** moves past it.
+
+When HelpAlive needs something only the user knows, such as a name or a message's wording, it asks in a small card. The user picks or types an answer, or presses **Skip**.
+
+On the right of the bar are four controls.
+
+### Flightpath
+
+**Flightpath** opens the guide's plan and a live record of what has happened. It shows each step, who did it, and any questions and answers.
+
+### Ask or steer
+
+**Ask or steer** opens a box that says "Ask anything, or say what to change…". The user types, then presses one of two buttons:
+
+- **Ask** pauses the guide and answers the question in the chat.
+- **Steer** changes what HelpAlive does next, such as "use the Marketing team instead". The guide carries on with the change.
+
+### Take over and Hand back
+
+With **Does the steps**, the bar shows **Take over**. Pressing it hands every remaining step to the user, with HelpAlive showing the way. **Hand back** lets HelpAlive do the steps again from the next one. With **Shows how**, these buttons don't appear, because every step is already the user's.
+
+### Pause and Resume
+
+**Pause** stops the guide where it is and opens the chat. The chat shows the guide's name with **Cancel** and **Resume**. **Resume** carries on from the same step, and **Cancel** ends the guide.
+
+If the user steps away, the guide waits, and the bar says it will pick up when they're back. If the page reloads mid-guide, it picks up where it left off.
+
+## Checks along the way
+
+After each step, HelpAlive reads the page again to check the step landed. If a press didn't land, it hands that step to the user rather than pressing again. Before deleting records chosen by a rule, it names them and asks once. See [What the agent won't do](/product/what-it-wont-do).
+
+## The recap
+
+When the guide ends, a recap card appears in the chat:
+
+- **Completed** or **Stopped** at the top. A stopped guide says why, such as "You stopped this walkthrough.", and where it stopped.
+- **You did**, the steps the user did, with any hand-overs and questions.
+- **I did**, the steps HelpAlive did.
+- **Left for you**, anything not finished.
+
+The offer card then offers **Run again**, or **Continue from where we left off** when the guide can carry on.
+
+## Check it works
+
+1. On **Controls**, set **Does the steps** for yourself.
+2. In your app, ask the chat to do a short task your docs describe.
+3. Press **Let's do it** and watch the bar switch between **HelpAlive:** and **Your turn:**.
+4. Press **Take over**, then **Hand back**, then **Pause** and **Resume**.
+5. Let it finish and read the recap's **You did** and **I did**.
+
+## Troubleshooting
+
+- **The button says Guide me, not Let's do it.** This user, or their tenant, is set to **Shows how** on **Controls**. Changes there apply at once.
+- **No Take over button.** It appears only with **Does the steps**, and not while the guide is paused.
+- **No offer at all.** The agent offers only tasks it can do in your app. Offers also stop once your guides for the month are used up. See [Limits and usage](/dashboard/usage).
+- **The guide stops at a step on another site or in a file dialog.** That's a hand-back by design. See [What the agent won't do](/product/what-it-wont-do).
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="What the agent won't do" icon="hand" href="/product/what-it-wont-do">
+    Every hand-back and confirmation.
+  </Card>
+  <Card title="Controls" icon="sliders-horizontal" href="/dashboard/controls">
+    Choose Does the steps or Shows how.
+  </Card>
+  <Card title="Limits and usage" icon="gauge" href="/dashboard/usage">
+    How guides are counted.
+  </Card>
+</CardGroup>

@@ -1,110 +1,105 @@
 ---
-title: "Consent modes: integrate with your cookie banner"
-sidebarTitle: "Consent"
-description: "HelpAlive ships with consent-aware tracking. Pause analytics until your cookie banner resolves and toggle consent at runtime — auto and required modes."
+title: "Consent mode"
+sidebarTitle: "Consent mode"
+description: "Stop HelpAlive recording activity until your cookie banner gets consent, with data-consent=\"required\" and setConsent()."
 keywords:
   - GDPR consent SDK
   - cookie banner integration
   - consent mode analytics
   - opt-in tracking SaaS
-  - CCPA compliance chatbot
 ---
 
-HelpAlive supports two consent modes and a runtime toggle so you can integrate with whatever consent banner or compliance flow you already run.
+This page shows developers how to make HelpAlive wait for your cookie banner before it records activity. Use it where your rules require consent before analytics.
 
-## Modes
+## Prerequisites
 
-| Mode | Behavior |
-|------|----------|
-| **Auto** (default) | HelpAlive starts capturing as soon as the script loads. Use this where your local rules don't require prior consent. |
-| **Consent required** | HelpAlive loads but stays silent until you call `setConsent({ analytics: true })`. |
+- The HelpAlive tag is in your pages. See [Install the script](/installation).
+- A cookie banner or consent tool that tells your code when a user accepts or declines.
 
-Choose the mode on the tag itself: add `data-consent="required"` to the script tag for **Consent required**, and leave it out for **Auto**.
+## The two modes
 
-```html
-<script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" data-consent="required" async></script>
-```
+| Mode | How to choose it | What happens |
+|------|------------------|--------------|
+| Default | Leave the tag as it is | HelpAlive records activity from the first page, once `identify()` has run. |
+| Consent required | Add `data-consent="required"` to the tag | HelpAlive records no activity, and keeps its ids in memory only, until your page calls `setConsent({ analytics: true })`. |
 
-## Runtime toggle
+`setConsent()` only has an effect in consent-required mode. Without `data-consent="required"`, HelpAlive records activity whatever `setConsent()` says.
 
-Even in auto mode, you can change consent at any time — useful when a user updates their preferences in your privacy center.
+<Note>
+Consent mode covers activity recording only. The agent is not behind it. It still appears for signed-in users, and a chat or guide a user starts still sends what the agent needs. HelpAlive doesn't read Do Not Track or Global Privacy Control signals.
+</Note>
 
-```javascript
-// User accepts
-HelpAlive.setConsent({ analytics: true });
+## Set it up
 
-// User rejects
-HelpAlive.setConsent({ analytics: false });
-```
+<Steps>
+  <Step title="Add data-consent to the tag">
+    ```html
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" data-consent="required" async></script>
+    ```
+  </Step>
+  <Step title="Pass the user's choice from your banner">
+    Call `setConsent()` when the user accepts or declines, and on each page load once your banner knows the stored choice:
 
-| Field | Effect when `false` |
-|-------|---------------------|
-| `analytics` | HelpAlive stops recording activity for this user. Anything queued but unsent is dropped. |
+    ```javascript
+    // When the user accepts analytics in your cookie banner
+    HelpAlive.setConsent({ analytics: true })
 
-`analytics` is the only field. There is no separate switch for the agent: to keep it away from some people, leave them out of the rollout on **Agent → Configuration**.
+    // When the user declines, or withdraws consent later
+    HelpAlive.setConsent({ analytics: false })
+    ```
 
-## Wiring it to your cookie banner
+    Keep the four queue lines from [Install the script](/installation) above these calls, so they work before our script has loaded.
+  </Step>
+  <Step title="Keep identify() and reset() as they are">
+    Call `identify()` and `reset()` as the install shows. Consent doesn't change them.
+  </Step>
+</Steps>
 
-```javascript
-// 1. Add data-consent="required" to the HelpAlive tag so the script
-//    loads but stays silent until you call setConsent().
+## What happens before and after consent
 
-// 2. Show your cookie banner and pass the choices through.
-showConsentBanner({
-  onAccept: (choices) => {
-    HelpAlive.setConsent({ analytics: choices.analytics === true });
-  },
-  onReject: () => {
-    HelpAlive.setConsent({ analytics: false });
-  }
-});
-```
+- **Before consent:** HelpAlive records nothing. Activity that happens before consent is not kept for later. HelpAlive's ids live in memory only, so nothing of HelpAlive's is saved in the browser.
+- **After `setConsent({ analytics: true })`:** HelpAlive saves its ids in the browser and records activity from then on.
+- **After `setConsent({ analytics: false })`:** recording stops again, and new ids stay in memory only.
 
-## GDPR-style explicit opt-in
+`analytics` is the only field. To keep the agent away from some users, leave them out of **Who gets it** on **Controls**. To stop recording one user for good, use **Settings → Privacy Management**.
 
-For EU traffic where prior consent is required:
+## On a shared computer
 
-1. Add `data-consent="required"` to the HelpAlive tag.
-2. Don't call `identify()` until the user accepts.
-3. Call `setConsent({ analytics: true })` and then `identify()` in your accept handler.
-
-```javascript
-function onAccept(user) {
-  HelpAlive.setConsent({ analytics: true });
-  HelpAlive.identify({
-    userId:   user.id,
-    tenantId: user.tenantId
-  });
-}
-```
-
-## Logout
-
-Logging out of your app doesn't tell HelpAlive by itself. Call `reset()` in your logout code, as [Identify](/sdk/identify#logging-out) shows, so the browser forgets the person. To also withdraw consent on logout (useful on shared devices), call `setConsent` there too:
+To withdraw consent at logout as well, call both in your logout code:
 
 ```javascript
-function logout() {
-  HelpAlive.reset();
-  HelpAlive.setConsent({ analytics: false });
-  // …your logout logic
-}
+// In your logout code, and wherever your app ends a session
+HelpAlive.reset()
+HelpAlive.setConsent({ analytics: false })
 ```
 
-## What's stored when the user says no
+## Check it works
 
-Nothing. With `analytics: false`:
+1. Open your app in a private window with the browser's developer tools open on **Network**. Filter on `collect`.
+2. Sign in and decline in your banner. Click around and load another page. No `collect` request appears.
+3. Accept in your banner, click around and load another page. `collect` requests appear.
 
-- No activity is recorded.
-- No session is created.
-- No device fingerprint, IP, or browser data is collected.
+## Troubleshooting
 
-## Next steps
+<AccordionGroup>
+  <Accordion title="HelpAlive records before the user accepts">
+    The tag lacks `data-consent="required"`. Without it, `setConsent()` changes nothing.
+  </Accordion>
+  <Accordion title="Nothing is recorded after the user accepts">
+    Your banner never calls `setConsent({ analytics: true })`, or calls it before the queue lines exist. Call it on every page load once the stored choice is known.
+  </Accordion>
+</AccordionGroup>
 
-<CardGroup cols={2}>
-  <Card title="Privacy overview" icon="shield-check" href="/privacy/overview">
-    What we collect, what we don't, and where personal data is removed.
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Data we collect" icon="database" href="/trust/data">
+    What HelpAlive records, and what it doesn't.
   </Card>
-  <Card title="Data deletion" icon="trash" href="/privacy/dsar">
-    Delete a user's data on request, with a full audit trail.
+  <Card title="Privacy Management" icon="shield" href="/dashboard/privacy-management">
+    Stop tracking or delete a user's data.
+  </Card>
+  <Card title="JavaScript reference" icon="code" href="/sdk/reference">
+    setConsent() and the other calls.
   </Card>
 </CardGroup>

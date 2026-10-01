@@ -1,0 +1,174 @@
+---
+title: "Install with an AI coding agent"
+sidebarTitle: "AI coding agents"
+description: "Paste one prompt into Claude Code, Codex, Cursor or GitHub Copilot to install HelpAlive, and a second one to verify your users."
+keywords:
+  - install HelpAlive with Claude Code
+  - install HelpAlive with Cursor
+  - AI coding agent install prompt
+  - Codex GitHub Copilot install
+---
+
+This page gives your developer the two prompts the dashboard hands to an AI coding agent: one installs HelpAlive, the other verifies your users. Each prompt carries every instruction itself, so the agent needs nothing else.
+
+## Prerequisites
+
+- Your app's code open in Claude Code, Codex, Cursor, GitHub Copilot or a similar coding agent.
+- Your project key, from **Settings → Setup & API Key**. The setup page puts it into the prompt for you.
+- For the second prompt: HelpAlive already installed, and your signing secret created.
+
+## Install HelpAlive
+
+<Steps>
+  <Step title="Copy the prompt">
+    Open **Settings → Setup & API Key**, step **Add HelpAlive to your app**, and choose **With an AI coding agent**. Copy the prompt there: it already has your project key. The prompt below is the same, with `YOUR_PROJECT_KEY` in place of your key.
+  </Step>
+  <Step title="Paste it into your coding agent">
+    The agent adds the tag, the `identify()` call and the `reset()` call. It adds our hosts to your Content Security Policy if your app has one, and lists the files it changed.
+  </Step>
+  <Step title="Review the change">
+    Check that `reset()` sits in your logout code, apart from `identify()`. If your user ids are numbers, make sure `userId` is passed as text, for example `String(user.id)`.
+  </Step>
+</Steps>
+
+```text Install prompt
+Add HelpAlive (an in-app AI agent) to this web app. Make only the changes below.
+
+1. Load the HelpAlive script on every page. Put this tag in the HTML <head> of the layout or template every page uses (for example index.html, the root layout in Next.js, or the base template in Rails, Django or Laravel):
+
+<!-- Paste before </head> -->
+<script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
+
+2. Tell HelpAlive who is signed in. Wherever the app already knows the signed-in user (right after login, and on every page load while they stay signed in), run this, filled in with the app's own user and company objects:
+
+// Lets the calls below run before our script has finished loading. Keep it first.
+window.HelpAlive = window.HelpAlive || { q: [] };
+["identify", "reset", "setConsent", "track"].forEach((m) => {
+  if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
+});
+
+// On every page while someone is logged in, starting right after login
+HelpAlive.identify({
+  userId: user.id,              // your own id for this person
+  tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
+  tenantName: company.name,     // optional: the company's name, shown in your dashboard
+  displayName: user.name,       // optional
+  email: user.email,            // optional
+  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+  createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+})
+
+userId is required and must be a stable id for the person (not their email if it can change). tenantId is their company, workspace or organization id: include it only if this app has such a thing. The other fields are optional: fill each one the app has and leave out the rest (createdAt is the signup date in Unix seconds).
+
+If that code is in a TypeScript file, add this declaration to a .d.ts file the project includes:
+
+// In a .d.ts file your project includes, for example helpalive.d.ts
+declare var HelpAlive: any
+
+and type the queue line's rest argument:
+
+if (!HelpAlive[m]) HelpAlive[m] = (...args: unknown[]) => HelpAlive.q.push([m, args]);
+
+3. Where the app logs the person out, and wherever it ends a session, run this. Keep it apart from the code in step 2, never right after identify():
+
+// In your logout code, and wherever your app ends a session. Until this runs,
+// the browser keeps the person, and the next visitor's events count as theirs.
+HelpAlive.reset()
+
+4. If this app sends a Content-Security-Policy, add these sources to it without removing anything. If its script-src uses a nonce, put the page's nonce on the HelpAlive script tag the same way the app's other scripts get theirs:
+
+script-src https://cdn.helpalive.com;
+connect-src https://api.helpalive.com https://chat.helpalive.com;
+
+Use the app's existing way of reading the current user. Don't add packages or change anything else. When you're done, list the files you changed, and tell me to sign in to the app and look for the HelpAlive agent.
+
+The full guide, if you need more detail: https://docs.helpalive.com/installation
+```
+
+## Verify your users
+
+This prompt makes a user token on your server and passes it to `identify()`. It never contains your signing secret. The agent adds `HELPALIVE_SIGNING_SECRET` to your list of environment variables with no value, and you set the value yourself.
+
+<Steps>
+  <Step title="Create your signing secret">
+    On **Settings → Setup & API Key**, step **Verify your users**, click **Create your signing secret**. Keep it to yourself.
+  </Step>
+  <Step title="Copy the prompt">
+    In the same step, choose **With an AI coding agent** and copy the prompt. It is the same as the one below.
+  </Step>
+  <Step title="Paste it into your coding agent, then set the secret">
+    When the agent is done, put your secret in `HELPALIVE_SIGNING_SECRET` on your server yourself. Never paste the secret into a prompt.
+  </Step>
+</Steps>
+
+```text Verify users prompt
+Add HelpAlive user verification to this app. HelpAlive is already installed: the page calls HelpAlive.identify() for the signed-in person. Make only the changes below.
+
+1. On the server, wherever the app knows the signed-in user, create a "user token": a JWT signed with HS256, keyed on the text of the environment variable HELPALIVE_SIGNING_SECRET, with these claims:
+   - sub: the same user id the page passes to identify() as userId, as a string
+   - tenant: the same id the page passes as tenantId, as a string. Leave it out if the page passes no tenantId.
+   Use the usual JWT library for this language. Don't add exp, kid or any other claim.
+
+2. Get the token to the browser for the signed-in person only. Use whichever fits the app: print it into the page from the server template, or add it to an endpoint the app already has that returns the current user. Send it with Cache-Control: no-store. The secret itself must never reach the browser.
+
+3. Change the identify() call to pass the token. The token says who the person is, so userId and tenantId are no longer passed:
+
+// Lets the calls below run before our script has finished loading. Keep it first.
+window.HelpAlive = window.HelpAlive || { q: [] };
+["identify", "reset", "setConsent", "track"].forEach((m) => {
+  if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
+});
+
+// In place of your identify() call from step 1.
+// The token already says who the person is and which company they belong to.
+HelpAlive.identify({
+  userToken,                    // the token your server made for this person
+  tenantName: company.name,     // optional: the company's name, shown in your dashboard
+  displayName: user.name,       // optional
+  email: user.email,            // optional
+  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+  createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+})
+
+4. Add HELPALIVE_SIGNING_SECRET to the app's list of environment variables (for example .env.example) with no value. I will set the real value myself.
+
+When you're done, list the files you changed.
+
+The full guide, if you need more detail: https://docs.helpalive.com/sdk/verify-users
+```
+
+## Check it works
+
+1. Deploy the change, sign in to your app and open a page.
+2. Open **Settings → Setup & API Key** and press refresh. **HelpAlive is on your pages** and **It knows who is signed in** turn green.
+3. After the second prompt, open the agent in your app. Then press refresh on **Check your setup**, in step **Verify your users**.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="The agent put reset() next to identify()">
+    Move `reset()` into your logout code. Run straight after `identify()`, it forgets the user at once and the agent never appears.
+  </Accordion>
+  <Accordion title="It knows who is signed in stays grey">
+    Check that the queue lines come before `identify()`, and that `userId` is text, not a number. [Install the script](/installation) lists every rule.
+  </Accordion>
+  <Accordion title="The coding agent asks for the signing secret">
+    Don't give it. The prompt only needs the variable's name. Set the value on your server yourself.
+  </Accordion>
+</AccordionGroup>
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Install the script" icon="code" href="/installation">
+    The same install, by hand, with every rule.
+  </Card>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    The server code for each language.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
+  </Card>
+</CardGroup>

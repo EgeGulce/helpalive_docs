@@ -1,0 +1,118 @@
+---
+title: "Billing and usage"
+sidebarTitle: "Billing and usage"
+description: "Subscribe to HelpAlive, see this month's guides and chat messages, buy packs, update your card, download invoices and handle a failed payment."
+keywords:
+  - HelpAlive billing
+  - subscribe HelpAlive
+  - buy guides pack
+  - HelpAlive invoices
+  - failed payment
+---
+
+**Billing and usage** is where you subscribe, see what you have used this month, buy more, and get your invoices. It is the third tab of **Settings**, at **Settings → Billing and usage**. Payments go through Stripe.
+
+Prices are shown on this page and in Stripe Checkout.
+
+## Subscribe
+
+<Steps>
+  <Step title="Open the page">
+    Go to **Settings → Billing and usage**. The band says **Not subscribed yet.**
+  </Step>
+  <Step title="Press Subscribe">
+    Stripe Checkout opens on the page. It says what you get **Every month**, that it **Starts** today and renews each month, and how **Extra packs** work.
+  </Step>
+  <Step title="Pay">
+    Enter your card in Stripe's form. "Nothing is charged until you pay." If the form can't load, use **Pay on Stripe's page instead**.
+  </Step>
+  <Step title="Done">
+    The page says "Subscribed to" your plan, "Your plan starts today." The band then shows **Subscribed. Renews on** the date.
+  </Step>
+</Steps>
+
+If your plan needs a subscription before the agent can run, the band adds "Your agent turns on for your users once you subscribe."
+
+## Your plan
+
+The band at the top shows your plan, where your subscription stands, **This period**, with how far into it you are, and the **Price**. Once you subscribe it shows the **Next invoice** with the card that pays it, and **Payment method and invoices**.
+
+**Payment method and invoices** opens Stripe's portal in a new tab. There you change your card, see invoices and cancel.
+
+## Guides and Chat messages
+
+One card for each, for this plan period:
+
+- **Used**: how many your users have used.
+- **In your plan**: what your plan includes.
+- **Extra this month**: packs and anything carried over.
+- **Past the package**: how many more you allow on **Controls** under **How far over your package**, or "stops at your package".
+
+Under the bar, the card lists the daily limits ("The most: ...") and where each extra came from: **Carried over from last month**, **Pack bought** on a date, or **Added by HelpAlive**.
+
+## Packs
+
+A pack adds a fixed number of guides or chat messages to your plan.
+
+- Packs can be bought only while you are subscribed.
+- They are charged to the card on file.
+- They are used only after your plan's own amount runs out.
+- They carry over to the next month while you stay subscribed, and end with your subscription.
+
+<Steps>
+  <Step title="Choose the kind">
+    Press **Add guides** or **Add chat messages**. **What is on sale** lists the pack sizes.
+  </Step>
+  <Step title="Choose how many">
+    Pick how many packs. The dialog shows the **Amount** and the card it will charge.
+  </Step>
+  <Step title="Confirm">
+    Press the button that names the pack and its price. The page says, for example, "Added 500 guides. They carry over."
+  </Step>
+</Steps>
+
+If your bank wants to confirm the payment, the dialog says "Your bank wants to confirm this payment." Nothing is charged until it does.
+
+## Next bill, payment method and invoices
+
+- **Next bill** shows the amount and date, and any overage. Set to cancel, it shows **When it ends** instead.
+- **Payment method** shows the card on file.
+- **What you have paid** shows the last months and "A month, on average".
+- **Invoices** lists each one with its **Date**, **Amount** and **Status** (**Paid**, **Not paid** or **Cancelled**), with a PDF to download. **Show more invoices** loads older ones.
+
+## Cancel
+
+Open **Payment method and invoices** and cancel in Stripe's portal. The band then says "Subscribed until" the end date, "then it ends." Unused packs end with the subscription; the page lists what is left. To keep them, turn cancellation off in the same place.
+
+## A failed payment
+
+- While Stripe retries, the band says "Your last payment did not go through. Stripe is trying again; update your card under Payment method and invoices."
+- Once Stripe stops retrying, it says "Your last payment did not go through. Update your card under Payment method and invoices."
+- Once Stripe stops retrying, anything past your plan's amount pauses until the payment goes through. Everything your plan includes keeps running. When this pauses something, we email your team and **Controls** says "Overages are paused until your last payment goes through."
+- **Home** warns you when your card expires within 30 days, with **Update card**.
+
+## Check it works
+
+After you subscribe, the band says **Subscribed. Renews on** a date, and **Invoices** lists your first invoice.
+
+## Troubleshooting
+
+- **"Extra guides and messages are for subscribers."** Subscribe first, then buy packs.
+- **"Add a card in Stripe first."** No card is on file. Add one under **Payment method and invoices**.
+- **"Your card was declined. Update it in Stripe, then try again."** Nothing was charged. Update your card and retry.
+- **"Billing is not set up yet. Contact us to change your plan."** Billing isn't available for your workspace yet. Write to support@helpalive.com.
+- **"Checkout cancelled. Nothing was charged."** You closed Checkout. Press **Subscribe** again.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Limits and usage" icon="gauge" href="/dashboard/usage">
+    How guides and chat messages are counted.
+  </Card>
+  <Card title="Controls" icon="sliders" href="/dashboard/controls">
+    Daily limits and how far over your package.
+  </Card>
+  <Card title="Home" icon="house" href="/dashboard/home">
+    This month against your plan.
+  </Card>
+</CardGroup>

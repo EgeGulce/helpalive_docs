@@ -1,244 +1,195 @@
 ---
-title: "Install HelpAlive: one tag and one identify() call"
-sidebarTitle: "Installation"
-description: "Add HelpAlive to any web app with one tag in the head and one identify() call for the signed-in person. With an AI coding agent, by hand, or with Google Tag Manager, plus framework notes, CSP and how to check it works."
+title: "Install the script"
+sidebarTitle: "Install the script"
+description: "Add HelpAlive to any web app with one tag in the head, an identify() call for the signed-in user and a reset() call at logout."
 keywords:
   - install HelpAlive
   - install HelpAlive React
   - install HelpAlive Next.js
   - install HelpAlive Rails Django Laravel
-  - HelpAlive Google Tag Manager
   - in-app AI agent install
-  - Content Security Policy HelpAlive
+  - HelpAlive identify reset
 ---
 
-HelpAlive installs in the browser. Two pieces of code: a tag that loads HelpAlive on every page, and one call that tells it who is signed in. The agent only appears for signed-in people.
+This page shows your developer how to add HelpAlive to a web app by hand: one tag, one `identify()` call and one `reset()` call. It is complete on its own, so an AI coding agent can follow it without reading any other page.
 
-Your setup page, **Settings → Setup & API Key**, shows all of this with your project key already filled in. It offers three ways to do it:
+**Settings → Setup & API Key** shows the same code with your project key already filled in. It also offers two other ways in: [a prompt for an AI coding agent](/sdk/ai-coding-agents) and [Google Tag Manager](/sdk/google-tag-manager).
 
-- [With an AI coding agent](#with-an-ai-coding-agent): paste one prompt into the tool your developer already uses.
-- [Add it yourself](#add-it-yourself): copy the tag and the identify() call.
-- [Google Tag Manager](#google-tag-manager): two Custom HTML tags and a data layer push.
+## Prerequisites
 
-## With an AI coding agent
+- Your project key, from **Settings → Setup & API Key**. It is public: it goes in your pages and is safe to show.
+- Access to the layout or template that every page of your app shares.
+- Your developer, about 10 minutes.
 
-Open your app's code in Claude Code, Codex, Cursor or GitHub Copilot and paste the prompt from the setup page. It adds the tag and the identify() call, adds our hosts to your Content Security Policy if your app has one, and lists the files it touched.
+## The rules
 
-The prompt carries every instruction itself, including your project key, so the agent doesn't need to read this page.
+Follow all of these. A missed rule usually fails without any error on screen.
 
-## Add it yourself
+1. Put the tag in the `<head>` of every page, with `data-api-key` set to your project key.
+2. Keep the four queue lines above your first `HelpAlive` call.
+3. Call `identify()` for the signed-in user right after login, and on every page load while they stay signed in.
+4. Pass `userId` as text, never a number. If your ids are numbers, wrap them: `String(user.id)`. The same goes for `tenantId`.
+5. Use a `userId` that never changes. Don't use an email address if users can change theirs.
+6. Pass `tenantId` only if your app has companies, workspaces or accounts. Leave it out otherwise.
+7. Pass `role`, `plan`, `displayName`, `email` and `tenantName` as text. Pass `createdAt` as Unix time in seconds.
+8. Call `reset()` in your logout code, and keep it apart from `identify()`. Never put it straight after `identify()`.
+9. If your app sends a Content Security Policy, add our sources, and put your nonce on our tag if your policy uses one.
 
-### 1. Paste the tag into the head of every page
+## Install it
 
-```html
-<!-- Paste before </head> -->
-<script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
+<Steps>
+  <Step title="Paste the tag into the head of every page">
+    ```html
+    <!-- Paste before </head> -->
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
+    ```
+
+    Replace `YOUR_PROJECT_KEY` with your key, or copy the tag from the setup page, where the key is already in it. Put it in the one file every page shares:
+
+    | Your app | Where the tag goes |
+    |----------|--------------------|
+    | Rails, Django, Laravel, ASP.NET or any server-rendered app | The layout template every page uses |
+    | React, Vue, Angular or Svelte (Vite and similar) | `index.html` |
+    | Next.js | `app/layout.tsx`, or `pages/_document.tsx` |
+    | Nuxt | `app.head` in `nuxt.config` |
+    | Webflow, WordPress, Bubble and other builders | The site's custom code setting for the head |
+
+    The tag loads in the background (`async`), so it doesn't hold up your page. [The JavaScript reference](/sdk/reference#script-tag-attributes) lists the other attributes the tag accepts.
+  </Step>
+
+  <Step title="Tell HelpAlive who is signed in">
+    Put this wherever your app already knows the signed-in user: right after login, and on every page load while they stay signed in. Fill it in from your app's own user and company objects.
+
+    ```javascript
+    // Lets the calls below run before our script has finished loading. Keep it first.
+    window.HelpAlive = window.HelpAlive || { q: [] };
+    ["identify", "reset", "setConsent", "track"].forEach((m) => {
+      if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
+    });
+
+    // On every page while someone is logged in, starting right after login
+    HelpAlive.identify({
+      userId: user.id,              // your own id for this person
+      tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
+      tenantName: company.name,     // optional: the company's name, shown in your dashboard
+      displayName: user.name,       // optional
+      email: user.email,            // optional
+      role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+      plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+      createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+    })
+    ```
+
+    Only `userId` is required. Use `tenantId` if your app has companies or workspaces. The rest are optional: fill what your app has, and delete the others. If `user.id` is a number in your app, write `userId: String(user.id)`.
+
+    The first four lines let your code call HelpAlive before our script has loaded. Our script replays the calls in order when it arrives. [Identify users](/sdk/identify) describes each field.
+  </Step>
+
+  <Step title="Forget them when they log out">
+    Put this in your logout code, apart from the code above. Also put it wherever your app ends a session, for example where a request comes back signed out:
+
+    ```javascript
+    // In your logout code, and wherever your app ends a session. Until this runs,
+    // the browser keeps the person, and the next visitor's events count as theirs.
+    HelpAlive.reset()
+    ```
+
+    Pasted straight after `identify()`, it would forget the user at once and the agent would never appear. `reset()` also closes the agent and clears its conversation from the browser.
+  </Step>
+
+  <Step title="Allow our hosts in your Content Security Policy, if you have one">
+    Most apps don't send a `Content-Security-Policy` header and can skip this step. If yours does, add these sources to it without removing anything:
+
+    ```text
+    script-src https://cdn.helpalive.com;
+    connect-src https://api.helpalive.com https://chat.helpalive.com;
+    ```
+
+    If your `script-src` uses a nonce, put the page's nonce on the HelpAlive tag, the same way your other scripts get theirs:
+
+    ```html
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" nonce="YOUR_PAGE_NONCE" async></script>
+    ```
+
+    No `style-src` change and no `'unsafe-inline'` are needed. [Content Security Policy](/sdk/csp) explains each source.
+  </Step>
+</Steps>
+
+## TypeScript
+
+If the code from step 2 is in a TypeScript file, tell TypeScript about HelpAlive once, in a `.d.ts` file your project includes:
+
+```typescript
+// In a .d.ts file your project includes, for example helpalive.d.ts
+declare var HelpAlive: any
 ```
 
-Copy it from the setup page, where `YOUR_PROJECT_KEY` is already your key. Put it in the one file every page shares:
+Then give the queue line's rest argument a type:
 
-| Your app | Where the tag goes |
-|----------|--------------------|
-| Rails, Django, Laravel, ASP.NET or any server-rendered app | The layout template every page uses |
-| React, Vue, Angular or Svelte (Vite and similar) | `index.html` |
-| Next.js | `app/layout.tsx`, or `pages/_document.tsx` |
-| Nuxt | `app.head` in `nuxt.config` |
-| Webflow, WordPress, Bubble and other builders | The site's custom code setting for the head |
-
-The tag loads in the background (`async`), so it never slows your page down.
-
-| Attribute | Required | What it does |
-|-----------|----------|--------------|
-| `data-api-key` | Yes | Your project key, from **Settings → Setup & API Key**. |
-| `async` | Recommended | Loads the script without holding up your page. |
-| `data-debug` | No | Logs what HelpAlive does to the browser console. For development only. |
-| `data-consent="required"` | No | Records nothing until your page calls `HelpAlive.setConsent({ analytics: true })`. See [Consent](/sdk/consent). |
-
-### 2. Tell HelpAlive who is signed in
-
-Put this wherever your app already knows the signed-in person: right after login, and on every page load while they stay signed in.
-
-```javascript
-// Lets the calls below run before our script has finished loading. Keep it first.
-window.HelpAlive = window.HelpAlive || { q: [] };
-["identify", "reset", "setConsent", "track"].forEach((m) => {
-  if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
-});
-
-// On every page while someone is logged in, starting right after login
-HelpAlive.identify({
-  userId: user.id,              // your own id for this person
-  tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
-  tenantName: company.name,     // optional: the company's name, shown in your dashboard
-  displayName: user.name,       // optional
-  email: user.email,            // optional
-  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
-  createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
-})
+```typescript
+if (!HelpAlive[m]) HelpAlive[m] = (...args: unknown[]) => HelpAlive.q.push([m, args]);
 ```
 
-Only `userId` is required. Use `tenantId` if your app has companies or workspaces. The rest are optional: fill what your app has, and delete the others. [Identify](/sdk/identify) describes each field.
+## Single-page apps
 
-The first four lines let your code call HelpAlive before our script has finished loading. Keep them above your first call.
+- HelpAlive records page views by itself when your router changes the address. You don't call anything on route changes.
+- One `identify()` per page load is enough. Calling it again with the same details is safe.
+- React StrictMode runs effects twice in development. Two `identify()` calls for the same user are harmless.
+- If a different user signs in without a page reload, call `identify()` with the new user. HelpAlive closes the previous user's agent first.
 
-<Accordion title="Is this file TypeScript?">
-  Tell TypeScript about HelpAlive once, in a `.d.ts` file your project includes:
+## Check it works
 
-  ```typescript
-  // In a .d.ts file your project includes, for example helpalive.d.ts
-  declare var HelpAlive: any
-  ```
+<Steps>
+  <Step title="Sign in to your app">
+    Use a test account and open a page. Wait a few seconds.
+  </Step>
+  <Step title="Look for the agent">
+    The round chat button appears in a corner once the agent is switched on on **Controls** and has published docs from **Train**. Until then, the steps below still tell you the install works.
+  </Step>
+  <Step title="Open the setup checks">
+    Go to **Settings → Setup & API Key** and press the refresh button. The **Is it working?** checks turn green one by one:
 
-  and give the queue line a type:
+    | Check | It turns green when |
+    |-------|---------------------|
+    | **HelpAlive is on your pages** | Our script started on one of your pages, or sent an event, in the last week. |
+    | **It knows who is signed in** | A page called `identify()` for a signed-in user. |
+    | **The agent has your docs** | At least one source on **Train** is published. |
+    | **The agent answers in your app** | The agent is on and has answered a message in your app this month. |
+    | **Users are verified** (optional) | Valid user tokens are arriving. See [Verify users](/sdk/verify-users). |
 
-  ```typescript
-  if (!HelpAlive[m]) HelpAlive[m] = (...args: unknown[]) => HelpAlive.q.push([m, args]);
-  ```
-</Accordion>
+    When the four required checks are green, the panel says **Everything is working.**
+  </Step>
+</Steps>
 
-### 3. Forget them when they log out
+To see what HelpAlive does on a page, add `data-debug` to the tag while you test. It logs to the browser console. Remove it before you ship.
 
-Put this in your logout code, apart from the code above, and wherever your app ends a session (for example where it notices a request came back signed out):
-
-```javascript
-// In your logout code, and wherever your app ends a session. Until this runs,
-// the browser keeps the person, and the next visitor's events count as theirs.
-HelpAlive.reset()
-```
-
-Pasted straight after `identify()`, it would forget the person at once.
-
-## Google Tag Manager
-
-### 1. Add the HelpAlive tag
-
-In Tag Manager: **Tags → New → Custom HTML**. Paste this and set the trigger to **All Pages**.
-
-```html
-<script>
-(function(){
-  var s=document.createElement("script");
-  s.src="https://cdn.helpalive.com/sdk/helpalive.js";
-  s.setAttribute("data-api-key","YOUR_PROJECT_KEY");
-  s.async=true;
-  document.head.appendChild(s);
-})();
-</script>
-```
-
-### 2. Push the signed-in person to the data layer, from your app
-
-Right after login, and on every page load while they stay signed in. Leave out the lines you don't have.
-
-```javascript
-// On every page while someone is logged in, starting right after login
-dataLayer.push({
-  event: "helpalive_identify",
-  helpalive_user_id: user.id,                    // IMPORTANT: Replace with your user's stable ID
-  helpalive_tenant_id: company.id,               // optional; their company or workspace, if your app has them
-  helpalive_tenant_name: company.name,           // optional; workspace display name
-  helpalive_display_name: user.name,             // optional; user's full name
-  helpalive_email: user.email,                   // optional; user email
-  helpalive_role: user.role,                     // optional; e.g. "admin", "editor"
-  helpalive_plan: user.plan,                     // optional; e.g. "free", "pro"
-  helpalive_created_at: user.createdAt,          // optional; signup date (Unix seconds)
-});
-```
-
-### 3. Add a second tag that passes it on
-
-Custom HTML again, triggered by the custom event `helpalive_identify`. Create a **Data Layer Variable** for each `helpalive_` name in it (Variables → New → Data Layer Variable, version 2), and delete the lines for fields you don't push. Tag Manager won't publish a tag that names a variable you haven't created.
-
-```html
-<script>window.HelpAlive=window.HelpAlive||{q:[]};["identify","reset","setConsent","track"].forEach(function(m){HelpAlive[m]=HelpAlive[m]||function(){HelpAlive.q.push([m,[].slice.call(arguments)])}})</script>
-<script>
-  window.HelpAlive.identify({
-    userId: {{helpalive_user_id}},
-    tenantId: {{helpalive_tenant_id}},
-    tenantName: {{helpalive_tenant_name}},
-    displayName: {{helpalive_display_name}},
-    email: {{helpalive_email}},
-    role: {{helpalive_role}},
-    plan: {{helpalive_plan}},
-    createdAt: {{helpalive_created_at}}
-  });
-</script>
-```
-
-### 4. Forget them when they log out
-
-In your logout code, and wherever your app ends a session, push this:
-
-```javascript
-// In your logout code, and wherever your app ends a session
-dataLayer.push({ event: "helpalive_reset" });
-```
-
-Then add a third Custom HTML tag, triggered by the custom event `helpalive_reset`:
-
-```html
-<script>window.HelpAlive=window.HelpAlive||{q:[]};["identify","reset","setConsent","track"].forEach(function(m){HelpAlive[m]=HelpAlive[m]||function(){HelpAlive.q.push([m,[].slice.call(arguments)])}})</script>
-<script>
-  window.HelpAlive.reset();
-</script>
-```
-
-Then **Submit** the container in Tag Manager. To verify your users through Tag Manager, see [Verify your users](/sdk/verify-users#with-google-tag-manager).
-
-## Content Security Policy
-
-Most apps don't need this. If your app sends a `Content-Security-Policy` header, add these sources to what you already have:
-
-```
-script-src https://cdn.helpalive.com;
-connect-src https://api.helpalive.com https://chat.helpalive.com;
-style-src 'unsafe-inline';
-```
-
-The `chat.helpalive.com` source is the agent's. Without it, the tag loads and events arrive, but the agent can't answer. The `style-src` line lets the agent draw its own styles. Without it, the agent's button shows unstyled at the top of your page.
-
-## Check that it works
-
-Sign in to your app and open a page. Then open **Settings → Setup & API Key**. The **Is it working?** panel has one line per step; press the refresh button to check again after trying your app.
-
-| Line | It turns green when |
-|------|---------------------|
-| **HelpAlive is on your pages** | Our script started on one of your pages, or sent us an event, in the last week. If it reaches your pages but can't start, the line says to check the project key in the tag. |
-| **It knows who is signed in** | A page called `identify()` for a signed-in person. |
-| **The agent has your docs** | At least one source on **Agent → Train** is published and ready. A published source that is being re-crawled still counts, since the agent keeps answering from it. |
-| **The agent answers in your app** | The agent is switched on and has answered at least one message in your app this month. |
-| **Users are verified** (optional) | Valid user tokens are arriving. See [Verify your users](/sdk/verify-users). |
-
-When every needed line is green, the panel says **Everything is working.**
+## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="The first line stays grey">
-    1. The build with the tag isn't live yet in the place you're testing.
-    2. Your Content Security Policy blocks the script: see [above](#content-security-policy). Press F12, open **Console**, and look for a red error that mentions `helpalive.js` or `Content Security Policy`.
-    3. An ad blocker or privacy extension blocks it. Try a private window with extensions off.
+  <Accordion title="HelpAlive is on your pages stays grey">
+    - The build with the tag isn't live where you're testing yet.
+    - The tag has no `data-api-key`. Without it, nothing starts and nothing is logged.
+    - Your Content Security Policy blocks the script. Open the browser console and look for an error that names `helpalive.js` or `Content Security Policy`.
+    - An ad blocker or privacy extension blocks it. Try a private window with extensions off.
   </Accordion>
   <Accordion title="The script is seen, but nobody is recognized">
-    `identify()` isn't running. Check that it runs after login and on every page load while the person stays signed in, and that the four queue lines come before it.
+    `identify()` isn't running, or it was refused. Check that it runs after login and on every page load, and that the four queue lines come before it. Check that `userId` is text, not a number. Add `data-debug` to the tag to see the reason in the console.
   </Accordion>
-  <Accordion title="The agent doesn't appear">
-    The agent only appears for signed-in people, once it is set up and switched on in the rollout settings on **Agent → Configuration** and you pressed **Save changes**, and only for the people you chose there. A page that was already open picks up the change on the next page load, so load one more page.
+  <Accordion title="Everything is green, but the agent doesn't appear">
+    The agent appears only for signed-in users it is switched on for, on **Controls**. A page that was already open picks up a change within a minute or a few page loads. [Troubleshooting](/sdk/troubleshooting) covers the other causes.
   </Accordion>
 </AccordionGroup>
 
-## Next steps
+## Next
 
-<CardGroup cols={2}>
-  <Card title="Identify" icon="user-check" href="/sdk/identify">
-    Every field, companies and workspaces, and logging out.
+<CardGroup cols={3}>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    Every identify() field, switching company, and logout.
   </Card>
-  <Card title="Verify your users" icon="shield-check" href="/sdk/verify-users">
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
     Optional, and recommended for security.
   </Card>
-  <Card title="Train the agent" icon="sparkles" href="/agent/train">
-    Add your docs and publish them.
-  </Card>
-  <Card title="Privacy" icon="lock" href="/privacy/overview">
-    What we capture, what we don't, and where redaction happens.
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
   </Card>
 </CardGroup>

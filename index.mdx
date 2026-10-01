@@ -1,109 +1,78 @@
 ---
-title: "AI agent for every user in your SaaS"
-sidebarTitle: "Home"
-description: "HelpAlive is an AI agent for every user in your SaaS — context-aware answers, in-app guides, and adoption insights, from one script tag."
+title: "HelpAlive: an AI agent inside your web app"
+sidebarTitle: "Welcome"
+description: "HelpAlive is an AI agent inside your web app that answers your users' questions from your docs and does tasks for them or shows them how, from one script and one identify() call."
 keywords:
-  - AI agent SaaS
-  - in-app AI assistant
-  - SaaS user guidance
-  - product onboarding
-  - feature adoption
-  - context-aware chatbot
-  - reduce churn SaaS
-mode: "custom"
+  - in-app AI agent
+  - AI agent for SaaS
+  - in-app chat from your docs
+  - AI that does tasks in your app
+  - DOM-based AI agent
+  - no screenshots AI assistant
 ---
 
-<div className="mx-auto max-w-5xl px-6 py-16 lg:py-20">
-  <div className="flex flex-col items-center gap-6 text-center">
-    <img src="/logo/light.png" alt="HelpAlive — AI agent for every user in your SaaS" className="block dark:hidden h-10 w-auto" />
-    <img src="/logo/dark.png"  alt="HelpAlive — AI agent for every user in your SaaS" className="hidden dark:block h-10 w-auto" />
+HelpAlive is an AI agent that lives inside your web app. It answers your users' questions from your own docs, and it does tasks for them or shows them how, one step at a time. You add one script and one `identify()` call, it works on any web app, and it reads the page's structure instead of taking screenshots.
 
-    <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">
-      An AI agent for every user in your SaaS.
-    </h1>
+This site is for the people who set HelpAlive up: the admin who configures it in the dashboard and the developer who installs it.
 
-    <p className="max-w-3xl text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-400">
-      HelpAlive watches what users do inside your SaaS, intervenes the moment they get stuck, and answers their questions in real time with full session context. One product. One script tag.
-    </p>
+## Pick your path
 
-    <div className="flex flex-wrap justify-center gap-3 pt-2">
-      <a
-        href="/quickstart"
-        className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 transition"
-      >
-        Get started
-      </a>
-      <a
-        href="/sdk/overview"
-        className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:border-primary transition dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50"
-      >
-        How it works
-      </a>
-    </div>
-  </div>
+<CardGroup cols={2}>
+  <Card title="Product" icon="sparkles" href="/product/how-it-works">
+    What your users see: chat, guides, and what the agent will and won't do.
+  </Card>
+  <Card title="Dashboard" icon="layout-dashboard" href="/quickstart">
+    Train it on your docs, test it, set who gets it, and track usage.
+  </Card>
+  <Card title="Developers" icon="code" href="/sdk/overview">
+    Add the script, identify your users, and verify them on your server.
+  </Card>
+  <Card title="Trust" icon="shield-check" href="/trust/security">
+    Security, the data we collect, how the AI uses it, and our subprocessors.
+  </Card>
+</CardGroup>
 
-  <section className="mt-16 max-w-3xl mx-auto space-y-4">
-    <h2 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">What HelpAlive does inside your SaaS</h2>
-    <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
-      Every B2B SaaS has two groups of users — the ones who succeed with the product, and the ones who silently struggle. HelpAlive turns information about the first group into action for the second. The same SDK that captures real-time behavior signals — pageviews, clicks, errors, rage clicks — feeds the AI agent so every reply lands in context.
-    </p>
-    <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
-      The agent answers user questions inside your product, knows the page they are on, and the role and plan you sent through <code>identify()</code>. When an answer is not enough, in-app guides walk users through real tasks step by step.
-    </p>
-  </section>
+## What your users get
 
-  <section className="mt-12">
-    <h2 className="sr-only">Documentation sections</h2>
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <Card title="Quickstart" icon="rocket" href="/quickstart" horizontal>
-        One tag and a few lines of code, live in three steps.
-      </Card>
-      <Card title="SDK" icon="code" href="/sdk/overview" horizontal>
-        Autocapture user behavior and identify users for the AI agent.
-      </Card>
-      <Card title="Agent" icon="messages-square" href="/agent/overview" horizontal>
-        Train the in-app AI assistant on your docs, customize, and ship.
-      </Card>
-      <Card title="Studio" icon="wand-sparkles" href="/studio/overview" horizontal>
-        Topics inbox, in-app guides, and the pages your Agent runs on.
-      </Card>
-      <Card title="Insight" icon="compass" href="/insight/overview" horizontal>
-        Per-user and per-workspace adoption analytics. No manual tagging.
-      </Card>
-      <Card title="Privacy" icon="shield-check" href="/privacy/overview" horizontal>
-        Two-layer PII redaction, DSAR-ready deletion, full audit trail.
-      </Card>
-    </div>
-  </section>
+- **Answers from your docs.** Users ask in their own words and get a short answer that fits the page they're on.
+- **Tasks done for them, or shown to them.** When a user wants something done, the agent offers a guide. It does the steps itself, or highlights each control so the user clicks.
+- **A clear hand-back.** Steps only the user can do, such as uploading a file, go back to them.
 
-  <section className="mt-16 max-w-3xl mx-auto space-y-4">
-    <h2 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">Three sections, one workflow</h2>
-    <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
-      Your dashboard runs the work in three sections. <strong>Agent</strong> is the AI assistant inside your SaaS — train it on your docs, set its tone, customize how it looks, and publish your changes when you're ready. <strong>Studio</strong> is where you act on what users do — work through the inbox of questions the assistant couldn't answer, and build in-app guides that walk users through real tasks. <strong>Insight</strong> is your adoption view — per-user activity timelines, per-workspace summaries, and how users are rating the assistant.
-    </p>
-    <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
-      The loop closes itself. Insight shows where users are dropping off. The Topics inbox in Studio surfaces which questions need better answers. You ship a fix in the Agent or a Guide in Studio. Adoption metrics confirm the lift in Insight. No manual event tagging required at any step.
-    </p>
-  </section>
+You decide which of these each tenant or person gets, on **Controls**.
 
-  <section className="mt-16 max-w-3xl mx-auto space-y-4">
-    <h2 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">Get started today</h2>
-    <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
-      Setup takes about 10 minutes of your developer's time. Drop one script tag into your app, call <code>identify()</code> for the signed-in person and <code>reset()</code> on logout, and HelpAlive starts capturing behavior and powering the AI agent automatically. Personal data is redacted twice — first in the user's browser, then again on our servers — so you get adoption insight without the privacy headache.
-    </p>
-    <div className="flex flex-wrap gap-3 pt-2">
-      <a
-        href="/quickstart"
-        className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 transition"
-      >
-        Read the quickstart
-      </a>
-      <a
-        href="https://helpalive.com/#early-access"
-        className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:border-primary transition dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50"
-      >
-        Sign up for early access
-      </a>
-    </div>
-  </section>
-</div>
+## Start here
+
+<Steps>
+  <Step title="Create your account">
+    Sign up at [app.helpalive.com/signup](https://app.helpalive.com/signup). The [Quickstart](/quickstart) follows the same steps as **Settings → Setup & API Key**.
+  </Step>
+  <Step title="Add the script and identify()">
+    Your developer adds one tag to your pages and one `identify()` call for the signed-in person. See [Install the script](/installation).
+  </Step>
+  <Step title="Teach it your product">
+    On **Train**, add your help site or upload files, then publish them. See [Train](/dashboard/train).
+  </Step>
+  <Step title="Turn it on">
+    On **Controls**, turn the agent on and choose who gets it. See [Controls](/dashboard/controls).
+  </Step>
+</Steps>
+
+## Check it works
+
+Sign in to your own app as a user who should get the agent. A round button appears in the corner of the page. Open it and ask a question your docs answer.
+
+If the button doesn't appear, see [Troubleshooting](/sdk/troubleshooting).
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="How HelpAlive works" icon="workflow" href="/product/how-it-works">
+    The stages the agent goes through, and what it guarantees.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    From sign-up to the agent answering in your app.
+  </Card>
+  <Card title="FAQ" icon="circle-help" href="/product/faq">
+    Short answers to the questions teams ask first.
+  </Card>
+</CardGroup>

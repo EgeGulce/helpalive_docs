@@ -1,0 +1,166 @@
+---
+title: "Install with Google Tag Manager"
+sidebarTitle: "Google Tag Manager"
+description: "Install HelpAlive through Google Tag Manager with a loader tag, an identify tag fed by the data layer, and a reset tag for logout."
+keywords:
+  - HelpAlive Google Tag Manager
+  - GTM custom HTML tag
+  - dataLayer identify
+  - install without code deploy
+---
+
+This page shows how to install HelpAlive through Google Tag Manager, for teams that manage scripts there. You add three Custom HTML tags in Tag Manager, and your app pushes two events to the data layer.
+
+## Prerequisites
+
+- Tag Manager is already on every page of your app.
+- Your project key, from **Settings → Setup & API Key**. It is public and safe to put in a tag.
+- A developer who can add two `dataLayer.push` calls to your app: one after login, one at logout.
+
+## Set it up
+
+<Steps>
+  <Step title="Add the HelpAlive tag">
+    In Tag Manager, go to **Tags → New → Custom HTML**. Paste this, replace `YOUR_PROJECT_KEY` with your key, and set the trigger to **All Pages**.
+
+    ```html
+    <script>
+    (function(){
+      var s=document.createElement("script");
+      s.src="https://cdn.helpalive.com/sdk/helpalive.js";
+      s.setAttribute("data-api-key","YOUR_PROJECT_KEY");
+      s.async=true;
+      document.head.appendChild(s);
+    })();
+    </script>
+    ```
+
+    The setup page shows this tag with your key already in it, under **Google Tag Manager**.
+  </Step>
+
+  <Step title="Push the signed-in user to the data layer, from your app">
+    Run this right after login, and on every page load while the user stays signed in. Leave out the lines you don't have.
+
+    ```javascript
+    // On every page while someone is logged in, starting right after login
+    dataLayer.push({
+      event: "helpalive_identify",
+      helpalive_user_id: user.id,                    // IMPORTANT: Replace with your user's stable ID
+      helpalive_tenant_id: company.id,               // optional; their company or workspace, if your app has them
+      helpalive_tenant_name: company.name,           // optional; workspace display name
+      helpalive_display_name: user.name,             // optional; user's full name
+      helpalive_email: user.email,                   // optional; user email
+      helpalive_role: user.role,                     // optional; e.g. "admin", "editor"
+      helpalive_plan: company.plan,                  // optional; e.g. "free", "pro"
+      helpalive_created_at: user.createdAt,          // optional; signup date (Unix seconds)
+    });
+    ```
+
+    Push the user id as text. If your ids are numbers, write `String(user.id)`, and the same for the tenant id. A number is refused and nobody is identified.
+  </Step>
+
+  <Step title="Create a Data Layer Variable for each field">
+    In **Variables → New → Data Layer Variable** (version 2), create one variable for each `helpalive_` name you push, with the same name. Tag Manager won't publish a tag that names a variable you haven't created.
+  </Step>
+
+  <Step title="Add a second tag that passes it on">
+    Add another Custom HTML tag, triggered by the custom event `helpalive_identify`. Delete the lines for fields you don't push.
+
+    ```html
+    <script>window.HelpAlive=window.HelpAlive||{q:[]};["identify","reset","setConsent","track"].forEach(function(m){HelpAlive[m]=HelpAlive[m]||function(){HelpAlive.q.push([m,[].slice.call(arguments)])}})</script>
+    <script>
+      window.HelpAlive.identify({
+        userId: {{helpalive_user_id}},
+        tenantId: {{helpalive_tenant_id}},
+        tenantName: {{helpalive_tenant_name}},
+        displayName: {{helpalive_display_name}},
+        email: {{helpalive_email}},
+        role: {{helpalive_role}},
+        plan: {{helpalive_plan}},
+        createdAt: {{helpalive_created_at}}
+      });
+    </script>
+    ```
+
+    The first line lets this tag run before the HelpAlive script has loaded. Keep it.
+  </Step>
+
+  <Step title="Forget the user at logout">
+    In your logout code, and wherever your app ends a session, push this. Keep it apart from the identify push.
+
+    ```javascript
+    // In your logout code, and wherever your app ends a session
+    dataLayer.push({ event: "helpalive_reset" });
+    ```
+
+    Then add a third Custom HTML tag, triggered by the custom event `helpalive_reset`:
+
+    ```html
+    <script>window.HelpAlive=window.HelpAlive||{q:[]};["identify","reset","setConsent","track"].forEach(function(m){HelpAlive[m]=HelpAlive[m]||function(){HelpAlive.q.push([m,[].slice.call(arguments)])}})</script>
+    <script>
+      window.HelpAlive.reset();
+    </script>
+    ```
+  </Step>
+
+  <Step title="Submit the container">
+    Press **Submit** in Tag Manager to publish the three tags.
+  </Step>
+</Steps>
+
+## Verify users through Tag Manager
+
+Once your server makes user tokens (see [Verify users](/sdk/verify-users)), pass the token through the data layer. Create a Data Layer Variable named `helpalive_user_token`, then add these lines:
+
+```javascript
+// In your dataLayer.push, next to helpalive_user_id:
+helpalive_user_token: userToken,   // the token your server made for this person
+
+// In the identify tag, as its first line:
+userToken: {{helpalive_user_token}},
+```
+
+## Content Security Policy
+
+If your app sends a Content Security Policy, it must already allow Tag Manager's Custom HTML tags. Add our sources as well:
+
+```text
+script-src https://cdn.helpalive.com;
+connect-src https://api.helpalive.com https://chat.helpalive.com;
+```
+
+[Content Security Policy](/sdk/csp) explains each source.
+
+## Check it works
+
+1. Open Tag Manager's **Preview** mode on your app and sign in. The `helpalive_identify` event fires the identify tag.
+2. Open **Settings → Setup & API Key** and press refresh. **HelpAlive is on your pages** and **It knows who is signed in** turn green.
+3. Log out in Preview mode and check that `helpalive_reset` fires the reset tag.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tag Manager won't publish the identify tag">
+    The tag names a variable you haven't created. Create each `helpalive_` Data Layer Variable, or delete its line from the tag.
+  </Accordion>
+  <Accordion title="The identify tag fires, but nobody is recognized">
+    The user id reached HelpAlive as a number or as empty. Push it as text. To see the reason, add `s.setAttribute("data-debug","");` to the loader tag while you test, and read the browser console.
+  </Accordion>
+  <Accordion title="The previous user's chat stays open after logout">
+    The `helpalive_reset` push or its tag is missing. Add both, and publish the container.
+  </Accordion>
+</AccordionGroup>
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    What each field means.
+  </Card>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    Sign each user id on your server.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
+  </Card>
+</CardGroup>

@@ -1,0 +1,123 @@
+---
+title: "Train"
+sidebarTitle: "Train"
+description: "Add the websites and files the HelpAlive agent answers from, keep them up to date, and set its tone, answer length and custom responses."
+keywords:
+  - train HelpAlive agent
+  - add help center to AI agent
+  - knowledge sources
+  - re-crawl schedule
+  - custom responses
+---
+
+**Train** is where you choose what the agent knows and how it answers. It is the second item in the sidebar. The page has two halves: **Knowledge sources** on the left and **Personalization** on the right.
+
+Everything you change on Train is a draft until you press **Publish**. The **Test** page reads your drafts, so you can try them first. See [Publishing](/dashboard/publishing).
+
+## Prerequisites
+
+- The public web address of your help center or docs site, starting with `https://`, or your help files.
+
+## Add a source
+
+<Steps>
+  <Step title="Choose how to add it">
+    Under **Knowledge sources**, choose **Add a website** or **Upload a file**. A website is crawled page by page, following its links. A file can be PDF, MD, TXT or DOCX, up to 10 MB.
+  </Step>
+  <Step title="Add a website">
+    Enter the **Documentation URL** and, if you like, a **Name (optional)**. Press **Add Source**.
+  </Step>
+  <Step title="Or upload a file">
+    Drop files on the box, or click to browse, then press **Upload 1 file** (or **Upload 2 files**, and so on).
+  </Step>
+  <Step title="Wait for the crawl">
+    The source shows **Crawling**, then **Processing**, then a draft, such as **12 pages · draft**. While every new source is still crawling, the Publish bar says "Publish appears when the crawl finishes."
+  </Step>
+  <Step title="Publish">
+    Press **Publish** in the bar at the top of the dashboard, then **Publish now**. The source goes live for your users.
+  </Step>
+</Steps>
+
+## The status band
+
+At the top, **What your agent knows** says the state of your sources in a few words, such as **All sources live** or **New crawl ready to publish**. A dot beside it is green when every source is live and red when one failed. It is amber while one is crawling or waits to be published. It also shows **Pages live**, **Sections live** and **Last crawl**. If no source is published, it says **The agent is off: no docs published.**
+
+## Each source
+
+Each row in **Your sources** shows the source's type, its pages and when it was last crawled or uploaded. Use **Search sources** to find one. Each row has:
+
+- **Auto-sync schedule**: how often a website is crawled again. Choose **Off** (manual refresh only), **Every 3 days**, **Weekly**, **Every 2 weeks** or **Monthly**. A new website starts on **Weekly**.
+- **View indexed pages**: the pages the agent can answer from, with what changed in the last crawl.
+- **Rename source**
+- **Re-crawl source**: crawl it again now. While it runs, **Stop re-crawl** stops it.
+- **Remove source**: removes it at once. It does not wait for Publish.
+
+### When a source is crawled again
+
+What is live keeps answering while a re-crawl runs, and if it stops or fails.
+
+- A re-crawl you start with **Re-crawl source** waits for **Publish**. The row shows **New crawl ready**, with how many pages changed.
+- An automatic sync goes live by itself.
+- If an automatic sync finds far fewer pages than are live, it is held for your check: **Sync held**. The site may have been down or blocked us. Check the site, then **Publish** or **Re-crawl source**. Automatic syncs pause until you do.
+- If nothing changed, nothing waits for you.
+
+### Reset training data
+
+In the panel's menu, **More source actions → Reset training data** deletes every source and everything indexed from them. It cannot be undone, and it is not available while a crawl is running.
+
+<Warning>
+The agent answers only from published sources. Removing your last published source, or resetting your training data, turns the agent off for everyone until you publish another.
+</Warning>
+
+## Personalization
+
+### Tone and length
+
+**Tone of voice**:
+
+- **Professional**: formal and precise, with no contractions or slang.
+- **Friendly**: warm and conversational, like chatting with a colleague.
+- **Neutral**: clear and direct, without added personality.
+
+**Answer length**:
+
+- **Standard** (the default): one to three sentences, with short bullet lists when needed.
+- **Detailed**: thorough when needed, brief when not.
+
+Pick one of each and press **Save changes**. The change goes live with your next Publish.
+
+### Custom responses
+
+A custom response tells the agent what to say on a topic you choose. Under **Custom responses**, press **Add response** (or **Add a custom response** while the list is empty) and fill in:
+
+- **Topic label**: a short name you see in the list, up to 80 characters.
+- **When to use**: the situation in plain words, 10 to 300 characters. The agent reads this to decide when to use the response.
+- **Respond with**: what the agent should say, up to 1,000 characters. The toolbar adds links, bold and lists.
+
+Press **Add response** in the editor. Each response in the list has **Edit**, **Disable** or **Enable**, and **Delete**. You can keep up to 15. A response is saved to your draft as soon as you add or change it, and goes live with your next Publish.
+
+## Check it works
+
+1. Open **Test** and ask a question your new source answers. The page says **Previewing draft** while you have unpublished changes.
+2. Press **Publish**.
+3. Ask the same question in your app.
+
+## Troubleshooting
+
+- **"Couldn't add that address."** Use the public web address of your docs, starting with `https://`.
+- **A source shows "The crawl did not finish."** Press **Re-crawl source**. If it fails again, check that the site is public.
+- **Your app still gives the old answer.** Changes on Train wait for **Publish**. Check the bar at the top of the dashboard.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Test" icon="flask" href="/dashboard/test">
+    Try your drafts before your users see them.
+  </Card>
+  <Card title="Publishing" icon="upload" href="/dashboard/publishing">
+    What waits for Publish, and what applies at once.
+  </Card>
+  <Card title="Controls" icon="sliders" href="/dashboard/controls">
+    Turn the agent on once a source is live.
+  </Card>
+</CardGroup>

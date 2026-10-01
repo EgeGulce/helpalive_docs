@@ -1,0 +1,92 @@
+---
+title: "Appearance"
+sidebarTitle: "Appearance"
+description: "Style the HelpAlive widget your users see: the accent color, light or dark, and where the launcher sits, with a live preview."
+keywords:
+  - HelpAlive widget appearance
+  - chat widget color
+  - launcher position
+  - widget dark mode
+---
+
+**Appearance** lets you style the widget your users see in your app. It is the fourth item in the sidebar. You pick one accent color and HelpAlive applies it across the widget. The preview on the right shows the real widget as you change it.
+
+Changes save to your draft. Your users see them after you press **Publish**. See [Publishing](/dashboard/publishing).
+
+## The settings
+
+### Color Scheme
+
+Choose **Light** or **Dark** for the widget.
+
+### Accent color
+
+- **Brand hex**: type your brand color as a hex value, or click the swatch to choose one. It is applied to the user's chat bubble, the send action, the **Next** button and the recap markers.
+- **Quick palette**: common brand colors, applied with one click.
+- **Dark-mode variant**: worked out for you from your accent, so it reads at the same strength on dark surfaces. It is marked **Derived**.
+
+### Launcher
+
+- **Side**: **Bottom left** or **Bottom right**, the corner the launcher sits in.
+- **Side spacing**: the distance from the side edge.
+- **Bottom spacing**: the distance from the bottom edge.
+
+The defaults are light, bottom right, 24 pixels from each edge.
+
+## Change the appearance
+
+<Steps>
+  <Step title="Make your changes">
+    Change any setting. A bar appears at the bottom: **Unsaved appearance changes**.
+  </Step>
+  <Step title="Check the preview">
+    Use **Chat** and **Guide** above the preview to see each state of the widget. Switch the example app between light and dark to see it on both.
+  </Step>
+  <Step title="Save">
+    Press **Save changes**. **Cancel** throws your unsaved changes away. **Reset** puts every setting back to our defaults, which you then save.
+  </Step>
+  <Step title="Publish">
+    Press **Publish** in the bar at the top of the dashboard, then **Publish now**.
+  </Step>
+</Steps>
+
+## What the preview shows
+
+| Tab | State | What it shows |
+| --- | --- | --- |
+| Chat | **Closed** | The launcher in its corner, before anyone opens it. |
+| Chat | **Home** | The widget opened on a page: its greeting and the questions it suggests. |
+| Chat | **Conversation** | A thread with a guide offer and the recap a finished guide leaves. |
+| Chat | **Past chats** | The user's earlier conversations. |
+| Guide | **Working** | HelpAlive is doing a step itself; the bar says what it is pressing. |
+| Guide | **Your turn** | The user does this step; a note beside the control says what to do. |
+| Guide | **Question** | HelpAlive needs a detail from the user before it goes on. |
+| Guide | **Ask** | The user asks a question or changes what HelpAlive does next. |
+| Guide | **Flightpath** | The plan: what is done, what is next. |
+
+## What you can't change
+
+The widget has no name, avatar, logo, launcher text or welcome message to set. Its greeting and suggested questions are written for each page.
+
+## Check it works
+
+After you publish, your app's widget picks up the change within a minute or a few page loads. The launcher sits in the corner you chose, in your accent color.
+
+## Troubleshooting
+
+- **Your app still shows the old style.** Appearance waits for **Publish**. After publishing, wait a minute and load a few pages in your app.
+- **The launcher covers a control in your app.** Raise **Side spacing** or **Bottom spacing**, or move it to the other corner.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Publishing" icon="upload" href="/dashboard/publishing">
+    Take your changes live.
+  </Card>
+  <Card title="Controls" icon="sliders" href="/dashboard/controls">
+    Who gets the agent, and what it does.
+  </Card>
+  <Card title="Guides" icon="route" href="/product/guides">
+    What your users see during a guide.
+  </Card>
+</CardGroup>

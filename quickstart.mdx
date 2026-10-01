@@ -1,29 +1,38 @@
 ---
-title: "HelpAlive quickstart: live in three steps"
+title: "Quickstart"
 sidebarTitle: "Quickstart"
-description: "Go live with HelpAlive in three steps: add one tag and one identify() call, teach the agent your product, then switch it on and try it. A fourth step, verifying your users, is optional and recommended for security."
+description: "Go from a new HelpAlive account to the agent answering in your app, in the same four steps as Settings → Setup & API Key."
 keywords:
   - HelpAlive quickstart
-  - install AI agent SaaS
-  - in-app AI agent install
-  - identify signed-in users
-  - verify users HelpAlive
+  - install in-app AI agent
+  - HelpAlive setup steps
+  - turn on HelpAlive agent
 ---
 
-These are the same steps as the setup page in your dashboard: **Settings → Setup & API Key**. The page fills in your project key for you and turns each step green by itself once it sees that step working.
+This page takes you from a new account to the agent answering inside your app. It is for whoever sets HelpAlive up: an admin, with a developer for step 1.
+
+The steps are the same four as **Settings → Setup & API Key** in your dashboard. That page fills in your project key for you, and each step turns green by itself once HelpAlive sees it working.
+
+## Prerequisites
+
+- A HelpAlive account. Sign up with your work email, enter the 6-digit code we email you, then fill in your profile and your organization.
+- Access to your app's code, or to its Google Tag Manager container.
+- Your help center, docs site or help files.
+
+## Set it up
 
 <Steps>
   <Step title="Add HelpAlive to your app">
     Your developer, about 10 minutes. Two pieces of code: a tag that loads HelpAlive on every page, and one call that tells it who is signed in. The agent only appears for signed-in people.
 
-    Paste the tag into the `<head>` of every page. Copy it from the setup page, where your project key is already in it:
+    Paste the tag into the `<head>` of every page. **Settings → Setup & API Key** shows it with your project key already in it.
 
     ```html
     <!-- Paste before </head> -->
     <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
     ```
 
-    Then, wherever your app already knows the signed-in person, tell HelpAlive who they are:
+    Then, wherever your app knows the signed-in person, tell HelpAlive who they are. Do this right after login and on every page load while they stay signed in.
 
     ```javascript
     // Lets the calls below run before our script has finished loading. Keep it first.
@@ -39,47 +48,64 @@ These are the same steps as the setup page in your dashboard: **Settings → Set
     })
     ```
 
-    And in your logout code, apart from the code above:
+    Put this in your logout code, apart from the code above:
 
     ```javascript
-    // In your logout code, and wherever your app ends a session. Until this runs,
-    // the browser keeps the person, and the next visitor's events count as theirs.
+    // In your logout code, and wherever your app ends a session.
     HelpAlive.reset()
     ```
 
-    Only `userId` is required. [Installation](/installation) has the optional fields, where the tag goes in each framework, Google Tag Manager, and a prompt for your AI coding agent.
+    Only `userId` is required, as text: if `user.id` is a number in your app, write `userId: String(user.id)`. [Install the script](/installation) covers where the tag goes in each framework, Google Tag Manager, TypeScript and the prompt for an AI coding agent. [Identify users](/sdk/identify) lists every `identify()` field.
   </Step>
 
   <Step title="Teach the agent your product">
-    Anyone on your team. Add your help center, docs site or files on **Agent → Train**, then publish them. The agent answers your users from them, and HelpAlive keeps them up to date. See [Train](/agent/train).
+    Anyone on your team. Open **Train** and choose **Add a website** or **Upload a file**. When the crawl finishes, press **Publish** in the bar at the top of the dashboard. The agent answers your users only from what is published. See [Train](/dashboard/train) and [Publishing](/dashboard/publishing).
   </Step>
 
   <Step title="Turn it on and try it">
-    Anyone on your team. On **Agent → Configuration**, press **Set up the agent** if the page offers it. Then switch the agent on, choose who sees it in the rollout settings, and press **Save changes**. Open your app in another tab and sign in, or load one more page if it was already open. Then open the agent and ask it something.
+    Anyone on your team. Open **Controls**. If the page says the agent has no settings yet, press **Set up the agent**. Choose **Who gets it**, switch the agent **On**, press **Save changes**, then **Turn on**. See [Controls](/dashboard/controls).
+
+    Open your app in another tab and sign in, or reload a page if it was already open. Then open the agent and ask it something.
   </Step>
 
   <Step title="Verify your users (optional, recommended)">
-    Your developer, about 15 minutes. HelpAlive works fully without this step. With it, your server signs each user id, and once you turn on **Only allow verified users**, nobody can pretend to be someone else. See [Verify your users](/sdk/verify-users).
+    Your developer, about 15 minutes. HelpAlive works fully without this step. Without it, HelpAlive trusts the user id your page sends. With it, your server signs each id, and once you turn on **Only allow verified users**, nobody can use the agent as someone else. See [Setup & API Key](/dashboard/setup) and [Verify users](/sdk/verify-users).
   </Step>
 </Steps>
 
-## Check that it works
+<Note>
+If someone already had your app open when you turned the agent on, their browser still remembers that it was off. They see the chat button within a minute or a few page loads. People who open your app later see it on their first page.
+</Note>
 
-The setup page's **Is it working?** panel has one line per step. Press the refresh button after trying your app to check again. [Installation → Check that it works](/installation#check-that-it-works) says how each line decides.
+## Check it works
 
-## Next steps
+At the top of **Settings → Setup & API Key**, **Is it working?** shows five checks:
 
-<CardGroup cols={2}>
-  <Card title="Installation" icon="terminal" href="/installation">
-    The tag, identify(), frameworks, Google Tag Manager and CSP.
+- **HelpAlive is on your pages**
+- **It knows who is signed in**
+- **The agent has your docs**
+- **The agent answers in your app**
+- **Users are verified** (optional)
+
+Try your app, then press the refresh button to check again. When the first four are green, the band says **Everything is working.**
+
+## Troubleshooting
+
+- **The step 3 card is greyed out.** The agent cannot turn on before a source is published. Publish one on **Train** first.
+- **The tag is on the page but nothing appears.** The agent only shows after `identify()` runs for a signed-in person. Check that your code calls it on every page load, and that `userId` is text, not a number.
+- **Nothing shows after you switched it on.** Wait a minute and load a few pages, as in the note above. Check that **Who gets it** includes you.
+- **Controls says "Your agent is off for your users until you subscribe."** Subscribe on **Settings → Billing and usage**. See [Billing and usage](/dashboard/billing).
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Install the script" icon="code" href="/installation">
+    Frameworks, Tag Manager, TypeScript and CSP.
   </Card>
-  <Card title="Identify" icon="user-check" href="/sdk/identify">
-    Every identify() field, and logging out.
+  <Card title="Controls" icon="sliders" href="/dashboard/controls">
+    Who gets the agent, and what it does for them.
   </Card>
-  <Card title="Verify your users" icon="shield-check" href="/sdk/verify-users">
-    Sign each user id on your server.
-  </Card>
-  <Card title="Train the agent" icon="sparkles" href="/agent/train">
-    Add your docs and publish them.
+  <Card title="Setup & API Key" icon="key" href="/dashboard/setup">
+    Your project key, signing secret and checks.
   </Card>
 </CardGroup>

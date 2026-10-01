@@ -1,0 +1,126 @@
+---
+title: "Troubleshooting"
+sidebarTitle: "Troubleshooting"
+description: "The ways a HelpAlive install fails without an error on the page, how to spot each one, and how to fix it."
+keywords:
+  - HelpAlive not showing
+  - chat widget not appearing
+  - HelpAlive identify not working
+  - HelpAlive CSP blocked
+  - HelpAlive 401
+---
+
+This page helps developers find out why HelpAlive isn't working in their app. Most failures show no error on the page, so each entry says how to spot it.
+
+## Prerequisites
+
+- Access to your app in a browser with developer tools.
+- Access to **Settings → Setup & API Key** in the dashboard.
+
+## Start here
+
+<Steps>
+  <Step title="Read the setup checks">
+    Open **Settings → Setup & API Key** and press refresh. The first check that isn't green points to the cause. Each check says what it last saw.
+  </Step>
+  <Step title="Turn on console logs">
+    Add `data-debug` to the HelpAlive tag while you test:
+
+    ```html
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" data-debug async></script>
+    ```
+
+    HelpAlive then logs what it does, and why it refused a call, to the browser console. Some lines are at the verbose level, so show all levels in the console. Remove `data-debug` before you ship.
+  </Step>
+  <Step title="Find your failure below">
+    Match what you see to one of the entries, in order.
+  </Step>
+</Steps>
+
+## Silent failures
+
+<AccordionGroup>
+  <Accordion title="The tag has no data-api-key, so nothing starts">
+    **What you see:** **HelpAlive is on your pages** stays grey, and the console shows nothing, even with `data-debug`.
+
+    **Fix:** add `data-api-key="YOUR_PROJECT_KEY"` to the tag, with the key from **Settings → Setup & API Key**. If you regenerated the key, put the new one in the tag: the old one stops working shortly after.
+  </Accordion>
+
+  <Accordion title="The script is blocked">
+    **What you see:** **HelpAlive is on your pages** stays grey. The console shows an error naming `helpalive.js`, `Content Security Policy` or a blocked request.
+
+    **Fix:** add our sources to your policy, and put your nonce on our tag if your policy uses one. See [Content Security Policy](/sdk/csp). Ad blockers and privacy extensions can also block the script: test in a private window with extensions off.
+  </Accordion>
+
+  <Accordion title="identify() is never called, so the agent never appears">
+    **What you see:** **HelpAlive is on your pages** is green, but **It knows who is signed in** stays grey. No chat button appears.
+
+    **Fix:** call `identify()` after login and on every page load while the user is signed in, with the four queue lines above it. The agent appears only for identified users. See [Identify users](/sdk/identify).
+  </Accordion>
+
+  <Accordion title="identify() is refused">
+    **What you see:** the same as above, although your code calls `identify()`. With `data-debug`, the console says why.
+
+    **Fix:** pass `userId` and `tenantId` as text, not numbers: `String(user.id)`. Pass `displayName`, `email`, `role` and `plan` as text too. Don't pass an empty `userId`.
+  </Accordion>
+
+  <Accordion title="reset() runs straight after identify()">
+    **What you see:** the chat button doesn't appear, or doesn't stay, although your code calls `identify()`.
+
+    **Fix:** move `reset()` into your logout code, apart from `identify()`.
+  </Accordion>
+
+  <Accordion title="The agent is off, or has no published docs">
+    **What you see:** the first two checks are green, but **The agent has your docs** or **The agent answers in your app** is not. No chat button appears.
+
+    **Fix:** publish at least one source on **Train**, then switch the agent on in **Controls**. The agent can't be switched on until a source is published. Check that **Who gets it** includes the user you test with.
+  </Accordion>
+
+  <Accordion title="The agent appears only after a short wait">
+    **What you see:** you switched the agent on, or changed **Who gets it**, but a page that was already open doesn't show the change.
+
+    **Why:** each browser keeps the agent's settings for a short time, so pages load fast. A user who already had your app open sees the change within a minute or a few page loads. Switching the agent off takes effect the same way. A browser that has never loaded the agent's settings gets them at once.
+
+    **Fix:** wait a minute, then load a couple of pages.
+  </Accordion>
+
+  <Accordion title="Requests are refused once Only allow verified users is on">
+    **What you see:** the chat button appears, but asking something shows "Your session needs a refresh. Reload the page to keep chatting." Users without a token also stop showing in **Reports** and **Audience**.
+
+    **Why:** with **Only allow verified users** on, HelpAlive refuses every request without a valid user token.
+
+    **Fix:** send a token from every page that calls `identify()`, or turn the switch off while you fix it. See [Verify users](/sdk/verify-users).
+  </Accordion>
+
+  <Accordion title="Your account has no subscription">
+    **What you see:** everything is set up, but the chat button never appears.
+
+    **Fix:** when your plan needs a subscription, the agent stays hidden until you subscribe on **Settings → Billing and usage**.
+  </Accordion>
+
+  <Accordion title="The agent answers but stops offering guides">
+    **What you see:** the agent answers in words and no longer offers to do tasks. Later it may say "I can't answer right now. Try again in a little while."
+
+    **Why:** a usage limit was reached: your package's, or one you set per user, tenant or organisation on **Controls**. Users are never told about a limit.
+
+    **Fix:** see [Limits and usage](/dashboard/usage).
+  </Accordion>
+</AccordionGroup>
+
+## Check it works
+
+When every required check on **Settings → Setup & API Key** is green, the panel says **Everything is working.** Sign in to your app as a user who gets the agent, open the chat button, and ask a question your docs answer.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Install the script" icon="code" href="/installation">
+    Every rule of the install.
+  </Card>
+  <Card title="Controls" icon="sliders-horizontal" href="/dashboard/controls">
+    Switch the agent on and choose who gets it.
+  </Card>
+  <Card title="Content Security Policy" icon="shield" href="/sdk/csp">
+    The sources to allow.
+  </Card>
+</CardGroup>

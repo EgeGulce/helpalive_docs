@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "HelpAlive",
-  "description": "HelpAlive is an AI agent for every user in your SaaS — context-aware answers, in-app guides, and adoption insights, from one script tag.",
+  "description": "HelpAlive is an AI agent inside your web app: it answers your users' questions from your docs and does tasks for them or shows them how. One script and one identify() call.",
   "colors": {
     "primary": "#3FACF8",
     "light": "#68cbe9",
@@ -28,7 +28,17 @@
     "prompt": "Search the docs..."
   },
   "contextual": {
-    "options": ["copy", "view", "assistant", "mcp", "add-mcp"]
+    "options": [
+      "copy",
+      "view",
+      "assistant",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "logo": {
     "light": "/logo/light.png",
@@ -36,92 +46,133 @@
     "href": "/"
   },
   "navbar": {
+    "links": [
+      {
+        "label": "Dashboard",
+        "href": "https://app.helpalive.com"
+      }
+    ],
     "primary": {
       "type": "button",
-      "label": "Sign up for early access",
-      "href": "https://helpalive.com/#early-access"
+      "label": "Sign up",
+      "href": "https://app.helpalive.com/signup"
     }
   },
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Get started",
-        "icon": "rocket",
-        "pages": [
-          "introduction",
-          "quickstart",
-          "installation",
-          "use-cases"
+        "tab": "Product",
+        "icon": "sparkles",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "index",
+              "product/how-it-works",
+              "product/concepts"
+            ]
+          },
+          {
+            "group": "What your users get",
+            "pages": [
+              "product/chat",
+              "product/guides",
+              "product/what-it-wont-do"
+            ]
+          },
+          {
+            "group": "Help",
+            "pages": [
+              "product/faq"
+            ]
+          }
         ]
       },
       {
-        "group": "SDK",
+        "tab": "Dashboard",
+        "icon": "layout-dashboard",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "quickstart",
+              "dashboard/home"
+            ]
+          },
+          {
+            "group": "Your agent",
+            "pages": [
+              "dashboard/train",
+              "dashboard/test",
+              "dashboard/appearance",
+              "dashboard/publishing",
+              "dashboard/controls",
+              "dashboard/usage"
+            ]
+          },
+          {
+            "group": "See what it did",
+            "pages": [
+              "dashboard/audience-and-reports"
+            ]
+          },
+          {
+            "group": "Settings",
+            "pages": [
+              "dashboard/team",
+              "dashboard/setup",
+              "dashboard/billing",
+              "dashboard/privacy-management",
+              "dashboard/account"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Developers",
         "icon": "code",
-        "pages": [
-          "sdk/overview",
-          "sdk/identify",
-          "sdk/verify-users",
-          "sdk/consent"
+        "groups": [
+          {
+            "group": "Install",
+            "pages": [
+              "sdk/overview",
+              "installation",
+              "sdk/identify",
+              "sdk/verify-users",
+              "sdk/ai-coding-agents"
+            ]
+          },
+          {
+            "group": "Your setup",
+            "pages": [
+              "sdk/google-tag-manager",
+              "sdk/csp",
+              "sdk/consent",
+              "sdk/agent-ready"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "sdk/reference",
+              "sdk/troubleshooting"
+            ]
+          }
         ]
       },
       {
-        "group": "Agent",
-        "icon": "messages-square",
-        "pages": [
-          "agent/overview",
-          "agent/train",
-          "agent/personalization",
-          "agent/test",
-          "agent/appearance",
-          "agent/configuration",
-          "agent/publishing"
-        ]
-      },
-      {
-        "group": "Studio",
-        "icon": "wand-sparkles",
-        "pages": [
-          "studio/overview",
-          "studio/pages",
-          "studio/topics",
-          "studio/guides"
-        ]
-      },
-      {
-        "group": "Insight",
-        "icon": "compass",
-        "pages": [
-          "insight/overview",
-          "insight/audience",
-          "insight/reports"
-        ]
-      },
-      {
-        "group": "Settings",
-        "icon": "settings",
-        "pages": [
-          "settings/account",
-          "settings/team",
-          "settings/integration",
-          "settings/security",
-          "settings/billing"
-        ]
-      },
-      {
-        "group": "Privacy",
+        "tab": "Trust",
         "icon": "shield-check",
-        "pages": [
-          "privacy/overview",
-          "privacy/redaction",
-          "privacy/dsar"
-        ]
-      },
-      {
-        "group": "Plans",
-        "icon": "credit-card",
-        "pages": [
-          "plans/overview",
-          "plans/faq"
+        "groups": [
+          {
+            "group": "Security and privacy",
+            "pages": [
+              "trust/security",
+              "trust/data",
+              "trust/ai-and-your-data",
+              "trust/subprocessors"
+            ]
+          }
         ]
       }
     ]
@@ -134,31 +185,141 @@
     },
     "links": [
       {
-        "header": "Product",
+        "header": "Docs",
         "items": [
-          { "label": "Quickstart", "href": "/quickstart" },
-          { "label": "SDK", "href": "/sdk/overview" },
-          { "label": "Agent", "href": "/agent/overview" },
-          { "label": "Studio", "href": "/studio/overview" },
-          { "label": "Insight", "href": "/insight/overview" }
-        ]
-      },
-      {
-        "header": "Resources",
-        "items": [
-          { "label": "Use cases", "href": "/use-cases" },
-          { "label": "Privacy", "href": "/privacy/overview" },
-          { "label": "Plans", "href": "/plans/overview" }
+          {
+            "label": "Quickstart",
+            "href": "/quickstart"
+          },
+          {
+            "label": "Install",
+            "href": "/installation"
+          },
+          {
+            "label": "How it works",
+            "href": "/product/how-it-works"
+          },
+          {
+            "label": "Trust",
+            "href": "/trust/security"
+          }
         ]
       },
       {
         "header": "Company",
         "items": [
-          { "label": "Website", "href": "https://helpalive.com" },
-          { "label": "Dashboard", "href": "https://app.helpalive.com" },
-          { "label": "Sign up for early access", "href": "https://helpalive.com/#early-access" }
+          {
+            "label": "Website",
+            "href": "https://helpalive.com"
+          },
+          {
+            "label": "Dashboard",
+            "href": "https://app.helpalive.com"
+          },
+          {
+            "label": "Support",
+            "href": "mailto:support@helpalive.com"
+          }
         ]
       }
     ]
-  }
+  },
+  "redirects": [
+    {
+      "source": "/introduction",
+      "destination": "/"
+    },
+    {
+      "source": "/use-cases",
+      "destination": "/"
+    },
+    {
+      "source": "/compare",
+      "destination": "/"
+    },
+    {
+      "source": "/studio/:slug*",
+      "destination": "/product/guides"
+    },
+    {
+      "source": "/insight/overview",
+      "destination": "/dashboard/audience-and-reports"
+    },
+    {
+      "source": "/insight/audience",
+      "destination": "/dashboard/audience-and-reports"
+    },
+    {
+      "source": "/insight/reports",
+      "destination": "/dashboard/audience-and-reports"
+    },
+    {
+      "source": "/agent/overview",
+      "destination": "/product/how-it-works"
+    },
+    {
+      "source": "/agent/train",
+      "destination": "/dashboard/train"
+    },
+    {
+      "source": "/agent/personalization",
+      "destination": "/dashboard/train"
+    },
+    {
+      "source": "/agent/test",
+      "destination": "/dashboard/test"
+    },
+    {
+      "source": "/agent/appearance",
+      "destination": "/dashboard/appearance"
+    },
+    {
+      "source": "/agent/configuration",
+      "destination": "/dashboard/controls"
+    },
+    {
+      "source": "/agent/publishing",
+      "destination": "/dashboard/publishing"
+    },
+    {
+      "source": "/settings/account",
+      "destination": "/dashboard/account"
+    },
+    {
+      "source": "/settings/team",
+      "destination": "/dashboard/team"
+    },
+    {
+      "source": "/settings/integration",
+      "destination": "/dashboard/setup"
+    },
+    {
+      "source": "/settings/security",
+      "destination": "/trust/security"
+    },
+    {
+      "source": "/settings/billing",
+      "destination": "/dashboard/billing"
+    },
+    {
+      "source": "/privacy/overview",
+      "destination": "/trust/data"
+    },
+    {
+      "source": "/privacy/redaction",
+      "destination": "/trust/data"
+    },
+    {
+      "source": "/privacy/dsar",
+      "destination": "/dashboard/privacy-management"
+    },
+    {
+      "source": "/plans/overview",
+      "destination": "/dashboard/billing"
+    },
+    {
+      "source": "/plans/faq",
+      "destination": "/dashboard/usage"
+    }
+  ]
 }

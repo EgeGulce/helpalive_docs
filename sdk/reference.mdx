@@ -1,0 +1,167 @@
+---
+title: "JavaScript reference"
+sidebarTitle: "JavaScript reference"
+description: "Every attribute of the HelpAlive script tag and every call your code can make: init, identify, reset, setConsent, track, flush and shutdown."
+keywords:
+  - HelpAlive JavaScript API
+  - HelpAlive SDK reference
+  - HelpAlive identify reset setConsent
+  - HelpAlive track flush shutdown
+---
+
+This page lists the script tag's attributes and each call on the `HelpAlive` object, for developers. Most apps need only the tag, `identify()` and `reset()`, as [Install the script](/installation) shows.
+
+## Prerequisites
+
+- The HelpAlive tag is in your pages.
+- The four queue lines from [Install the script](/installation) run before your first call. They let `identify()`, `reset()`, `setConsent()` and `track()` run before our script has loaded. Call `init()`, `flush()` and `shutdown()` only after it has loaded.
+
+## Script tag attributes
+
+```html
+<script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
+```
+
+| Attribute | Required | What it does |
+|-----------|----------|--------------|
+| `data-api-key` | Yes | Your project key, from **Settings → Setup & API Key**. It is public. Without it, HelpAlive doesn't start and logs nothing. |
+| `async` | Recommended | Loads the script without holding up your page. |
+| `nonce` | With a nonce-based policy | Your page's nonce. HelpAlive puts it on the scripts it adds. See [Content Security Policy](/sdk/csp). |
+| `data-consent="required"` | No | Records no activity until your page calls `setConsent({ analytics: true })`. See [Consent mode](/sdk/consent). |
+| `data-debug` | No | Logs what HelpAlive does to the browser console. Its presence turns it on. Use it while you test, not in production. |
+| `data-endpoint` | No | The address activity is sent to. Leave it out unless HelpAlive gives you a different one. |
+| `data-chat-endpoint` | No | The address the agent talks to. Leave it out unless HelpAlive gives you a different one. |
+
+## identify()
+
+Tells HelpAlive who is signed in. The agent loads only after it succeeds.
+
+```javascript
+HelpAlive.identify({
+  userId: "8412",            // required unless you pass userToken
+  tenantId: "acme",          // optional
+  tenantName: "Acme Inc.",   // optional
+  displayName: "Priya Sharma",
+  email: "priya@acme.com",
+  role: "admin",
+  plan: "pro",
+  createdAt: 1704067200,     // Unix seconds
+})
+```
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `userId` | string | Required unless `userToken` is given. 1 to 255 characters. A number is refused. |
+| `tenantId` | string | Optional. 1 to 255 characters. Left out or blank, it is `"default"`. |
+| `tenantName` | string | Optional. Shown in your dashboard in place of the tenant id. |
+| `displayName` | string | Optional. |
+| `email` | string | Optional. |
+| `role` | string | Optional. |
+| `plan` | string | Optional. |
+| `createdAt` | number | Optional. Sign-up time in whole Unix seconds. Other values are ignored. |
+| `userToken` | string | Optional. A JWT your server signs. With it, the user and tenant come from the token. See [Verify users](/sdk/verify-users). |
+
+Returns a promise that resolves when the call has been handled. Calls run one after another, in the order you make them. Calling it again for the same user is safe. Calling it for a different user closes the previous user's agent first. [Identify users](/sdk/identify) explains each field.
+
+## reset()
+
+```javascript
+HelpAlive.reset()
+```
+
+Forgets the signed-in user, their tenant, their token and their session. It closes the agent and clears its conversation from the browser. Call it in your logout code, apart from `identify()`. Activity after `reset()` waits in the page until the next `identify()`.
+
+## setConsent()
+
+```javascript
+HelpAlive.setConsent({ analytics: true })
+```
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `analytics` | boolean | `true` starts recording, `false` stops it. |
+
+Has an effect only when the tag has `data-consent="required"`. It doesn't hide the agent. See [Consent mode](/sdk/consent).
+
+## track()
+
+Records an event of your own with the signed-in user's activity.
+
+```javascript
+HelpAlive.track({ event_type: "report_exported", format: "csv" })
+```
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `event_type` | string | Required. Your event's name. Use your own names, such as `report_exported`, not HelpAlive's built-in ones such as `pv`, `click`, `form` or `error`. |
+| Other fields | any | Optional properties, at the top level. Keep them small: past a size limit, extra properties are left out. |
+
+Events tracked before `identify()` wait in the page and are sent once it runs. Custom properties are stored as you send them, so don't put personal data in them.
+
+## flush()
+
+```javascript
+const result = await HelpAlive.flush()
+// { success: true } or { success: false, error: "...", errorCode: "..." }
+```
+
+Sends any recorded activity now. You rarely need it: HelpAlive sends activity in batches, and again when the page is hidden or closed.
+
+## shutdown()
+
+```javascript
+HelpAlive.shutdown()
+```
+
+Stops recording on this page and removes HelpAlive's listeners. Calls after it do nothing until `init()` runs again. It doesn't close an agent that is already open; call `reset()` for that.
+
+## init()
+
+Most apps never call `init()`: the tag's `data-api-key` starts HelpAlive. Call it only if you load the script without `data-api-key`, after the script has loaded. Never do both, or HelpAlive starts twice.
+
+```javascript
+await HelpAlive.init({ apiKey: "YOUR_PROJECT_KEY" })
+```
+
+| Option | Type | Default | Notes |
+|--------|------|---------|-------|
+| `apiKey` | string | | Required. Your project key. |
+| `mode` | `"auto"` or `"consent"` | `"auto"` | `"consent"` is the same as `data-consent="required"`. |
+| `consent` | `{ analytics: boolean }` | `{ analytics: true }` | The starting consent. With `mode: "consent"`, pass `{ analytics: false }` to wait for `setConsent()`. |
+| `capture` | object | all `true` | Turns kinds of recording on or off. See below. |
+| `debug` | boolean | `false` | The same as `data-debug`. |
+| `endpoint` | string | HelpAlive's | The same as `data-endpoint`. |
+| `chatEndpoint` | string | HelpAlive's | The same as `data-chat-endpoint`. |
+
+The `capture` keys are `pageviews`, `clicks`, `forms`, `formStart`, `changes`, `errors`, `rage`, `scroll`, `exposure`, `outcomes`, `timing` and `elementContext`. Each is `true` by default. The agent uses recent activity to understand what the user just did, so turning kinds off can make its answers less fitting.
+
+`init()` returns a promise, and rejects if `apiKey` is missing.
+
+## Check it works
+
+In the browser console on a signed-in page, run `typeof HelpAlive.init`. It prints `"function"` once our script has loaded, and `"undefined"` while only the queue lines have run. Add `data-debug` to the tag to see each call logged.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="HelpAlive is not defined">
+    A call ran before the queue lines. Put the four queue lines above your first call.
+  </Accordion>
+  <Accordion title="A call does nothing">
+    The tag has no `data-api-key`, or `identify()` was refused. Add `data-debug` to the tag and read the console. [Troubleshooting](/sdk/troubleshooting) lists the silent failures.
+  </Accordion>
+</AccordionGroup>
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Install the script" icon="code" href="/installation">
+    The tag, identify() and reset().
+  </Card>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    Every field, in detail.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
+  </Card>
+</CardGroup>

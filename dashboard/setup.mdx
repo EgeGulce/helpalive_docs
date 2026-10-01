@@ -1,0 +1,112 @@
+---
+title: "Setup & API Key"
+sidebarTitle: "Setup & API Key"
+description: "Follow HelpAlive's four setup steps, check that each one works, manage your public project key and private signing secret, and reset the setup."
+keywords:
+  - HelpAlive setup
+  - HelpAlive project key
+  - API key
+  - signing secret
+  - only allow verified users
+---
+
+**Setup & API Key** is where you install HelpAlive and check that it works. It is the second tab of **Settings**, at **Settings → Setup & API Key**. It also holds your project key, your signing secret and **Reset the setup**.
+
+## Is it working?
+
+The band at the top says how many of the 3 steps to go live are done, and what is next. Under it, five checks:
+
+| Check | Turns green when |
+| --- | --- |
+| **HelpAlive is on your pages** | Our script was seen on a page of your app. |
+| **It knows who is signed in** | A page called `identify()` for a signed-in person. |
+| **The agent has your docs** | At least one source is live on **Train**. |
+| **The agent answers in your app** | The agent answered someone in your app this month. |
+| **Users are verified** (optional) | Verified sign-ins are arriving. |
+
+Each check says what it saw, such as "Seen on your pages 3 minutes ago." Try your app, then press the refresh button to check again. When the first four are green, the band says **Everything is working.**
+
+The sidebar's **Setup** checklist follows the same steps.
+
+## The four steps
+
+The steps are listed on the left, one shown at a time. Each turns to **Done** by itself.
+
+1. **Add HelpAlive to your app**: your developer, about 10 minutes. Choose **With an AI coding agent**, **Add it yourself** or **Google Tag Manager**. The first gives a prompt to paste into your coding tool; the second, the tag, `identify()` and `reset()`. See [Install the script](/installation) and [Identify users](/sdk/identify).
+2. **Teach the agent your product**: add your docs on **Train** and publish them. See [Train](/dashboard/train).
+3. **Turn it on and try it**: switch the agent on in **Controls**. This step is locked until a source is published. See [Controls](/dashboard/controls).
+4. **Verify your users**: optional, recommended. See [Verified users](#verified-users).
+
+## Your project key
+
+**Your project key** sits under the steps. It is public: it goes in the script tag on every page, and the code on this page already contains it. **Copy** copies it.
+
+**Regenerate** makes a new key. The old one may still be accepted for up to 30 seconds, so update your script straight away. If your pages used the key in the last week, the dialog warns you first. You can regenerate once an hour.
+
+## Verified users
+
+Without this step, HelpAlive trusts the user id your page sends. Someone who edits the page in their browser could send another person's id and read that person's chats. With it, your server signs each id, and once **Only allow verified users** is on, nobody can pretend to be someone else. Add it before you open the agent to all your users.
+
+### Your signing secret
+
+Press **Create your signing secret**. Keep it on your server, like a password. The code samples read it from `HELPALIVE_SIGNING_SECRET`; the name is up to you. **Reveal** shows it and **Copy** copies it.
+
+<Warning>
+The signing secret is private. Never put it in your page, your app's front-end code or a prompt to an AI tool.
+</Warning>
+
+**Rotate** issues a new secret. Put it on your server; nothing in your code changes. The previous secret keeps working until you rotate again, so nobody is refused while you roll it out. If a secret leaked, rotate once more after your server uses the new one, and the leaked one stops working.
+
+### Make a user token
+
+Under **Make a user token on your server, and pass it to identify()**, choose **With an AI coding agent** or **Add it yourself**. The code comes in eight server languages. Your server makes a short signed text per person, the user token, and your page passes it to `identify()`. The code is on [Verify users](/sdk/verify-users).
+
+### Check your setup
+
+After you deploy your signing, sign in to your app and open the agent. Then press refresh under **Check your setup**: it looks for a verified sign-in in the last 30 minutes.
+
+**Verified sign-ins, last 7 days** shows what share of sign-ins arrived verified, unsigned or failed.
+
+### Only allow verified users
+
+With this switch on, anyone without a valid user token is refused, by the agent and when recording activity.
+
+- It can be turned on only after a verified sign-in in the last 30 minutes. Otherwise it says "No verified sign-in in the last 30 minutes, so this stays off."
+- It is marked **Recommended** once nearly all sign-ins in the last 7 days arrive verified and none fail.
+- Turning it off always works, so you have a way out if signing breaks.
+
+## Reset the setup
+
+Under **Danger zone**, **Reset the setup** turns the agent off for everyone and puts its settings back to our defaults:
+
+- **Controls**: who gets it and what it does;
+- **Appearance**: how it looks;
+- **Train**: its tone and length, and the custom responses you wrote.
+
+Your docs on **Train**, your script and project key, and your users' data stay. It asks first, and it cannot be undone.
+
+## Check it works
+
+All four required checks in **Is it working?** are green, and the band says **Everything is working.**
+
+## Troubleshooting
+
+- **"Our script reaches your pages but can't start."** The tag has the wrong project key. Copy it again from this page.
+- **"Last seen on your pages ... Is the tag still there?"** The tag was removed, or your pages stopped loading it.
+- **It knows who is signed in stays grey.** `identify()` isn't running. Call it after login and on every page load.
+- **Users refused after turning on Only allow verified users.** Their pages send no token, or a token that fails. Turn the switch off, fix the signing, then turn it on again.
+- **"Too soon to regenerate."** The project key can be regenerated once an hour.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Install the script" icon="code" href="/installation">
+    The tag and `identify()`, step by step.
+  </Card>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    Server code in eight languages.
+  </Card>
+  <Card title="Controls" icon="sliders" href="/dashboard/controls">
+    Turn the agent on.
+  </Card>
+</CardGroup>

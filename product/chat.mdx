@@ -1,0 +1,91 @@
+---
+title: "Chat: what your users see"
+sidebarTitle: "Chat"
+description: "What your users see when they open HelpAlive's chat in your app: the launcher, suggested questions about the page, answers from your docs, the offer to do a task, and their previous chats."
+keywords:
+  - in-app chat widget
+  - AI chat from your docs
+  - suggested questions
+  - chat history per user
+  - HelpAlive widget
+---
+
+This page walks through HelpAlive's chat as your users see it, using the widget's own words. It is for admins and support teams who want to know what users will meet before turning the agent on.
+
+## Prerequisites
+
+- The script and `identify()` are installed. The chat appears only for people you identify. See [Install the script](/installation).
+- At least one source is published on **Train**.
+- The agent is on for this person on **Controls**.
+
+## The launcher
+
+A round button with the HelpAlive mark sits in a bottom corner of your app. It has no text. Screen readers announce it as "Ask HelpAlive". A badge shows when there is an unread reply.
+
+You choose the corner, the accent colour and light or dark on **Appearance**. See [Appearance](/dashboard/appearance).
+
+## The home screen
+
+Pressing the launcher opens the chat panel on its home screen:
+
+- **The page's name** at the top, so the user knows which page the agent is looking at.
+- **A box that says "What can I help you with?"** The user types a question in their own words.
+- **A short opening line** written for the page the user is on.
+- **"Continue last conversation"**, when the user has an earlier chat, to pick it up.
+- **"Ask about this page"**, a few suggested questions made from the page, what the user has been doing, and your docs. One press asks the question.
+- **"Previous chats"**, the clock button at the top, which lists the user's earlier chats. **New conversation** starts a fresh one.
+
+The footer says "HelpAlive is AI and can make mistakes." You can't change it.
+
+## Answers
+
+Answers stream into the panel as they're written. They are short, in plain words, and fit the page the user is on.
+
+- Answers come from your published sources on **Train**. Where your docs are silent, the agent can use general knowledge of your product. Your docs win when the two disagree.
+- The agent uses what's on the page and what the user just did, such as an error they hit, to make the answer specific. It doesn't recite that back to them.
+- When your app can't do something, it says so plainly, then helps with what it can.
+- Answers carry no source links.
+
+Tone, length and custom responses are set on **Train** and apply after **Publish**.
+
+## The offer to do a task
+
+When a user asks for something to be done, and the agent can do it in your app, an offer card appears under the answer. The card shows the task's name, a line about what will happen, and **My plan**, the rough steps, behind a press.
+
+The card's button says **Let's do it** when you allow **Does the steps** for this user, or **Guide me** when you allow **Shows how**. While the guide gets ready, the button reads "Preparing your guide…". See [Guides](/product/guides) for what happens next.
+
+If your guides for the month are used up, the agent stops offering and keeps answering in words. Users are never told about your limits.
+
+## Each user's history
+
+Chats are saved per identified user. The same person sees their earlier chats under **Previous chats** on any device where you identify them. When your app calls `reset()` at logout, the widget clears what it kept in that browser.
+
+Your team can read chat transcripts on **Audience**. See [Audience and Reports](/dashboard/audience-and-reports).
+
+## Check it works
+
+1. Sign in to your app as a user who has the agent.
+2. Press the launcher and check the page name at the top matches your page.
+3. Ask a question your published docs answer. The answer should reflect your docs.
+4. Close the panel, reload, and open **Previous chats**. Your chat should be listed.
+
+## Troubleshooting
+
+- **The launcher never appears.** `identify()` didn't run, the agent is off, or this person isn't in **Who gets it** on **Controls**. A user already in your app sees the button only after a short delay and a few page loads once you turn it on.
+- **"I can't answer right now. Try again in a little while."** The user's message wasn't answered, often because a limit was reached. Check **Settings → Billing and usage** and the limits on **Controls**.
+- **No suggested questions under "Ask about this page".** The heading shows only when there are questions to offer. The rest of the chat works as usual.
+- **Answers ignore a source you just added.** New sources wait for **Publish**. Try drafts on **Test** first.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Guides" icon="route" href="/product/guides">
+    What happens after Let's do it or Guide me.
+  </Card>
+  <Card title="Train" icon="book-open" href="/dashboard/train">
+    Add the docs the agent answers from.
+  </Card>
+  <Card title="Controls" icon="sliders-horizontal" href="/dashboard/controls">
+    Turn it on and choose who gets it.
+  </Card>
+</CardGroup>

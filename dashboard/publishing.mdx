@@ -1,0 +1,79 @@
+---
+title: "Publishing"
+sidebarTitle: "Publishing"
+description: "Which HelpAlive changes wait for Publish (Train and Appearance) and which apply as soon as you save (Controls), and how to publish or discard a draft."
+keywords:
+  - HelpAlive publish
+  - draft and published
+  - unpublished changes
+  - discard draft
+---
+
+This page explains which changes wait for **Publish** and which apply as soon as you save. It is for anyone on your team who edits the agent.
+
+## What waits for Publish
+
+These changes are drafts. Your users don't see them until you publish. The **Test** page reads them, so you can try them first.
+
+| Where | What |
+| --- | --- |
+| **Train** | New websites and files, and a re-crawl you started yourself |
+| **Train** | **Tone of voice** and **Answer length** |
+| **Train** | Custom responses |
+| **Appearance** | Every setting |
+
+## What applies at once
+
+These are never drafts. They apply when you save.
+
+- **Controls**: the switch, **Who gets it**, **What it does**, the limits for each person, tenant and your organisation, and **How far over your package**. After **Save changes**, the toast says "Saved. It applies now." with **Undo**.
+- **Train**: removing a source, and **Reset training data**.
+- **Train**: an automatic sync goes live by itself, unless it is held for your check.
+- **Settings**: everything on its four tabs.
+
+## Publish your changes
+
+<Steps>
+  <Step title="Find the Publish bar">
+    While anything waits, a bar is pinned to the top of every dashboard page: **Unpublished changes**. Labels name what waits, such as **Appearance**, **Guidance** (tone and length), **Responses**, **New doc** or **Re-crawl**, with when you last changed it.
+  </Step>
+  <Step title="Preview it">
+    **Preview on Test** opens the **Test** page, which runs your questions against the draft.
+  </Step>
+  <Step title="Publish">
+    Press **Publish**. The **Publish changes** dialog lists what goes live: **Config sections**, **Knowledge docs** and **New crawls**. For a new crawl it shows **Live now** against **New crawl**, so you can catch a crawl that found too few pages.
+  </Step>
+  <Step title="Confirm">
+    Press **Publish now**. The toast says "Published. Live on your site now."
+  </Step>
+</Steps>
+
+A new source that is still crawling stays a draft. While new sources are the only change and all still crawl, the bar says "Publish appears when the crawl finishes."
+
+## Discard a draft
+
+In the bar's menu, **More draft actions → Discard draft** opens **Discard unpublished changes?**. Press **Discard changes** to throw away every draft. A waiting re-crawl is thrown away too, and that source keeps what is live.
+
+## Check it works
+
+After you publish, the bar disappears. In your app, the widget picks up the change within a minute or a few page loads. Then ask the agent a question your change affects.
+
+## Troubleshooting
+
+- **Publish is greyed out and says "Nothing is ready yet."** Your new docs are still crawling. Publish once a crawl finishes.
+- **A re-crawl "could not go live".** Re-crawl that source on **Train**, then publish again.
+- **You changed Controls and see no Publish bar.** That is expected. Controls apply as soon as you save.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Train" icon="graduation-cap" href="/dashboard/train">
+    Sources, tone, length and custom responses.
+  </Card>
+  <Card title="Test" icon="flask" href="/dashboard/test">
+    Try a draft before you publish it.
+  </Card>
+  <Card title="Controls" icon="sliders" href="/dashboard/controls">
+    Changes that apply at once.
+  </Card>
+</CardGroup>

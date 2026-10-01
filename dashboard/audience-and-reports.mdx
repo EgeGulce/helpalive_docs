@@ -1,0 +1,107 @@
+---
+title: "Audience and Reports"
+sidebarTitle: "Audience and Reports"
+description: "See which tenants and people use the HelpAlive agent, open any guide or chat, and read the reports on what the agent did."
+keywords:
+  - HelpAlive audience
+  - HelpAlive reports
+  - guide completion rate
+  - chat transcripts
+  - agent use by tenant
+---
+
+**Audience** and **Reports** show who uses the agent and how it goes. They are the sixth and seventh items in the sidebar. **Audience** goes from tenants to people to each guide or chat. **Reports** adds up what the agent did over a period.
+
+A tenant is one of your own customers: the `tenantId` your app passes to `identify()`. A person is one signed-in user of your app. See [Key concepts](/product/concepts).
+
+## Audience
+
+### The numbers at the top
+
+| Figure | What it counts |
+| --- | --- |
+| **People** | Everyone your app has identified. |
+| **Active this period** | People active in your plan period. |
+| **Have the agent** | People that **Who gets it** on **Controls** gives the agent today. |
+| **Helped this period** | People who started a guide in your plan period. |
+| **Tenants** | Tenants on file. |
+
+### Tenants
+
+The left list, **Tenants**, holds "Workspaces using HelpAlive on their site." Use **Search tenants…**, and filter with **Every tenant**, **Helped** or **Not helped yet**. **All tenants** shows people across every tenant.
+
+Click a tenant to show its people and open its drawer.
+
+### People
+
+The right list, **People**, shows each person with when they were last active. Use **Search people…** and filter by **Desktop** or **Mobile**.
+
+### The drawer
+
+Clicking a row opens a drawer. It goes one level deeper each time, and **Open as page** shows any level as a full page.
+
+- **A tenant**: how far the agent reaches in it, and its **Events**, **Chats** and **Guides**. Then **Its people**, its guides, and its latest activity for **7 days**, **30 days**, **90 days** or **A year**. It ends with the tenant's privacy state and history.
+- **A person**: tabs for **Activity**, **Guides**, **Chats**, **Platforms** and **Privacy**.
+- **A guide**: **The story** shows **What they asked for**, **How it ended** and the agent's closing words. **The guide in numbers** shows how long it took, its steps, and whether it **Counts toward your plan**. **What happened** goes step by step.
+- **A chat**: its messages, any guide the chat offered and the person's answer, and **The guides this chat ran**.
+
+Your team can read your users' chats here. Your terms with your own users should tell them so. A chat removed with a person's data says "This chat isn't here any more: it may have been deleted with their data." After your retention window, a chat keeps its counts and dates but loses its words. See [Privacy Management](/dashboard/privacy-management).
+
+The **Privacy** part of a tenant or person shows their tracking state and history, with **Open Privacy Management** to act on them.
+
+## Reports
+
+### The period
+
+Pick **Last 24 hours**, **Last 7 days**, **Last 30 days** (the default), **Last 90 days** or **Last 365 days**. **More ranges → Custom range** picks your own dates, up to a year.
+
+### The reports
+
+Each report has a button to download it as CSV.
+
+| Report | What it shows |
+| --- | --- |
+| **What the agent did** | **People helped**, **Guides started**, **Finished** (share of guides started), **Conversations** and **Messages**, against the period before. |
+| **Guides per day and how they ended** | Guides started each day (each week past 90 days), split by ending. Press an ending to hide it. |
+| **From started to finished** | The guides that finished, of every guide started. |
+| **Questions and guides by page** | Each page of your app: **Questions** asked there, **Guides started** and **Finished**. Sort by any column and use **Find a page**. Guides are counted for the ten pages with the most; other pages show a dash. |
+| **Agent use by tenant** | Guides and chats in each tenant, all time, with its people. Use **Find a tenant**. |
+
+### How a guide ended
+
+| Ending | Meaning |
+| --- | --- |
+| **Finished** | The agent took them to the end. |
+| **Could not finish** | The agent could not do it and said so. |
+| **Stopped** | They closed it, or started another guide. |
+| **Timed out** | It went quiet until it timed out. |
+| **Abandoned** | They left the page while it ran. |
+| **Still going** | Started and not ended yet. |
+
+### A page's detail
+
+In **Questions and guides by page**, click a number to open that page's drawer: the questions asked there, the guides started there, and the guides that did not finish, each saying how far it got. Questions past your retention window keep their count but not their words.
+
+## Check it works
+
+Once people use the agent in your app, **Audience** lists them under their tenants, and **Reports** fills in for the period you pick. Guides appear within about a minute of starting.
+
+## Troubleshooting
+
+- **A tenant shows "Unnamed workspace".** Pass `tenantName` in `identify()`. See [Identify users](/sdk/identify).
+- **Audience is empty.** Nobody has been identified yet. Check **Is it working?** on **Settings → Setup & API Key**.
+- **A chat has no words.** It is older than your retention window, or the person's data was deleted.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Controls" icon="sliders" href="/dashboard/controls">
+    Change who gets the agent.
+  </Card>
+  <Card title="Privacy Management" icon="shield" href="/dashboard/privacy-management">
+    Stop tracking or delete a person's data.
+  </Card>
+  <Card title="Limits and usage" icon="gauge" href="/dashboard/usage">
+    What counts against your plan.
+  </Card>
+</CardGroup>

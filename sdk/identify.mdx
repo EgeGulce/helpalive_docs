@@ -1,7 +1,7 @@
 ---
-title: "identify(): tell HelpAlive who is signed in"
-sidebarTitle: "Identify"
-description: "Call HelpAlive.identify() for the signed-in person on every page. Only userId is required; tenantId is for apps with companies or workspaces, and the other fields are optional. Call reset() on logout."
+title: "Identify users"
+sidebarTitle: "Identify users"
+description: "Call HelpAlive.identify() for the signed-in user on every page, with userId required and tenantId for apps with companies, and call reset() at logout."
 keywords:
   - identify signed-in users
   - HelpAlive identify
@@ -10,11 +10,16 @@ keywords:
   - reset on logout
 ---
 
-`identify()` is the one call you write yourself, besides the tag. It tells HelpAlive who is signed in, and the agent only appears once it has run.
+This page explains every field of `identify()` and when to call `reset()`, for the developer who installs HelpAlive. `identify()` tells HelpAlive who is signed in. The agent appears only once it has run.
+
+## Prerequisites
+
+- The HelpAlive tag is in the head of every page. See [Install the script](/installation).
+- You have [decided which id to use](/sdk/overview#decide-before-you-install) for users and, if your app has them, for companies.
 
 ## When to call it
 
-Wherever your app already knows the signed-in person: right after login, and on every page load while they stay signed in. Calling it again with the same details is safe.
+Call it wherever your app already knows the signed-in user: right after login, and on every page load while they stay signed in. Calling it again with the same details is safe.
 
 Keep these four lines above your first call. They let your code call HelpAlive before our script has finished loading, and our script replays the calls in order:
 
@@ -42,23 +47,37 @@ HelpAlive.identify({
 })
 ```
 
-Only `userId` is required. Fill the optional fields your app has, and delete the others. In a TypeScript file, see [Installation](/installation#2-tell-helpalive-who-is-signed-in) for the one declaration it needs.
+Only `userId` is required. Fill the optional fields your app has, and delete the others.
 
 | Field | Required | What it is |
 |-------|----------|------------|
-| `userId` | Yes | Your own id for this person. It must not change, so don't use an email address if people can change theirs. |
-| `tenantId` | No | Their company, workspace or account id, if your app has them. Leave it out if it doesn't: everyone then belongs to one group, `"default"`. |
+| `userId` | Yes | Your own id for this user, as text, up to 255 characters. It must not change, so don't use an email address if users can change theirs. |
+| `tenantId` | No | Their company, workspace or account id, as text, up to 255 characters. Leave it out if your app has none: everyone then belongs to one tenant, `"default"`. |
 | `tenantName` | No | The company's name, shown in your dashboard in place of the id. |
-| `displayName` | No | The person's name, for example `"Priya Sharma"`. |
+| `displayName` | No | The user's name, for example `"Priya Sharma"`. |
 | `email` | No | Their email address, shown and searchable in your dashboard. |
 | `role` | No | Their role in your app, for example `"admin"`, `"editor"` or `"viewer"`. |
-| `plan` | No | Their plan, for example `"free"`, `"pro"` or `"enterprise"`. |
-| `createdAt` | No | When they signed up, as Unix time in seconds (for example `1704067200` for 1 January 2024). Milliseconds and date strings are ignored. |
-| `userToken` | No | The user token your server makes, once you [verify your users](/sdk/verify-users). With a token, `userId` and `tenantId` come from the token, so you don't pass them. |
+| `plan` | No | Their plan in your app, for example `"free"` or `"pro"`. |
+| `createdAt` | No | When they signed up, as Unix time in seconds, for example `1704067200` for 1 January 2024. Milliseconds and date strings are ignored. |
+| `userToken` | No | The token your server makes once you [verify users](/sdk/verify-users). With a token, `userId` and `tenantId` come from the token. |
+
+A tenant is one of your customers: the company, workspace or account a user belongs to in your app. [Key concepts](/product/concepts) defines it with the other terms.
+
+### Types matter
+
+- Pass `userId` and `tenantId` as text. A number is refused and nobody is identified. If your ids are numbers, write `String(user.id)`.
+- Pass `displayName`, `email`, `role` and `plan` as text. A value of another type stops the call partway, and the agent doesn't load on that page. Keep `role` and `plan` short, as a name rather than a description.
+- An empty `userId` is refused too.
+
+These failures show nothing on screen. Add `data-debug` to the tag to see them in the browser console.
+
+## What the agent uses
+
+The agent reads the user's display name, role, plan and sign-up date, so it can fit its answers to them. It never receives the email address. The fields also label the user in your dashboard, for example in **Audience**.
 
 ## Logging out
 
-Call `reset()` in your logout code, apart from your `identify()` call, and wherever your app ends a session (for example where it notices a request came back signed out):
+Call `reset()` in your logout code, apart from your `identify()` call. Also call it wherever your app ends a session, for example where a request comes back signed out:
 
 ```javascript
 // In your logout code, and wherever your app ends a session. Until this runs,
@@ -66,25 +85,50 @@ Call `reset()` in your logout code, apart from your `identify()` call, and where
 HelpAlive.reset()
 ```
 
-It also closes the agent, so the next person on the same browser never sees the last one's chat.
+`reset()` forgets the user, their tenant and their token. It closes the agent and clears its conversation from the browser. The next person on the same browser never sees the last one's chat.
+
+Never put `reset()` straight after `identify()`. It would forget the user at once and the agent would never appear.
+
+If your logout navigates away before `reset()` can run, HelpAlive still notices when a different user is identified on that browser. It closes the previous user's agent before loading the new one.
 
 ## Switching company without reloading
 
-If people can switch company or workspace without a page reload, call `identify()` again with the new `tenantId` after the switch. HelpAlive counts what they do from then on under the new one.
+If users can switch company or workspace without a page reload, call `identify()` again with the new `tenantId` after the switch. HelpAlive counts what they do from then on under the new tenant, and reloads the agent for it.
 
-Once you [verify your users](/sdk/verify-users), the company comes from the user token, and a `tenantId` passed beside it is ignored. Get a new token for the new company from your server and pass that to `identify()` instead.
+Once you [verify users](/sdk/verify-users), the tenant comes from the user token. Get a new token for the new company from your server, and pass that to `identify()`.
 
 ## Before identify() runs
 
-No events are sent for a visitor until `identify()` runs. Events wait in the page and are dropped if the visitor leaves without signing in, and the agent doesn't appear for them. The one request before sign-in is a small start-up check: our script's version and the page's host and path.
+No events are sent for a visitor until `identify()` runs. Events wait in the page and are dropped if the visitor leaves without signing in. The agent doesn't appear for them. The one request before sign-in is a small start-up check: our script's version and the page's host and path.
 
-## Next steps
+## Check it works
 
-<CardGroup cols={2}>
-  <Card title="Verify your users" icon="shield-check" href="/sdk/verify-users">
+Sign in to your app, then open **Settings → Setup & API Key** and press refresh. **It knows who is signed in** turns green and says when it last recognized a signed-in user. The user also appears in **Audience** under their tenant.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="It knows who is signed in stays grey">
+    `identify()` isn't running, or it was refused. Check that the queue lines come first, that the call runs on every page load after login, and that `userId` is text.
+  </Accordion>
+  <Accordion title="Users show under the wrong company">
+    Your app switched company without calling `identify()` again. Call it after every switch.
+  </Accordion>
+  <Accordion title="The next person on a shared computer sees the last one's chat">
+    `reset()` doesn't run at logout. Add it to your logout code and wherever your app ends a session.
+  </Accordion>
+</AccordionGroup>
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
     Optional, and recommended for security.
   </Card>
-  <Card title="Consent" icon="cookie" href="/sdk/consent">
-    Wait for your cookie banner before tracking.
+  <Card title="Consent mode" icon="cookie" href="/sdk/consent">
+    Wait for your cookie banner before recording.
+  </Card>
+  <Card title="JavaScript reference" icon="code" href="/sdk/reference">
+    Every call and attribute.
   </Card>
 </CardGroup>

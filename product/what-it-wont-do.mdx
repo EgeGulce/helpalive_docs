@@ -1,0 +1,80 @@
+---
+title: "What the agent won't do"
+sidebarTitle: "What it won't do"
+description: "The steps HelpAlive always hands back to the user, the questions it always asks first, and the limits on what it answers, in one list."
+keywords:
+  - AI agent limits
+  - AI agent guardrails
+  - what HelpAlive hands back
+  - AI confirms before delete
+  - AI answers only from docs
+---
+
+This page lists everything HelpAlive's agent hands back to the user, asks before doing, or won't say. It is for admins and security reviewers who need to know the agent's limits before turning it on.
+
+Each "it won't" here is how the agent behaves in every app. You don't have to set anything up for it.
+
+## Steps it always hands back
+
+During a guide, even with **Does the steps**, the agent hands these steps to the user and says so:
+
+| Step | Why |
+|---|---|
+| Uploading a file | Only the user has the file. |
+| A code sent to their phone or email | Only the user receives it. |
+| A password or other sign-in detail it was not given | Only the user should type it. |
+| Downloads, file pickers and the browser's or computer's own dialogs | They sit outside your page, so it can't operate or check them. |
+| Anything in another app or another site | It works only inside your app, in the tab the user has open. |
+| Canvas areas, such as drawing boards or some charts | They show pictures, not controls it can read. |
+| A part of the page it can't read yet, such as some embedded frames | An area it can't read isn't treated as empty. It says so and hands the step over. |
+| A control it can't name | When it can't tell what a control does, it asks rather than guesses. |
+
+When it hands a step back, the control is highlighted when it can be, and the bar says **Your turn**. The user presses **Done** when finished, or **Skip**.
+
+## Things it always asks first
+
+- **Content only the user can give.** A name, a message's wording, a choice that is theirs to make. It asks at the moment it needs the answer, one thing at a time.
+- **A record the user didn't name.** If a change would land on a record the user never named, it asks before writing.
+- **Deleting many records by a rule.** Take a request like "delete all drafts except the last one". It finds the records, names them, and asks once before the first deletion. One answer covers the whole set.
+
+<Warning>
+With **Does the steps**, the agent presses Save, Submit and Delete when the task calls for it. Deleting by a rule is the one case where it always confirms first. If you want users to make every click themselves, set **Shows how** on **Controls**.
+</Warning>
+
+## What it won't say
+
+- **It won't send users elsewhere.** It never tells a user to "contact support" or to ask their admin.
+- **It won't stretch a feature to fit.** When your app can't do something, it says so plainly, then helps with the parts it can.
+- **It sticks to your sources.** It answers from your published sources on **Train**. Where your docs are silent, it can use general knowledge of your product, and your docs win when the two disagree. It doesn't invent links, ids or quoted text. Like any AI, it can still make mistakes.
+- **It won't use drafts.** Your users get answers from published sources only. Drafts show only on **Test**.
+- **It won't mention your limits.** When a limit is reached, users aren't told about plans or usage.
+- **It won't hide that it's an AI.** It says so when asked, and the chat's footer says "HelpAlive is AI and can make mistakes."
+
+## Current limits
+
+- **English only.** The widget's buttons and labels are in English, and other languages aren't supported yet.
+- **No source links.** Answers don't link to the doc they came from.
+- **Guides start from the chat.** A guide starts only when the user accepts an offer in the chat.
+
+## Check it works
+
+In your app, start a guide for a task that includes uploading a file. At the upload step, the bar should say **Your turn** and the file control should be highlighted.
+
+## Troubleshooting
+
+- **A guide stops at a file or code step and waits.** That's the hand-back. The user does the step and presses **Done**.
+- **It asked before deleting, but your user had already said "all".** That's expected. A rule-based delete always gets one confirmation with the list.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Guides" icon="route" href="/product/guides">
+    What the user sees during a guide.
+  </Card>
+  <Card title="Controls" icon="sliders-horizontal" href="/dashboard/controls">
+    Choose Does the steps or Shows how.
+  </Card>
+  <Card title="How the AI uses your data" icon="brain" href="/trust/ai-and-your-data">
+    What the agent reads and where it goes.
+  </Card>
+</CardGroup>

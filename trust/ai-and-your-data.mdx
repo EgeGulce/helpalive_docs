@@ -1,0 +1,70 @@
+---
+title: "How the AI uses your data"
+sidebarTitle: "AI and your data"
+description: "What HelpAlive's agent reads, what is sent to the AI model provider and when, why it is sent, whether it is used to train models, and how long the provider keeps it."
+keywords:
+  - HelpAlive AI data
+  - is my data used to train AI
+  - AI model provider data retention
+  - AI page snapshot
+  - in-app AI privacy
+---
+
+This page explains what data HelpAlive's agent sends to an AI model, when, and why, and what the model provider does with it. It is for privacy and security reviewers, and for admins writing their own privacy notice.
+
+## Why the agent needs your data
+
+The agent answers questions about the page a user is on, and does tasks on that page. To do that, it has to read the page and know what the user is trying to do. Everything below is sent for that purpose, at the moment the user uses the chat or a guide.
+
+## What is sent, and when
+
+| When | What is sent to the model |
+|---|---|
+| The user opens the chat | The visible part of the page, the page address, the user's display name, role, plan and sign-up date, recent activity on this visit, and the titles of their own recent chats. This writes the opening line and the suggested questions. |
+| The user asks a question | The message and the recent turns, the full page address and title, the page as structured text **including field values**, recent activity, role, plan, and the matching passages from your published docs. |
+| A guide runs | At each step: the request, the user's answers to the agent's questions, the plan so far, and the page as structured text **including field values**. |
+
+Field values are sent as shown, except in password, file-upload and hidden fields. The page is not redacted, because it is what the agent needs to see. The user's email is never sent with a chat question.
+
+Your docs' text and your users' questions are also processed to find the right passages. Our model provider and a second provider that ranks passages do this work. See [Subprocessors](/trust/subprocessors).
+
+## Where answers come from
+
+Answers come from the sources you publish on **Train**. Drafts never reach your users. Where your docs are silent, the agent can use general knowledge of your product, and your docs win when the two disagree. See [How HelpAlive works](/product/how-it-works).
+
+## Model training and retention
+
+- **The model provider doesn't train on data sent through its API.** That covers the pages, questions and docs HelpAlive sends it.
+- **We ask the provider not to store responses.**
+- **The provider may keep requests and responses for up to 30 days** to check for abuse.
+
+The model provider and the other companies that process data for us are listed on [Subprocessors](/trust/subprocessors).
+
+## What we keep afterwards
+
+- **The page the agent read** is not saved to our database. A running guide holds it only while the guide is in progress.
+- **Chat messages and guide text** are kept in our database for the window you set on **Settings → Privacy Management**, 1 year by default.
+- **Our server logs** keep users' chat questions and the page content guides read, including field values, for 30 days.
+
+See [Data we collect](/trust/data) for every kind of data and how long it is kept.
+
+## What you control
+
+- **Who gets the agent**, and whether it does the steps or shows how, on **Controls**.
+- **What it answers from**, on **Train**. Only published sources are used.
+- **How long chat and guide text is kept**, on **Settings → Privacy Management**.
+- **Deleting a person's or tenant's data**, on **Settings → Privacy Management**.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Data we collect" icon="database" href="/trust/data">
+    Everything collected, redacted and kept.
+  </Card>
+  <Card title="Subprocessors" icon="building-2" href="/trust/subprocessors">
+    Who processes data, and for what.
+  </Card>
+  <Card title="What the agent won't do" icon="hand" href="/product/what-it-wont-do">
+    Hand-backs and confirmations.
+  </Card>
+</CardGroup>

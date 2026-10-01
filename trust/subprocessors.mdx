@@ -1,0 +1,63 @@
+---
+title: "Subprocessors"
+sidebarTitle: "Subprocessors"
+description: "The companies that process data for HelpAlive, what each one does and the data it receives."
+keywords:
+  - HelpAlive subprocessors
+  - HelpAlive vendors
+  - data processors list
+  - HelpAlive hosting region
+---
+
+This page lists the outside companies that receive data when you use HelpAlive, what each one does, and whose data it handles. It is for privacy and security reviewers, and for admins who list processors in their own notice.
+
+<Note>
+We'll keep this list current as companies are added or removed. Questions about it go to [support@helpalive.com](mailto:support@helpalive.com).
+</Note>
+
+Our servers and databases run in the United States (US East).
+
+## Companies that receive your users' data
+
+| Company | Purpose | Data it receives |
+|---|---|---|
+| **OpenAI** | AI model for chat answers and guides | Chat messages, the page as structured text, and the profile fields and docs passages the answer needs. Requests may be kept up to 30 days for abuse checks. |
+| **Cohere** | Ranks passages from your docs for a question | The search query and passages from your docs |
+| **Railway** | Hosting for our servers, databases and backups | Everything HelpAlive stores. Server logs are kept 30 days. |
+| **Cloudflare** | Network in front of our addresses | All traffic, including IP addresses |
+| **Axiom** | Server logs | Server log lines, which include chat text and the pages guides read. Kept 30 days. |
+| **Sentry** | Error reports | Errors from our servers, dashboard and script |
+
+## Companies that receive your team's data
+
+| Company | Purpose | Data it receives |
+|---|---|---|
+| **Stripe** | Payments and billing | Company name, the admin's email and billable usage. Card details are entered on Stripe's own checkout. |
+| **Loops** | Emails to your team | Team members' names and emails. It never emails your users. |
+| **Google** | Website icons on **Train**, and a font in our emails | Help site names and the viewer's IP address |
+
+## Companies that receive other data
+
+| Company | Purpose | Data it receives |
+|---|---|---|
+| **Firecrawl** | Fetches the public help sites you add on **Train** | The site's address. No user data. |
+| **Mintlify** | Hosts this docs site | Visits to docs.helpalive.com |
+
+## What is not on this list
+
+- No analytics, advertising or chat-vendor scripts run in our script, the widget or the dashboard.
+- The software that redacts usage events runs on our own servers, so no outside company receives that data for redaction.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="How the AI uses your data" icon="brain" href="/trust/ai-and-your-data">
+    What goes to the model provider, and why.
+  </Card>
+  <Card title="Data we collect" icon="database" href="/trust/data">
+    Everything collected, redacted and kept.
+  </Card>
+  <Card title="Security overview" icon="shield-check" href="/trust/security">
+    Keys, verified users and sign-in.
+  </Card>
+</CardGroup>

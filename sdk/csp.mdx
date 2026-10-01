@@ -1,0 +1,101 @@
+---
+title: "Content Security Policy"
+sidebarTitle: "Content Security Policy"
+description: "The two sources to add to your Content Security Policy for HelpAlive, and how to use a nonce with a strict policy."
+keywords:
+  - Content Security Policy HelpAlive
+  - CSP script-src connect-src
+  - CSP nonce third-party script
+  - strict CSP chat widget
+---
+
+This page is for developers whose app sends a `Content-Security-Policy` header. It lists the sources HelpAlive needs, and how to keep a strict, nonce-based policy. Most apps don't send one and can skip this page.
+
+## Prerequisites
+
+- The HelpAlive tag is in your pages. See [Install the script](/installation).
+- You can change the policy your server or framework sends.
+
+## What to add
+
+Add these sources to the policy you already have, without removing anything:
+
+```text
+script-src https://cdn.helpalive.com;
+connect-src https://api.helpalive.com https://chat.helpalive.com;
+```
+
+| Directive | Source | Why |
+|-----------|--------|-----|
+| `script-src` | `https://cdn.helpalive.com` | Loads our script, and the agent and guide code it adds when needed. |
+| `connect-src` | `https://api.helpalive.com` | Sends activity from your pages. |
+| `connect-src` | `https://chat.helpalive.com` | Carries the agent: its settings, chats and guides. |
+
+Without `chat.helpalive.com`, the script loads and activity arrives, but the agent never appears.
+
+You don't need a `style-src` change or `'unsafe-inline'`. In current browsers, HelpAlive applies its styles in a way every policy allows.
+
+## Use a nonce
+
+If your `script-src` uses a nonce, put the page's nonce on the HelpAlive tag, the same way your other scripts get theirs:
+
+```html
+<script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" nonce="YOUR_PAGE_NONCE" async></script>
+```
+
+<Steps>
+  <Step title="Render the nonce into the tag">
+    Your server makes a fresh nonce for each response and puts it in the policy header. Print the same value into the tag's `nonce` attribute.
+  </Step>
+  <Step title="Leave the rest to HelpAlive">
+    HelpAlive reads the nonce from its own tag and puts it on every script it adds. With `'strict-dynamic'` in your policy, those scripts are allowed anyway.
+  </Step>
+</Steps>
+
+Use the standard `nonce` attribute. There is no HelpAlive-specific nonce attribute.
+
+### With Google Tag Manager
+
+If you load HelpAlive through [Google Tag Manager](/sdk/google-tag-manager), your policy must already allow Tag Manager's Custom HTML tags. Add our sources as well.
+
+## Check it works
+
+<Steps>
+  <Step title="Open your app with the browser console open">
+    Sign in, so that `identify()` runs and the agent can load.
+  </Step>
+  <Step title="Look for policy errors">
+    A blocked request shows as a console error that names `Content Security Policy` and one of our hosts. No such error means the policy lets HelpAlive through.
+  </Step>
+  <Step title="Confirm on the setup page">
+    On **Settings → Setup & API Key**, press refresh. **HelpAlive is on your pages** turns green. Once the agent is on, the chat button appears in your app.
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="The script never loads">
+    `script-src` lacks `https://cdn.helpalive.com`, or your policy uses a nonce and the tag has none. The console names the blocked script.
+  </Accordion>
+  <Accordion title="Activity arrives, but the agent never appears">
+    `connect-src` lacks `https://chat.helpalive.com`. The agent's settings can't load, so its button never shows.
+  </Accordion>
+  <Accordion title="The policy is in report-only mode">
+    A `Content-Security-Policy-Report-Only` header blocks nothing. It only reports. Fix what it reports before you switch it to enforcing.
+  </Accordion>
+</AccordionGroup>
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Install the script" icon="code" href="/installation">
+    The tag, identify() and reset().
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
+  </Card>
+  <Card title="Security overview" icon="lock" href="/trust/security">
+    Keys, verified users and sessions.
+  </Card>
+</CardGroup>

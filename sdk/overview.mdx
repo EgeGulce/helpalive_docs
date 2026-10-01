@@ -1,116 +1,93 @@
 ---
-title: "HelpAlive SDK: autocapture, identity, and Agent context"
-sidebarTitle: "Overview"
-description: "The HelpAlive SDK is the browser script that auto-captures user behavior, ties activity to real users and workspaces, and powers the in-app AI Agent."
+title: "Install overview"
+sidebarTitle: "Install overview"
+description: "What your developer adds to your app to run HelpAlive, the three decisions to make before installing, and how you know the install is done."
 keywords:
+  - HelpAlive installation overview
+  - in-app AI agent setup
   - HelpAlive SDK
-  - in-app AI assistant SDK
-  - autocapture analytics
-  - user behavior tracking SDK
-  - one-script SaaS analytics
+  - developer setup
 ---
 
-The HelpAlive SDK is a small browser script that does three things: auto-captures user behavior, ties activity to real users and workspaces, and feeds the AI Agent fresh page context whenever a user opens it. **One script tag, an `identify()` call for the signed-in person, and `reset()` on logout.**
+This page is for the developer who adds HelpAlive to your app, and for the admin who plans the work. It covers what you add, what to decide first, and how you know you're done.
 
-## At a glance
+## Prerequisites
 
-| | |
-|---|---|
-| **Where it runs** | In your users' browsers, alongside your product |
-| **Effect on your page** | None — loads in the background, doesn't slow your site |
-| **What you install** | One script tag, or three Google Tag Manager tags |
-| **What you write** | `identify()` for the signed-in person, and `reset()` in your logout code |
-| **Browser support** | Modern browsers (Chrome, Edge, Firefox, Safari) |
+- A HelpAlive account, with your project key from **Settings → Setup & API Key**.
+- Access to the layout every page of your app shares.
+- About 10 minutes for the install, and about 15 more to verify users.
 
-## What the SDK does
+## What you add
+
+HelpAlive runs in your users' browsers, inside your app. You add three pieces of code, and nothing on your server unless you verify users:
+
+| Piece | Where | What it does |
+|-------|-------|--------------|
+| One script tag | The `<head>` of every page | Loads HelpAlive. It carries your project key, which is public. |
+| `identify()` | Wherever your app knows the signed-in user | Tells HelpAlive who is signed in. The agent appears only after it runs. |
+| `reset()` | Your logout code | Forgets the user, so the next person on that browser starts fresh. |
+
+There is nothing to tag in your pages, and no API to connect. The agent reads your pages as they are. [Make your app easy for the agent](/sdk/agent-ready) has a few tips that help.
+
+Verifying users adds one more piece: a few lines on your server that sign each user id. Your signing secret stays on your server.
+
+## Choose how to install
 
 <CardGroup cols={3}>
-  <Card title="Autocapture" icon="zap">
-    Clicks, pageviews, form submits, rage clicks, error states on the page — captured automatically with no tagging.
+  <Card title="With an AI coding agent" icon="sparkles" href="/sdk/ai-coding-agents">
+    Paste one prompt into Claude Code, Codex, Cursor or GitHub Copilot.
   </Card>
-  <Card title="Identity" icon="user-check">
-    `identify()` ties events to a stable user and workspace so analytics and Agent personalization are accurate.
+  <Card title="Add it yourself" icon="code" href="/installation">
+    Copy the tag, identify() and reset().
   </Card>
-  <Card title="Agent context" icon="message-circle">
-    Feeds the in-app AI Agent fresh page context — what the user just clicked, where they got stuck — so it answers like someone who's actually watching.
+  <Card title="Google Tag Manager" icon="tags" href="/sdk/google-tag-manager">
+    Three Custom HTML tags and two data layer pushes.
   </Card>
 </CardGroup>
 
-## What's auto-captured
+**Settings → Setup & API Key** offers the same three ways, with your project key already filled in.
 
-The SDK observes user behavior automatically — you don't write tracking code or maintain a tag plan. Every captured event is anonymized before transmission.
+## Decide before you install
 
-| Event | What we capture |
-|-------|-----------------|
-| `pageview` | Page loads, including in-app navigations (single-page apps work out of the box). |
-| `click` | Clicks on buttons, links, and other interactive elements. Element identifiers are anonymized; text content is redacted. |
-| `form_submit` | The user submits a form. (We never capture the field values.) |
-| `change` | The user changes a field: a text box, a select, a checkbox. |
-| `rage_click` | Repeated clicks on the same element — a strong frustration signal. |
-| `dom_error` | An error state appears on the page (an alert, a field marked invalid, or a browser validation message), or a request your app sends to save or change something comes back with a 4xx error. JavaScript errors are not captured. |
-| `exposure` | A summary of which interactive elements were visible on the page. Helps the Agent know what's on screen when a user asks a question. |
+These three choices are hard to change later, because they shape the data HelpAlive keeps.
 
-## What's not captured
+<Steps>
+  <Step title="Which id identifies a user">
+    Use your app's own user id: one that never changes and is unique across your app. Don't use an email address if users can change theirs. A changed id starts a new user, with no chat history.
+  </Step>
+  <Step title="Whether you have tenants">
+    A tenant is one of your customers: the company, workspace or account a user belongs to. If your app has them, pass the tenant's id as `tenantId`. **Controls** uses tenants to decide who gets the agent and to set limits, and **Reports** and **Audience** group users by them. If your app has no such thing, leave `tenantId` out.
+  </Step>
+  <Step title="Whether to verify users">
+    Without verification, HelpAlive trusts the user id your page sends, so someone who edits the page could pose as another user. With it, your server signs each id. It is optional and recommended before you open the agent to all users. See [Verify users](/sdk/verify-users).
+  </Step>
+</Steps>
 
-- **Keystrokes.** The SDK never logs what users type into inputs.
-- **Form values.** Submit events fire; the values inside are never transmitted.
-- **Password fields.** Always excluded.
-- **Personal data** like emails, phone numbers, and national IDs. Removed in the browser before anything is sent, and again on our servers before anything is stored.
+## Done means
 
-See [Privacy & redaction](/privacy/redaction) for the complete data model.
+The install is done when the four required checks on **Settings → Setup & API Key** are green, and the panel says **Everything is working.** The four checks are:
 
-## The calls you need to make
+1. **HelpAlive is on your pages**
+2. **It knows who is signed in**
+3. **The agent has your docs**
+4. **The agent answers in your app**
 
-The SDK exposes a small surface on `window.HelpAlive`. The only methods you'll typically call yourself are:
+The last two need your admins as well: docs published on **Train**, and the agent switched on in **Controls**. **Users are verified** is the fifth, optional check.
 
-### `HelpAlive.identify({ ... })` — required after login
+## Troubleshooting
 
-Tells HelpAlive who the user is and, if your app has them, which company or workspace they belong to. Without it, the SDK holds events and sends none. Keep the four queue lines from [Installation](/installation#2-tell-helpalive-who-is-signed-in) above your first call.
+The install fails quietly when a piece is missing: no error appears on your page, and the agent doesn't show. [Troubleshooting](/sdk/troubleshooting) lists each silent failure and how to spot it.
 
-```javascript
-HelpAlive.identify({
-  userId:   user.id,           // required
-  tenantId: company.id,        // optional: leave out if your app has no companies or workspaces
-  email:    user.email,
-  plan:     user.plan
-});
-```
+## Next
 
-See [Identify](/sdk/identify) for the full field reference.
-
-### `HelpAlive.reset()` — in your logout code
-
-Forgets the signed-in person, so the next person on the same browser starts fresh. See [Identify → Logging out](/sdk/identify#logging-out).
-
-### `HelpAlive.setConsent(prefs)` — when you have a cookie banner
-
-Pauses or resumes tracking based on the user's consent state.
-
-```javascript
-HelpAlive.setConsent({ analytics: true });
-```
-
-See [Consent](/sdk/consent) for the full setup.
-
-That's it for the public surface most apps need. Everything else — buffering, flushing, real-time mode while the Agent is open, page-context handoff to the chatbot — happens automatically inside the SDK.
-
-## Anonymous activity is dropped
-
-Until you call `identify()`, the SDK sends no events. The only request before sign-in is a small start-up check: our script's version and the page's host and path. If the user never logs in, their activity is forgotten when they leave the page. This keeps unauthenticated traffic out of your analytics, and keeps anonymous browsing out of HelpAlive entirely.
-
-## Next steps
-
-<CardGroup cols={2}>
+<CardGroup cols={3}>
+  <Card title="Install the script" icon="code" href="/installation">
+    The tag, identify() and reset().
+  </Card>
   <Card title="Identify users" icon="user-check" href="/sdk/identify">
-    The required call after authentication.
+    Every field, and logging out.
   </Card>
-  <Card title="Configure consent" icon="shield-check" href="/sdk/consent">
-    Pause tracking until your consent banner returns a decision.
-  </Card>
-  <Card title="Set up the Agent" icon="sparkles" href="/agent/overview">
-    Train the AI assistant on your docs.
-  </Card>
-  <Card title="Privacy posture" icon="lock" href="/privacy/overview">
-    What we capture, what we don't, where redaction happens.
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    Sign each user id on your server.
   </Card>
 </CardGroup>

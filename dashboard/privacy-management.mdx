@@ -1,0 +1,100 @@
+---
+title: "Privacy Management"
+sidebarTitle: "Privacy Management"
+description: "Choose how long HelpAlive keeps chat and guide text, stop or resume tracking a tenant or person, and delete their data, with every action kept in History."
+keywords:
+  - HelpAlive privacy
+  - delete user data
+  - stop tracking user
+  - data retention
+  - GDPR request
+---
+
+**Privacy Management** is where you act on privacy requests from your users and choose how long their chat and guide text is kept. It is the fourth tab of **Settings**, at **Settings → Privacy Management**. It has four parts: **Chat and guide text**, **Tenants**, **People** and **History**.
+
+## Chat and guide text
+
+How long we keep the words of your users' chats and guides after they go quiet. After that the words are cleared; the counts, dates and outcomes stay.
+
+<Steps>
+  <Step title="Pick a time">
+    Under **Keep for**, choose **30 days**, **90 days**, **180 days**, **1 year** (the default) or **2 years**.
+  </Step>
+  <Step title="Save">
+    Press **Save**. A shorter time asks first: text older than it is cleared at the next daily clean-up and cannot be brought back. Press **Shorten it** to go ahead.
+  </Step>
+</Steps>
+
+Guide step names and the labels clicked during a guide are not cleared by this setting. They stay until you delete that person's data.
+
+## Tenants and People
+
+**Tenants** lists each of your tenants, and **People** each signed-in user, with their **Tracking** state, **Why** it changed, **Changed by** and when. Search by tenant, user or email, and filter by **Status** (**Active** or **Suppressed**) and **Scope**. **Advanced filters** narrow by tenant id, user id, action, who acted and dates.
+
+Acting on a tenant reaches all of its people.
+
+### Stop tracking
+
+**Stop tracking** stops recording new activity for them. What was recorded stays, and stays visible. For a tenant it asks first: **Stop tracking**, or **Keep tracking** to go back.
+
+### Resume tracking
+
+**Resume tracking** starts recording again for someone you stopped.
+
+### Delete their data
+
+<Steps>
+  <Step title="Press Delete their data">
+    On the tenant's or person's row, press **Delete their data**.
+  </Step>
+  <Step title="Give a reason">
+    Fill in **Why (required, kept in the history)**, for example "their admin asked us to".
+  </Step>
+  <Step title="Confirm">
+    Press **Delete for good**, or **Keep it** to go back.
+  </Step>
+</Steps>
+
+Everything recorded about them is deleted for good, including their chats and guides; for a tenant, its people and their visits too. Counts stay, without anyone attached. Tracking stays stopped until you resume it. The row shows **Deleting their data**, then **Data deleted, tracking stopped**.
+
+<Warning>
+Deleting cannot be undone. It does not reach copies in our server logs. They hold chat text and the page content a guide read, and age out after 30 days.
+</Warning>
+
+### Act on several at once
+
+Tick rows, or the box that selects every row on the page, and choose **Stop Tracking**, **Resume** or **Delete** in the toolbar. Add a reason: optional for stop and resume, required for delete. **Validate only (no writes)** checks the action without running it. Press **Confirm**, or **Confirm delete**.
+
+You can also act on one tenant or person from their drawer in **Audience**, under **Privacy**.
+
+## History
+
+**History** lists every privacy action across tenants and people, newest first: the **Time**, **Type**, **Action**, **Target**, **Actor** and **Reason**. Filter it by **Actor email**, **Action** and date.
+
+## A copy of someone's data
+
+To get a copy of a person's data, write to support@helpalive.com.
+
+## Check it works
+
+After you stop tracking someone, their row shows **Tracking stopped**, and **History** has a **Tracking stopped** line with your email.
+
+## Troubleshooting
+
+- **The row says "Deletion did not finish".** Run **Delete their data** again. If it keeps failing, write to support@helpalive.com.
+- **A batch action is greyed out.** Stop works only when every selected row is active, and Resume only when every selected row is stopped.
+- **You are asked for your password when saving the retention time.** That is expected. See [Your account](/dashboard/account#confirm-your-password).
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Data we collect" icon="database" href="/trust/data">
+    What HelpAlive records, and for how long.
+  </Card>
+  <Card title="Audience and Reports" icon="chart-bar" href="/dashboard/audience-and-reports">
+    Find a tenant or person.
+  </Card>
+  <Card title="Security" icon="lock" href="/trust/security">
+    Keys, sessions and confirmations.
+  </Card>
+</CardGroup>

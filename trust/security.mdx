@@ -1,0 +1,93 @@
+---
+title: "Security overview"
+sidebarTitle: "Security"
+description: "How HelpAlive keeps your workspace and your users safe: the public project key and the private signing secret, verified users, dashboard sign-in sessions, password confirmation for sensitive actions, HTTPS and hosting."
+keywords:
+  - HelpAlive security
+  - project key public
+  - signing secret
+  - verified users HS256
+  - session timeout
+  - step-up authentication
+---
+
+This page explains how HelpAlive protects your workspace and your users, and which parts are your choice. It is for security reviewers and the admins and developers who set HelpAlive up.
+
+## Two keys: one public, one secret
+
+| | Project key | Signing secret |
+|---|---|---|
+| **What it does** | Identifies your workspace to HelpAlive | Signs a token that proves who a user is |
+| **Where it lives** | In your pages, in the script tag's `data-api-key` | On your server only, for example in `HELPALIVE_SIGNING_SECRET` |
+| **Who can see it** | Anyone who opens your app | Only you and HelpAlive |
+| **Where to manage it** | **Settings → Setup & API Key**, **Regenerate** | **Settings → Setup & API Key**, **Rotate** |
+
+The project key is public by design. Anyone can read it from your page, so it can't prove who a user is.
+
+- **Regenerate** the project key at most once an hour. The old key may still be accepted for up to 30 seconds, so update your script straight away.
+- **Rotate** the signing secret at any time. The previous secret keeps working until you rotate again, so nobody is refused while your servers update. If a secret leaked, rotate twice: once to issue a new one, and again after your server uses it, so the leaked one stops working.
+
+## Verified users
+
+Without verified users, HelpAlive trusts the user id your page sends in `identify()`. Someone who knows your public project key and another user's id could then read that user's chat history.
+
+Verified users close that gap. Your server signs each user id with your signing secret, and your page passes the signed token to `identify()`. Then turn on **Only allow verified users** on **Settings → Setup & API Key**. From then on, HelpAlive refuses chat, guide and usage requests without a valid token.
+
+<Warning>
+Verified users is your choice, and it's off until you turn it on. We recommend turning it on before you open the agent to all your users. See [Verify users](/sdk/verify-users) for the server code, with samples for Node.js, Python, Ruby, PHP, Java, Go, C# and edge runtimes.
+</Warning>
+
+The switch turns on only after a verified sign-in in the last 30 minutes. That stops you locking out your own users by mistake. You can turn it off at any time.
+
+## Dashboard sign-in
+
+Your team signs in to the dashboard with an email address and password. New accounts confirm their email with a 6-digit code.
+
+**How long a sign-in lasts** is set on **Settings → Team & access**. By default, your team is signed out after 7 days without activity, and after 30 days at most. You can change both. Saving a shorter setting signs out anyone already past it.
+
+On **Account**, each person sees the devices signed in as them, and can sign out one device or press **Sign out other devices**. Passwords are changed with a code sent by email.
+
+Everyone on your team is an admin and can change every setting. Use **Who can join** on **Settings → Team & access** to allow invites only to your company's email domain.
+
+## Confirm your password on sensitive actions
+
+Some actions ask you to confirm your password first, in a **Confirm your password** box. You won't be asked again for a few minutes. These actions include:
+
+- regenerating the project key;
+- changing how long a sign-in lasts;
+- changing how long chat and guide text is kept;
+- removing a teammate;
+- signing out other devices.
+
+## HTTPS
+
+The script, the usage and chat endpoints and the dashboard are all served over HTTPS. Data between your users' browsers and HelpAlive is encrypted in transit.
+
+## Where data is hosted
+
+HelpAlive's servers and databases run in the United States, in US East (Virginia). Each customer's data is kept apart by a customer id on every row. See [Subprocessors](/trust/subprocessors) for the companies involved.
+
+## Check it works
+
+1. On **Settings → Setup & API Key**, check that **Your project key** is the one in your script tag.
+2. Check that your signing secret appears nowhere in your pages or front-end code.
+3. Sign in to your app, open the agent, and check that **Check your setup** finds a verified sign-in. Then turn on **Only allow verified users**.
+
+## Troubleshooting
+
+- **Users are refused after you rotated the secret twice.** Your server still uses a secret older than the previous one. Put the newest secret on your server.
+- **"Too soon to regenerate".** The project key can be regenerated once an hour. Keep using the current one until then.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Verify users" icon="badge-check" href="/sdk/verify-users">
+    Sign user ids on your server.
+  </Card>
+  <Card title="Data we collect" icon="database" href="/trust/data">
+    What's collected, kept and deleted.
+  </Card>
+  <Card title="Team & access" icon="users" href="/dashboard/team">
+    Invites, allowed domains and sign-in length.
+  </Card>
+</CardGroup>

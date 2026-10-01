@@ -1,0 +1,99 @@
+---
+title: "Make your app easy for the agent"
+sidebarTitle: "Make your app agent-ready"
+description: "The agent reads your page's controls by their visible text and accessible names, so plain labels help it as they help screen readers. There is nothing to tag."
+keywords:
+  - agent-ready web app
+  - accessible names AI agent
+  - aria-label AI agent
+  - HelpAlive page structure
+---
+
+This page is for developers and designers who want the agent to work well in their app. There is nothing to install or tag. The same habits that help screen-reader users help the agent.
+
+## How the agent reads your page
+
+The agent reads the page as structured text, not as a picture. It takes no screenshots. For each button, link, field and menu, it reads:
+
+- what kind of control it is, such as a button, a link, a text field or a checkbox;
+- its name: the visible text, or the accessible name from a `<label>`, `aria-label`, `aria-labelledby`, `alt` or `title`;
+- its state, such as checked, disabled, selected or expanded, and the value a field shows, except in password fields;
+- the headings, section titles, notices and error messages around it.
+
+Hidden elements are left out. Open shadow DOM, and frames from your own origin, are read like the rest of the page.
+
+You add no data attributes, selectors or ids for HelpAlive. The agent works with the page as your users see it.
+
+## Prerequisites
+
+- HelpAlive is installed. See [Install the script](/installation).
+
+## Habits that help
+
+<Steps>
+  <Step title="Give every control a name">
+    An icon-only button needs a name a screen reader would announce. Add `aria-label`, or visually hidden text.
+
+    ```html
+    <button aria-label="Delete invoice"><svg aria-hidden="true">…</svg></button>
+    ```
+  </Step>
+  <Step title="Tie each field to its label">
+    Use `<label for>`, or wrap the field in its label. A placeholder alone disappears once the user types, and it reads as a hint, not a name.
+
+    ```html
+    <label for="company-name">Company name</label>
+    <input id="company-name" name="company" />
+    ```
+  </Step>
+  <Step title="Use plain, distinct words">
+    Prefer "Invite teammate" to "Go". When a list repeats the same button on every row, the row's own text tells them apart.
+  </Step>
+  <Step title="Use native elements or the right role">
+    A `<button>`, `<select>` or `<input type="checkbox">` says what it is. If you build your own, give it the matching `role` and states, as accessible component libraries already do.
+  </Step>
+  <Step title="Show errors as text">
+    Write validation errors as text near the field, or link them with `aria-describedby`. The agent reads them, as a user would.
+  </Step>
+</Steps>
+
+## What the agent can't read
+
+The agent hands the task back to the user when it meets something it can't read or shouldn't do:
+
+- drawings in a `<canvas>`, and other content drawn as pixels;
+- content inside a frame from another site;
+- controls with no name it can find;
+- file uploads, phone codes, passwords, downloads, system dialogs and other apps.
+
+[What the agent won't do](/product/what-it-wont-do) lists the rest.
+
+## Check it works
+
+1. Run your browser's accessibility checker, or a tool such as Lighthouse, on a busy page. Fix controls flagged as having no name.
+2. Open the agent in your app and ask it to do a task on that page. Watch where it hands back to you.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="The agent stops and asks the user to take over">
+    It reached a control it couldn't name or read. Find the step where it stopped, and give that control a visible label or an `aria-label`.
+  </Accordion>
+  <Accordion title="The agent picks the wrong one of several similar buttons">
+    The buttons share a name. Make each name specific, for example "Edit billing address" and "Edit shipping address".
+  </Accordion>
+</AccordionGroup>
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="How HelpAlive works" icon="info" href="/product/how-it-works">
+    From the question to the task.
+  </Card>
+  <Card title="Guides" icon="route" href="/product/guides">
+    Does the steps, or shows how.
+  </Card>
+  <Card title="What the agent won't do" icon="ban" href="/product/what-it-wont-do">
+    What it always hands back.
+  </Card>
+</CardGroup>

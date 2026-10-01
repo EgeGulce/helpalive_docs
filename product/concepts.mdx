@@ -1,0 +1,92 @@
+---
+title: "Key concepts"
+sidebarTitle: "Key concepts"
+description: "Definitions of the words used across HelpAlive's dashboard and docs: tenant, user, your team, guide, chat message, source, draft and published, package, pack, verified user, project key and signing secret."
+keywords:
+  - HelpAlive glossary
+  - HelpAlive tenant
+  - HelpAlive guide definition
+  - project key vs signing secret
+  - verified user
+---
+
+This page defines the words HelpAlive uses in the dashboard, the widget and these docs. Read it once before you set up **Controls** or install the script.
+
+## People
+
+### Tenant
+
+A tenant is one of your customers: a company, team or workspace that uses your app. You send its id as `tenantId` in `identify()`, and its name as `tenantName`. If your app has no companies or workspaces, leave `tenantId` out and everyone goes under one tenant called "default".
+
+Tenants appear on **Controls** ("Each tenant"), on **Audience**, and on **Settings → Privacy Management**. You can set the agent's mode and limits per tenant.
+
+### User
+
+A user is a person who uses your app. You tell HelpAlive who they are with `identify()`, using your own id for them as `userId`. The agent appears only for users you identify. See [Identify users](/sdk/identify).
+
+### Your team
+
+Your team is your own staff who sign in to the HelpAlive dashboard. Everyone on your team is an admin and can change every setting. You invite teammates on **Settings → Team & access**.
+
+### Verified user
+
+A verified user is one whose identity your server has signed with your signing secret. With **Only allow verified users** on, HelpAlive refuses chat, guide and usage requests that don't carry a valid signed token. See [Verify users](/sdk/verify-users).
+
+## What the agent does
+
+### Guide
+
+A guide is the agent doing a task in your app for a user, or showing them how, one step at a time. It starts when a user accepts an offer in the chat. Inside the widget, users also see a guide called a "walkthrough". See [Guides](/product/guides).
+
+The dashboard counts a guide once, when someone starts it. A guide that was only offered doesn't count.
+
+### Chat message
+
+A chat message counts when the agent answers one of your users' messages. The **Test** page never counts.
+
+## What the agent knows
+
+### Source
+
+A source is something the agent answers from. You add sources on **Train**:
+
+- **Add a website** crawls every page your help site links to.
+- **Upload a file** takes a PDF, MD, TXT or DOCX file up to 10 MB.
+
+### Draft and published
+
+New sources, and changes to tone, length, custom responses and **Appearance**, start as drafts. Your users see only what you have published. The **Test** page uses your drafts, so you can try changes before you press **Publish**. Changes on **Controls** apply at once, with no draft. See [Publishing](/dashboard/publishing).
+
+## Billing
+
+### Package
+
+Your package is the number of guides and chat messages your plan includes each month. **Settings → Billing and usage** shows it as **In your plan**. On **Controls**, **How far over your package** sets how far usage may go past it.
+
+### Pack
+
+A pack is extra guides or chat messages you buy on top of your plan, with **Add guides** or **Add chat messages**. Packs are charged to the card on file and added right away. They are used after your plan's amount, carry over month to month, and end with your subscription. See [Billing and usage](/dashboard/billing).
+
+## Keys
+
+### Project key
+
+The project key identifies your workspace in the script tag (`data-api-key`). It is public: it sits in your pages, where anyone can see it. Find it on **Settings → Setup & API Key**.
+
+### Signing secret
+
+The signing secret is the private key your server uses to sign user tokens for verified users. It stays on your server, for example in `HELPALIVE_SIGNING_SECRET`, and never goes into your pages. Find and rotate it on **Settings → Setup & API Key**. See [Security](/trust/security).
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="How HelpAlive works" icon="workflow" href="/product/how-it-works">
+    The agent's stages and guarantees.
+  </Card>
+  <Card title="Install overview" icon="code" href="/sdk/overview">
+    The decisions to make before you install.
+  </Card>
+  <Card title="FAQ" icon="circle-help" href="/product/faq">
+    Short answers to common questions.
+  </Card>
+</CardGroup>

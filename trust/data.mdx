@@ -1,0 +1,142 @@
+---
+title: "Data we collect, and what we don't"
+sidebarTitle: "Data we collect"
+description: "What HelpAlive's script collects in your users' browsers, what it strips from page addresses, what the agent sees, what is redacted and what is not, how long each kind of data is kept, and how to stop tracking or delete data."
+keywords:
+  - HelpAlive data collection
+  - HelpAlive privacy
+  - data retention
+  - PII redaction
+  - delete user data
+  - stop tracking user
+---
+
+This page lists the data HelpAlive collects about your users, what it does with it, and how long it keeps it. It is for the admins, privacy teams and security reviewers who need to describe HelpAlive in their own privacy notice.
+
+## What the script collects
+
+The script records usage events the whole time it runs in your app. Chat and guides send more, only when the user uses them.
+
+| What | Details |
+|---|---|
+| Page views | Page address, title, and the previous page on your site. Secret-looking parts of the address are removed first (see below). |
+| Clicks | The element's visible text, label, id, CSS classes, position and state, such as checked or disabled. For text fields, only whether they have a value. |
+| Field changes | The value typed or picked, and the value before it. Only password fields are blanked. |
+| Form submits | The submit button's label and the form's name. No field values. |
+| Errors | Error messages shown on screen. When a request your page makes to change data is rejected, the start of that response, from any server your page calls. |
+| Seen elements | Once per page, what was on screen for at least half a second, and whether the user touched it. |
+| Custom events | Whatever your code sends with `track()`. |
+| Device facts | Browser and operating system family, device class, language, window size, and a shortened browser description. |
+| Ids | A random browser id, a random visit id, your tenant's id and name, and the user's id, hashed in the browser. The hash is pseudonymous, not anonymous: anyone with the raw id can recompute it. |
+| Profile | Display name, email, role, plan and sign-up date, if you send them in `identify()`. Stored as given. |
+| Verified-users token | If you use verified users, the signed token, sent as a request header. |
+| Start-up and error reports | When the script starts, its status, version, and the page's host and path. When it fails, the error message and stack. No user ids. |
+
+**Not collected:** screenshots, screen or session recordings, keystroke timing, screen size, and cookies. The script doesn't read the user's IP address, though our servers and network provider see it, as every web server does.
+
+**In the browser:** the script sets no cookies. It keeps ids, unsent events, the running guide's position, a copy of the widget's settings and the current chat's id in your site's browser storage. Signing out with `reset()` clears the chat entries.
+
+## What is stripped from page addresses
+
+Before a page address leaves the browser in a usage event, the script removes:
+
+- tokens of every kind, keys, secrets, passwords and one-time codes;
+- signatures, including cloud-storage signatures;
+- session ids, user ids and email addresses;
+- everything after the `#`.
+
+This applies to usage events only. The page the agent reads keeps its full address.
+
+## What the agent sees
+
+When a user opens the chat, asks a question or runs a guide, the agent reads the page as structured text, never as a picture. It sees:
+
+- the page's title, headings and visible text, such as banners and notices;
+- each button, link and field, with its label, role and state;
+- **the values in fields**, as shown, except password, file-upload and hidden fields;
+- the full page address, the browser's time zone and local date.
+
+It also gets the user's message and recent turns, and recent activity on this visit. It gets the role, plan and display name you send in `identify()`, and the matching passages from your docs. The chat answer never receives the user's email.
+
+The page the agent reads is not redacted. A card number or code typed into an ordinary field is included. This is deliberate: it is what the agent needs to see to help. See [How the AI uses your data](/trust/ai-and-your-data).
+
+## What is redacted, and what is not
+
+Before usage events are saved, our servers scan them and replace personal data with a tag, such as `<PERSON>`. The scan looks for names of people, email addresses, phone numbers, IP addresses, card numbers and US social security numbers, in English only. It covers page titles, element text and labels, form names, typed field values and on-screen error text.
+
+These are **not** redacted:
+
+- chat messages and answers;
+- guide data, and the page the agent reads;
+- ids, the profile you send in `identify()` (name and email are stored as given), custom `track()` events and the seen-elements list;
+- our server logs.
+
+## Our logs
+
+Our server logs keep end users' chat questions, and the page content guides read, including field values, for 30 days. They also hold your team's email addresses at sign-in and when invites are sent. Deleting a user doesn't reach these log copies; they age out after 30 days.
+
+Error reports from our servers can include the log lines just before an error, and go to our error-tracking provider. See [Subprocessors](/trust/subprocessors).
+
+## How long we keep it
+
+HelpAlive's servers, database and backups run in US East (Virginia). Each customer's data is kept apart by a customer id on every row.
+
+| Data | How long |
+|---|---|
+| Usage events | 12 months, then deleted month by month |
+| Summaries built from usage events, such as daily counts and the events around each chat or guide | Until you delete the person or tenant |
+| User profile from `identify()` | Until you delete that user |
+| Chat messages and answers, word for word | Your setting, 1 year by default. After it, the words are cleared and the dates and counts stay. |
+| Guide requests, plans, questions and answers | Same setting as chat |
+| Guide step titles and the labels clicked | Until you delete the user |
+| A running guide's working state | 30 minutes after the last step, 2 hours while paused |
+| Your docs' text from **Train** | Until you remove the source |
+| Script start-up reports | No time limit yet |
+| Chats your team runs on **Test** | No time limit yet |
+| Server logs | 30 days |
+| Database backups | Taken daily and weekly, and they age out on their own schedule |
+
+### Set how long chat and guide text is kept
+
+<Steps>
+  <Step title="Open Privacy Management">
+    Go to **Settings → Privacy Management**.
+  </Step>
+  <Step title="Pick a window">
+    Under **Chat and guide text**, choose **Keep for**: 30 days, 90 days, 180 days, 1 year (the default) or 2 years.
+  </Step>
+  <Step title="Save">
+    Press **Save** and confirm your password if asked. A shorter window clears older text at the next daily clean-up. It can't be brought back.
+  </Step>
+</Steps>
+
+## Stop tracking or delete data
+
+On **Settings → Privacy Management**, find the person under **People** or the company under **Tenants**:
+
+- **Stop tracking** drops their new usage events as they arrive. **Resume tracking** starts again.
+- **Delete their data** deletes their usage data and their chat and guide text. The rest is made anonymous, so your counts stay. The reason you give is kept in **History**.
+
+Deletions reach the database at once. Log copies and backups age out on their own schedule.
+
+To delete your whole workspace when you leave, email [support@helpalive.com](mailto:support@helpalive.com).
+
+## Things to tell your users
+
+- **Your team can read their chats.** Everyone on your team can read chat transcripts on **Audience**.
+- **Consent mode doesn't cover the chat.** With `data-consent="required"`, no usage events are recorded until the page calls `setConsent()`, and earlier ones are not kept. The chat widget still loads, and a chat or guide the user starts still sends its data. See [Consent mode](/sdk/consent).
+- **Browser privacy signals aren't read.** Do Not Track and Global Privacy Control don't change what the script does.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="How the AI uses your data" icon="brain" href="/trust/ai-and-your-data">
+    What goes to the model provider, and why.
+  </Card>
+  <Card title="Subprocessors" icon="building-2" href="/trust/subprocessors">
+    The companies that process data for us.
+  </Card>
+  <Card title="Privacy Management" icon="user-x" href="/dashboard/privacy-management">
+    Stop tracking, delete data and set retention.
+  </Card>
+</CardGroup>
