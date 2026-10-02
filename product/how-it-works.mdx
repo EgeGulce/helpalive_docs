@@ -16,7 +16,7 @@ HelpAlive runs in your user's browser, inside your app, through the one script y
 
 ## 1. It reads the page
 
-When a user opens the chat or starts a guide, the agent reads the page they are on as structured text. It sees the page's title and headings, the visible text, and each button, link and field with its label and state. It also sees the values in fields, except passwords, file uploads and hidden fields.
+When a user opens the chat or starts an assist, the agent reads the page they are on as structured text. It sees the page's title and headings, the visible text, and each button, link and field with its label and state. It also sees the values in fields, except passwords, file uploads and hidden fields.
 
 It also knows what the user just did on this visit, including any errors they hit, and the role and plan you pass in `identify()`.
 
@@ -49,7 +49,7 @@ What happens next depends on the mode you set on **Controls**:
 - **Does the steps.** The agent clicks, types, picks and scrolls on the user's behalf, including Save, Submit and Delete.
 - **Shows how.** The agent highlights each control and says what to do, and the user does every click.
 
-Either way, it works one step at a time. After each step it reads the page again to check the step landed. If a press didn't land, it hands that step to the user instead of pressing again. The user can ask a question, change direction, take over or pause at any point. See [Guides](/product/guides).
+Either way, it works one step at a time. After each step it reads the page again to check the step landed. If a press didn't land, it hands that step to the user instead of pressing again. The user can ask a question, change direction, take over or pause at any point. See [Assists](/product/assists).
 
 ## 5. It hands back what only the user can do
 
@@ -66,7 +66,7 @@ See [What the agent won't do](/product/what-it-wont-do) for the full list.
 
 ## Troubleshooting
 
-- **No offer card appears.** The agent offers only when the task can be done in your app and it can name where. Ask for a task your published docs describe. Offers also stop once your guides for the month are used up; answers keep coming.
+- **No offer card appears.** The agent offers only when the task can be done in your app and it can name where. Ask for a task your published docs describe. Offers also stop once your assists for the month are used up; answers keep coming.
 - **The agent answers from old content.** Changes on **Train** wait for **Publish**. Use **Test** to try drafts before you publish.
 
 ## Next
@@ -75,7 +75,7 @@ See [What the agent won't do](/product/what-it-wont-do) for the full list.
   <Card title="Chat" icon="messages-square" href="/product/chat">
     What users see when they open the chat.
   </Card>
-  <Card title="Guides" icon="route" href="/product/guides">
+  <Card title="Assists" icon="route" href="/product/assists">
     The offer, the bar, and the recap.
   </Card>
   <Card title="What the agent won't do" icon="hand" href="/product/what-it-wont-do">

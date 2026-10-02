@@ -1,16 +1,16 @@
 ---
 title: "Audience and Reports: who uses the agent"
 sidebarTitle: "Audience and Reports"
-description: "See which tenants and people use the HelpAlive agent, open any guide or chat, and read the reports on what the agent did."
+description: "See which tenants and people use the HelpAlive agent, open any assist or chat, and read the reports on what the agent did."
 keywords:
   - HelpAlive audience
   - HelpAlive reports
-  - guide completion rate
+  - assist completion rate
   - chat transcripts
   - agent use by tenant
 ---
 
-**Audience** and **Reports** show who uses the agent and how it goes. They are the sixth and seventh items in the sidebar. **Audience** goes from tenants to people to each guide or chat. **Reports** adds up what the agent did over a period.
+**Audience** and **Reports** show who uses the agent and how it goes. They are the sixth and seventh items in the sidebar. **Audience** goes from tenants to people to each assist or chat. **Reports** adds up what the agent did over a period.
 
 A tenant is one of your own customers: the `tenantId` your app passes to `identify()`. A person is one signed-in user of your app. See [Key concepts](/product/concepts).
 
@@ -23,7 +23,7 @@ A tenant is one of your own customers: the `tenantId` your app passes to `identi
 | **People** | Everyone your app has identified. |
 | **Active this period** | People active in your plan period. |
 | **Have the agent** | People that **Who gets it** on **Controls** gives the agent today. |
-| **Helped this period** | People who started a guide in your plan period. |
+| **Helped this period** | People who started an assist in your plan period. |
 | **Tenants** | Tenants on file. |
 
 ### Tenants
@@ -40,12 +40,12 @@ The right list, **People**, shows each person with when they were last active. U
 
 Clicking a row opens a drawer. It goes one level deeper each time, and **Open as page** shows any level as a full page.
 
-- **A tenant**: how far the agent reaches in it, and its **Events**, **Chats** and **Guides**. Then **Its people**, its guides, and its latest activity for **7 days**, **30 days**, **90 days** or **A year**. It ends with the tenant's privacy state and history.
-- **A person**: tabs for **Activity**, **Guides**, **Chats**, **Platforms** and **Privacy**.
-- **A guide**: its name is the one the agent gave its offer, or else what they asked for. **The story** shows **What they asked for**, **How it ended** and the agent's closing words. **The guide in numbers** shows how long it took, its steps, and whether it **Counts toward your plan**. **What happened** goes step by step.
-- **A chat**: its messages, any guide the chat offered and the person's answer, and **The guides this chat ran**.
+- **A tenant**: how far the agent reaches in it, and its **Events**, **Chats** and **Assists**. Then **Its people**, its assists, and its latest activity for **7 days**, **30 days**, **90 days** or **A year**. It ends with the tenant's privacy state and history.
+- **A person**: tabs for **Activity**, **Assists**, **Chats**, **Platforms** and **Privacy**.
+- **An assist**: its name is the one the agent gave its offer, or else what they asked for. **The story** shows **What they asked for**, **How it ended** and the agent's closing words. **The assist in numbers** shows how long it took, its steps, and whether it **Counts toward your plan**. **What happened** goes step by step.
+- **A chat**: its messages, any assist the chat offered and the person's answer, and the assists it ran, under **It ran one assist** or, for more, a count such as **It ran 2 assists**.
 
-In the lists, a chat shows its first question in quotes under its title. A guide that stopped says the step it stopped at. Guides and chats from a test link on **Test** are marked **Test run** or **Test chat**, and a test guide says "A test: does not count toward your plan".
+In the lists, a chat shows its first question in quotes under its title. An assist that stopped says the step it stopped at. Assists and chats from a test link on **Test** are marked **Test run** or **Test chat**, and a test assist says "A test: does not count toward your plan".
 
 Your team can read your users' chats here. Your terms with your own users should tell them so. A chat removed with a person's data says "This chat isn't here any more: it may have been deleted with their data." After your retention window, a chat keeps its counts and dates but loses its words. See [Privacy Management](/dashboard/privacy-management).
 
@@ -63,30 +63,30 @@ Each report has a button to download it as CSV.
 
 | Report | What it shows |
 | --- | --- |
-| **What the agent did** | **People helped**, **Guides started**, **Finished** (share of guides started), **Conversations** and **Messages**, against the period before. |
-| **Guides per day and how they ended** | Guides started each day (each week past 90 days), split by ending. Press an ending to hide it. |
-| **From started to finished** | The guides that finished, of every guide started. |
-| **Questions and guides by page** | Each page of your app: **Questions** asked there, **Guides started** and **Finished**. Sort by any column and use **Find a page**. Guides are counted for the ten pages with the most; other pages show a dash. |
-| **Agent use by tenant** | Guides and chats in each tenant, all time, with its people. Use **Find a tenant**. |
+| **What the agent did** | **People helped**, **Assists started**, **Finished** (share of assists started), **Conversations** and **Messages**, against the period before. |
+| **Assists per day and how they ended** | Assists started each day (each week past 90 days), split by ending. Press an ending to hide it. |
+| **From started to finished** | The assists that finished, of every assist started. |
+| **Questions and assists by page** | Each page of your app: **Questions** asked there, **Assists started** and **Finished**. Sort by any column and use **Find a page**. Assists are counted for the ten pages with the most; other pages show a dash. |
+| **Agent use by tenant** | Assists and chats in each tenant, all time, with its people. Use **Find a tenant**. |
 
-### How a guide ended
+### How an assist ended
 
 | Ending | Meaning |
 | --- | --- |
 | **Finished** | The agent took them to the end. |
 | **Could not finish** | The agent could not do it and said so. |
-| **Stopped** | They closed it, or started another guide. |
+| **Stopped** | They closed it, or started another assist. |
 | **Timed out** | It went quiet until it timed out. |
 | **Abandoned** | They left the page while it ran. |
 | **Still going** | Started and not ended yet. |
 
 ### A page's detail
 
-In **Questions and guides by page**, click a number to open that page's drawer: the questions asked there, the guides started there, and the guides that did not finish, each saying how far it got. Questions past your retention window keep their count but not their words.
+In **Questions and assists by page**, click a number to open that page's drawer: the questions asked there, the assists started there, and the assists that did not finish, each saying how far it got. Questions past your retention window keep their count but not their words.
 
 ## Check it works
 
-Once people use the agent in your app, **Audience** lists them under their tenants, and **Reports** fills in for the period you pick. Guides appear within about a minute of starting.
+Once people use the agent in your app, **Audience** lists them under their tenants, and **Reports** fills in for the period you pick. Assists appear within about a minute of starting.
 
 ## Troubleshooting
 

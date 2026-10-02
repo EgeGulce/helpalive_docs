@@ -15,7 +15,7 @@ This page lists the data HelpAlive collects about your users, what it does with 
 
 ## What the script collects
 
-The script records usage events the whole time it runs in your app. Chat and guides send more, only when the user uses them.
+The script records usage events the whole time it runs in your app. Chat and assists send more, only when the user uses them.
 
 | What | Details |
 |---|---|
@@ -34,7 +34,7 @@ The script records usage events the whole time it runs in your app. Chat and gui
 
 **Not collected:** screenshots, screen or session recordings, keystroke timing, screen size, and cookies. The script doesn't read the user's IP address, though our servers and network provider see it, as every web server does.
 
-**In the browser:** the script sets no cookies. It keeps ids, unsent events, the running guide's position, a copy of the widget's settings and the current chat's id in your site's browser storage. Signing out with `reset()` clears the chat entries.
+**In the browser:** the script sets no cookies. It keeps ids, unsent events, the running assist's position, a copy of the widget's settings and the current chat's id in your site's browser storage. Signing out with `reset()` clears the chat entries.
 
 ## What is stripped from page addresses
 
@@ -49,7 +49,7 @@ This applies to usage events only. The page the agent reads keeps its full addre
 
 ## What the agent sees
 
-When a user opens the chat, asks a question or runs a guide, the agent reads the page as structured text, never as a picture. It sees:
+When a user opens the chat, asks a question or runs an assist, the agent reads the page as structured text, never as a picture. It sees:
 
 - the page's title, headings and visible text, such as banners and notices;
 - each button, link and field, with its label, role and state;
@@ -67,13 +67,13 @@ Before usage events are saved, our servers scan them and replace personal data w
 These are **not** redacted:
 
 - chat messages and answers;
-- guide data, and the page the agent reads;
+- assist data, and the page the agent reads;
 - ids, the profile you send in `identify()` (name and email are stored as given), custom `track()` events and the seen-elements list;
 - our server logs.
 
 ## Our logs
 
-Our server logs keep end users' chat questions, and the page content guides read, including field values, for 30 days. They also hold your team's email addresses at sign-in and when invites are sent. Deleting a user doesn't reach these log copies; they age out after 30 days.
+Our server logs keep end users' chat questions, and the page content assists read, including field values, for 30 days. They also hold your team's email addresses at sign-in and when invites are sent. Deleting a user doesn't reach these log copies; they age out after 30 days.
 
 Error reports from our servers can include the log lines just before an error, and go to our error-tracking provider. See [Subprocessors](/trust/subprocessors).
 
@@ -84,27 +84,27 @@ HelpAlive's servers, database and backups run in US East (Virginia). Each custom
 | Data | How long |
 |---|---|
 | Usage events | 12 months, then deleted month by month |
-| Summaries built from usage events, such as daily counts and the events around each chat or guide | Until you delete the person or tenant |
+| Summaries built from usage events, such as daily counts and the events around each chat or assist | Until you delete the person or tenant |
 | User profile from `identify()` | Until you delete that user |
 | Chat messages and answers, word for word | Your setting, 1 year by default. After it, the words are cleared and the dates and counts stay. |
-| Guide requests, plans, questions and answers | Same setting as chat |
-| Guide step titles and the labels clicked | Until you delete the user |
-| A running guide's working state | Cleared soon after the guide ends or is left |
-| Records of chat messages and guide starts refused at a limit: who, which limit and when | As long as the rest of that user's data, and deleted with it |
+| Assist requests, plans, questions and answers | Same setting as chat |
+| Assist step titles and the labels clicked | Until you delete the user |
+| A running assist's working state | Cleared soon after the assist ends or is left |
+| Records of chat messages and assist starts refused at a limit: who, which limit and when | As long as the rest of that user's data, and deleted with it |
 | Your docs' text from **Train** | Until you remove the source |
 | Script start-up reports | No time limit yet |
 | Chats your team runs on **Test** | No time limit yet |
 | Server logs | 30 days |
 | Database backups | Taken daily and weekly, and they age out on their own schedule |
 
-### Set how long chat and guide text is kept
+### Set how long chat and assist text is kept
 
 <Steps>
   <Step title="Open Privacy Management">
     Go to **Settings → Privacy Management**.
   </Step>
   <Step title="Pick a window">
-    Under **Chat and guide text**, choose **Keep for**: 30 days, 90 days, 180 days, 1 year (the default) or 2 years.
+    Under **Chat and assist text**, choose **Keep for**: 30 days, 90 days, 180 days, 1 year (the default) or 2 years.
   </Step>
   <Step title="Save">
     Press **Save** and confirm your password when asked. A shorter window clears older text at the next daily clean-up. It can't be brought back.
@@ -116,7 +116,7 @@ HelpAlive's servers, database and backups run in US East (Virginia). Each custom
 On **Settings → Privacy Management**, find the person under **People** or the company under **Tenants**:
 
 - **Stop tracking** drops their new usage events as they arrive. **Resume tracking** starts again.
-- **Delete their data** deletes their usage data and their chat and guide text. The rest is made anonymous, so your counts stay. The reason you give is kept in **History**.
+- **Delete their data** deletes their usage data and their chat and assist text. The rest is made anonymous, so your counts stay. The reason you give is kept in **History**.
 
 Deletions reach the database at once. Log copies and backups age out on their own schedule.
 

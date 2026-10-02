@@ -10,7 +10,7 @@ This is the public Mintlify site for HelpAlive (docs.helpalive.com). Mintlify pu
 - This file and anything else for writers stays in `.mintignore`, so it is never published.
 
 ## The four tabs
-- **Product:** what end users get (chat, guides, what it won't do), key concepts and the FAQ.
+- **Product:** what end users get (chat, assists, what it won't do), key concepts and the FAQ.
 - **Dashboard:** one page per sidebar item and Settings tab, using the dashboard's exact labels. HelpAlive's own agent answers dashboard users from these pages.
 - **Developers:** install, identify, verify users, GTM, CSP, consent and reference.
   - `/installation` and `/sdk/verify-users` are linked from the dashboard's AI-agent prompts. Keep those paths and keep each page self-contained.
@@ -22,5 +22,5 @@ This is the public Mintlify site for HelpAlive (docs.helpalive.com). Mintlify pu
 - No prices. Prices are shown in the dashboard under Settings → Billing and usage.
 - Never document what doesn't exist (roles, an enterprise plan, a trial before it ships, Studio, integrations, export, citations).
 - Never promise in-browser redaction, or cleaning of addresses or chat text.
-- "Guide" is the word for a task the agent does or shows. "Tenant" is the word for a customer's customer (`tenantId`).
+- "Assist" is the word for a task the agent does or shows, as the dashboard, billing and packs say it. Where a page describes what end users see inside the widget, it is a "walkthrough", with the widget's own labels (the start button for Shows how is **Show me how**). Keep "guide" only as a search keyword. "Tenant" is the word for a customer's customer (`tenantId`).
 - Style: active voice, second person, sentence-case headings, sentences under 25 words, bold dashboard labels with paths (**Settings → Team & access**), at most two callouts per page, and "Next" cards at the end.

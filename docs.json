@@ -76,7 +76,7 @@
             "group": "What your users get",
             "pages": [
               "product/chat",
-              "product/guides",
+              "product/assists",
               "product/what-it-wont-do"
             ]
           },
@@ -226,6 +226,10 @@
   },
   "redirects": [
     {
+      "source": "/product/guides",
+      "destination": "/product/assists"
+    },
+    {
       "source": "/introduction",
       "destination": "/"
     },
@@ -235,7 +239,7 @@
     },
     {
       "source": "/studio/:slug*",
-      "destination": "/product/guides"
+      "destination": "/product/assists"
     },
     {
       "source": "/insight/overview",

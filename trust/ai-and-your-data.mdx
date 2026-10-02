@@ -14,7 +14,7 @@ This page explains what data HelpAlive's agent sends to an AI model, when, and w
 
 ## Why the agent needs your data
 
-The agent answers questions about the page a user is on, and does tasks on that page. To do that, it has to read the page and know what the user is trying to do. Everything below is sent for that purpose, at the moment the user uses the chat or a guide.
+The agent answers questions about the page a user is on, and does tasks on that page. To do that, it has to read the page and know what the user is trying to do. Everything below is sent for that purpose, at the moment the user uses the chat or an assist.
 
 ## What is sent, and when
 
@@ -22,8 +22,8 @@ The model receives only what the current moment needs. That falls into five kind
 
 | Kind of data | When it is sent |
 |---|---|
-| **The page the user is on**: its address, title and content as structured text, **including field values** | When the chat opens, with each question, and at each step of a guide |
-| **The user's own words**: their message, the conversation so far, and their answers during a guide | With each question and each guide step |
+| **The page the user is on**: its address, title and content as structured text, **including field values** | When the chat opens, with each question, and at each step of an assist |
+| **The user's own words**: their message, the conversation so far, and their answers during an assist | With each question and each assist step |
 | **Profile fields you send** through `identify()`, such as display name, role and plan | When the chat opens and with each question |
 | **Recent activity**: what the user did on this visit, and the titles of their own recent chats | When the chat opens and with each question |
 | **Passages from your published docs** that match the question | With each question |
@@ -41,15 +41,15 @@ Answers come from the sources you publish on **Train**. Drafts never reach your 
 - **The model provider doesn't train on data sent through its API.** That covers the pages, questions and docs HelpAlive sends it.
 - **We ask the provider not to store responses.**
 - **The provider may keep requests and responses for up to 30 days** to check for abuse.
-- **We may use the kept words of chats and guides, de-identified, to improve HelpAlive for all customers.** To opt out, write to support@helpalive.com. See [Privacy Management](/dashboard/privacy-management).
+- **We may use the kept words of chats and assists, de-identified, to improve HelpAlive for all customers.** To opt out, write to support@helpalive.com. See [Privacy Management](/dashboard/privacy-management).
 
 The model provider and the other companies that process data for us are listed on [Subprocessors](/trust/subprocessors).
 
 ## What we keep afterwards
 
-- **The page the agent read** is not saved to our database. A running guide holds it only while the guide is in progress.
-- **Chat messages and guide text** are kept in our database for the window you set on **Settings → Privacy Management**, 1 year by default.
-- **Our server logs** keep users' chat questions and the page content guides read, including field values, for 30 days.
+- **The page the agent read** is not saved to our database. A running assist holds it only while the assist is in progress.
+- **Chat messages and assist text** are kept in our database for the window you set on **Settings → Privacy Management**, 1 year by default.
+- **Our server logs** keep users' chat questions and the page content assists read, including field values, for 30 days.
 
 See [Data we collect](/trust/data) for every kind of data and how long it is kept.
 
@@ -57,7 +57,7 @@ See [Data we collect](/trust/data) for every kind of data and how long it is kep
 
 - **Who gets the agent**, and whether it does the steps or shows how, on **Controls**.
 - **What it answers from**, on **Train**. Only published sources are used.
-- **How long chat and guide text is kept**, on **Settings → Privacy Management**.
+- **How long chat and assist text is kept**, on **Settings → Privacy Management**.
 - **Deleting a person's or tenant's data**, on **Settings → Privacy Management**.
 
 ## Next

@@ -292,7 +292,7 @@ With it on, HelpAlive refuses every request without a valid user token:
 
 - A page without a valid token gets no chat button, so the user doesn't see the agent.
 - If a token expires while the chat is open, HelpAlive calls your `refreshUserToken` function, if you pass one to `identify()`, and sends the request again. If that fails, the user sees "Your session needs a refresh. Reload the page to keep chatting." with a **Reload page** button.
-- If an open chat is refused for any other reason, the question box gives way to "Chat isn't available right now, please try again later." A running guide stops quietly.
+- If an open chat is refused for any other reason, the question box gives way to "Chat isn't available right now, please try again later." A running assist stops quietly.
 - Activity from pages without a token is refused too. Those users stop showing in **Reports**, **Audience** and the setup checks.
 
 While the switch hides the agent from people, step 4 on **Settings → Setup & API Key** says how many couldn't see it in the last 7 days, the main reason, and the fix. We also email your team when it starts. See [Setup & API Key](/dashboard/setup#only-allow-verified-users).

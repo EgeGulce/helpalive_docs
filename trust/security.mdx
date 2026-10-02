@@ -31,7 +31,7 @@ The project key is public by design. Anyone can read it from your page, so it ca
 
 Without verified users, HelpAlive trusts the user id your page sends in `identify()`. Someone who knows your public project key and another user's id could then read that user's chat history.
 
-Verified users close that gap. Your server signs each user id with your signing secret, and your page passes the signed token to `identify()`. Then turn on **Only allow verified users** on **Settings → Setup & API Key**. From then on, HelpAlive refuses chat, guide and usage requests without a valid token.
+Verified users close that gap. Your server signs each user id with your signing secret, and your page passes the signed token to `identify()`. Then turn on **Only allow verified users** on **Settings → Setup & API Key**. From then on, HelpAlive refuses chat, assist and usage requests without a valid token.
 
 <Warning>
 Verified users is your choice, and it's off until you turn it on. We recommend turning it on before you open the agent to all your users. See [Verify users](/sdk/verify-users) for the server code, with samples for Node.js, Python, Ruby, PHP, Java, Go, C# and edge runtimes.
@@ -57,7 +57,7 @@ Some actions ask you to confirm your password first, in a **Confirm your passwor
 - changing how long a sign-in lasts;
 - inviting teammates, resending an invite, and reactivating someone;
 - changing the allowed email domains;
-- changing how long chat and guide text is kept;
+- changing how long chat and assist text is kept;
 - removing a teammate;
 - signing out other devices.
 

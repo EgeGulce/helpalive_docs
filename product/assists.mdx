@@ -1,42 +1,42 @@
 ---
-title: "Guides: the agent does the task or shows how"
-sidebarTitle: "Guides"
-description: "What users see when HelpAlive does a task for them or shows how: the offer card, the guide bar, Ask or steer, Take over, Pause and the recap."
+title: "Assists: the agent does the task or shows how"
+sidebarTitle: "Assists"
+description: "What users see when HelpAlive does a task for them or shows how: the offer card, the walkthrough bar, Ask or steer, Take over, Pause and the recap."
 keywords:
-  - in-app guide
+  - HelpAlive assist
+  - in-app guides
   - AI walkthrough
   - AI does tasks for users
   - interactive product walkthrough
-  - HelpAlive guide bar
 ---
 
-A guide is HelpAlive doing a task in your app for a user, or showing them how, one step at a time. This page shows what the user sees from the offer to the recap, in the widget's own words. Inside the widget, users also see a guide called a "walkthrough".
+An assist is HelpAlive doing a task in your app for a user, or showing them how, one step at a time. This page shows what the user sees from the offer to the recap, in the widget's own words. Inside the widget, your users see an assist as a "walkthrough"; the dashboard calls it an assist.
 
 ## Prerequisites
 
 - The agent is on for the user on **Controls**, and you have published at least one source on **Train**.
 - On **Controls**, you have chosen **Does the steps** or **Shows how** for this user, their tenant, or everyone.
 
-Every guide starts from the chat. Each one is put together for the user's request and the page in front of them.
+Every assist starts from the chat. Each one is put together for the user's request and the page in front of them.
 
 ## Does the steps, or shows how
 
 | Mode on **Controls** | Offer button | What happens |
 |---|---|---|
 | **Does the steps** | **Let's do it** | HelpAlive clicks, types, picks and scrolls for the user, including Save, Submit and Delete. It hands back the steps only the user can do. |
-| **Shows how** | **Guide me** | HelpAlive highlights each control and says what to do. The user does every click. |
+| **Shows how** | **Show me how** | HelpAlive highlights each control and says what to do. The user does every click. |
 
-## Starting a guide
+## Starting an assist
 
 1. The user asks for something in the chat, such as "Can you add a teammate for me?"
 2. An offer card appears under the answer with the task's name and **My plan**, the rough steps.
-3. The user presses **Let's do it** or **Guide me**. The button reads "Preparing your guide…" while it gets ready.
+3. The user presses **Let's do it** or **Show me how**. The button reads "Getting it ready…" while the walkthrough gets ready.
 
-The card then shows **In progress** while the guide runs.
+The card then shows **In progress** while the walkthrough runs.
 
 ## The bar
 
-A bar sits at the bottom of the page for the whole guide. On its left, a line says who is acting:
+A bar sits at the bottom of the page for the whole walkthrough. On its left, a line says who is acting:
 
 - **HelpAlive:** followed by what it's doing, such as working out the next step or waiting for the page.
 - **Your turn:** followed by what the user should do. A **Your turn** tag also shows.
@@ -51,14 +51,14 @@ On the right of the bar are four controls.
 
 ### Flightpath
 
-**Flightpath** opens the guide's plan and a live record of what has happened. It shows each step, who did it, and any questions and answers.
+**Flightpath** opens the walkthrough's plan and a live record of what has happened. It shows each step, who did it, and any questions and answers.
 
 ### Ask or steer
 
 **Ask or steer** opens a box that says "Ask anything, or say what to change…". The user types, then presses one of two buttons:
 
-- **Ask** pauses the guide and answers the question in the chat.
-- **Steer** changes what HelpAlive does next, such as "use the Marketing team instead". The guide carries on with the change.
+- **Ask** pauses the walkthrough and answers the question in the chat.
+- **Steer** changes what HelpAlive does next, such as "use the Marketing team instead". The walkthrough carries on with the change.
 
 ### Take over and Hand back
 
@@ -66,9 +66,9 @@ With **Does the steps**, the bar shows **Take over**. Pressing it hands every re
 
 ### Pause and Resume
 
-**Pause** stops the guide where it is and opens the chat. The chat shows the guide's name with **Cancel** and **Resume**. **Resume** carries on from the same step, and **Cancel** ends the guide.
+**Pause** stops the walkthrough where it is and opens the chat. The chat shows the walkthrough's name with **Cancel** and **Resume**. **Resume** carries on from the same step, and **Cancel** ends the walkthrough.
 
-If the user steps away, the guide waits, and the bar says it will pick up when they're back. If the page reloads mid-guide, it picks up where it left off.
+If the user steps away, the walkthrough waits, and the bar says "Paused — I'll pick this up when you're back." If the page reloads mid-walkthrough, it picks up where it left off.
 
 ## Checks along the way
 
@@ -76,14 +76,14 @@ After each step, HelpAlive reads the page again to check the step landed. If a p
 
 ## The recap
 
-When the guide ends, a recap card appears in the chat:
+When the walkthrough ends, a recap card appears in the chat:
 
-- **Completed** or **Stopped** at the top. A stopped guide says why, such as "You stopped this walkthrough.", and where it stopped.
+- **Completed** or **Stopped** at the top. A stopped walkthrough says why, such as "You stopped this walkthrough.", and where it stopped.
 - **You did**, the steps the user did, with any hand-overs and questions.
 - **I did**, the steps HelpAlive did.
 - **Left for you**, anything not finished.
 
-The offer card then offers **Run again**, or **Continue from where we left off** when the guide can carry on.
+The offer card then offers **Run again**, or **Continue from where we left off** when the walkthrough can carry on.
 
 ## Check it works
 
@@ -95,10 +95,10 @@ The offer card then offers **Run again**, or **Continue from where we left off**
 
 ## Troubleshooting
 
-- **The button says Guide me, not Let's do it.** This user, or their tenant, is set to **Shows how** on **Controls**. Changes there apply at once.
-- **No Take over button.** It appears only with **Does the steps**, and not while the guide is paused.
-- **No offer at all.** The agent offers only tasks it can do in your app. Offers also stop once your guides for the month are used up. See [Limits and usage](/dashboard/usage).
-- **The guide stops at a step on another site or in a file dialog.** That's a hand-back by design. See [What the agent won't do](/product/what-it-wont-do).
+- **The button says Show me how, not Let's do it.** This user, or their tenant, is set to **Shows how** on **Controls**. Changes there apply at once.
+- **No Take over button.** It appears only with **Does the steps**, and not while the walkthrough is paused.
+- **No offer at all.** The agent offers only tasks it can do in your app. Offers also stop once your assists for the month are used up. See [Limits and usage](/dashboard/usage).
+- **The assist stops at a step on another site or in a file dialog.** That's a hand-back by design. See [What the agent won't do](/product/what-it-wont-do).
 
 ## Next
 
@@ -110,6 +110,6 @@ The offer card then offers **Run again**, or **Continue from where we left off**
     Choose Does the steps or Shows how.
   </Card>
   <Card title="Limits and usage" icon="gauge" href="/dashboard/usage">
-    How guides are counted.
+    How assists are counted.
   </Card>
 </CardGroup>

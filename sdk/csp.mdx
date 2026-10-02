@@ -27,9 +27,9 @@ connect-src https://api.helpalive.com https://chat.helpalive.com;
 
 | Directive | Source | Why |
 |-----------|--------|-----|
-| `script-src` | `https://cdn.helpalive.com` | Loads our script, and the agent and guide code it adds when needed. |
+| `script-src` | `https://cdn.helpalive.com` | Loads our script, and the agent and assist code it adds when needed. |
 | `connect-src` | `https://api.helpalive.com` | Sends activity from your pages. |
-| `connect-src` | `https://chat.helpalive.com` | Carries the agent: its settings, chats and guides. |
+| `connect-src` | `https://chat.helpalive.com` | Carries the agent: its settings, chats and assists. |
 
 Without `chat.helpalive.com`, the script loads and activity arrives, but the agent never appears.
 
