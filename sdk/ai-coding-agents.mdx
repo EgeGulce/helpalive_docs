@@ -54,12 +54,12 @@ HelpAlive.identify({
   tenantName: company.name,     // required: the company's name, shown in your dashboard
   displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
   email: user.email,            // optional
-  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+  role: user.role,              // recommended, helps the agent: e.g. "admin", "viewer"
+  plan: company.plan,           // recommended, helps the agent: e.g. "free", "pro"
   createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
 })
 
-userId and displayName are required: userId a stable id for the person (not their email if it can change), passed as a string, and displayName their name. If this app is B2B, with customer companies, workspaces or organizations as tenants, tenantId (that id, as a string) and tenantName (its name) are required too; if it is B2C, where people sign up on their own with no company, leave both out (in an app with both, leave them out only for the individuals). The other fields are optional: fill each one the app has and leave out the rest (createdAt is the signup date in Unix seconds).
+userId and displayName are required: userId a stable id for the person (not their email if it can change), passed as a string, and displayName their name. If this app is B2B, with customer companies, workspaces or organizations as tenants, tenantId (that id, as a string) and tenantName (its name) are required too; if it is B2C, where people sign up on their own with no company, leave both out (in an app with both, leave them out only for the individuals). role and plan are recommended, because the agent reads both; fill them if the app has them. email and createdAt are optional (createdAt is the signup date in Unix seconds).
 
 If that code is in a TypeScript file, add this declaration to a .d.ts file the project includes:
 
@@ -127,8 +127,8 @@ HelpAlive.identify({
   tenantName: company.name,     // optional: the company's name, shown in your dashboard
   displayName: user.name,       // optional
   email: user.email,            // optional
-  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+  role: user.role,              // recommended, helps the agent: e.g. "admin", "viewer"
+  plan: company.plan,           // recommended, helps the agent: e.g. "free", "pro"
   createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
 })
 

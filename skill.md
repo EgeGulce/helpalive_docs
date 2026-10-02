@@ -46,13 +46,13 @@ HelpAlive.identify({
   tenantName: company.name,     // required: the company's name, shown in your dashboard
   displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
   email: user.email,            // optional
-  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+  role: user.role,              // recommended, helps the agent: e.g. "admin", "viewer"
+  plan: company.plan,           // recommended, helps the agent: e.g. "free", "pro"
   createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
 });
 ```
 
-For a B2C app, where users have no company or workspace, leave out `tenantId` and `tenantName`; the dashboard groups those users as B2C customers. `userId` and `displayName` are always required.
+For a B2C app, where users have no company or workspace, leave out `tenantId` and `tenantName`; the dashboard groups those users as B2C customers. `userId` and `displayName` are always required. `role` and `plan` are recommended: the agent reads both.
 
 ```javascript
 // B2C: users have no tenant
@@ -60,7 +60,7 @@ HelpAlive.identify({
   userId: String(user.id),      // required: your own id for this person
   displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
   email: user.email,            // optional
-  plan: user.plan,              // optional: e.g. "free", "pro"
+  plan: user.plan,              // recommended, helps the agent: e.g. "free", "pro"
   createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
 });
 ```

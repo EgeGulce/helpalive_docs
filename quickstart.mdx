@@ -55,8 +55,8 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
           tenantName: company.name,     // required: the company's name, shown in your dashboard
           displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
           email: user.email,            // optional
-          role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-          plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+          role: user.role,              // recommended, helps the agent: e.g. "admin", "viewer"
+          plan: company.plan,           // recommended, helps the agent: e.g. "free", "pro"
           createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
         })
         ```
@@ -70,7 +70,7 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
           userId: String(user.id),      // required: your own id for this person
           displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
           email: user.email,            // optional
-          plan: user.plan,              // optional: e.g. "free", "pro"
+          plan: user.plan,              // recommended, helps the agent: e.g. "free", "pro"
           createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
         })
         ```
@@ -92,9 +92,9 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
   </Step>
 
   <Step title="Test it on your app">
-    Anyone on your team, before your users see it. Open your app and sign in as the person you'll test with. Then, in step 3 of **Settings → Setup & API Key**, press **Test it on your app**. Your app opens in a new tab with the agent on for you only, in that browser. Ask it something, or let it do a task. Nothing changes for your users. The step turns green once a test link has run a guide or chat. See [Test](/dashboard/test).
+    Anyone on your team, before your users see it. Open your app and sign in as the person you'll test with. Then, in step 3 of **Settings → Setup & API Key**, press **Test it on your app**. It opens the dashboard's **Test** page, which shows the address check, this month's test limits and your earlier links. Press **Test it on your app** there: your app opens in a new tab with the agent on for you only, in that browser, even while it's off for your users. Ask it something, or let it do a task. Nothing changes for your users. The step turns green once a test link has run a guide or chat. See [Test](/dashboard/test).
 
-    When your test looks right, press **Turn it on for your users**. It opens **Controls**, where you choose **Who gets it** and switch the agent on. See [Controls](/dashboard/controls).
+    When your test looks right, press **Turn it on for your users**. It opens **Controls**, where you choose **Who gets it** and switch the agent on. Switching it on opens the **Turn the agent on** box; its **Turn on** saves, with no **Save changes** after it. See [Controls](/dashboard/controls).
   </Step>
 
   <Step title="Verify your users (optional, recommended)">

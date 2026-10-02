@@ -83,8 +83,8 @@ Follow all of these. A missed rule usually fails without any error on screen.
           tenantName: company.name,     // required: the company's name, shown in your dashboard
           displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
           email: user.email,            // optional
-          role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-          plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+          role: user.role,              // recommended, helps the agent: e.g. "admin", "viewer"
+          plan: company.plan,           // recommended, helps the agent: e.g. "free", "pro"
           createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
         })
         ```
@@ -98,14 +98,14 @@ Follow all of these. A missed rule usually fails without any error on screen.
           userId: String(user.id),      // required: your own id for this person
           displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
           email: user.email,            // optional
-          plan: user.plan,              // optional: e.g. "free", "pro"
+          plan: user.plan,              // recommended, helps the agent: e.g. "free", "pro"
           createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
         })
         ```
       </Tab>
     </Tabs>
 
-    `userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. In an app with both, pass the tenant for users who have one and leave it out for those who don't. The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too.
+    `userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended: the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too.
 
     The first four lines let your code call HelpAlive before our script has loaded. Our script replays the calls in order when it arrives. [Identify users](/sdk/identify) describes each field.
   </Step>

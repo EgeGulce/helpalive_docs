@@ -55,8 +55,8 @@ HelpAlive.identify({
 | `tenantName` | string | Required in a B2B app. Shown in your dashboard in place of the tenant id. |
 | `displayName` | string | Required: the person's name, or their email. Up to 255 characters. |
 | `email` | string | Optional. Up to 320 characters. |
-| `role` | string | Optional. Up to 100 characters. |
-| `plan` | string | Optional. Up to 100 characters. |
+| `role` | string | Recommended: the agent reads it. Up to 100 characters. |
+| `plan` | string | Recommended: the agent reads it. Up to 100 characters. |
 | `createdAt` | number | Optional. Sign-up time in whole Unix seconds. Other values are ignored. |
 | `userToken` | string | Optional. A JWT your server signs. With it, the user and tenant come from the token. A user or tenant id in it over 200 characters stops the call. See [Verify users](/sdk/verify-users). |
 | `refreshUserToken` | function | Optional, with `userToken`. Returns a fresh token, or a promise of one. Called when a token has expired; the request is then sent again. The fresh token must name the same user and tenant. |

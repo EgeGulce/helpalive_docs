@@ -47,8 +47,8 @@ Pick the tab that matches your app. **Settings → Setup & API Key** shows the s
       tenantName: company.name,     // required: the company's name, shown in your dashboard
       displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
       email: user.email,            // optional
-      role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-      plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+      role: user.role,              // recommended, helps the agent: e.g. "admin", "viewer"
+      plan: company.plan,           // recommended, helps the agent: e.g. "free", "pro"
       createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
     })
     ```
@@ -62,14 +62,29 @@ Pick the tab that matches your app. **Settings → Setup & API Key** shows the s
       userId: String(user.id),      // required: your own id for this person
       displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
       email: user.email,            // optional
-      plan: user.plan,              // optional: e.g. "free", "pro"
+      plan: user.plan,              // recommended, helps the agent: e.g. "free", "pro"
       createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
     })
     ```
   </Tab>
 </Tabs>
 
-`userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. In an app with both, pass the tenant for users who have one and leave it out for those who don't. The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too. A required field that is missing doesn't stop the call, except `userId`, but your dashboard has less to show for that person.
+`userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended: the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too. A required field that is missing doesn't stop the call, except `userId`, but your dashboard has less to show for that person.
+
+### Apps with both
+
+If some of your users belong to a company or workspace and others sign up on their own, pass the tenant when the user has one and leave it out when they don't:
+
+```javascript
+HelpAlive.identify({
+  userId: String(user.id),
+  displayName: user.name,
+  tenantId: user.company ? String(user.company.id) : undefined,
+  tenantName: user.company ? user.company.name : undefined,
+});
+```
+
+Users sent without a tenant appear together in your dashboard as **B2C customers**.
 
 | Field | Required | What it is |
 |-------|----------|------------|
@@ -78,9 +93,9 @@ Pick the tab that matches your app. **Settings → Setup & API Key** shows the s
 | `tenantName` | B2B | The company's name, shown in your dashboard. Without it, the dashboard calls the tenant "Tenant" and a short form of its id. |
 | `displayName` | Yes | The person's name, for example `"Priya Sharma"`, or their email. Shown in your dashboard. |
 | `email` | No | Their email address, shown and searchable in your dashboard. |
-| `role` | No | Their role in your app, for example `"admin"`, `"editor"` or `"viewer"`. |
-| `plan` | No | Their plan in your app, for example `"free"` or `"pro"`. |
-| `createdAt` | No | When they signed up, as Unix time in seconds, for example `1704067200` for 1 January 2024. Milliseconds and date strings are ignored. |
+| `role` | Recommended | Their role in your app, for example `"admin"`, `"editor"` or `"viewer"`. |
+| `plan` | Recommended | Their plan in your app, for example `"free"` or `"pro"`. |
+| `createdAt` | No | When they signed up, as Unix time in seconds, for example `1704067200` for 1 January 2024. Milliseconds and date strings are ignored. Without it, HelpAlive uses the day it first saw the person. |
 | `userToken` | No | The token your server makes once you [verify users](/sdk/verify-users). With a token, `userId` and `tenantId` come from the token. |
 | `refreshUserToken` | No | With `userToken`: a function that returns a fresh token from your server. If a token has expired, HelpAlive calls it and sends the request again, so the user notices nothing. A fresh token must name the same user and tenant. |
 
