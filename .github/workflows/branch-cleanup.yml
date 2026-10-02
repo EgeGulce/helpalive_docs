@@ -1,0 +1,56 @@
+name: Branch Cleanup (merged docs branches)
+
+# Ege, 2 Oct 2026 ("docs job yes", Branch cleanup thread): branches
+# are cleaned without anyone having to remember. Cloud sessions cannot delete
+# branches (the GitHub proxy refuses deletions by design), so this job does it.
+#
+# Once a day it deletes a branch only when ALL of these hold:
+#   - its tip is an ancestor of main, so every commit on it is already on main;
+#   - its last commit is more than 24 hours old, so a lane that just landed
+#     its work is not cut off mid-push;
+#   - it is not main, release, wip/*, backup/*, hold/* or dependabot/*.
+# Anything with a commit that is not on main is never touched. A deleted
+# branch is restored with `git push origin <sha>:refs/heads/<name>`; the run's
+# log lists every name and sha it deleted.
+
+on:
+  schedule:
+    - cron: '40 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: branch-cleanup
+  cancel-in-progress: false
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Delete branches already on main
+        run: |
+          set -euo pipefail
+          git fetch origin --prune '+refs/heads/*:refs/remotes/origin/*'
+          cutoff=$(( $(date +%s) - 86400 ))
+          deleted=0
+          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin); do
+            name=${ref#origin/}
+            case "$name" in
+              HEAD|origin|main|release|wip/*|backup/*|hold/*|dependabot/*) continue ;;
+            esac
+            git merge-base --is-ancestor "$ref" origin/main || continue
+            [ "$(git log -1 --format=%ct "$ref")" -lt "$cutoff" ] || continue
+            sha=$(git rev-parse "$ref")
+            echo "Deleting $name ($sha)"
+            git push origin --delete "$name"
+            deleted=$((deleted + 1))
+          done
+          echo "Deleted $deleted branch(es)." | tee -a "$GITHUB_STEP_SUMMARY"
