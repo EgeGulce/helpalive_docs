@@ -274,7 +274,7 @@ If tokens arrive but fail, the card says how many and what to fix:
 
 ## Only allow verified users
 
-Until you turn this on, nobody is turned away. Turn it on once every page that calls `identify()` sends a token.
+Until you turn this on, everyone can see the agent. Turn it on once every page that calls `identify()` sends a token.
 
 <Steps>
   <Step title="Wait for verified sign-ins">
@@ -283,13 +283,19 @@ Until you turn this on, nobody is turned away. Turn it on once every page that c
   <Step title="Turn on Only allow verified users">
     It sits under the **Verified sign-ins, last 7 days** card. It shows **Recommended** once nearly all sign-ins are verified, and says how many sign-ins it would have refused in the last 7 days.
   </Step>
+  <Step title="Confirm">
+    It asks first: "Hide the agent from anyone we can't verify?" The dialog says how many people in the last 7 days had no token, or a token that had expired or didn't check out. Press **Turn it on anyway**, or **Show me the fix** to open the setup instructions instead.
+  </Step>
 </Steps>
 
 With it on, HelpAlive refuses every request without a valid user token:
 
-- The chat button still appears. A user without a valid token who asks something sees "Your session needs a refresh. Reload the page to keep chatting." with a **Reload page** button.
-- Guides refuse in the same way.
+- A page without a valid token gets no chat button, so the user doesn't see the agent.
+- If a token expires while the chat is open, HelpAlive calls your `refreshUserToken` function, if you pass one to `identify()`, and sends the request again. If that fails, the user sees "Your session needs a refresh. Reload the page to keep chatting." with a **Reload page** button.
+- If an open chat is refused for any other reason, the question box gives way to "Chat isn't available right now, please try again later." A running guide stops quietly.
 - Activity from pages without a token is refused too. Those users stop showing in **Reports**, **Audience** and the setup checks.
+
+While the switch hides the agent from people, step 4 on **Settings → Setup & API Key** says how many couldn't see it in the last 7 days, the main reason, and the fix. We also email your team when it starts. See [Setup & API Key](/dashboard/setup#only-allow-verified-users).
 
 You can turn it off at any time, and requests without a token are served again.
 
@@ -305,8 +311,11 @@ The previous secret keeps working until you rotate again, so nobody is refused w
   <Accordion title="The card says no verified sign-in, but the server signs tokens">
     The check moves only when the agent is used. Sign in, open the agent, and press refresh. Then check that the page passes `userToken` to `identify()`, and that the response carrying it isn't cached.
   </Accordion>
+  <Accordion title="Some users don't see the chat button">
+    Only allow verified users is on, and their page sent no valid token. Step 4 on **Settings → Setup & API Key** names the main reason and the fix. Check that every page that calls `identify()` sends a token, or turn the switch off while you fix it.
+  </Accordion>
   <Accordion title="Users see Your session needs a refresh">
-    Only allow verified users is on, and their page sent no valid token. Check that every page that calls `identify()` sends one, or turn the switch off while you fix it.
+    Their token expired and could not be renewed. Pass `refreshUserToken` to `identify()` so HelpAlive can get a fresh one, or leave the expiry out of the token.
   </Accordion>
   <Accordion title="The console says userToken is not a JWT">
     The page passed something other than a signed token, often the secret itself. Pass the token your server made, and rotate the secret if it reached a page.

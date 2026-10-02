@@ -41,9 +41,11 @@ Leave a box empty to use our default; the box shows it in grey. A box can't go a
 
 **How far over your package** on **Controls** sets how far past your plan's monthly amounts your users may go. It is a percent of your package.
 
-- **0% is the default, and it means stop.** At your package, new guides and chat messages are refused until the period starts again.
-- Above 0%, your users can go that far past it, billed as overage at the end of the month. The page says how many more that allows.
-- The slider goes up to the most your plan allows. For more, buy a pack.
+- **It starts at the most your plan allows.** Your users can go that far past your package, billed as overage at the end of the month. The page says how many more that allows.
+- **0% means stop.** At your package, new guides and chat messages are refused until the period starts again.
+- For more than the slider allows, buy a pack.
+- **During the free trial there is no overage.** At the trial's guides or chat messages, new ones stop until your plan starts. **Controls** says your trial's guides or chat messages are used, "until your plan starts on" the date.
+- **While a payment is failing**, overage pauses. See [A failed payment](/dashboard/billing#a-failed-payment).
 
 Packs add to what your plan includes. They are used after the plan's own amount runs out, and they carry over while you stay subscribed. See [Billing and usage](/dashboard/billing#packs).
 
@@ -52,7 +54,7 @@ Packs add to what your plan includes. They are used after the plan's own amount 
 Your users never see a limit named.
 
 - **At your plan's guides**, with nothing more allowed, the chat stops offering guides and keeps answering in words. A guide that starts anyway ends quietly, and the chat says "Let's pick this up in a moment."
-- **At your plan's chat messages**, with nothing more allowed, the widget says "Chat isn't available right now, please try again later." Every guide starts from a chat message, so no new guides can start either until chat is available again.
+- **At your plan's chat messages**, with nothing more allowed, a chat that is already open answers each new message with "Chat isn't available right now, please try again later." From the next page load the chat button is hidden. It comes back with a pack, a higher **How far over your package**, or the new plan period. Every guide starts from a chat message, so no new guides can start either until chat is available again.
 - **At a daily limit** for a person, tenant or your organisation, the same quiet answers apply until the day is over.
 
 
@@ -75,11 +77,12 @@ Each of these goes once per kind in a plan period. There is no setting to turn t
 
 ## Check it works
 
-Open **Controls**. Each panel shows a bar with this month's use. **How far over your package** shows your current percent, 0% unless you changed it.
+Open **Controls**. Each panel shows a bar with this month's use. **How far over your package** shows your current percent.
 
 ## Troubleshooting
 
 - **The chat stopped offering guides.** You have reached your plan's guides. Raise **How far over your package**, or buy a pack on **Settings → Billing and usage**.
+- **The chat button is gone for everyone.** Your chat messages are used up, or a failed payment has paused the agent. Check **Controls** and **Settings → Billing and usage**.
 - **One user says the agent stopped answering.** They may have reached **Each person**'s daily limit. Raise it on **Controls**, or wait for the next day.
 - **The numbers look low.** Offers that were never started, and Test page runs, do not count.
 

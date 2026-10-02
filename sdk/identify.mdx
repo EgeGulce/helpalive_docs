@@ -53,23 +53,25 @@ Only `userId` is required. Fill the optional fields your app has, and delete the
 |-------|----------|------------|
 | `userId` | Yes | Your own id for this user, as text, up to 255 characters. It must not change, so don't use an email address if users can change theirs. |
 | `tenantId` | No | Their company, workspace or account id, as text, up to 255 characters. Leave it out if your app has none: everyone then belongs to one tenant, `"default"`. |
-| `tenantName` | No | The company's name, shown in your dashboard in place of the id. |
+| `tenantName` | No | The company's name, shown in your dashboard. Without it, the dashboard calls the tenant "Tenant" and a short form of its id. |
 | `displayName` | No | The user's name, for example `"Priya Sharma"`. |
 | `email` | No | Their email address, shown and searchable in your dashboard. |
 | `role` | No | Their role in your app, for example `"admin"`, `"editor"` or `"viewer"`. |
 | `plan` | No | Their plan in your app, for example `"free"` or `"pro"`. |
 | `createdAt` | No | When they signed up, as Unix time in seconds, for example `1704067200` for 1 January 2024. Milliseconds and date strings are ignored. |
 | `userToken` | No | The token your server makes once you [verify users](/sdk/verify-users). With a token, `userId` and `tenantId` come from the token. |
+| `refreshUserToken` | No | With `userToken`: a function that returns a fresh token from your server. If a token has expired, HelpAlive calls it and sends the request again, so the user notices nothing. A fresh token must name the same user and tenant. |
 
 A tenant is one of your customers: the company, workspace or account a user belongs to in your app. [Key concepts](/product/concepts) defines it with the other terms.
 
 ### Types matter
 
 - `userId` and `tenantId` can be text or a number. `42` and `"42"` are the same person.
-- Pass `displayName`, `email`, `role` and `plan` as text. A value of another type stops the call partway, and the agent doesn't load on that page. Keep `role` and `plan` short, as a name rather than a description.
-- An empty `userId` is refused too.
+- Pass `displayName`, `email`, `role` and `plan` as text. A number in `displayName`, `role` or `plan` is turned into text. A field of another type, or one too long, is left out, and the call goes on without it. Keep `role` and `plan` short, as a name rather than a description.
+- An empty `userId`, or a `userId` or `tenantId` over 255 characters, stops the call, and the agent doesn't load on that page.
+- With a `userToken`, a user or tenant id in the token over 200 characters stops the call too. Use a shorter id.
 
-These failures show nothing on screen. Add `data-debug` to the tag to see them in the browser console.
+These problems show nothing on screen. Add `data-debug` to the tag to see them in the browser console.
 
 ## What the agent uses
 
@@ -125,8 +127,8 @@ Sign in to your app, then open **Settings → Setup & API Key** and press refres
   <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
     Optional, and recommended for security.
   </Card>
-  <Card title="Consent mode" icon="cookie" href="/sdk/consent">
-    Wait for your cookie banner before recording.
+  <Card title="Consent" icon="cookie" href="/sdk/consent">
+    Wait for your cookie banner before loading HelpAlive.
   </Card>
   <Card title="JavaScript reference" icon="code" href="/sdk/reference">
     Every call and attribute.

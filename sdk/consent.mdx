@@ -1,7 +1,7 @@
 ---
-title: "Consent mode"
-sidebarTitle: "Consent mode"
-description: "Stop HelpAlive recording activity until your cookie banner gets consent, with data-consent=\"required\" and setConsent()."
+title: "Consent and cookie banners"
+sidebarTitle: "Consent"
+description: "HelpAlive has no consent mode: how to make it wait for your cookie banner, and what to do with an old data-consent attribute or setConsent() call."
 keywords:
   - GDPR consent SDK
   - cookie banner integration
@@ -9,86 +9,42 @@ keywords:
   - opt-in tracking SaaS
 ---
 
-This page shows developers how to make HelpAlive wait for your cookie banner before it records activity. Use it where your rules require consent before analytics.
+This page is for developers whose cookie banner must approve tools before they run. HelpAlive has no consent mode of its own. It records activity once `identify()` runs, as [Identify users](/sdk/identify) describes.
 
 ## Prerequisites
 
-- The HelpAlive tag is in your pages. See [Install the script](/installation).
 - A cookie banner or consent tool that tells your code when a user accepts or declines.
 
-## The two modes
-
-| Mode | How to choose it | What happens |
-|------|------------------|--------------|
-| Default | Leave the tag as it is | HelpAlive records activity from the first page, once `identify()` has run. |
-| Consent required | Add `data-consent="required"` to the tag | HelpAlive records no activity, and keeps its ids in memory only, until your page calls `setConsent({ analytics: true })`. |
-
-`setConsent()` only has an effect in consent-required mode. Without `data-consent="required"`, HelpAlive records activity whatever `setConsent()` says.
-
-<Note>
-Consent mode covers activity recording only. The agent is not behind it. It still appears for signed-in users, and a chat or guide a user starts still sends what the agent needs. HelpAlive doesn't read Do Not Track or Global Privacy Control signals.
-</Note>
-
-## Set it up
+## Make HelpAlive wait for consent
 
 <Steps>
-  <Step title="Add data-consent to the tag">
-    ```html
-    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" data-consent="required" async></script>
-    ```
-  </Step>
-  <Step title="Pass the user's choice from your banner">
-    Call `setConsent()` when the user accepts or declines, and on each page load once your banner knows the stored choice:
-
-    ```javascript
-    // When the user accepts analytics in your cookie banner
-    HelpAlive.setConsent({ analytics: true })
-
-    // When the user declines, or withdraws consent later
-    HelpAlive.setConsent({ analytics: false })
-    ```
-
-    Keep the four queue lines from [Install the script](/installation) above these calls, so they work before our script has loaded.
+  <Step title="Hold back the tag">
+    Leave the HelpAlive tag out of your page's HTML. Add it from your code only once the user accepts, with the same attributes as in [Install the script](/installation).
   </Step>
   <Step title="Keep identify() and reset() as they are">
-    Call `identify()` and `reset()` as the install shows. Consent doesn't change them.
+    Keep the four queue lines and your `identify()` and `reset()` calls. Calls made before the tag loads wait in the page and run once it has loaded.
   </Step>
 </Steps>
 
-## What happens before and after consent
+<Note>
+Without the tag, nothing of HelpAlive runs, so the agent doesn't appear for a user who declines. To keep the agent away from some users, leave them out of **Who gets it** on **Controls**. To stop recording one user for good, use **Settings → Privacy Management**.
+</Note>
 
-- **Before consent:** HelpAlive records nothing. Activity that happens before consent is not kept for later. HelpAlive's ids live in memory only, so nothing of HelpAlive's is saved in the browser.
-- **After `setConsent({ analytics: true })`:** HelpAlive saves its ids in the browser and records activity from then on.
-- **After `setConsent({ analytics: false })`:** recording stops again, and new ids stay in memory only.
+## Old consent settings
 
-`analytics` is the only field. To keep the agent away from some users, leave them out of **Who gets it** on **Controls**. To stop recording one user for good, use **Settings → Privacy Management**.
+Earlier versions of the script had a consent mode. It has been removed:
 
-## On a shared computer
+- A `data-consent="required"` attribute on the tag is ignored.
+- `setConsent()` still exists, so old pages don't break, but it does nothing.
+- The `mode` and `consent` options of `init()` are gone.
 
-To withdraw consent at logout as well, call both in your logout code:
-
-```javascript
-// In your logout code, and wherever your app ends a session
-HelpAlive.reset()
-HelpAlive.setConsent({ analytics: false })
-```
+You can delete all three from your code. HelpAlive doesn't read Do Not Track or Global Privacy Control signals.
 
 ## Check it works
 
-1. Open your app in a private window with the browser's developer tools open on **Network**. Filter on `collect`.
-2. Sign in and decline in your banner. Click around and load another page. No `collect` request appears.
-3. Accept in your banner, click around and load another page. `collect` requests appear.
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="HelpAlive records before the user accepts">
-    The tag lacks `data-consent="required"`. Without it, `setConsent()` changes nothing.
-  </Accordion>
-  <Accordion title="Nothing is recorded after the user accepts">
-    Your banner never calls `setConsent({ analytics: true })`, or calls it before the queue lines exist. Call it on every page load once the stored choice is known.
-  </Accordion>
-</AccordionGroup>
+1. Open your app in a private window with the browser's developer tools open on **Network**. Filter on `helpalive`.
+2. Sign in and decline in your banner. No HelpAlive request appears.
+3. Accept in your banner. The script loads, and the chat button appears for users in **Who gets it**.
 
 ## Next
 
@@ -100,6 +56,6 @@ HelpAlive.setConsent({ analytics: false })
     Stop tracking or delete a user's data.
   </Card>
   <Card title="JavaScript reference" icon="code" href="/sdk/reference">
-    setConsent() and the other calls.
+    Every call your code can make.
   </Card>
 </CardGroup>

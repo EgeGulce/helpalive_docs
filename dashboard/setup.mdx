@@ -21,7 +21,7 @@ The band at the top says how many of the 3 steps to go live are done, and what i
 | **HelpAlive is on your pages** | Our script was seen on a page of your app. |
 | **It knows who is signed in** | A page called `identify()` for a signed-in person. |
 | **The agent has your docs** | At least one source is live on **Train**. |
-| **The agent answers in your app** | The agent answered someone in your app this month. |
+| **The agent answers in your app** | The agent answered someone in your app this month, or you tried a guide or chat from a test link. |
 | **Users are verified** (optional) | Verified sign-ins are arriving. |
 
 Each check says what it saw, such as "Seen on your pages 3 minutes ago." Try your app, then press the refresh button to check again. When the first four are green, the band says **Everything is working.**
@@ -34,7 +34,7 @@ The steps are listed on the left, one shown at a time. Each turns to **Done** by
 
 1. **Add HelpAlive to your app**: your developer, about 10 minutes. Choose **With an AI coding agent**, **Add it yourself** or **Google Tag Manager**. The first gives a prompt to paste into your coding tool; the second, the tag, `identify()` and `reset()`. See [Install the script](/installation) and [Identify users](/sdk/identify).
 2. **Teach the agent your product**: add your docs on **Train** and publish them. See [Train](/dashboard/train).
-3. **Turn it on and try it**: switch the agent on in **Controls**. This step is locked until a source is published. See [Controls](/dashboard/controls).
+3. **Turn it on and try it**: first try it in your own app with **Test it on your app**, which opens your app with the agent on for you only. Then switch it on for your users in **Controls**. This step is locked until a source is published. See [Test](/dashboard/test) and [Controls](/dashboard/controls).
 4. **Verify your users**: optional, recommended. See [Verified users](#verified-users).
 
 ## Your project key
@@ -69,11 +69,22 @@ After you deploy your signing, sign in to your app and open the agent. Then pres
 
 ### Only allow verified users
 
-With this switch on, anyone without a valid user token is refused, by the agent and when recording activity.
+With this switch on, anyone without a valid user token can't see the agent, and their activity is not recorded.
 
 - It can be turned on only after a verified sign-in in the last 30 minutes. Otherwise it says "No verified sign-in in the last 30 minutes, so this stays off."
 - It is marked **Recommended** once nearly all sign-ins in the last 7 days arrive verified and none fail.
+- Turning it on asks first: "Hide the agent from anyone we can't verify?" The dialog says how many people in the last 7 days had no token, or a token that had expired or didn't check out. Press **Turn it on anyway**, or **Show me the fix** to open the setup instructions instead.
 - Turning it off always works, so you have a way out if signing breaks.
+
+While the switch hides the agent from some people, step 4 says so. It gives how many people couldn't see the agent in the last 7 days, the main reason, and the fix:
+
+| Main reason | The fix it gives |
+| --- | --- |
+| Their page sent no token | "Make every page that signs people in send their token." |
+| Their token had expired | "Leave the expiry out of the token." |
+| Their token didn't check out | "Use the current signing secret, and make the token's sub the same id your page passes as userId." |
+
+The setup box in the sidebar keeps **Verification** listed until this is fixed, and we email your team when the switch starts hiding the agent from people.
 
 ## Reset the setup
 
@@ -94,7 +105,7 @@ All four required checks in **Is it working?** are green, and the band says **Ev
 - **"Our script reaches your pages but can't start."** The tag has the wrong project key. Copy it again from this page.
 - **"Last seen on your pages ... Is the tag still there?"** The tag was removed, or your pages stopped loading it.
 - **It knows who is signed in stays grey.** `identify()` isn't running. Call it after login and on every page load.
-- **Users refused after turning on Only allow verified users.** Their pages send no token, or a token that fails. Turn the switch off, fix the signing, then turn it on again.
+- **Some users can't see the agent after you turn on Only allow verified users.** Their pages send no token, or a token that fails. Step 4 names the main reason and the fix. Turn the switch off while you fix the signing, then turn it on again.
 - **"Too soon to regenerate."** The project key can be regenerated once an hour.
 
 ## Next

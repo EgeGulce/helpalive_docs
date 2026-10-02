@@ -55,7 +55,13 @@ While the agent is off, the band also recommends what to do first:
 - "Only allow verified users is off. We recommend it, so nobody can use the agent as someone else." with **Set it up**;
 - "Choose who gets it below before you turn it on."
 
+While the agent is off, the band also has **Test it yourself first**, which opens the **Test** page. See [Test](/dashboard/test).
+
 If your plan needs a subscription and you have none, the band says "Your agent is off for your users until you subscribe." Its link opens **Settings → Billing and usage**.
+
+## Your tests
+
+**Your tests** counts your test links and the guides tried with them: "Try the agent in your own app, in your browser only. Its guides and chats don't count toward your plan." While the agent is on, it has the **Test it on your app** button. **See every test, step by step, on Test** opens the **Test** page.
 
 ## Who gets it
 
@@ -103,10 +109,12 @@ Leave a box empty to use our default, which the box shows in grey ("Empty uses o
 
 ## How far over your package
 
-A slider from 0% up to the most your plan allows. It sets how far past your plan's guides and chat messages your users may go this month, billed as overage.
+A slider from 0% up to the most your plan allows. It sets how far past your plan's guides and chat messages your users may go this month, billed as overage. It starts at the most your plan allows.
 
-- At **0%**, the default, everything stops at your package: "Stops at your package." and "Nothing more is billed."
 - Above 0%, it says how many more guides and messages that allows until your plan period starts again.
+- At **0%**, everything stops at your package: "Stops at your package." and "Nothing more is billed."
+- During the free trial there is no overage. When the trial's guides or chat messages are used, the page says so, "until your plan starts on" the date.
+- While a payment is failing, it says "Overages are paused until your last payment goes through." See [A failed payment](/dashboard/billing#a-failed-payment).
 - **Buy extra on Billing** opens **Settings → Billing and usage** to buy a pack instead.
 
 ## Who used it
@@ -127,7 +135,7 @@ At the foot of the page, **How we count** says: "A guide counts once, when someo
 - **The band says "On, but for nobody yet".** **Selected** is chosen with an empty list. Add tenants or people, or choose **Everyone**.
 - **You turned it on and see no chat button.** Wait a minute and load a few pages. Check that `identify()` runs, and that **Who gets it** includes you.
 - **"That limit can be set up to ..."** A daily limit is above what your plan allows. Lower the highlighted number.
-- **Your users stopped getting guides.** You may have reached your plan's guides with **How far over your package** at 0%. See [Limits and usage](/dashboard/usage).
+- **Your users stopped getting guides.** You may have reached your plan's guides with **How far over your package** at 0%, or your trial's guides. See [Limits and usage](/dashboard/usage).
 
 ## Next
 

@@ -90,6 +90,7 @@ HelpAlive's servers, database and backups run in US East (Virginia). Each custom
 | Guide requests, plans, questions and answers | Same setting as chat |
 | Guide step titles and the labels clicked | Until you delete the user |
 | A running guide's working state | 30 minutes after the last step, 2 hours while paused |
+| Records of chat messages and guide starts refused at a limit: who, which limit and when | 7 days |
 | Your docs' text from **Train** | Until you remove the source |
 | Script start-up reports | No time limit yet |
 | Chats your team runs on **Test** | No time limit yet |
@@ -124,7 +125,7 @@ To delete your whole workspace when you leave, email [support@helpalive.com](mai
 ## Things to tell your users
 
 - **Your team can read their chats.** Everyone on your team can read chat transcripts on **Audience**.
-- **Consent mode doesn't cover the chat.** With `data-consent="required"`, no usage events are recorded until the page calls `setConsent()`, and earlier ones are not kept. The chat widget still loads, and a chat or guide the user starts still sends its data. See [Consent mode](/sdk/consent).
+- **There is no consent mode.** Once the script loads and `identify()` runs, usage events are recorded. To wait for consent, load the script only after the user accepts. See [Consent](/sdk/consent).
 - **Browser privacy signals aren't read.** Do Not Track and Global Privacy Control don't change what the script does.
 
 ## Next

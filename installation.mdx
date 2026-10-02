@@ -31,7 +31,7 @@ Follow all of these. A missed rule usually fails without any error on screen.
 4. Pass `userId` and `tenantId` as text or a number. `42` and `"42"` are the same person.
 5. Use a `userId` that never changes. Don't use an email address if users can change theirs.
 6. Pass `tenantId` only if your app has companies, workspaces or accounts. Leave it out otherwise.
-7. Pass `role`, `plan`, `displayName`, `email` and `tenantName` as text. Pass `createdAt` as Unix time in seconds.
+7. Pass `role`, `plan`, `displayName`, `email` and `tenantName` as text. A field of the wrong type is left out. Pass `createdAt` as Unix time in seconds.
 8. Call `reset()` in your logout code, and keep it apart from `identify()`. Never put it straight after `identify()`.
 9. If your app sends a Content Security Policy, add our sources, and put your nonce on our tag if your policy uses one.
 
