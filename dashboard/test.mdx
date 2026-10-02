@@ -1,7 +1,7 @@
 ---
 title: "Test"
 sidebarTitle: "Test"
-description: "Run a batch of test questions against the HelpAlive agent, including your unpublished changes, and compare runs to spot regressions."
+description: "Run a batch of test questions against the HelpAlive agent and compare runs, or try the whole agent, guides included, on your own app with a one-browser test link."
 keywords:
   - test HelpAlive agent
   - batch test questions
@@ -18,10 +18,7 @@ keywords:
 - With nothing unpublished, it runs against what is live, "the same setup end users get on your site."
 - Test runs never count against your plan.
 
-It won't:
-
-- run a guide or act on a page. It tests chat answers only.
-- show your users anything. Nothing reaches your app until you **Publish**.
+Question batches test chat answers only. To try guides too, use [Test it on your app](#test-it-on-your-app). Nothing here reaches your users until you **Publish**.
 
 ## Run a test
 
@@ -54,6 +51,25 @@ The summary strip at the top says how the run went, for example "Finished all 12
 
 Open a finished run and press **Compare** in its summary strip. The **Compare runs** view opens. Pick a second run under **Pick a run to compare…**. HelpAlive pairs the answers by question and marks each pair **Identical**, **Different**, **Only in A** or **Only in B**. Run the same set before and after a change on **Train** to see what the change did.
 
+## Test it on your app
+
+**Test → On your app** lets you try the whole agent, guides included, in your real app, before you turn it on for anyone.
+
+<Steps>
+  <Step title="Check your app">
+    Our script and `identify()` have to be on your app first. Enter your app's address and press **Check this address**. The check passes once we have seen our script run there and a signed-in person use it.
+  </Step>
+  <Step title="Make a test link">
+    Press **Test it on your app**. Your app opens in a new tab with the link. Sign in as you always do. The agent shows in that browser only, with a **Test** badge, even while it is off for everyone else.
+  </Step>
+</Steps>
+
+**One link, one browser.** The first browser that opens a link keeps it for 14 days. The link is shown once and we keep no copy, so it does nothing in another browser, a private window or on another computer. To test somewhere else, make a new link. A link nobody has opened yet can still be copied from the browser that made it.
+
+**Revoke** stops a link: the browser holding it stops seeing the agent on its next page. **Stop testing** on the widget's Test strip does the same from inside your app. Your users see the agent only once they are in **Who gets it** on [Controls](/dashboard/controls); a test link never changes that.
+
+Tests don't count toward your plan. Your workspace gets a monthly allowance of test guides and test chats, shown at the top of **On your app**. Every guide and chat from a test link appears there, step by step.
+
 ## Check it works
 
 Run one question your docs answer. The row turns **Done** and shows an answer drawn from your sources.
@@ -62,6 +78,8 @@ Run one question your docs answer. The row turns **Done** and shows an answer dr
 
 - **"Run test" is disabled.** The run is over the 50-turn cap. Remove some questions or a conversation.
 - **A CSV row was skipped.** Rows with more than five turns are skipped. Rows past the 50-turn cap are dropped.
+- **The test link does nothing in this browser.** Each link works in the first browser that opens it. Make a new link for this browser.
+- **The link was lost while signing in.** If your app signs people in on another address, sign in, then open the link once more.
 - **The answer ignores a source you just added.** Check that its crawl finished on **Train**. A source still crawling is not part of the draft yet.
 
 ## Next
