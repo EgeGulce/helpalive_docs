@@ -152,7 +152,7 @@ The full guide, if you need more detail: https://docs.helpalive.com/sdk/verify-u
     Move `reset()` into your logout code. Run straight after `identify()`, it forgets the user at once and the agent never appears.
   </Accordion>
   <Accordion title="It knows who is signed in stays grey">
-    Check that the queue lines come before `identify()`, and that `userId` is text, not a number. [Install the script](/installation) lists every rule.
+    Check that the queue lines come before `identify()`, and that `userId` is not empty. [Install the script](/installation) lists every rule.
   </Accordion>
   <Accordion title="The coding agent asks for the signing secret">
     Don't give it. The prompt only needs the variable's name. Set the value on your server yourself.

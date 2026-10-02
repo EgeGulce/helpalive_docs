@@ -173,7 +173,7 @@ To see what HelpAlive does on a page, add `data-debug` to the tag while you test
     - An ad blocker or privacy extension blocks it. Try a private window with extensions off.
   </Accordion>
   <Accordion title="The script is seen, but nobody is recognized">
-    `identify()` isn't running, or it was refused. Check that it runs after login and on every page load, and that the four queue lines come before it. Check that `userId` is text, not a number. Add `data-debug` to the tag to see the reason in the console.
+    `identify()` isn't running, or it was refused. Check that it runs after login and on every page load, and that the four queue lines come before it. Check that `userId` is not empty. Add `data-debug` to the tag to see the reason in the console.
   </Accordion>
   <Accordion title="Everything is green, but the agent doesn't appear">
     The agent appears only for signed-in users it is switched on for, on **Controls**. A page that was already open picks up a change within a minute or a few page loads. [Troubleshooting](/sdk/troubleshooting) covers the other causes.
