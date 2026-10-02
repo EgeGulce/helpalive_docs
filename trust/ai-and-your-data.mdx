@@ -1,7 +1,7 @@
 ---
-title: "How the AI uses your data"
+title: "How HelpAlive's AI uses your data"
 sidebarTitle: "AI and your data"
-description: "What HelpAlive's agent reads, what is sent to the AI model provider and when, why it is sent, whether it is used to train models, and how long the provider keeps it."
+description: "What HelpAlive's agent reads, what it sends to the AI model provider and why, whether it trains models, and how long the provider keeps it."
 keywords:
   - HelpAlive AI data
   - is my data used to train AI
@@ -18,15 +18,19 @@ The agent answers questions about the page a user is on, and does tasks on that 
 
 ## What is sent, and when
 
-| When | What is sent to the model |
+The model receives only what the current moment needs. That falls into five kinds of data:
+
+| Kind of data | When it is sent |
 |---|---|
-| The user opens the chat | The visible part of the page, the page address, the user's display name, role, plan and sign-up date, recent activity on this visit, and the titles of their own recent chats. This writes the opening line and the suggested questions. |
-| The user asks a question | The message and the recent turns, the full page address and title, the page as structured text **including field values**, recent activity, role, plan, and the matching passages from your published docs. |
-| A guide runs | At each step: the request, the user's answers to the agent's questions, the plan so far, and the page as structured text **including field values**. |
+| **The page the user is on**: its address, title and content as structured text, **including field values** | When the chat opens, with each question, and at each step of a guide |
+| **The user's own words**: their message, the conversation so far, and their answers during a guide | With each question and each guide step |
+| **Profile fields you send** through `identify()`, such as display name, role and plan | When the chat opens and with each question |
+| **Recent activity**: what the user did on this visit, and the titles of their own recent chats | When the chat opens and with each question |
+| **Passages from your published docs** that match the question | With each question |
 
 Field values are sent as shown, except in password, file-upload and hidden fields. The page is not redacted, because it is what the agent needs to see. The user's email is never sent with a chat question.
 
-Your docs' text and your users' questions are also processed to find the right passages. Our model provider and a second provider that ranks passages do this work. See [Subprocessors](/trust/subprocessors).
+Your docs' text and your users' questions are also processed to find the right passages. Our model provider and a search-relevance provider do this work. See [Subprocessors](/trust/subprocessors).
 
 ## Where answers come from
 

@@ -5,3 +5,7 @@
 # Draft content
 drafts/
 *.draft.mdx
+
+# Repo notes for writers, not pages
+AGENTS.md
+.atlas-analysis.json

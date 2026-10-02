@@ -1,7 +1,7 @@
 ---
-title: "Data we collect, and what we don't"
+title: "Data HelpAlive collects, and what it doesn't"
 sidebarTitle: "Data we collect"
-description: "What HelpAlive's script collects in your users' browsers, what it strips from page addresses, what the agent sees, what is redacted and what is not, how long each kind of data is kept, and how to stop tracking or delete data."
+description: "What HelpAlive collects in your users' browsers, what the agent sees, what is redacted, how long each kind of data is kept, and how to delete it."
 keywords:
   - HelpAlive data collection
   - HelpAlive privacy
@@ -24,7 +24,7 @@ The script records usage events the whole time it runs in your app. Chat and gui
 | Field changes | The value typed or picked, and the value before it. Only password fields are blanked. |
 | Form submits | The submit button's label and the form's name. No field values. |
 | Errors | Error messages shown on screen. When a request your page makes to change data is rejected, the start of that response, from any server your page calls. |
-| Seen elements | Once per page, what was on screen for at least half a second, and whether the user touched it. |
+| Seen elements | Once per page, what was on screen long enough to be seen, and whether the user touched it. |
 | Custom events | Whatever your code sends with `track()`. |
 | Device facts | Browser and operating system family, device class, language, window size, and a shortened browser description. |
 | Ids | A random browser id, a random visit id, your tenant's id and name, and the user's id, hashed in the browser. The hash is pseudonymous, not anonymous: anyone with the raw id can recompute it. |
@@ -79,7 +79,7 @@ Error reports from our servers can include the log lines just before an error, a
 
 ## How long we keep it
 
-HelpAlive's servers, database and backups run in US East (Virginia). Each customer's data is kept apart by a customer id on every row.
+HelpAlive's servers, database and backups run in US East (Virginia). Each customer's data is kept logically separate, and every request is limited to that customer's own data.
 
 | Data | How long |
 |---|---|
@@ -89,7 +89,7 @@ HelpAlive's servers, database and backups run in US East (Virginia). Each custom
 | Chat messages and answers, word for word | Your setting, 1 year by default. After it, the words are cleared and the dates and counts stay. |
 | Guide requests, plans, questions and answers | Same setting as chat |
 | Guide step titles and the labels clicked | Until you delete the user |
-| A running guide's working state | 30 minutes after the last step, 2 hours while paused |
+| A running guide's working state | Cleared soon after the guide ends or is left |
 | Records of chat messages and guide starts refused at a limit: who, which limit and when | As long as the rest of that user's data, and deleted with it |
 | Your docs' text from **Train** | Until you remove the source |
 | Script start-up reports | No time limit yet |

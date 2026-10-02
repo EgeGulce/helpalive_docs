@@ -17,7 +17,6 @@
     "metatags": {
       "og:type": "website",
       "og:site_name": "HelpAlive Documentation",
-      "og:image": "/logo/icon.svg",
       "twitter:card": "summary_large_image",
       "twitter:site": "@HelpAliveAI",
       "robots": "index, follow",
@@ -69,6 +68,7 @@
             "pages": [
               "index",
               "product/how-it-works",
+              "product/compare",
               "product/concepts"
             ]
           },
@@ -143,7 +143,7 @@
             ]
           },
           {
-            "group": "Your setup",
+            "group": "Install options and security",
             "pages": [
               "sdk/google-tag-manager",
               "sdk/csp",
@@ -234,10 +234,6 @@
       "destination": "/"
     },
     {
-      "source": "/compare",
-      "destination": "/"
-    },
-    {
       "source": "/studio/:slug*",
       "destination": "/product/guides"
     },
@@ -320,6 +316,10 @@
     {
       "source": "/plans/faq",
       "destination": "/dashboard/usage"
+    },
+    {
+      "source": "/compare",
+      "destination": "/product/compare"
     }
   ]
 }

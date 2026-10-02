@@ -1,0 +1,58 @@
+---
+title: "HelpAlive compared with chatbots, tours and AI agents"
+sidebarTitle: "How it compares"
+description: "How HelpAlive differs from help chatbots, product tours, API or MCP-based agents and screenshot-based computer use, and when another tool fits better."
+keywords:
+  - in-app AI agent for SaaS
+  - AI agent that does tasks in your app
+  - chatbot vs in-app agent
+  - product tour alternative
+  - MCP vs in-app agent
+  - computer use without screenshots
+---
+
+This page explains where HelpAlive fits next to the other ways SaaS teams help users inside their product. It is for teams choosing a tool, and for anyone asking what an in-app AI agent is.
+
+## What is an in-app AI agent?
+
+An in-app AI agent is an assistant that runs inside your web app, sees the page your user is on, and can act there. HelpAlive is one: it answers your users' questions from your docs, and does the task for them in your app or shows them how, one step at a time. You add it with one script tag and one `identify()` call.
+
+## How is HelpAlive different from a help chatbot?
+
+A help chatbot answers questions from your help center. HelpAlive answers from your docs too, but it also reads the page the user is on, so it can answer about what they see. When the user wants something done, it offers to do it in your app or show them how. A chatbot stops at the answer.
+
+## How is it different from product tours?
+
+Product tours are written by your team in advance, step by step, and break when your interface changes. HelpAlive writes no tours ahead of time. Each guide starts from what a user asks in the chat and follows your app as it is at that moment. There is nothing to author or tag.
+
+## Do I need an API or an MCP server?
+
+No. Agents built on an API or MCP server can only do what that API exposes, so your team has to build and maintain it first. HelpAlive works through your app's own interface, in the user's own signed-in session. It can do only what that user could do themselves, and it hands back steps only the user should take, such as typing a password or uploading a file. See [What the agent won't do](/product/what-it-wont-do).
+
+## Does HelpAlive take screenshots?
+
+No. Agents that work from screenshots send images of the screen to a model and wait for it to read them at every step. HelpAlive reads the page as structured text: headings, visible text, and each button, link and field with its label and state. Nothing is recorded as an image, and each step needs less work, so guides respond faster. See [How the AI uses your data](/trust/ai-and-your-data).
+
+## Does it slow down my app?
+
+No. The script loads in the background, so it doesn't hold up your page. The chat loads only after `identify()`, and the guide code loads only when a guide starts. See [Install the script](/installation).
+
+## When another tool fits better
+
+- **You need human support agents, tickets or an inbox.** HelpAlive has no handoff to a human team. Keep your help desk for that.
+- **Your product is a native mobile or desktop app.** HelpAlive runs in web apps in the browser.
+- **You want users to stay anonymous.** The agent appears only for signed-in users that your app identifies.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="How HelpAlive works" icon="workflow" href="/product/how-it-works">
+    The stages the agent goes through in your app.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Go live in four steps.
+  </Card>
+  <Card title="FAQ" icon="circle-help" href="/product/faq">
+    Short answers to common questions.
+  </Card>
+</CardGroup>

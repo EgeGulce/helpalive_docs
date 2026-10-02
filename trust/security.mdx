@@ -1,7 +1,7 @@
 ---
-title: "Security overview"
+title: "HelpAlive security overview"
 sidebarTitle: "Security"
-description: "How HelpAlive keeps your workspace and your users safe: the public project key and the private signing secret, verified users, dashboard sign-in sessions, password confirmation for sensitive actions, HTTPS and hosting."
+description: "How HelpAlive keeps your workspace and users safe: public and secret keys, verified users, dashboard sessions, HTTPS and hosting."
 keywords:
   - HelpAlive security
   - project key public
@@ -67,7 +67,7 @@ The script, the usage and chat endpoints and the dashboard are all served over H
 
 ## Where data is hosted
 
-HelpAlive's servers and databases run in the United States, in US East (Virginia). Each customer's data is kept apart by a customer id on every row. See [Subprocessors](/trust/subprocessors) for the companies involved.
+HelpAlive's servers and databases run in the United States, in US East (Virginia). Each customer's data is kept logically separate, and every request is limited to that customer's own data. See [Subprocessors](/trust/subprocessors) for the companies involved.
 
 ## Check it works
 

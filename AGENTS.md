@@ -5,6 +5,9 @@ This is the public Mintlify site for HelpAlive (docs.helpalive.com). Mintlify pu
 - Pages are MDX files with YAML frontmatter. Navigation, tabs and redirects are in `docs.json`.
 - Run `npx mint dev` to preview and `npx mint broken-links` before every push.
 - Mintlify generates `/llms.txt` and `/llms-full.txt` from the pages, so don't add a hand-written one.
+- `skill.md` at the root is hand-written and replaces the one Mintlify would generate. Update it when the install, `identify()`, verify-users or CSP pages change.
+- `title` is the search-engine title (about 35-48 characters, naming HelpAlive); `sidebarTitle` stays short. Keep `description` at 120-160 characters.
+- This file and anything else for writers stays in `.mintignore`, so it is never published.
 
 ## The four tabs
 - **Product:** what end users get (chat, guides, what it won't do), key concepts and the FAQ.
