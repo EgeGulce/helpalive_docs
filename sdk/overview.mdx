@@ -55,8 +55,8 @@ These three choices are hard to change later, because they shape the data HelpAl
   <Step title="Which id identifies a user">
     Use your app's own user id: one that never changes and is unique across your app. Don't use an email address if users can change theirs. A changed id starts a new user, with no chat history.
   </Step>
-  <Step title="Whether you have tenants">
-    A tenant is one of your customers: the company, workspace or account a user belongs to. If your app has them, pass the tenant's id as `tenantId`. **Controls** uses tenants to decide who gets the agent and to set limits, and **Reports** and **Audience** group users by them. If your app has no such thing, leave `tenantId` out.
+  <Step title="B2B or B2C: whether your users belong to tenants">
+    A tenant is one of your customers: the company or workspace a user signs in under. In a B2B app, pass its id as `tenantId` and its name as `tenantName`. **Controls** uses tenants to decide who gets the agent and to set limits, and **Reports** and **Audience** group users by them. In a B2C app, where people sign up on their own, leave both out: your dashboard groups those users as **B2C customers**. An app with both passes the tenant only for users who have one.
   </Step>
   <Step title="Whether to verify users">
     Without verification, HelpAlive trusts the user id your page sends, so someone who edits the page could pose as another user. With it, your server signs each id. It is optional and recommended before you open the agent to all users. See [Verify users](/sdk/verify-users).
@@ -70,9 +70,9 @@ The install is done when the four required checks on **Settings → Setup & API 
 1. **HelpAlive is on your pages**
 2. **It knows who is signed in**
 3. **The agent has your docs**
-4. **The agent answers in your app**
+4. **A test has run in your app**
 
-The last two need your admins as well: docs published on **Train**, and the agent switched on in **Controls**. **Users are verified** is the fifth, optional check.
+The last two need your admins as well: docs published on **Train**, and a test run from **Test it on your app**. **Users are verified** is the fifth, optional check.
 
 ## Troubleshooting
 

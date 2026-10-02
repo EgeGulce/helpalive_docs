@@ -21,10 +21,10 @@ The band at the top says how many of the 3 steps to go live are done, and what i
 | **HelpAlive is on your pages** | Our script was seen on a page of your app. |
 | **It knows who is signed in** | A page called `identify()` for a signed-in person. |
 | **The agent has your docs** | At least one source is live on **Train**. |
-| **The agent answers in your app** | The agent answered someone in your app this month, or you tried a guide or chat from a test link. |
+| **A test has run in your app** | A guide or chat ran from a test link made by **Test it on your app**. |
 | **Users are verified** (optional) | Verified sign-ins are arriving. |
 
-Each check says what it saw, such as "Seen on your pages 3 minutes ago." Try your app, then press the refresh button to check again. When the first four are green, the band says **Everything is working.**
+Each check says what it saw, such as "Seen on your pages 3 minutes ago." The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back to this page. It checks again when you return, so you don't need to refresh. When the first four are green, the band says **Everything is working.**
 
 The sidebar's **Setup** checklist follows the same steps.
 
@@ -32,9 +32,9 @@ The sidebar's **Setup** checklist follows the same steps.
 
 The steps are listed on the left, one shown at a time. Each turns to **Done** by itself.
 
-1. **Add HelpAlive to your app**: your developer, about 10 minutes. Choose **With an AI coding agent**, **Add it yourself** or **Google Tag Manager**. The first gives a prompt to paste into your coding tool; the second, the tag, `identify()` and `reset()`. See [Install the script](/installation) and [Identify users](/sdk/identify).
+1. **Add HelpAlive to your app**: your developer, about 10 minutes. Choose **With an AI coding agent**, **Add it yourself** or **Google Tag Manager**. The first gives a prompt to paste into your coding tool; the second, the tag, `identify()` and `reset()`. Under **Tell HelpAlive who is signed in**, pick **B2B: users belong to tenants** or **B2C: users have no tenant**. See [Install the script](/installation) and [Identify users](/sdk/identify).
 2. **Teach the agent your product**: add your docs on **Train** and publish them. See [Train](/dashboard/train).
-3. **Turn it on and try it**: first try it in your own app with **Test it on your app**, which opens your app with the agent on for you only. Then switch it on for your users in **Controls**. This step is locked until a source is published. See [Test](/dashboard/test) and [Controls](/dashboard/controls).
+3. **Test it on your app**: anyone on your team, before your users see it. Sign in to your app as the person you'll test with, then press **Test it on your app**. It opens your app in a new tab with the agent on for you only, in that browser; nothing changes for your users. The step turns green only once a test link has run a guide or chat. Turning the agent on for your users is a separate button, **Turn it on for your users**, which opens **Controls**. This step is locked until a source is published. See [Test](/dashboard/test) and [Controls](/dashboard/controls).
 4. **Verify your users**: optional, recommended. See [Verified users](#verified-users).
 
 ## Your project key
@@ -98,7 +98,7 @@ Your docs on **Train**, your script and project key, and your users' data stay. 
 
 ## Check it works
 
-All four required checks in **Is it working?** are green, and the band says **Everything is working.**
+The four required checks are green, and the band says **Everything is working.**
 
 ## Troubleshooting
 

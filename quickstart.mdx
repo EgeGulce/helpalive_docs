@@ -41,12 +41,41 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
       if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
     });
 
-    // On every page while someone is logged in, starting right after login
-    HelpAlive.identify({
-      userId: user.id,              // your own id for this person
-      tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
-    })
     ```
+
+    <Tabs>
+      <Tab title="B2B: users belong to tenants">
+        Each customer company or workspace is a tenant, and its users sign in under it. `tenantId` and `tenantName` say which tenant each user belongs to. Some users have no tenant? Leave both out for them: your dashboard groups them as **B2C customers**.
+
+        ```javascript
+        // On every page while someone is logged in, starting right after login
+        HelpAlive.identify({
+          userId: String(user.id),      // required: your own id for this person
+          tenantId: String(company.id), // required: their company or workspace
+          tenantName: company.name,     // required: the company's name, shown in your dashboard
+          displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
+          email: user.email,            // optional
+          role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+          plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+          createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+        })
+        ```
+      </Tab>
+      <Tab title="B2C: users have no tenant">
+        Each user signs up on their own, with no company or workspace around them, so leave out `tenantId` and `tenantName`. Your dashboard groups them as **B2C customers**.
+
+        ```javascript
+        // On every page while someone is logged in, starting right after login
+        HelpAlive.identify({
+          userId: String(user.id),      // required: your own id for this person
+          displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
+          email: user.email,            // optional
+          plan: user.plan,              // optional: e.g. "free", "pro"
+          createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+        })
+        ```
+      </Tab>
+    </Tabs>
 
     Put this in your logout code, apart from the code above:
 
@@ -55,17 +84,17 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
     HelpAlive.reset()
     ```
 
-    Only `userId` is required. [Install the script](/installation) covers where the tag goes in each framework, Google Tag Manager, TypeScript and the prompt for an AI coding agent. [Identify users](/sdk/identify) lists every `identify()` field.
+    `userId` and `displayName` are always required, and `tenantId` and `tenantName` too in a B2B app. [Install the script](/installation) covers where the tag goes in each framework, Google Tag Manager, TypeScript and the prompt for an AI coding agent. [Identify users](/sdk/identify) lists every `identify()` field.
   </Step>
 
   <Step title="Teach the agent your product">
     Anyone on your team. Open **Train** and choose **Add a website** or **Upload a file**. When the crawl finishes, press **Publish** in the bar at the top of the dashboard. The agent answers your users only from what is published. See [Train](/dashboard/train) and [Publishing](/dashboard/publishing).
   </Step>
 
-  <Step title="Turn it on and try it">
-    Anyone on your team. Open **Controls**. If the page says the agent has no settings yet, press **Set up the agent**. Choose **Who gets it**, switch the agent **On**, press **Save changes**, then **Turn on**. See [Controls](/dashboard/controls).
+  <Step title="Test it on your app">
+    Anyone on your team, before your users see it. Open your app and sign in as the person you'll test with. Then, in step 3 of **Settings → Setup & API Key**, press **Test it on your app**. Your app opens in a new tab with the agent on for you only, in that browser. Ask it something, or let it do a task. Nothing changes for your users. The step turns green once a test link has run a guide or chat. See [Test](/dashboard/test).
 
-    Open your app in another tab and sign in, or reload a page if it was already open. Then open the agent and ask it something.
+    When your test looks right, press **Turn it on for your users**. It opens **Controls**, where you choose **Who gets it** and switch the agent on. See [Controls](/dashboard/controls).
   </Step>
 
   <Step title="Verify your users (optional, recommended)">
@@ -84,14 +113,14 @@ At the top of **Settings → Setup & API Key**, **Is it working?** shows five ch
 - **HelpAlive is on your pages**
 - **It knows who is signed in**
 - **The agent has your docs**
-- **The agent answers in your app**
+- **A test has run in your app**
 - **Users are verified** (optional)
 
-Try your app, then press the refresh button to check again. When the first four are green, the band says **Everything is working.**
+The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back. The page checks again when you return, so you don't need to refresh. When the first four are green, the band says **Everything is working.**
 
 ## Troubleshooting
 
-- **The step 3 card is greyed out.** The agent cannot turn on before a source is published. Publish one on **Train** first.
+- **The step 3 card is greyed out.** You can't test the agent before a source is published. Publish one on **Train** first.
 - **The tag is on the page but nothing appears.** The agent only shows after `identify()` runs for a signed-in person. Check that your code calls it on every page load, and that `userId` is not empty.
 - **Nothing shows after you switched it on.** Wait a minute and load a few pages, as in the note above. Check that **Who gets it** includes you.
 - **Controls says "Your agent is off for your users until you subscribe."** Subscribe on **Settings → Billing and usage**. See [Billing and usage](/dashboard/billing).

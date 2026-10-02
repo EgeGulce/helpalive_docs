@@ -16,7 +16,7 @@ This page defines the words HelpAlive uses in the dashboard, the widget and thes
 
 ### Tenant
 
-A tenant is one of your customers: a company, team or workspace that uses your app. You send its id as `tenantId` in `identify()`, and its name as `tenantName`. If your app has no companies or workspaces, leave `tenantId` out and everyone goes under one tenant called "default".
+A tenant is one of your customers: a company, team or workspace that uses your app. You send its id as `tenantId` in `identify()`, and its name as `tenantName`. Users with no tenant, as in a B2C app, are left without `tenantId` and appear together in your dashboard as **B2C customers**.
 
 Tenants appear on **Controls** ("Each tenant"), on **Audience**, and on **Settings → Privacy Management**. You can set the agent's mode and limits per tenant.
 
@@ -61,7 +61,7 @@ New sources, and changes to tone, length, custom responses and **Appearance**, s
 
 ### Package
 
-Your package is the number of guides and chat messages your plan includes each month. **Settings → Billing and usage** shows it as **In your plan**. On **Controls**, **How far over your package** sets how far usage may go past it.
+Your package is the number of guides and chat messages your plan includes each month. **Settings → Billing and usage** shows it as **In your plan** (**In your trial** during the free trial). On **Controls**, **How far over your package** sets how far usage may go past it.
 
 ### Pack
 

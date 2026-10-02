@@ -33,28 +33,50 @@ window.HelpAlive = window.HelpAlive || { q: [] };
 
 ## The call
 
-```javascript
-// On every page while someone is logged in, starting right after login
-HelpAlive.identify({
-  userId: user.id,              // your own id for this person
-  tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
-  tenantName: company.name,     // optional: the company's name, shown in your dashboard
-  displayName: user.name,       // optional
-  email: user.email,            // optional
-  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
-  createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
-})
-```
+Pick the tab that matches your app. **Settings → Setup & API Key** shows the same two.
 
-Only `userId` is required. Fill the optional fields your app has, and delete the others.
+<Tabs>
+  <Tab title="B2B: users belong to tenants">
+    Each customer company or workspace is a tenant, and its users sign in under it. `tenantId` and `tenantName` say which tenant each user belongs to. Some users have no tenant? Leave both out for them: your dashboard groups them as **B2C customers**.
+
+    ```javascript
+    // On every page while someone is logged in, starting right after login
+    HelpAlive.identify({
+      userId: String(user.id),      // required: your own id for this person
+      tenantId: String(company.id), // required: their company or workspace
+      tenantName: company.name,     // required: the company's name, shown in your dashboard
+      displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
+      email: user.email,            // optional
+      role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+      plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+      createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+    })
+    ```
+  </Tab>
+  <Tab title="B2C: users have no tenant">
+    Each user signs up on their own, with no company or workspace around them, so leave out `tenantId` and `tenantName`. Your dashboard groups them as **B2C customers**.
+
+    ```javascript
+    // On every page while someone is logged in, starting right after login
+    HelpAlive.identify({
+      userId: String(user.id),      // required: your own id for this person
+      displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
+      email: user.email,            // optional
+      plan: user.plan,              // optional: e.g. "free", "pro"
+      createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+    })
+    ```
+  </Tab>
+</Tabs>
+
+`userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. In an app with both, pass the tenant for users who have one and leave it out for those who don't. The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too. A required field that is missing doesn't stop the call, except `userId`, but your dashboard has less to show for that person.
 
 | Field | Required | What it is |
 |-------|----------|------------|
 | `userId` | Yes | Your own id for this user, as text, up to 255 characters. It must not change, so don't use an email address if users can change theirs. |
-| `tenantId` | No | Their company, workspace or account id, as text, up to 255 characters. Leave it out if your app has none: everyone then belongs to one tenant, `"default"`. |
-| `tenantName` | No | The company's name, shown in your dashboard. Without it, the dashboard calls the tenant "Tenant" and a short form of its id. |
-| `displayName` | No | The user's name, for example `"Priya Sharma"`. |
+| `tenantId` | B2B | Their company or workspace id, as text, up to 255 characters. Leave it out for users with no tenant: your dashboard groups them as **B2C customers**. |
+| `tenantName` | B2B | The company's name, shown in your dashboard. Without it, the dashboard calls the tenant "Tenant" and a short form of its id. |
+| `displayName` | Yes | The person's name, for example `"Priya Sharma"`, or their email. Shown in your dashboard. |
 | `email` | No | Their email address, shown and searchable in your dashboard. |
 | `role` | No | Their role in your app, for example `"admin"`, `"editor"` or `"viewer"`. |
 | `plan` | No | Their plan in your app, for example `"free"` or `"pro"`. |
@@ -105,7 +127,7 @@ No events are sent for a visitor until `identify()` runs. Events wait in the pag
 
 ## Check it works
 
-Sign in to your app, then open **Settings → Setup & API Key** and press refresh. **It knows who is signed in** turns green and says when it last recognized a signed-in user. The user also appears in **Audience** under their tenant.
+Sign in to your app and click around, then come back to **Settings → Setup & API Key**. **It knows who is signed in** turns green and says when it last recognized a signed-in user. The user also appears in **Audience**, under their tenant or under **B2C customers**.
 
 ## Troubleshooting
 

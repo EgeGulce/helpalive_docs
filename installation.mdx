@@ -67,20 +67,45 @@ Follow all of these. A missed rule usually fails without any error on screen.
       if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
     });
 
-    // On every page while someone is logged in, starting right after login
-    HelpAlive.identify({
-      userId: user.id,              // your own id for this person
-      tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
-      tenantName: company.name,     // optional: the company's name, shown in your dashboard
-      displayName: user.name,       // optional
-      email: user.email,            // optional
-      role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-      plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
-      createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
-    })
     ```
 
-    Only `userId` is required. Use `tenantId` if your app has companies or workspaces. The rest are optional: fill what your app has, and delete the others.
+    Then the call itself. Pick the tab that matches your app:
+
+    <Tabs>
+      <Tab title="B2B: users belong to tenants">
+        Each customer company or workspace is a tenant, and its users sign in under it. `tenantId` and `tenantName` say which tenant each user belongs to. Some users have no tenant? Leave both out for them: your dashboard groups them as **B2C customers**.
+
+        ```javascript
+        // On every page while someone is logged in, starting right after login
+        HelpAlive.identify({
+          userId: String(user.id),      // required: your own id for this person
+          tenantId: String(company.id), // required: their company or workspace
+          tenantName: company.name,     // required: the company's name, shown in your dashboard
+          displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
+          email: user.email,            // optional
+          role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+          plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+          createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+        })
+        ```
+      </Tab>
+      <Tab title="B2C: users have no tenant">
+        Each user signs up on their own, with no company or workspace around them, so leave out `tenantId` and `tenantName`. Your dashboard groups them as **B2C customers**.
+
+        ```javascript
+        // On every page while someone is logged in, starting right after login
+        HelpAlive.identify({
+          userId: String(user.id),      // required: your own id for this person
+          displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
+          email: user.email,            // optional
+          plan: user.plan,              // optional: e.g. "free", "pro"
+          createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+        })
+        ```
+      </Tab>
+    </Tabs>
+
+    `userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. In an app with both, pass the tenant for users who have one and leave it out for those who don't. The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too.
 
     The first four lines let your code call HelpAlive before our script has loaded. Our script replays the calls in order when it arrives. [Identify users](/sdk/identify) describes each field.
   </Step>
@@ -147,14 +172,14 @@ if (!HelpAlive[m]) HelpAlive[m] = (...args: unknown[]) => HelpAlive.q.push([m, a
     The round chat button appears in a corner once the agent is switched on on **Controls** and has published docs from **Train**. Until then, the steps below still tell you the install works.
   </Step>
   <Step title="Open the setup checks">
-    Go to **Settings → Setup & API Key** and press the refresh button. The **Is it working?** checks turn green one by one:
+    The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back. The page checks again when you return. Then **Settings → Setup & API Key** shows the **Is it working?** checks turning green one by one:
 
     | Check | It turns green when |
     |-------|---------------------|
     | **HelpAlive is on your pages** | Our script started on one of your pages, or sent an event, in the last week. |
     | **It knows who is signed in** | A page called `identify()` for a signed-in user. |
     | **The agent has your docs** | At least one source on **Train** is published. |
-    | **The agent answers in your app** | The agent is on and has answered a message in your app this month. |
+    | **A test has run in your app** | A guide or chat ran from a test link made by **Test it on your app**. |
     | **Users are verified** (optional) | Valid user tokens are arriving. See [Verify users](/sdk/verify-users). |
 
     When the four required checks are green, the panel says **Everything is working.**

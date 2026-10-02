@@ -38,9 +38,9 @@ Tells HelpAlive who is signed in. The agent loads only after it succeeds.
 ```javascript
 HelpAlive.identify({
   userId: "8412",            // required unless you pass userToken
-  tenantId: "acme",          // optional
-  tenantName: "Acme Inc.",   // optional
-  displayName: "Priya Sharma",
+  tenantId: "acme",          // B2B: required; B2C: leave out
+  tenantName: "Acme Inc.",   // B2B: required; B2C: leave out
+  displayName: "Priya Sharma", // required
   email: "priya@acme.com",
   role: "admin",
   plan: "pro",
@@ -51,9 +51,9 @@ HelpAlive.identify({
 | Field | Type | Notes |
 |-------|------|-------|
 | `userId` | string or number | Required unless `userToken` is given. 1 to 255 characters. A number is turned into text. |
-| `tenantId` | string or number | Optional. 1 to 255 characters. Left out or blank, it is `"default"`. |
-| `tenantName` | string | Optional. Shown in your dashboard in place of the tenant id. |
-| `displayName` | string | Optional. Up to 255 characters. |
+| `tenantId` | string or number | Required in a B2B app; left out for users with no tenant, who appear as **B2C customers**. 1 to 255 characters. |
+| `tenantName` | string | Required in a B2B app. Shown in your dashboard in place of the tenant id. |
+| `displayName` | string | Required: the person's name, or their email. Up to 255 characters. |
 | `email` | string | Optional. Up to 320 characters. |
 | `role` | string | Optional. Up to 100 characters. |
 | `plan` | string | Optional. Up to 100 characters. |
@@ -61,7 +61,7 @@ HelpAlive.identify({
 | `userToken` | string | Optional. A JWT your server signs. With it, the user and tenant come from the token. A user or tenant id in it over 200 characters stops the call. See [Verify users](/sdk/verify-users). |
 | `refreshUserToken` | function | Optional, with `userToken`. Returns a fresh token, or a promise of one. Called when a token has expired; the request is then sent again. The fresh token must name the same user and tenant. |
 
-A number in `displayName`, `role` or `plan` is turned into text. An optional field of the wrong type, or too long, is left out with a console warning, and the call goes on.
+The script refuses a call only for a missing or too-long `userId` or `tenantId`; leaving out another required field just leaves your dashboard with less to show. A number in `displayName`, `role` or `plan` is turned into text. A field of the wrong type, or too long, is left out with a console warning, and the call goes on.
 
 Returns a promise that resolves when the call has been handled. Calls run one after another, in the order you make them. Calling it again for the same user is safe. Calling it for a different user closes the previous user's agent first. [Identify users](/sdk/identify) explains each field.
 

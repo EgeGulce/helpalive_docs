@@ -49,17 +49,17 @@ window.HelpAlive = window.HelpAlive || { q: [] };
 
 // On every page while someone is logged in, starting right after login
 HelpAlive.identify({
-  userId: user.id,              // your own id for this person
-  tenantId: company.id,         // optional: their company or workspace; leave out if your app has none
-  tenantName: company.name,     // optional: the company's name, shown in your dashboard
-  displayName: user.name,       // optional
+  userId: String(user.id),      // required: your own id for this person
+  tenantId: String(company.id), // required: their company or workspace
+  tenantName: company.name,     // required: the company's name, shown in your dashboard
+  displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
   email: user.email,            // optional
   role: user.role,              // optional: e.g. "admin", "editor", "viewer"
   plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
   createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
 })
 
-userId is required and must be a stable id for the person (not their email if it can change). tenantId is their company, workspace or organization id: include it only if this app has such a thing. The other fields are optional: fill each one the app has and leave out the rest (createdAt is the signup date in Unix seconds).
+userId and displayName are required: userId a stable id for the person (not their email if it can change), passed as a string, and displayName their name. If this app is B2B, with customer companies, workspaces or organizations as tenants, tenantId (that id, as a string) and tenantName (its name) are required too; if it is B2C, where people sign up on their own with no company, leave both out (in an app with both, leave them out only for the individuals). The other fields are optional: fill each one the app has and leave out the rest (createdAt is the signup date in Unix seconds).
 
 If that code is in a TypeScript file, add this declaration to a .d.ts file the project includes:
 
@@ -142,7 +142,7 @@ The full guide, if you need more detail: https://docs.helpalive.com/sdk/verify-u
 ## Check it works
 
 1. Deploy the change, sign in to your app and open a page.
-2. Open **Settings → Setup & API Key** and press refresh. **HelpAlive is on your pages** and **It knows who is signed in** turn green.
+2. Open your app, sign in and click around, then come back to **Settings → Setup & API Key**. **HelpAlive is on your pages** and **It knows who is signed in** turn green.
 3. After the second prompt, open the agent in your app. Then press refresh on **Check your setup**, in step **Verify your users**.
 
 ## Troubleshooting

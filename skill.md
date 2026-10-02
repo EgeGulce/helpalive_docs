@@ -39,14 +39,29 @@ window.HelpAlive = window.HelpAlive || { q: [] };
   if (!HelpAlive[m]) HelpAlive[m] = (...args) => HelpAlive.q.push([m, args]);
 });
 
+// B2B: users belong to tenants
 HelpAlive.identify({
-  userId: user.id,          // required: your own id for this person
-  tenantId: company.id,     // optional: their company or workspace
-  tenantName: company.name, // optional
-  displayName: user.name,   // optional
-  email: user.email,        // optional
-  role: user.role,          // optional
-  plan: company.plan,       // optional
+  userId: String(user.id),      // required: your own id for this person
+  tenantId: String(company.id), // required: their company or workspace
+  tenantName: company.name,     // required: the company's name, shown in your dashboard
+  displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
+  email: user.email,            // optional
+  role: user.role,              // optional: e.g. "admin", "editor", "viewer"
+  plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+  createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
+});
+```
+
+For a B2C app, where users have no company or workspace, leave out `tenantId` and `tenantName`; the dashboard groups those users as B2C customers. `userId` and `displayName` are always required.
+
+```javascript
+// B2C: users have no tenant
+HelpAlive.identify({
+  userId: String(user.id),      // required: your own id for this person
+  displayName: user.name,       // required: the person's name (or their email), shown in your dashboard
+  email: user.email,            // optional
+  plan: user.plan,              // optional: e.g. "free", "pro"
+  createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
 });
 ```
 
@@ -75,7 +90,7 @@ Details and server code in Node, Python, Ruby, PHP, Java and Go: https://docs.he
 
 ## Check it works
 
-On **Settings → Setup & API Key**, the panel says **Everything is working.** when the required checks are green. Sign in to the app as a user who gets the agent and open the chat button.
+On **Settings → Setup & API Key**, the panel says **Everything is working.** when the required checks are green; the last one turns green once a test from **Test it on your app** has run. Then turn the agent on for users on **Controls**. Sign in to the app as a user who gets the agent and open the chat button.
 
 ## More
 
