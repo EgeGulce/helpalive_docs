@@ -61,6 +61,30 @@ In short: everything you've changed since your last publish.
 - Test isn't a real user session. The Agent won't remember conversations between test runs.
 - Test results aren't shared with your end users. They only see the live, published Agent.
 
+## Test it on your app
+
+Question batches answer from your docs only. To see the whole agent, guides included, on your real product, use **Test → On your app**.
+
+**Before you can test**
+
+- Our script is on your app, and `identify()` is called after sign-in.
+- You enter your app's address and press **Check**. The check passes only when we've seen our script run on that address and a signed-in person use it, both within the last 30 days. Until then the button stays off.
+
+**How a test link works**
+
+- **Test it on your app** makes a link and opens your app with it in a new tab.
+- **One link, one browser.** The first browser that opens the link keeps it for 14 days. That browser sees the agent with a **Test** badge, even while the agent is off for everyone else, and for any account you sign in with there.
+- **The link is shown once.** We keep no copy of it. The same link in another browser, a private window or on another computer does nothing. To test somewhere else, make a new link.
+- A link nobody has opened yet can be copied from the browser that made it. Making a new link for the same address replaces it.
+- **Revoke** stops a link. The browser holding it loses the test agent on its next page. **Stop testing** on the widget's Test strip does the same for that browser. Revoked and expired links can be dismissed from the list.
+- Your users only see the agent once they're in **Who gets it** under Controls. A test link never changes that.
+
+**What tests cost**
+
+Tests don't count toward your plan. Your workspace gets 50 test guides and 300 test chat answers a month, shared by all links, starting again on the 1st. The Test page's top card shows how many are left. When test guides run out, the agent keeps answering but stops starting guides. When test chat runs out, the widget says so in the test browser. Your users aren't affected.
+
+Every guide and chat from a test link shows on the Test page, step by step.
+
 ## Rate limits
 
 To prevent runaway test runs from running up your bill, Test has a per-user rate limit. If you hit the cap, wait a few minutes and try again. Most teams never come close.
