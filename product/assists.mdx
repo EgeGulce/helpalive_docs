@@ -87,18 +87,27 @@ The offer card then offers **Run again**, or **Continue from where we left off**
 
 ## What counts as an assist
 
-Every assist starts from a chat message: the user asks, and the agent answers with an offer. That answer counts as one chat message. The assist counts once, as one assist, as soon as it starts: after the user presses **Let's do it** or **Show me how** and the first step is done.
+**An assist counts once HelpAlive moves past its first step.** Pressing **Let's do it** or **Show me how** alone doesn't count. The assist counts once its first step is done, and only once, however long it runs.
 
-**Counts as one assist:**
+Every assist starts from a chat message: the user asks, and the agent answers with an offer. That answer counts as one chat message, whether or not the user starts the assist.
 
-- A started assist, however it ends: **Finished**, **Could not finish**, **Stopped**, **Timed out** or **Abandoned**.
-- **Run again** or **Continue from where we left off**. Each is a new assist, and its message is a new chat message.
+**Counts as one assist**, once it has moved past its first step, whatever the ending:
+
+| Ending | Counts |
+|---|---|
+| **Finished** | Yes |
+| **Could not finish** | Yes, always, even if HelpAlive gives up on the first step |
+| **Stopped**, by the user or by starting another assist | Yes |
+| **Timed out** | Yes |
+| **Abandoned**, the user left the page | Yes |
+
+**Run again** and **Continue from where we left off** each send a new chat message and start a new assist, which counts the same way.
 
 **Doesn't count:**
 
-- An offer the user ignores or closes.
-- An assist stopped before its first step is done.
-- An assist that couldn't start because a limit was reached.
+- An offer the user ignores, closes or never starts.
+- An assist stopped, timed out or abandoned before its first step is done.
+- An assist refused because a limit was reached. The chat stops offering assists at that point.
 - Assists from a test link. See [Test it on your app](/dashboard/test#test-it-on-your-app).
 
 Pausing and resuming, **Take over** and **Hand back**, and steering all stay within the same assist. A question sent with **Ask or steer** is answered in the chat, so it counts as a chat message.
