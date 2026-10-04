@@ -227,11 +227,11 @@
         "items": [
           {
             "label": "Privacy policy",
-            "href": "https://helpalive.com/utility/privacy-policy"
+            "href": "https://helpalive.com/privacy"
           },
           {
             "label": "Terms of use",
-            "href": "https://helpalive.com/utility/termsofuse"
+            "href": "https://helpalive.com/terms"
           }
         ]
       }
