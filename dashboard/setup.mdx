@@ -1,7 +1,7 @@
 ---
 title: "Set up HelpAlive: Setup & API Key page"
 sidebarTitle: "Setup & API Key"
-description: "Follow HelpAlive's four setup steps, check that each one works, manage your public project key and private signing secret, and reset the setup."
+description: "Follow HelpAlive's four setup steps, check that each one works, and manage your public project key and your private signing secret."
 keywords:
   - HelpAlive setup
   - HelpAlive project key
@@ -10,27 +10,28 @@ keywords:
   - only allow verified users
 ---
 
-**Setup & API Key** is where you install HelpAlive and check that it works. It is the second tab of **Settings**, at **Settings → Setup & API Key**. It also holds your project key, your signing secret and **Reset the setup**.
+**Setup & API Key** is where you install HelpAlive and check that it works. It is the second tab of **Settings**, at **Settings → Setup & API Key**. It also holds your project key and your signing secret.
 
 ## Is it working?
 
-The band at the top says how many of the 3 steps to go live are done, and what is next. Under it, five checks:
+The band at the top says how many of the 4 steps are done and what to do next, in one sentence. Once the first three are done, it says your agent is ready for your users. When everything works, **Everything is working.** shows beside the refresh button.
 
-| Check | Turns green when |
+Each step in the list on the left has one line saying what HelpAlive saw:
+
+| Step | Its line when it is done |
 | --- | --- |
-| **HelpAlive is on your pages** | Our script was seen on a page of your app. |
-| **It knows who is signed in** | A page called `identify()` for a signed-in person. |
-| **The agent has your docs** | At least one source is live on **Train**. |
-| **A test has run in your app** | An assist or chat ran from a test link made by **Test it on your app**. |
-| **Users are verified** (optional) | Verified sign-ins are arriving. |
+| **Add HelpAlive to your app** | "Seen on your pages 3 minutes ago.", then "Recognized a signed-in person ..." once `identify()` runs. |
+| **Teach the agent your product** | "2 sources live for the agent." |
+| **Test it on your app** | "Tested in your app: ..." once a test link ran an assist or a chat. |
+| **Verify your users** (optional) | How many sign-ins in the last 7 days arrived verified. |
 
-Each check says what it saw, such as "Seen on your pages 3 minutes ago." The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back to this page. It checks again when you return, so you don't need to refresh. When the first four are green, the band says **Everything is working.**
+The checks need a real visit: once the tag is live, sign in to your app, click around, and come back to this page. It checks again when you return, so you don't need to refresh.
 
-The sidebar's **Setup** checklist follows the same steps.
+The sidebar's **Setup** checklist counts the same 4 steps. Done steps stay in it with a check. When all four are done, it says "You're all set." for a week, then hides.
 
 ## The four steps
 
-The steps are listed on the left, one shown at a time. Each turns to **Done** by itself.
+The steps are listed on the left, one shown at a time. Each gets a check by itself once it is done.
 
 1. **Add HelpAlive to your app**: your developer, about 10 minutes. Choose **With an AI coding agent**, **Add it yourself** or **Google Tag Manager**. The first gives a prompt to paste into your coding tool; the second, the tag, `identify()` and `reset()`. Under **Tell HelpAlive who is signed in**, pick **B2B: users belong to tenants** or **B2C: users have no tenant**. See [Install the script](/installation) and [Identify users](/sdk/identify).
 2. **Teach the agent your product**: add your docs on **Train** and publish them. See [Train](/dashboard/train).
@@ -86,19 +87,9 @@ While the switch hides the agent from some people, step 4 says so. It gives how 
 
 The setup box in the sidebar keeps **Verification** listed until this is fixed, and we email your team when the switch starts hiding the agent from people.
 
-## Reset the setup
-
-Under **Danger zone**, **Reset the setup** turns the agent off for everyone and puts its settings back to our defaults:
-
-- **Controls**: who gets it and what it does;
-- **Appearance**: how it looks;
-- **Train**: its tone and length, and the custom responses you wrote.
-
-Your docs on **Train**, your script and project key, and your users' data stay. It asks first, and it cannot be undone.
-
 ## Check it works
 
-The four required checks are green, and the band says **Everything is working.**
+The first three steps have a check, and the band says your agent is ready for your users.
 
 ## Troubleshooting
 
