@@ -21,20 +21,20 @@ Each step in the list on the left has one line saying what HelpAlive saw:
 | Step | Its line when it is done |
 | --- | --- |
 | **Add HelpAlive to your app** | "Seen on your pages 3 minutes ago.", then "Recognized a signed-in person ..." once `identify()` runs. |
-| **Teach the agent your product** | "2 sources live for the agent." |
+| **Train the agent on your product** | "2 sources live for the agent." |
 | **Test it on your app** | "Tested in your app: ..." once a test link ran an assist or a chat. |
 | **Verify your users** (optional) | How many sign-ins in the last 7 days arrived verified. |
 
 The checks need a real visit: once the tag is live, sign in to your app, click around, and come back to this page. It checks again when you return, so you don't need to refresh.
 
-The sidebar's **Setup** checklist counts the same 4 steps, by shorter names: **Add HelpAlive**, **Teach the agent**, **Test it on your app** and **Verify users**. Done steps stay in it with a check. When all four are done, it says "You're all set." for a week, then hides.
+The sidebar's **Setup** checklist counts the same 4 steps, by shorter names: **Add HelpAlive**, **Train the agent**, **Test it on your app** and **Verify users**. Done steps stay in it with a check. When all four are done, it says "You're all set." for a week, then hides.
 
 ## The four steps
 
 The steps are listed on the left, one shown at a time. Each gets a check by itself once it is done. When a step's button takes you to **Train** or **Test**, a line at the top of that page names the step, with **Back to setup**; once the step is done there, it points to the next one with **Next step**.
 
 1. **Add HelpAlive to your app**: your developer, about 10 minutes. Choose **With an AI coding agent**, **Add it yourself** or **Google Tag Manager**. The first gives a prompt to paste into your coding tool; the second, the tag, `identify()` and `reset()`. Under **Tell HelpAlive who is signed in**, pick **B2B: users belong to tenants** or **B2C: users have no tenant**. See [Install the script](/installation) and [Identify users](/sdk/identify).
-2. **Teach the agent your product**: add your docs on **Train** and publish them. See [Train](/dashboard/train).
+2. **Train the agent on your product**: add your docs on **Train** and publish them. See [Train](/dashboard/train).
 3. **Test it on your app**: "Try the agent in your own app, in your browser only. The Test page shows you how." The button opens the dashboard's **Test** page. The step turns green once a test has run an assist or a chat. This step is locked until a source is published. See [Test it on your app](/dashboard/test#test-it-on-your-app).
 4. **Verify your users**: optional, recommended. See [Verified users](#verified-users).
 
