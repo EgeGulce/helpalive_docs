@@ -6,7 +6,7 @@ keywords:
   - train HelpAlive agent
   - add help center to AI agent
   - knowledge sources
-  - how often a site is read again
+  - re-crawl schedule
   - custom responses
 ---
 
@@ -30,8 +30,8 @@ Everything you change on Train is a draft until you press **Publish**. The **Tes
   <Step title="Or upload a file">
     Drop files on the box, or click to browse, then press **Upload 1 file** (or **Upload 2 files**, and so on).
   </Step>
-  <Step title="Wait while it processes">
-    The source shows **Processing**, then a draft, such as **12 pages · draft**. While every new source is still processing, the Publish bar says "Publish appears when processing finishes."
+  <Step title="Wait for the crawl">
+    The source shows **Crawling**, then **Processing**, then a draft, such as **12 pages · draft**. While every new source is still crawling, the Publish bar says "Publish appears when the crawl finishes."
   </Step>
   <Step title="Publish">
     Press **Publish** in the bar at the top of the dashboard, then **Publish now**. The source goes live for your users.
@@ -40,25 +40,25 @@ Everything you change on Train is a draft until you press **Publish**. The **Tes
 
 ## The status band
 
-At the top, **What your agent knows** says the state of your sources in a few words, such as **All sources live** or **Update ready to publish**. A dot beside it is green when every source is live and red when one failed. It is amber while one is processing or waits to be published. It also shows **Pages live**, **Sections live** and **Last read**. If no source is published, it says **The agent is off: no docs published.**
+At the top, **What your agent knows** says the state of your sources in a few words, such as **All sources live** or **New crawl ready to publish**. A dot beside it is green when every source is live and red when one failed. It is amber while one is crawling or waits to be published. It also shows **Pages live**, **Sections live** and **Last crawl**. If no source is published, it says **The agent is off: no docs published.**
 
 ## Each source
 
-Each row in **Your sources** shows the source's type, its pages and when it was last read or uploaded. Use **Search sources** to find one. Each row has:
+Each row in **Your sources** shows the source's type, its pages and when it was last crawled or uploaded. Use **Search sources** to find one. Each row has:
 
-- **Read again automatically**: how often we read a website again. Choose **Off** (only when you ask), **Every 3 days**, **Weekly**, **Every 2 weeks** or **Monthly**. A new website starts on **Weekly**.
-- **View pages**: the pages the agent can answer from, with what changed in the last update.
+- **Auto-sync schedule**: how often a website is crawled again. Choose **Off** (manual refresh only), **Every 3 days**, **Weekly**, **Every 2 weeks** or **Monthly**. A new website starts on **Weekly**.
+- **View indexed pages**: the pages the agent can answer from, with what changed in the last crawl.
 - **Rename source**
-- **Read again**: read it again now. While that runs, **Stop update** stops it.
+- **Re-crawl source**: crawl it again now. While it runs, **Stop re-crawl** stops it.
 - **Remove source**: removes it at once. It does not wait for Publish.
 
-### When a source is read again
+### When a source is crawled again
 
-The live version keeps answering while an update runs, and if it stops or fails.
+What is live keeps answering while a re-crawl runs, and if it stops or fails.
 
-- An update you start with **Read again** waits for **Publish**. The row shows **Update ready**, with how many pages changed.
-- An automatic update goes live by itself.
-- If an automatic update finds far fewer pages than are live, it is held for your check: **Update held**. Your site may have been down or blocked us. Check it, then **Publish** or **Read again**. Automatic updates pause until you do.
+- A re-crawl you start with **Re-crawl source** waits for **Publish**. The row shows **New crawl ready**, with how many pages changed.
+- An automatic sync goes live by itself.
+- If an automatic sync finds far fewer pages than are live, it is held for your check: **Sync held**. The site may have been down or blocked us. Check the site, then **Publish** or **Re-crawl source**. Automatic syncs pause until you do.
 - If nothing changed, nothing waits for you.
 
 <Warning>
@@ -101,7 +101,7 @@ Press **Add response** in the editor. Each response in the list has **Edit**, **
 ## Troubleshooting
 
 - **"Couldn't add that address."** Use the public web address of your docs, starting with `https://`.
-- **A source shows "We couldn't finish reading it."** Press **Try again**. If it fails again, check that the site is public.
+- **A source shows "The crawl did not finish."** Press **Re-crawl source**. If it fails again, check that the site is public.
 - **Your app still gives the old answer.** Changes on Train wait for **Publish**. Check the bar at the top of the dashboard.
 
 ## Next
