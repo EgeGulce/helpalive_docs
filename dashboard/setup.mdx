@@ -27,11 +27,11 @@ Each step in the list on the left has one line saying what HelpAlive saw:
 
 The checks need a real visit: once the tag is live, sign in to your app, click around, and come back to this page. It checks again when you return, so you don't need to refresh.
 
-The sidebar's **Setup** checklist counts the same 4 steps. Done steps stay in it with a check. When all four are done, it says "You're all set." for a week, then hides.
+The sidebar's **Setup** checklist counts the same 4 steps, by shorter names: **Add HelpAlive**, **Teach the agent**, **Test it on your app** and **Verify users**. Done steps stay in it with a check. When all four are done, it says "You're all set." for a week, then hides.
 
 ## The four steps
 
-The steps are listed on the left, one shown at a time. Each gets a check by itself once it is done.
+The steps are listed on the left, one shown at a time. Each gets a check by itself once it is done. When a step's button takes you to **Train** or **Test**, a line at the top of that page names the step, with **Back to setup**; once the step is done there, it points to the next one with **Next step**.
 
 1. **Add HelpAlive to your app**: your developer, about 10 minutes. Choose **With an AI coding agent**, **Add it yourself** or **Google Tag Manager**. The first gives a prompt to paste into your coding tool; the second, the tag, `identify()` and `reset()`. Under **Tell HelpAlive who is signed in**, pick **B2B: users belong to tenants** or **B2C: users have no tenant**. See [Install the script](/installation) and [Identify users](/sdk/identify).
 2. **Teach the agent your product**: add your docs on **Train** and publish them. See [Train](/dashboard/train).
@@ -85,7 +85,7 @@ While the switch hides the agent from some people, step 4 says so. It gives how 
 | Their token had expired | "Leave the expiry out of the token." |
 | Their token didn't check out | "Use the current signing secret, and make the token's sub the same id your page passes as userId." |
 
-The setup box in the sidebar keeps **Verification** listed until this is fixed, and we email your team when the switch starts hiding the agent from people.
+The setup box in the sidebar keeps **Verify users** listed until this is fixed, and we email your team when the switch starts hiding the agent from people.
 
 ## Check it works
 
