@@ -1,0 +1,103 @@
+---
+title: "Nudges: HelpAlive helps users who get stuck"
+sidebarTitle: "Nudges"
+description: "A nudge is a small message from HelpAlive that offers help when a user seems stuck: an error, a button that doesn't respond, or a save that fails."
+keywords:
+  - proactive help
+  - in-app nudge
+  - contextual help
+  - help users when they are stuck
+  - HelpAlive nudges
+---
+
+A nudge is a small message from HelpAlive that offers help when a user seems stuck in your app. It appears above the chat launcher at the moment of trouble, so users get help without having to think of asking. This page shows what your users see, in the widget's own words.
+
+## When a nudge appears
+
+A nudge appears when a user runs into one of three clear signs of trouble:
+
+- **An error on the page**, such as a message saying an email address is already taken.
+- **A button that doesn't respond**, pressed again and again with nothing happening.
+- **A save that doesn't go through**, because your app turned it down.
+
+A few signs that belong to one problem, such as an error and a failed save together, give one nudge, not several.
+
+Nudges come from the chat widget, so they reach the same people as the chat. See [Chat](/product/chat).
+
+## What your users see
+
+<Steps>
+  <Step title="A toast above the launcher">
+    A short message offers help with what went wrong, such as `Seeing "Email already taken"? I can help.` or `Having trouble with "Save"? I can help.` It stays put while the pointer is over it.
+  </Step>
+  <Step title="A dot on the launcher">
+    After a few seconds, the toast folds into a small dot on the launcher. The dot stays until the user goes to another page, or for about half an hour. Folding is not a "no": the offer is still there.
+  </Step>
+  <Step title="The question, already written">
+    Tapping the toast, or opening the chat while the dot shows, opens the home screen with a question in the box, such as `I'm getting "Email already taken" here. Can you help?` The text is selected, so the user can send it, edit it, or type over it.
+  </Step>
+  <Step title="An answer, and an assist when it helps">
+    The agent answers as it does for any question, using the page the user is on. When it can fix the problem in your app, it offers an assist as usual. See [Assists](/product/assists).
+  </Step>
+</Steps>
+
+The toast's **Not now** button (×) closes it. A nudge is never written into the chat as a message from the agent. It is only the toast and a question the user can choose to send.
+
+### The words it uses
+
+A nudge names what went wrong when it can, such as the error your page shows or the button the user pressed. Otherwise it offers general help, such as "Having a problem? Ask me."
+
+It never quotes words that look personal, such as an email address or a long number. It uses a more general line instead.
+
+## When nudges stay quiet
+
+A nudge doesn't appear when:
+
+- The chat is already open.
+- An assist is running, or has just ended.
+- The page has only just loaded.
+- The user closed a nudge earlier in their visit.
+- The user already asked a question from a nudge on this page.
+
+## How often nudges appear
+
+Nudges are rare by design, so they never feel pushy. A user sees at most one on a page, and only a couple in a visit, spaced well apart. A nudge never offers help with the same thing twice in a visit.
+
+Closing a nudge with **Not now** keeps nudges away for the rest of the visit. Closing them more than once keeps them away for a day. These limits are kept for each person, so the next person on the same browser starts fresh.
+
+## Nudges and privacy
+
+A toast quotes only words from your own app, such as the error it shows, and never words that look personal. If the user sends the question, it is an ordinary chat message, saved like any other. See [AI and your data](/trust/ai-and-your-data).
+
+## Keyboard and screen readers
+
+- The toast is a button: **Enter** or **Space** opens it, and its close button is named "Not now".
+- Screen readers announce a new toast politely, without moving focus.
+- While the dot shows, the launcher is announced as "Ask HelpAlive, a suggestion is waiting".
+
+## Check it works
+
+1. Sign in to your app as a user who has the chat.
+2. Wait a moment after the page loads, then cause an error your app shows, such as submitting a form your app rejects.
+3. A toast should offer help. Leave it to see it fold into the dot, then open the chat.
+4. The question should be in the box, selected. Send it and read the answer.
+
+## Troubleshooting
+
+- **No nudge appears.** The chat was open, an assist was running or had just ended, or the page had only just loaded. The user may also have closed a nudge earlier in the visit, or already had one on this page. Try again on another page, or in a new private window.
+- **It quoted an error message.** A nudge quotes the error your page itself shows, or the message your app gave when it turned down a save. Words that look personal are never quoted.
+- **The toast went away by itself.** It folded into the dot on the launcher. Opening the chat while the dot shows still gives the question.
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Chat" icon="message-circle" href="/product/chat">
+    What users see when they open the chat.
+  </Card>
+  <Card title="Assists" icon="route" href="/product/assists">
+    What happens when the agent offers to fix it.
+  </Card>
+  <Card title="Make your app agent-ready" icon="accessibility" href="/sdk/agent-ready">
+    Plain labels help the agent and your users.
+  </Card>
+</CardGroup>

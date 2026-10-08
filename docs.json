@@ -77,6 +77,7 @@
             "pages": [
               "product/chat",
               "product/assists",
+              "product/nudges",
               "product/what-it-wont-do"
             ]
           },

@@ -21,14 +21,14 @@ A tenant is one of your own customers: the `tenantId` your app passes to `identi
 | Figure | What it counts |
 | --- | --- |
 | **People** | Everyone your app has identified. |
-| **Active this period** | People active in your plan period. |
+| **Active this period** | People active in this billing period. |
 | **Have the agent** | People that **Who gets it** on **Controls** gives the agent today. |
-| **Helped this period** | People who started an assist in your plan period. |
+| **Helped this period** | People who started an assist in this billing period. |
 | **Tenants** | Tenants on file. |
 
 ### Tenants
 
-The left list, **Tenants**, holds "Workspaces using HelpAlive on their site." People your app sends with no tenant appear together as one tenant, **B2C customers**. Use **Search tenants…**, and filter with **Every tenant**, **Helped** or **Not helped yet**. **All tenants** shows people across every tenant.
+The left list, **Tenants**, holds "The companies or workspaces in your app." People your app sends with no tenant appear together as one tenant, **B2C customers**. Use **Search tenants…**, and filter with **Every tenant**, **Helped** or **Not helped yet**. **All tenants** shows people across every tenant.
 
 Click a tenant to show its people and open its drawer.
 
@@ -45,7 +45,7 @@ Clicking a row opens a drawer. It goes one level deeper each time, and **Open as
 - **An assist**: its name is the one the agent gave its offer, or else what they asked for. **The story** shows **What they asked for**, **How it ended** and the agent's closing words. **The assist in numbers** shows how long it took, its steps, and whether it **Counts toward your plan**. **What happened** goes step by step.
 - **A chat**: its messages, any assist the chat offered and the person's answer, and the assists it ran, under **It ran one assist** or, for more, a count such as **It ran 2 assists**.
 
-In the lists, a chat shows its first question in quotes under its title. An assist that stopped says the step it stopped at. Assists and chats from a test link on **Test** are marked **Test run** or **Test chat**, and a test assist says "A test: does not count toward your plan".
+In the lists, a chat shows its first question in quotes under its title. An assist that stopped says the step it stopped at. Assists and chats from a test link on **Test** are marked **Test run** or **Test chat**. A person's **Assists** tab lists their test runs too, so the list matches their count. A tenant's assists line counts them apart, such as "2 test runs, not counted toward your plan". A test assist says "A test: does not count toward your plan".
 
 Your team can read your users' chats here. Your terms with your own users should tell them so. A chat removed with a person's data says "This chat isn't here any more: it may have been deleted with their data." After your retention window, a chat keeps its counts and dates but loses its words. See [Privacy Management](/dashboard/privacy-management).
 
@@ -91,7 +91,7 @@ Once people use the agent in your app, **Audience** lists them under their tenan
 ## Troubleshooting
 
 - **A tenant shows "Unnamed workspace".** Pass `tenantName` in `identify()`. See [Identify users](/sdk/identify).
-- **Audience is empty.** Nobody has been identified yet. Check **Is it working?** on **Settings → Setup & API Key**.
+- **Audience is empty.** Nobody has been identified yet. The list says "No activity yet. Add HelpAlive to your app on Setup to start tracking." Finish the step **Add HelpAlive to your app** on **Settings → Setup & API Key**. See [The four steps](/dashboard/setup#the-four-steps).
 - **A chat has no words.** It is older than your retention window, or the person's data was deleted.
 
 ## Next

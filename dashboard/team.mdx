@@ -23,11 +23,11 @@ Everyone on your team is an admin: "Everyone on your team can change every setti
     Type an address, such as `teammate@company.com`, and press **Add** or Enter. Add as many as you need.
   </Step>
   <Step title="Send">
-    Press **Send Invites**, and confirm your password when asked. Each person gets an email with a link to join your workspace.
+    Press the send button, such as **Send 2 invites** (it counts the addresses you added), and confirm your password when asked. Each person gets an email with a link to join your workspace.
   </Step>
 </Steps>
 
-If an email can't be sent, the toast offers **Copy link**, so you can send the link yourself.
+If an email can't be sent, the toast says why and offers **Copy link**, so you can send the link yourself. See [Troubleshooting](#troubleshooting).
 
 ### Manage invites
 
@@ -38,7 +38,7 @@ The **Invites** panel lists each invite with its **Status** (**Waiting**, **Join
 - **Revoke** cancels an invite that is still waiting. **Delete** removes a joined or expired one.
 - **Clear joined and expired** tidies the list.
 
-Each person on your team can send a limited number of invite emails a day, new invites and resends together.
+Your workspace can send a limited number of invite emails a day, new invites and resends together.
 
 ### Manage your team
 
@@ -81,7 +81,12 @@ Your invitee's row turns **Joined** once they finish signing up. They appear und
 ## Troubleshooting
 
 - **An invite says Expired.** Press **Resend** for a fresh link.
-- **"You've sent as many invite emails as one day allows."** You reached today's limit on invite emails. Try again tomorrow, or ask a teammate to send it.
+- **"Your workspace has sent as many invite emails as one day allows."** Your workspace reached today's limit on invite emails, new invites and resends together. Try again tomorrow.
+- **"Invite created for teammate@company.com, but email could not be sent."** The invite exists, but its email didn't go out. A resend says "Invite refreshed, but email could not be sent" instead. The toast adds why:
+  - "This address isn't valid." **Revoke** that invite, check the address for typos, and invite the right one.
+  - "Earlier emails to this address bounced or were refused." The address can't receive our emails. Press **Copy link** and send the link another way.
+  - "The email service didn't answer. Try again in a minute." Wait a minute, then press **Resend**.
+  - "Something on our side stopped it. We're on it." Press **Copy link** and send the link yourself, or try **Resend** later.
 - **The invitee can't sign up from the link.** They must use the email address the invite was sent to. Their domain must be in **Your allowed domains**, if you set any.
 - **The invite page says "This workspace is full."** A workspace can have at most 100 members. Deactivate someone you no longer need, or email support@helpalive.com.
 - **You are asked for your password.** Some actions here ask you to confirm it. See [Your account](/dashboard/account#confirm-your-password).
