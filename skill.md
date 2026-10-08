@@ -30,7 +30,7 @@ Training the agent, choosing who gets it, and billing are done by an admin in th
 <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
 ```
 
-2. Wherever the app knows the signed-in user, right after login and on every page load, add the queue lines and then `identify()`:
+2. Wherever the app knows the signed-in user, right after login and on every page load, add the queue lines and then `identify()`. Call it as early in each page load as you can: until it runs, the script waits briefly before sending the page's activity, so that activity is credited to the right person.
 
 ```javascript
 // Lets the calls below run before the script has loaded. Keep it first.
@@ -86,11 +86,11 @@ Sign a token on the server and pass it as `userToken` in place of `userId` and `
 - Claims: `sub` (the user id, as a string) and `tenant` (the company id, as a string; leave it out if the app has none). No other claims.
 - Never put the signing secret in the browser, the repository, or a prompt.
 
-Details and server code in Node, Python, Ruby, PHP, Java and Go: https://docs.helpalive.com/sdk/verify-users.md
+Details and server code in Node.js, Python, Ruby, PHP, Java, Go, C# and Edge / Deno / Bun: https://docs.helpalive.com/sdk/verify-users.md
 
 ## Check it works
 
-On **Settings → Setup & API Key**, the panel says **Everything is working.** when the required checks are green; the last one turns green once a test from **Test it on your app** has run. Then turn the agent on for users on **Controls**. Sign in to the app as a user who gets the agent and open the chat button.
+On **Settings → Setup & API Key**, **Everything is working.** shows once the first three of the four setup steps have a check. Step 1, **Add HelpAlive to your app**, says "Recognized a signed-in person 3 minutes ago." once `identify()` runs. Step 3, **Test it on your app**, gets its check once a test from the dashboard's **Test** page has run. Then turn the agent on for users on **Controls**. Sign in to the app as a user who gets the agent and open the chat button.
 
 ## More
 

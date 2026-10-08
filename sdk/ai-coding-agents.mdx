@@ -142,7 +142,7 @@ The full guide, if you need more detail: https://docs.helpalive.com/sdk/verify-u
 ## Check it works
 
 1. Deploy the change, sign in to your app and open a page.
-2. Open your app, sign in and click around, then come back to **Settings → Setup & API Key**. **HelpAlive is on your pages** and **It knows who is signed in** turn green.
+2. Open your app, sign in and click around, then come back to **Settings → Setup & API Key**. Step **Add HelpAlive to your app** gets a check and says "Recognized a signed-in person 3 minutes ago."
 3. After the second prompt, open the agent in your app. Then press refresh on **Check your setup**, in step **Verify your users**.
 
 ## Troubleshooting
@@ -151,8 +151,8 @@ The full guide, if you need more detail: https://docs.helpalive.com/sdk/verify-u
   <Accordion title="The agent put reset() next to identify()">
     Move `reset()` into your logout code. Run straight after `identify()`, it forgets the user at once and the agent never appears.
   </Accordion>
-  <Accordion title="It knows who is signed in stays grey">
-    Check that the queue lines come before `identify()`, and that `userId` is not empty. [Install the script](/installation) lists every rule.
+  <Accordion title="Step 1 stays on Waiting for someone to sign in">
+    `identify()` isn't running. Check that the queue lines come before `identify()`, and that `userId` is not empty. [Install the script](/installation) lists every rule.
   </Accordion>
   <Accordion title="The coding agent asks for the signing secret">
     Don't give it. The prompt only needs the variable's name. Set the value on your server yourself.

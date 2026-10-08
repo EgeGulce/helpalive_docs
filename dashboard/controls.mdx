@@ -10,13 +10,13 @@ keywords:
   - per tenant limits
 ---
 
-**Controls** is where you decide whether the agent is on, who gets it and what it does for them. It also sets how much of your package they can use. It is the fifth item in the sidebar.
+**Controls** is where you decide whether the agent is on, who gets it and what it does for them. It also sets how much of your plan they can use. It is the fifth item in the sidebar.
 
 Nothing on Controls waits for **Publish**. When you press **Save changes**, it applies at once, and the toast offers **Undo**. Turning the agent on is the one exception: its box saves for you.
 
 ## Prerequisites
 
-- At least one published source on **Train**. The switch can't turn the agent on without one. Until then the band says **Off: no docs published.** and, under the switch, "Turn on needs your docs first. Add them on Train".
+- At least one published source on **Train**. The switch can't turn the agent on without one. Until then the band says **Off: no docs published.** and, under the switch, "Turning it on needs your docs first. Add them on Train".
 - HelpAlive installed in your app, with `identify()` running for signed-in people. See [Quickstart](/quickstart).
 
 ## Turn the agent on
@@ -32,7 +32,7 @@ Nothing on Controls waits for **Publish**. When you press **Save changes**, it a
     Under **What it does**, choose **Does the steps** or **Shows how**.
   </Step>
   <Step title="Switch it on">
-    Move the switch in the band to **On**. The **Turn the agent on** box opens at once. It names who the agent turns on for, and any Setup step not finished. If no test has run yet, it first recommends testing, with a **Test it first** link. Press **Turn on** to save; there is no **Save changes** after it. **Not yet** puts the switch back to off.
+    Move the switch in the band to **On**. The **Turn the agent on** box opens at once. It names who the agent turns on for, and any Setup step not finished. If no test has run yet, it first recommends testing, with a **Go to Test** link. Press **Turn on** to save; there is no **Save changes** after it. **Not yet** puts the switch back to off.
   </Step>
 </Steps>
 
@@ -52,13 +52,13 @@ While the agent is off, the band also recommends what to do first:
 - "Only allow verified users is off. We recommend it, so nobody can use the agent as someone else." with **Set it up**;
 - "Choose who gets it below before you turn it on."
 
-While the agent is off, the band also has **Test it yourself first**, which opens the **Test** page. See [Test](/dashboard/test).
+While the agent is off, the band also has **Go to Test**, which opens the **Test** page. See [Test](/dashboard/test).
 
 If your plan needs a subscription and you have none, the band says "Your agent is off for your users until you subscribe." Its link opens **Settings → Billing and usage**.
 
 ## Your tests
 
-**Your tests** counts your test links and the assists tried with them: "Try the agent in your own app, in your browser only. Its assists and chats don't count toward your plan." While the agent is on, it has the **Test it on your app** button. **See every test, step by step, on Test** opens the **Test** page.
+**Your tests** counts your test links and the assists tried with them: "Try the agent in your own app, in your browser only. Its assists and chats don't count toward your plan." While the agent is on, it has a **Go to Test** button. **See every test, step by step, on Test** opens the **Test** page.
 
 ## Who gets it
 
@@ -102,14 +102,14 @@ Under it, **The most each can start a day** (assists) or **The most each can sen
 - **Each tenant** (shown when your app sends tenants)
 - **Your organisation**
 
-Leave a box empty to use our default, which the box shows in grey ("Empty uses our default"). A box can't go above the most your plan allows; the page says so if you try. See [Limits and usage](/dashboard/usage) for what your users see at a limit.
+"Leave it empty to use our default": an empty box shows that default in grey, or **No limit** when there is none. A box can't go above the most your plan allows; the page says so if you try. See [Limits and usage](/dashboard/usage) for what your users see at a limit.
 
-## How far over your package
+## How far over your plan
 
 A slider from 0% up to the most your plan allows. It sets how far past your plan's assists and chat messages your users may go this month, billed as overage. It starts at the most your plan allows.
 
 - Above 0%, it says how many more assists and messages that allows until your plan period starts again.
-- At **0%**, everything stops at your package: "Stops at your package." and "Nothing more is billed."
+- At **0%**, everything stops at your plan's limit: "Stops at your plan's limit until 1 Nov." and "Nothing more is billed."
 - During the free trial there is no overage. When the trial's assists or chat messages are used, the page says so, "until your plan starts on" the date.
 - While a payment is failing, it says "Overages are paused until your last payment goes through." See [A failed payment](/dashboard/billing#a-failed-payment).
 - **Buy extra on Billing** opens **Settings → Billing and usage** to buy a pack instead.
@@ -132,7 +132,7 @@ At the foot of the page, **How we count** says: "An assist counts once HelpAlive
 - **The band says "On, but for nobody yet".** **Selected** is chosen with an empty list. Add tenants or people, or choose **Everyone**.
 - **You turned it on and see no chat button.** Wait a minute and load a few pages. Check that `identify()` runs, and that **Who gets it** includes you.
 - **"That limit can be set up to ..."** A daily limit is above what your plan allows. Lower the highlighted number.
-- **Your users stopped getting assists.** You may have reached your plan's assists with **How far over your package** at 0%, or your trial's assists. See [Limits and usage](/dashboard/usage).
+- **Your users stopped getting assists.** You may have reached your plan's assists with **How far over your plan** at 0%, or your trial's assists. See [Limits and usage](/dashboard/usage).
 
 ## Next
 
