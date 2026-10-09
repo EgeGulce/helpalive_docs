@@ -1,5 +1,5 @@
 ---
-title: "Audience and Reports: who uses the agent"
+title: "HelpAlive Audience and Reports: tenants, people and assists"
 sidebarTitle: "Audience and Reports"
 description: "See which tenants and people use the HelpAlive agent, open any assist or chat, and read the reports on what the agent did."
 keywords:
@@ -10,13 +10,21 @@ keywords:
   - agent use by tenant
 ---
 
-**Audience** and **Reports** show who uses the agent and how it goes. They are the sixth and seventh items in the sidebar. **Audience** goes from tenants to people to each assist or chat. **Reports** adds up what the agent did over a period.
+**Audience** and **Reports** are the pages in the HelpAlive dashboard that show who uses the agent and how it goes. They are the sixth and seventh items in the sidebar. **Audience** goes from tenants to people to each assist or chat. **Reports** adds up what the agent did over a period.
 
-A tenant is one of your own customers: the `tenantId` your app passes to `identify()`. A person is one signed-in user of your app. See [Key concepts](/product/concepts).
+A tenant refers to one of your own customers: the `tenantId` your app passes to `identify()`. A person is one signed-in user of your app. See [Key concepts](/product/concepts).
+
+## Audience and Reports at a glance
+
+- **Audience** goes from tenants to people to each assist or chat.
+- **Reports** adds up what the agent did over a period you pick, and each report downloads as CSV.
+- Assists and chats from a test link on **Test** are marked **Test run** or **Test chat**.
+- Your team can read your users' chats here.
+- After your retention window, a chat keeps its counts and dates but loses its words.
 
 ## Audience
 
-### The numbers at the top
+### The Audience figures
 
 | Figure | What it counts |
 | --- | --- |
@@ -28,7 +36,7 @@ A tenant is one of your own customers: the `tenantId` your app passes to `identi
 
 ### Tenants
 
-The left list, **Tenants**, holds "The companies or workspaces in your app." People your app sends with no tenant appear together as one tenant, **B2C customers**. Use **Search tenants…**, and filter with **Every tenant**, **Helped** or **Not helped yet**. **All tenants** shows people across every tenant.
+The left list, **Tenants**, holds "The companies or workspaces in your app." **B2C customers** refers to the one tenant that holds every person your app sends with no tenant. Use **Search tenants…**, and filter with **Every tenant**, **Helped** or **Not helped yet**. **All tenants** shows people across every tenant.
 
 Click a tenant to show its people and open its drawer.
 
@@ -36,7 +44,7 @@ Click a tenant to show its people and open its drawer.
 
 The right list, **People**, shows each person with when they were last active. Use **Search people…** and filter by **Desktop** or **Mobile**.
 
-### The drawer
+### The Audience drawer
 
 Clicking a row opens a drawer. It goes one level deeper each time, and **Open as page** shows any level as a full page.
 
@@ -53,11 +61,11 @@ The **Privacy** part of a tenant or person shows their tracking state and histor
 
 ## Reports
 
-### The period
+### The report period
 
 Pick **Last 24 hours**, **Last 7 days**, **Last 30 days** (the default), **Last 90 days** or **Last 365 days**. **More ranges → Custom range** picks your own dates, up to a year.
 
-### The reports
+### The five reports
 
 Each report has a button to download it as CSV.
 
@@ -80,7 +88,7 @@ Each report has a button to download it as CSV.
 | **Abandoned** | They left the page while it ran. |
 | **Still going** | Started and not ended yet. |
 
-### A page's detail
+### A page's detail drawer
 
 In **Questions and assists by page**, click a number to open that page's drawer: the questions asked there, the assists started there, and the assists that did not finish, each saying how far it got. Questions past your retention window keep their count but not their words.
 
@@ -91,8 +99,8 @@ Once people use the agent in your app, **Audience** lists them under their tenan
 ## Troubleshooting
 
 - **A tenant shows "Unnamed workspace".** Pass `tenantName` in `identify()`. See [Identify users](/sdk/identify).
-- **Audience is empty.** Nobody has been identified yet. The list says "No activity yet. Add HelpAlive to your app on Setup to start tracking." Finish the step **Add HelpAlive to your app** on **Settings → Setup & API Key**. See [The four steps](/dashboard/setup#the-four-steps).
-- **A chat has no words.** It is older than your retention window, or the person's data was deleted.
+- **Audience is empty.** This is because nobody has been identified yet. The list says "No activity yet. Add HelpAlive to your app on Setup to start tracking." Finish the step **Add HelpAlive to your app** on **Settings → Setup & API Key**. See [The four steps](/dashboard/setup#the-four-steps).
+- **A chat has no words.** This is because it is older than your retention window, or the person's data was deleted.
 
 ## Next
 

@@ -1,5 +1,5 @@
 ---
-title: "Publish or discard changes to the agent"
+title: "Publish or discard changes to the HelpAlive agent"
 sidebarTitle: "Publishing"
 description: "Which HelpAlive changes wait for Publish (Train and Appearance) and which apply as soon as you save (Controls), and how to publish or discard a draft."
 keywords:
@@ -9,7 +9,19 @@ keywords:
   - discard draft
 ---
 
-This page explains which changes wait for **Publish** and which apply as soon as you save. It is for anyone on your team who edits the agent.
+**Publishing** is how changes to the HelpAlive agent reach your users. Changes on **Train** and **Appearance** wait as a draft until you press **Publish**, while changes on **Controls** and **Settings** apply as soon as you save. This page explains which is which, and how to publish or discard a draft. It is for anyone on your team who edits the agent.
+
+## Publishing at a glance
+
+- A draft means that your users don't see the change yet. Only the **Test** page reads it.
+- **Train** and **Appearance** changes wait for **Publish**. **Controls** and **Settings** changes apply when you save.
+- While anything waits, the **Unpublished changes** bar is pinned to the top of every dashboard page.
+- **Publish now** takes every draft live at once. **Discard changes** throws every draft away.
+- After you publish, the widget in your app picks up the change within a minute or a few page loads.
+
+## Why some changes wait for Publish
+
+Changes to what the agent knows and how it looks wait for **Publish** because you can then try them on **Test** first, before any user sees them. Changes to who gets the agent and what it may do apply at once. After you save them, **Controls** offers **Undo** instead.
 
 ## What waits for Publish
 
@@ -41,18 +53,18 @@ These are never drafts. They apply when you save.
     **Preview on Test** opens the **Test** page, which runs your questions against the draft.
   </Step>
   <Step title="Publish">
-    Press **Publish**. The **Publish changes** dialog lists what goes live: **Config sections**, **Knowledge docs** and **New crawls**. For a new crawl it shows **Live now** against **New crawl**, so you can catch a crawl that found too few pages.
+    Press **Publish**. The **Publish changes** dialog lists what goes live: **Config sections**, **Knowledge docs** and **New crawls**. For a new crawl it shows **Live now** against **New crawl**. This means that you can catch a crawl that found too few pages before it replaces what is live.
   </Step>
   <Step title="Confirm">
     Press **Publish now**. The toast says "Published. Live on your site now."
   </Step>
 </Steps>
 
-A new source that is still crawling stays a draft. While new sources are the only change and all still crawl, the bar says "Publish appears when the crawl finishes."
+A new source that is still crawling stays a draft, because there is nothing complete to publish yet. While new sources are the only change and all still crawl, the bar says "Publish appears when the crawl finishes."
 
 ## Discard a draft
 
-In the bar's menu, **More draft actions → Discard draft** opens **Discard unpublished changes?**. Press **Discard changes** to throw away every draft. A waiting re-crawl is thrown away too, and that source keeps what is live.
+In the bar's menu, **More draft actions → Discard draft** opens **Discard unpublished changes?**. Press **Discard changes** to throw away every draft. A waiting re-crawl is thrown away too, which means that the source keeps what is live.
 
 ## Check it works
 

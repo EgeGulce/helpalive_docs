@@ -1,5 +1,5 @@
 ---
-title: "Test the HelpAlive agent before you publish"
+title: "Test the HelpAlive agent with question batches and test links"
 sidebarTitle: "Test"
 description: "Run test questions against the HelpAlive agent and compare runs, or try the whole agent, assists included, on your own app with a test link."
 keywords:
@@ -9,12 +9,19 @@ keywords:
   - preview draft
 ---
 
-**Test** lets you try the agent before your users do. It is the third item in the sidebar, with two views, switched at the top right. **On your app**, the one it opens on, tries the whole agent in your real app; see [Test it on your app](#test-it-on-your-app). **Question batches** runs a batch of questions through the agent so you can read its answers. Use it after you change sources, tone, length or custom responses on **Train**, before you press **Publish**.
+**Test** is the page in the HelpAlive dashboard where you try the agent before your users do. It is the third item in the sidebar, with two views, switched at the top right. **On your app**, the one it opens on, tries the whole agent in your real app; see [Test it on your app](#test-it-on-your-app). **Question batches** runs a batch of questions through the agent so you can read its answers. Use it after you change sources, tone, length or custom responses on **Train**, before you press **Publish**.
 
-## What a question batch tests
+## Testing at a glance
+
+- **Question batches** test chat answers: up to 50 questions a run, read side by side with **Compare**.
+- **On your app** tests the whole agent, assists included, through a test link that works in one browser for 14 days.
+- Tests never reach your users and never count against your plan. Your workspace gets 300 test chats and 50 test assists a month.
+- Nothing you test goes live until you press **Publish**.
+
+## How a question batch works
 
 - The page runs your questions through the same answering steps as the chat in your app.
-- While you have unpublished changes to guidance, custom responses or sources, **Question batches** uses them, and the page shows **Previewing draft**. The input card says "Unpublished changes will be included."
+- While you have unpublished changes to guidance, custom responses or sources, **Question batches** uses them, and the page shows **Previewing draft**, which means that the answers include your unpublished changes. The input card says "Unpublished changes will be included."
 - With nothing unpublished, it answers from your published guidance, custom responses and docs, the ones your users' chat answers from.
 - Tests never count against your plan. Each question in a batch counts as one of your workspace's test chats for the month.
 
@@ -41,7 +48,7 @@ Question batches test chat answers only. To try assists too, use [Test it on you
 
 Each run appears in the list on the left with its state: **Queued**, **Running**, **Done**, **Cancelled** or **Error**. Open a run to see each question and a plain-text preview of the agent's answer. Click a row for **Question detail**, including **Sources it answered from**. An answer that lands while the detail is open shows there.
 
-The summary strip at the top says how the run is going, for example "Running: 8 of 12 answered", with a clock that keeps ticking. Once it ends, it says how it went, for example "Finished all 12 questions". Questions a stopped run never reached show **Not asked**. Once a run has ended, you can:
+The summary strip at the top says how the run is going, for example "Running: 8 of 12 answered", with a clock that keeps ticking. Once it ends, it says how it went, for example "Finished all 12 questions". **Not asked** means that a stopped run never reached that question. Once a run has ended, you can:
 
 - save the questions as a reusable set, to run them again later;
 - export the results as a CSV file, which opens in a spreadsheet with accents intact and no cell run as a formula;
@@ -51,7 +58,7 @@ The summary strip at the top says how the run is going, for example "Running: 8 
 
 Open a finished or canceled run and press **Compare** in its summary strip. The **Compare runs** view opens. Pick a second run under **Pick a run to compare…**.
 
-HelpAlive pairs the answers by question and puts them side by side, each with its sources. The header counts them, for example "12 questions asked in both runs, 2 in only one." Above the answers, a box lists what changed between the runs, such as docs added or "The answer guidance changed." A pair whose sources differ shows **Sources changed**. Questions asked in only one run are listed at the end. **Export CSV** saves the comparison.
+HelpAlive pairs the answers by question and puts them side by side, each with its sources. The header counts them, for example "12 questions asked in both runs, 2 in only one." Above the answers, a box lists what changed between the runs, such as docs added or "The answer guidance changed." **Sources changed** means that the two answers in a pair drew on different sources. Questions asked in only one run are listed at the end. **Export CSV** saves the comparison.
 
 Answers can be worded differently even when nothing changed, because the agent writes each answer afresh. Run the same set before and after a change on **Train** to see what the change did.
 

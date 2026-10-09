@@ -1,5 +1,5 @@
 ---
-title: "Install with an AI coding agent"
+title: "Install HelpAlive with an AI coding agent prompt"
 sidebarTitle: "AI coding agents"
 description: "Paste one prompt into Claude Code, Codex, Cursor or GitHub Copilot to install HelpAlive, and a second one to verify your users."
 keywords:
@@ -9,7 +9,15 @@ keywords:
   - Codex GitHub Copilot install
 ---
 
-This page gives your developer the two prompts the dashboard hands to an AI coding agent: one installs HelpAlive, the other verifies your users. Each prompt carries every instruction itself, so the agent needs nothing else.
+The HelpAlive coding agent prompts are two prompts from the dashboard that you paste into an AI coding agent such as Claude Code, Codex, Cursor or GitHub Copilot: one installs HelpAlive, the other verifies your users. This page gives your developer both. Each prompt carries every instruction itself, so the agent needs nothing else.
+
+## Coding agent prompts at a glance
+
+- You copy each prompt from **Settings → Setup & API Key**. The install prompt there already has your project key.
+- The install prompt adds the tag, the `identify()` call and the `reset()` call, and adds our hosts to your Content Security Policy if your app has one.
+- The verify prompt makes a user token on your server and passes it to `identify()`.
+- Neither prompt contains your signing secret. You set `HELPALIVE_SIGNING_SECRET` on your server yourself.
+- When the agent is done, it lists the files it changed, so you can review them.
 
 ## Prerequisites
 
@@ -88,7 +96,7 @@ The full guide, if you need more detail: https://docs.helpalive.com/installation
 
 ## Verify your users
 
-This prompt makes a user token on your server and passes it to `identify()`. It never contains your signing secret. The agent adds `HELPALIVE_SIGNING_SECRET` to your list of environment variables with no value, and you set the value yourself.
+This prompt makes a user token on your server and passes it to `identify()`. A user token refers to the token your server makes for the signed-in person, which tells HelpAlive who they are. The prompt never contains your signing secret. The agent adds `HELPALIVE_SIGNING_SECRET` to your list of environment variables with no value, and you set the value yourself.
 
 <Steps>
   <Step title="Create your signing secret">
@@ -145,19 +153,17 @@ The full guide, if you need more detail: https://docs.helpalive.com/sdk/verify-u
 2. Open your app, sign in and click around, then come back to **Settings → Setup & API Key**. Step **Add HelpAlive to your app** gets a check and says "Recognized a signed-in person 3 minutes ago."
 3. After the second prompt, open the agent in your app. Then press refresh on **Check your setup**, in step **Verify your users**.
 
-## Troubleshooting
+## What if the agent put reset() next to identify()?
 
-<AccordionGroup>
-  <Accordion title="The agent put reset() next to identify()">
-    Move `reset()` into your logout code. Run straight after `identify()`, it forgets the user at once and the agent never appears.
-  </Accordion>
-  <Accordion title="Step 1 stays on Waiting for someone to sign in">
-    `identify()` isn't running. Check that the queue lines come before `identify()`, and that `userId` is not empty. [Install the script](/installation) lists every rule.
-  </Accordion>
-  <Accordion title="The coding agent asks for the signing secret">
-    Don't give it. The prompt only needs the variable's name. Set the value on your server yourself.
-  </Accordion>
-</AccordionGroup>
+Move `reset()` into your logout code. Run straight after `identify()`, it forgets the user at once, which is why the agent never appears.
+
+## Why does step 1 stay on Waiting for someone to sign in?
+
+**Waiting for someone to sign in** means that `identify()` isn't running. Check that the queue lines come before `identify()`, and that `userId` is not empty. [Install the script](/installation) lists every rule.
+
+## Should I give the coding agent the signing secret?
+
+No, don't give it, because the prompt only needs the variable's name. Set the value on your server yourself.
 
 ## Give your coding agent these docs
 

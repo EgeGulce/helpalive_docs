@@ -1,5 +1,5 @@
 ---
-title: "What the HelpAlive agent won't do"
+title: "What HelpAlive's agent won't do: hand-back steps and limits"
 sidebarTitle: "What it won't do"
 description: "The steps HelpAlive always hands back to the user, the questions it always asks first, and the limits on what it answers, in one list."
 keywords:
@@ -10,11 +10,19 @@ keywords:
   - AI answers only from docs
 ---
 
-This page lists everything HelpAlive's agent hands back to the user, asks before doing, or won't say. It is for admins and security reviewers who need to know the agent's limits before turning it on.
+HelpAlive's agent has fixed limits: steps it hands back to the user, things it asks before doing, and things it won't say. This page lists every one. It is for admins and security reviewers who need to know the agent's limits before turning it on.
 
-Each "it won't" here is how the agent behaves in every app. You don't have to set anything up for it.
+Each "it won't" here refers to how the agent behaves in every app. You don't have to set anything up for it.
 
-## Steps it always hands back
+## The agent's limits at a glance
+
+- Even with **Does the steps**, the agent hands back uploads, codes sent to the user, passwords it was not given, and anything outside your page.
+- It asks before writing to a record the user didn't name, and once before deleting many records by a rule.
+- It answers from your published sources on **Train**. Your users never get answers from drafts.
+- It never tells a user to "contact support", never mentions your limits, and never hides that it's an AI.
+- These limits hold in every app, with nothing to set up.
+
+## Steps the agent always hands back
 
 During an assist, even with **Does the steps**, the agent hands these steps to the user and says so:
 
@@ -23,25 +31,25 @@ During an assist, even with **Does the steps**, the agent hands these steps to t
 | Uploading a file | Only the user has the file. |
 | A code sent to their phone or email | Only the user receives it. |
 | A password or other sign-in detail it was not given | Only the user should type it. |
-| Downloads, file pickers and the browser's or computer's own dialogs | They sit outside your page, so it can't operate or check them. |
+| Downloads, file pickers and the browser's or computer's own dialogs | It can't operate or check them, because they sit outside your page. |
 | Anything in another app or another site | It works only inside your app, in the tab the user has open. |
 | Canvas areas, such as drawing boards or some charts | They show pictures, not controls it can read. |
 | A part of the page it can't read yet, such as some embedded frames | An area it can't read isn't treated as empty. It says so and hands the step over. |
 | A control it can't name | When it can't tell what a control does, it asks rather than guesses. |
 
-When it hands a step back, the control is highlighted when it can be, and the bar says **Your turn**. The user presses **Done** when finished, or **Skip**.
+When it hands a step back, the control is highlighted when it can be, and the bar says **Your turn**, which means that the step is the user's. The user presses **Done** when finished, or **Skip**.
 
-## Things it always asks first
+## Things the agent always asks first
 
 - **Content only the user can give.** A name, a message's wording, a choice that is theirs to make. It asks at the moment it needs the answer, one thing at a time.
 - **A record the user didn't name.** If a change would land on a record the user never named, it asks before writing.
-- **Deleting many records by a rule.** Take a request like "delete all drafts except the last one". It finds the records, names them, and asks once before the first deletion. One answer covers the whole set.
+- **Deleting many records by a rule.** This refers to a request like "delete all drafts except the last one". It finds the records, names them, and asks once before the first deletion. One answer covers the whole set.
 
 <Warning>
 With **Does the steps**, the agent presses Save, Submit and Delete when the task calls for it. Deleting by a rule is the one case where it always confirms first. If you want users to make every click themselves, set **Shows how** on **Controls**.
 </Warning>
 
-## What it won't say
+## What the agent won't say
 
 - **It won't send users elsewhere.** It never tells a user to "contact support" or to ask their admin.
 - **It won't stretch a feature to fit.** When your app can't do something, it says so plainly, then helps with the parts it can.

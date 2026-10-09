@@ -1,5 +1,5 @@
 ---
-title: "Install the HelpAlive script in your web app"
+title: "Install the HelpAlive script: tag, identify() and reset()"
 sidebarTitle: "Install the script"
 description: "Add HelpAlive to any web app with one tag in the head, an identify() call for the signed-in user and a reset() call at logout."
 keywords:
@@ -11,31 +11,39 @@ keywords:
   - HelpAlive identify reset
 ---
 
-This page shows your developer how to add HelpAlive to a web app by hand: one tag, one `identify()` call and one `reset()` call. It is complete on its own, so an AI coding agent can follow it without reading any other page.
+The HelpAlive script is one tag, one `identify()` call and one `reset()` call that your developer adds to your web app. This page shows how to add them by hand. It is complete on its own, so an AI coding agent can follow it without reading any other page.
 
 **Settings → Setup & API Key** shows the same code with your project key already filled in. It also offers two other ways in: [a prompt for an AI coding agent](/sdk/ai-coding-agents) and [Google Tag Manager](/sdk/google-tag-manager).
 
+## Installation at a glance
+
+- Put the tag in the `<head>` of every page, with `data-api-key` set to your project key.
+- Call `identify()` for the signed-in user right after login, and on every page load while they stay signed in.
+- Call `reset()` in your logout code, and keep it apart from `identify()`.
+- If your app sends a Content Security Policy, add HelpAlive's sources to it.
+- The tag loads in the background (`async`), so it doesn't hold up your page.
+
 ## Prerequisites
 
-- Your project key, from **Settings → Setup & API Key**. It is public: it goes in your pages and is safe to show.
+- Your project key, from **Settings → Setup & API Key**. It is public, which means that it goes in your pages and is safe to show.
 - Access to the layout or template that every page of your app shares.
 - Your developer, about 10 minutes.
 
-## The rules
+## The install rules
 
 Follow all of these. A missed rule usually fails without any error on screen.
 
 1. Put the tag in the `<head>` of every page, with `data-api-key` set to your project key.
 2. Keep the four queue lines above your first `HelpAlive` call.
 3. Call `identify()` for the signed-in user right after login, and on every page load while they stay signed in.
-4. Pass `userId` and `tenantId` as text or a number. `42` and `"42"` are the same person.
+4. Pass `userId` and `tenantId` as text or a number. `42` and `"42"` refer to the same person.
 5. Use a `userId` that never changes. Don't use an email address if users can change theirs.
 6. Pass `tenantId` only if your app has companies, workspaces or accounts. Leave it out otherwise.
 7. Pass `role`, `plan`, `displayName`, `email` and `tenantName` as text. A field of the wrong type is left out. Pass `createdAt` as Unix time in seconds.
 8. Call `reset()` in your logout code, and keep it apart from `identify()`. Never put it straight after `identify()`.
 9. If your app sends a Content Security Policy, add our sources, and put your nonce on our tag if your policy uses one.
 
-## Install it
+## How to install the script
 
 <Steps>
   <Step title="Paste the tag into the head of every page">
@@ -54,7 +62,7 @@ Follow all of these. A missed rule usually fails without any error on screen.
     | Nuxt | `app.head` in `nuxt.config` |
     | Webflow, WordPress, Bubble and other builders | The site's custom code setting for the head |
 
-    The tag loads in the background (`async`), so it doesn't hold up your page. [The JavaScript reference](/sdk/reference#script-tag-attributes) lists the other attributes the tag accepts.
+    The tag doesn't hold up your page, because it loads in the background (`async`). [The JavaScript reference](/sdk/reference#script-tag-attributes) lists the other attributes the tag accepts.
   </Step>
 
   <Step title="Tell HelpAlive who is signed in">
@@ -73,7 +81,7 @@ Follow all of these. A missed rule usually fails without any error on screen.
 
     <Tabs>
       <Tab title="B2B: users belong to tenants">
-        Each customer company or workspace is a tenant, and its users sign in under it. `tenantId` and `tenantName` say which tenant each user belongs to. Some users have no tenant? Leave both out for them: your dashboard groups them as **B2C customers**.
+        A tenant refers to a customer company or workspace, and its users sign in under it. `tenantId` and `tenantName` say which tenant each user belongs to. Some users have no tenant? Leave both out for them: your dashboard groups them as **B2C customers**.
 
         ```javascript
         // On every page while someone is logged in, starting right after login
@@ -121,7 +129,7 @@ Follow all of these. A missed rule usually fails without any error on screen.
     HelpAlive.reset()
     ```
 
-    Pasted straight after `identify()`, it would forget the user at once and the agent would never appear. `reset()` also closes the agent and clears its conversation from the browser.
+    Never paste it straight after `identify()`, because it would forget the user at once and the agent would never appear. `reset()` also closes the agent and clears its conversation from the browser.
   </Step>
 
   <Step title="Allow our hosts in your Content Security Policy, if you have one">

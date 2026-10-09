@@ -1,5 +1,5 @@
 ---
-title: "Verify users with a signed token"
+title: "Verify HelpAlive users with a signed JWT user token"
 sidebarTitle: "Verify users"
 description: "Have your server sign each user id, so nobody can use the agent as someone else once Only allow verified users is on."
 keywords:
@@ -10,9 +10,17 @@ keywords:
   - chat widget identity verification
 ---
 
-This page shows your developer how to prove to HelpAlive who each signed-in user is, with a token your server signs. It is optional and recommended. It is complete on its own, so an AI coding agent can follow it without reading any other page.
+Verifying users means that your server signs each signed-in user's id into a user token, which proves to HelpAlive who that user is. This page shows your developer how. It is optional and recommended. It is complete on its own, so an AI coding agent can follow it without reading any other page.
 
-Without it, HelpAlive trusts the user id your page sends. Someone who edits the page in their browser could send another user's id and read that user's chats. With it, your server signs each id. Once you turn on **Only allow verified users**, nobody can pretend to be someone else. Add it before you open the agent to all your users.
+Without it, HelpAlive trusts the user id your page sends. This means that someone who edits the page in their browser could send another user's id and read that user's chats. With it, your server signs each id. Once you turn on **Only allow verified users**, nobody can pretend to be someone else. Add it before you open the agent to all your users.
+
+## User verification at a glance
+
+- Your server signs a user token with HS256, keyed on the text of your signing secret.
+- Your page passes the token to `identify()` as `userToken`, in place of `userId` and `tenantId`.
+- The secret stays on your server, out of your pages, your repository and any prompt for an AI coding agent.
+- Once you turn on **Only allow verified users**, HelpAlive refuses every request without a valid user token.
+- Setup takes your developer about 15 minutes, and everything is also on **Settings → Setup & API Key**, step **Verify your users**.
 
 ## Prerequisites
 
@@ -32,7 +40,7 @@ Without it, HelpAlive trusts the user id your page sends. Someone who edits the 
 8. Keep the secret out of your pages, your repository and any prompt for an AI coding agent.
 9. Keep `reset()` in your logout code, apart from `identify()`, as before.
 
-## Set it up
+## How to set up user verification
 
 <Steps>
   <Step title="Create your signing secret">
@@ -40,7 +48,7 @@ Without it, HelpAlive trusts the user id your page sends. Someone who edits the 
   </Step>
 
   <Step title="Make a user token on your server">
-    Where your server knows the signed-in user, add these lines. They make a short signed text, the user token. `user` stands for your app's signed-in user.
+    Where your server knows the signed-in user, add these lines. They make the user token, which refers to a short signed text that says who the user is. `user` stands for your app's signed-in user.
 
     <Tabs>
       <Tab title="Node.js">
@@ -261,7 +269,7 @@ The **Verify your users** step has a prompt for Claude Code, Codex, Cursor or Gi
 ## Check it works
 
 1. Deploy your change, sign in to your app and open the agent.
-2. On **Settings → Setup & API Key**, step **Verify your users**, press refresh on **Check your setup**. It looks for a verified sign-in in the last 30 minutes and says **Your signing works** when it finds one.
+2. On **Settings → Setup & API Key**, step **Verify your users**, press refresh on **Check your setup**. It looks for a verified sign-in in the last 30 minutes. **Your signing works** means that it found one.
 3. The **Verified sign-ins, last 7 days** card shows the share of sign-ins that arrived verified.
 
 If tokens arrive but fail, the card says how many and what to fix:
@@ -281,7 +289,7 @@ Until you turn this on, everyone can see the agent. Turn it on once every page t
     The switch unlocks once verified sign-ins arrive. It turns on only after a verified sign-in in the last 30 minutes, so sign in to your app and open the agent first.
   </Step>
   <Step title="Turn on Only allow verified users">
-    It sits under the **Verified sign-ins, last 7 days** card. It shows **Recommended** once nearly all sign-ins are verified, and says how many sign-ins it would have refused in the last 7 days.
+    It sits under the **Verified sign-ins, last 7 days** card. **Recommended** on the switch means that nearly all sign-ins are verified. The switch also says how many sign-ins it would have refused in the last 7 days.
   </Step>
   <Step title="Confirm">
     It asks first: "Hide the agent from anyone we can't verify?" The dialog says how many people in the last 7 days had no token, or a token that had expired or didn't check out. Press **Turn it on anyway**, or **Show me the fix** to open the setup instructions instead.
@@ -299,28 +307,27 @@ While the switch hides the agent from people, step 4 on **Settings → Setup & A
 
 You can turn it off at any time, and requests without a token are served again.
 
-## Rotate the secret
+## How to rotate the secret
 
 Click **Rotate** next to your secret and put the new one in `HELPALIVE_SIGNING_SECRET` on your server. Nothing in your code changes.
 
 The previous secret keeps working until you rotate again, so nobody is refused while you roll it out. If a secret leaked, rotate once more after your server uses the new one, and the leaked one stops working. Then put that newest secret on your server too, or the next rotation will cut your server off.
 
-## Troubleshooting
+## Why does the card say no verified sign-in when the server signs tokens?
 
-<AccordionGroup>
-  <Accordion title="The card says no verified sign-in, but the server signs tokens">
-    The check moves only when the agent is used. Sign in, open the agent, and press refresh. Then check that the page passes `userToken` to `identify()`, and that the response carrying it isn't cached.
-  </Accordion>
-  <Accordion title="Some users don't see the chat button">
-    Only allow verified users is on, and their page sent no valid token. Step 4 on **Settings → Setup & API Key** names the main reason and the fix. Check that every page that calls `identify()` sends a token, or turn the switch off while you fix it.
-  </Accordion>
-  <Accordion title="Users see Your session needs a refresh">
-    Their token expired and could not be renewed. Pass `refreshUserToken` to `identify()` so HelpAlive can get a fresh one, or leave the expiry out of the token.
-  </Accordion>
-  <Accordion title="The console says userToken is not a JWT">
-    The page passed something other than a signed token, often the secret itself. Pass the token your server made, and rotate the secret if it reached a page.
-  </Accordion>
-</AccordionGroup>
+The check moves only when the agent is used. Sign in, open the agent, and press refresh. Then check that the page passes `userToken` to `identify()`, and that the response carrying it isn't cached.
+
+## Why don't some users see the chat button?
+
+Some users don't see the chat button because **Only allow verified users** is on, and their page sent no valid token. Step 4 on **Settings → Setup & API Key** names the main reason and the fix. Check that every page that calls `identify()` sends a token, or turn the switch off while you fix it.
+
+## Why do users see Your session needs a refresh?
+
+Users see "Your session needs a refresh" because their token expired and could not be renewed. Pass `refreshUserToken` to `identify()` so HelpAlive can get a fresh one, or leave the expiry out of the token.
+
+## Why does the console say userToken is not a JWT?
+
+The console says this when the page passed something other than a signed token, often the secret itself. Pass the token your server made, and rotate the secret if it reached a page.
 
 ## Next
 

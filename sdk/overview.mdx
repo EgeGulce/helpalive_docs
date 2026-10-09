@@ -1,5 +1,5 @@
 ---
-title: "Install HelpAlive: overview and decisions"
+title: "HelpAlive install overview: what to add and decide first"
 sidebarTitle: "Install overview"
 description: "What your developer adds to your app to run HelpAlive, the three decisions to make before installing, and how you know the install is done."
 keywords:
@@ -9,7 +9,15 @@ keywords:
   - developer setup
 ---
 
-This page is for the developer who adds HelpAlive to your app, and for the admin who plans the work. It covers what you add, what to decide first, and how you know you're done.
+A HelpAlive install is three pieces of code your developer adds to your app: a script tag, an `identify()` call and a `reset()` call. This page is for the developer who adds HelpAlive to your app, and for the admin who plans the work. It covers what you add, what to decide first, and how you know you're done.
+
+## The install at a glance
+
+- You add one script tag, `identify()` and `reset()`, and nothing on your server unless you verify users.
+- There is nothing to tag in your pages, and no API to connect.
+- You can install with an AI coding agent, add the code yourself, or use Google Tag Manager.
+- Three choices come first: which id identifies a user, whether your users belong to tenants, and whether to verify users.
+- The install takes about 10 minutes, and verifying users about 15 more.
 
 ## Prerequisites
 
@@ -27,7 +35,7 @@ HelpAlive runs in your users' browsers, inside your app. You add three pieces of
 | `identify()` | Wherever your app knows the signed-in user | Tells HelpAlive who is signed in. The agent appears only after it runs. |
 | `reset()` | Your logout code | Forgets the user, so the next person on that browser starts fresh. |
 
-There is nothing to tag in your pages, and no API to connect. The agent reads your pages as they are. [Make your app easy for the agent](/sdk/agent-ready) has a few tips that help.
+There is nothing to tag in your pages, and no API to connect, because the agent reads your pages as they are. [Make your app easy for the agent](/sdk/agent-ready) has a few tips that help.
 
 Verifying users adds one more piece: a few lines on your server that sign each user id. Your signing secret stays on your server.
 
@@ -56,14 +64,14 @@ These three choices are hard to change later, because they shape the data HelpAl
     Use your app's own user id: one that never changes and is unique across your app. Don't use an email address if users can change theirs. A changed id starts a new user, with no chat history.
   </Step>
   <Step title="B2B or B2C: whether your users belong to tenants">
-    A tenant is one of your customers: the company or workspace a user signs in under. In a B2B app, pass its id as `tenantId` and its name as `tenantName`. **Controls** uses tenants to decide who gets the agent and to set limits, and **Reports** and **Audience** group users by them. In a B2C app, where people sign up on their own, leave both out: your dashboard groups those users as **B2C customers**. An app with both passes the tenant only for users who have one.
+    A tenant refers to one of your customers: the company or workspace a user signs in under. In a B2B app, pass its id as `tenantId` and its name as `tenantName`. **Controls** uses tenants to decide who gets the agent and to set limits, and **Reports** and **Audience** group users by them. In a B2C app, where people sign up on their own, leave both out: your dashboard groups those users as **B2C customers**. An app with both passes the tenant only for users who have one.
   </Step>
   <Step title="Whether to verify users">
-    Without verification, HelpAlive trusts the user id your page sends, so someone who edits the page could pose as another user. With it, your server signs each id. It is optional and recommended before you open the agent to all users. See [Verify users](/sdk/verify-users).
+    Without verification, HelpAlive trusts the user id your page sends, which means that someone who edits the page could pose as another user. With it, your server signs each id. It is optional and recommended before you open the agent to all users. See [Verify users](/sdk/verify-users).
   </Step>
 </Steps>
 
-## Done means
+## When the install is done
 
 The install is done when the first three of the four steps on **Settings → Setup & API Key** have a check. The band at the top then says "3 of 4 steps done. Your agent is ready for your users." The four steps are:
 

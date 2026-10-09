@@ -1,5 +1,5 @@
 ---
-title: "HelpAlive quickstart: live in your app in 4 steps"
+title: "HelpAlive quickstart: add the agent to your app in 4 steps"
 sidebarTitle: "Quickstart"
 description: "Go from a new HelpAlive account to the agent answering in your app, in the same four steps as Settings → Setup & API Key."
 keywords:
@@ -9,9 +9,17 @@ keywords:
   - turn on HelpAlive agent
 ---
 
-This page takes you from a new account to the agent answering inside your app. It is for whoever sets HelpAlive up: an admin, with a developer for step 1.
+The HelpAlive quickstart is the four steps from a new account to the agent answering inside your app. It is for whoever sets HelpAlive up: an admin, with a developer for step 1.
 
 The steps are the same four as **Settings → Setup & API Key** in your dashboard. That page fills in your project key for you, and each step turns green by itself once HelpAlive sees it working.
+
+## Quickstart at a glance
+
+- Step 1, for your developer: add the HelpAlive tag to every page, and call `identify()` for the signed-in person.
+- Step 2: on **Train**, add your help or docs site or upload a file, then press **Publish**.
+- Step 3: try the agent in your own app with **Test it on your app**, then turn it on for your users on **Controls**.
+- Step 4, optional and recommended: your server signs each user id, so that with **Only allow verified users** on, nobody can use the agent as someone else.
+- The agent appears only for signed-in people your app identifies.
 
 ## Prerequisites
 
@@ -19,7 +27,7 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
 - Access to your app's code, or to its Google Tag Manager container.
 - Your help center, docs site or help files.
 
-## Set it up
+## How to set up HelpAlive
 
 <Steps>
   <Step title="Add HelpAlive to your app">
@@ -45,7 +53,7 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
 
     <Tabs>
       <Tab title="B2B: users belong to tenants">
-        Each customer company or workspace is a tenant, and its users sign in under it. `tenantId` and `tenantName` say which tenant each user belongs to. Some users have no tenant? Leave both out for them: your dashboard groups them as **B2C customers**.
+        A tenant refers to a customer company or workspace, and its users sign in under it. `tenantId` and `tenantName` say which tenant each user belongs to. Some users have no tenant? Leave both out for them: your dashboard groups them as **B2C customers**.
 
         ```javascript
         // On every page while someone is logged in, starting right after login
@@ -110,7 +118,7 @@ If someone already had your app open when you turned the agent on, their browser
 
 At the top of **Settings → Setup & API Key**, the band says how many of the 4 steps are done and what to do next. Each step in the list under it gets a check once HelpAlive sees it working.
 
-The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back. The page checks again when you return, so you don't need to refresh. When the first three steps have a check, the band says your agent is ready for your users.
+The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back. You don't need to refresh, because the page checks again when you return. When the first three steps have a check, the band says your agent is ready for your users.
 
 ## Troubleshooting
 
@@ -127,7 +135,7 @@ Email [support@helpalive.com](mailto:support@helpalive.com). To help us answer q
 - which checks on **Settings → Setup & API Key** are green;
 - what the browser console shows with `data-debug` on the tag.
 
-Your project key is public, so you can include it. Never send your signing secret.
+Your project key is public, which means that you can include it. Never send your signing secret.
 
 ## Next
 

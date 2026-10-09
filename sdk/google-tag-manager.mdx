@@ -1,5 +1,5 @@
 ---
-title: "Install HelpAlive with Google Tag Manager"
+title: "Install HelpAlive with Google Tag Manager (GTM) tags"
 sidebarTitle: "Google Tag Manager"
 description: "Install HelpAlive through Google Tag Manager with a loader tag, an identify tag fed by the data layer, and a reset tag for logout."
 keywords:
@@ -9,7 +9,15 @@ keywords:
   - install without code deploy
 ---
 
-This page shows how to install HelpAlive through Google Tag Manager, for teams that manage scripts there. You add three Custom HTML tags in Tag Manager, and your app pushes two events to the data layer.
+The Google Tag Manager install is a way to add HelpAlive through Tag Manager, for teams that manage scripts there: you add three Custom HTML tags in Tag Manager, and your app pushes two events to the data layer. This page shows how to set it up.
+
+## Google Tag Manager install at a glance
+
+- The HelpAlive tag loads the script on **All Pages**. Your project key is public and safe to put in a tag.
+- Your app pushes `helpalive_identify` right after login and on every page load while the user stays signed in.
+- Your app pushes `helpalive_reset` in its logout code, apart from the identify push.
+- A second tag passes the identify fields on to HelpAlive, and a third tag forgets the user at logout.
+- Each `helpalive_` field you push needs a Data Layer Variable with the same name.
 
 ## Prerequisites
 
@@ -17,7 +25,7 @@ This page shows how to install HelpAlive through Google Tag Manager, for teams t
 - Your project key, from **Settings → Setup & API Key**. It is public and safe to put in a tag.
 - A developer who can add two `dataLayer.push` calls to your app: one after login, one at logout.
 
-## Set it up
+## How to set up HelpAlive in Tag Manager
 
 <Steps>
   <Step title="Add the HelpAlive tag">
@@ -56,11 +64,11 @@ This page shows how to install HelpAlive through Google Tag Manager, for teams t
     });
     ```
 
-    The user id and the person's name are always required. In a B2B app, the tenant id and name are required too; leave them out for users with no tenant.
+    The user id and the person's name are always required. In a B2B app, the tenant id and name are required too; leave them out for users with no tenant. A tenant refers to the company, workspace or account a user belongs to in your app.
   </Step>
 
   <Step title="Create a Data Layer Variable for each field">
-    In **Variables → New → Data Layer Variable** (version 2), create one variable for each `helpalive_` name you push, with the same name. Tag Manager won't publish a tag that names a variable you haven't created.
+    In **Variables → New → Data Layer Variable** (version 2), create one variable for each `helpalive_` name you push, with the same name. This is needed because Tag Manager won't publish a tag that names a variable you haven't created.
   </Step>
 
   <Step title="Add a second tag that passes it on">
@@ -82,7 +90,7 @@ This page shows how to install HelpAlive through Google Tag Manager, for teams t
     </script>
     ```
 
-    The first line lets this tag run before the HelpAlive script has loaded. Keep it.
+    The first line means that this tag can run before the HelpAlive script has loaded. Keep it.
   </Step>
 
   <Step title="Forget the user at logout">
@@ -137,19 +145,17 @@ connect-src https://api.helpalive.com https://chat.helpalive.com;
 2. Open your app, sign in and click around, then come back to **Settings → Setup & API Key**. Step **Add HelpAlive to your app** gets a check and says "Recognized a signed-in person 3 minutes ago."
 3. Log out in Preview mode and check that `helpalive_reset` fires the reset tag.
 
-## Troubleshooting
+## Why won't Tag Manager publish the identify tag?
 
-<AccordionGroup>
-  <Accordion title="Tag Manager won't publish the identify tag">
-    The tag names a variable you haven't created. Create each `helpalive_` Data Layer Variable, or delete its line from the tag.
-  </Accordion>
-  <Accordion title="The identify tag fires, but nobody is recognized">
-    The user id reached HelpAlive empty. Check that your push sets `helpalive_user_id` before the `helpalive_identify` event, and that the Data Layer Variable has exactly that name. To see the reason, add `s.setAttribute("data-debug","");` to the loader tag while you test, and read the browser console.
-  </Accordion>
-  <Accordion title="The previous user's chat stays open after logout">
-    The `helpalive_reset` push or its tag is missing. Add both, and publish the container.
-  </Accordion>
-</AccordionGroup>
+Tag Manager won't publish the identify tag because the tag names a variable you haven't created. Create each `helpalive_` Data Layer Variable, or delete its line from the tag.
+
+## Why does the identify tag fire, but nobody is recognized?
+
+Nobody is recognized because the user id reached HelpAlive empty. Check that your push sets `helpalive_user_id` before the `helpalive_identify` event, and that the Data Layer Variable has exactly that name. To see the reason, add `s.setAttribute("data-debug","");` to the loader tag while you test, and read the browser console.
+
+## Why does the previous user's chat stay open after logout?
+
+The previous user's chat stays open because the `helpalive_reset` push or its tag is missing. Add both, and publish the container.
 
 ## Next
 

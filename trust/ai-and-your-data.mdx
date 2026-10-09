@@ -10,7 +10,15 @@ keywords:
   - in-app AI privacy
 ---
 
-This page explains what data HelpAlive's agent sends to an AI model, when, and why, and what the model provider does with it. It is for privacy and security reviewers, and for admins writing their own privacy notice.
+HelpAlive's agent sends data to an AI model only at the moment a user uses the chat or an assist, so it can answer questions about the page they are on and do tasks there. This page explains what data HelpAlive's agent sends to an AI model, when, and why, and what the model provider does with it. It is for privacy and security reviewers, and for admins writing their own privacy notice.
+
+## AI and your data at a glance
+
+- The agent reads the current page only when someone uses the chat or an assist. Apart from password, card, one-time-code, file-upload and hidden fields, that page view is not redacted.
+- Before activity is stored, our servers remove names, email addresses, phone numbers, IP addresses and card numbers from its text.
+- The model provider doesn't train on data sent through its API.
+- The page the agent read is not saved to our database.
+- Chat messages and assist text are kept for the window you set on **Settings → Privacy Management**, 1 year by default.
 
 ## Why the agent needs your data
 

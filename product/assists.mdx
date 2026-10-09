@@ -1,7 +1,7 @@
 ---
-title: "Assists: the agent does the task or shows how"
+title: "HelpAlive assists: walkthroughs that do steps or show how"
 sidebarTitle: "Assists"
-description: "What users see when HelpAlive does a task for them or shows how, from the offer to the recap, and what counts as an assist on your plan."
+description: "What users see when a HelpAlive assist does a task for them or shows how, from the offer and the bar to the recap, and what counts on your plan."
 keywords:
   - HelpAlive assist
   - in-app guides
@@ -10,7 +10,15 @@ keywords:
   - interactive product walkthrough
 ---
 
-An assist is HelpAlive doing a task in your app for a user, or showing them how, one step at a time. This page shows what the user sees from the offer to the recap, in the widget's own words. Inside the widget, your users see an assist as a "walkthrough"; the dashboard calls it an assist.
+An assist is HelpAlive doing a task in your app for a user, or showing them how, one step at a time. This page shows what the user sees from the offer to the recap, in the widget's own words. Inside the widget, your users see an assist as a "walkthrough"; the dashboard calls it an assist. Both words refer to the same thing.
+
+## Assists at a glance
+
+- Every assist starts from the chat: the user asks, and an offer card appears with **Let's do it** or **Show me how**.
+- With **Does the steps**, HelpAlive clicks, types, picks and scrolls for the user. With **Shows how**, it highlights each control and the user does every click.
+- After each step, HelpAlive reads the page again to check the step landed. It hands back the steps only the user can do.
+- When the walkthrough ends, a recap card in the chat lists **You did**, **I did** and **Left for you**.
+- An assist counts once HelpAlive completes its first step. Assists from a test link don't count.
 
 ## Prerequisites
 
@@ -19,14 +27,14 @@ An assist is HelpAlive doing a task in your app for a user, or showing them how,
 
 Every assist starts from the chat. Each one is put together for the user's request and the page in front of them.
 
-## Does the steps, or shows how
+## Two modes: Does the steps or Shows how
 
 | Mode on **Controls** | Offer button | What happens |
 |---|---|---|
 | **Does the steps** | **Let's do it** | HelpAlive clicks, types, picks and scrolls for the user, including Save, Submit and Delete. It hands back the steps only the user can do. |
 | **Shows how** | **Show me how** | HelpAlive highlights each control and says what to do. The user does every click. |
 
-## Starting an assist
+## How an assist starts
 
 1. The user asks for something in the chat, such as "Can you add a teammate for me?"
 2. An offer card appears under the answer with the task's name and **My plan**, the rough steps.
@@ -34,12 +42,12 @@ Every assist starts from the chat. Each one is put together for the user's reque
 
 The card then shows **In progress** while the walkthrough runs.
 
-## The bar
+## The walkthrough bar
 
 A bar sits at the bottom of the page for the whole walkthrough. On its left, a line says who is acting:
 
-- **HelpAlive:** followed by what it's doing, such as working out the next step or waiting for the page.
-- **Your turn:** followed by what the user should do. A **Your turn** tag also shows.
+- **HelpAlive:** means that HelpAlive is acting. It is followed by what it's doing, such as working out the next step or waiting for the page.
+- **Your turn:** means that the user acts next. It is followed by what the user should do. A **Your turn** tag also shows.
 
 The current part of the task shows above that line.
 
@@ -70,7 +78,7 @@ With **Does the steps**, the bar shows **Take over**. Pressing it hands every re
 
 If the user steps away, the walkthrough waits, and the bar says "Paused. I'll pick this up when you're back." If the page reloads mid-walkthrough, it picks up where it left off.
 
-## Checks along the way
+## How HelpAlive checks each step
 
 After each step, HelpAlive reads the page again to check the step landed. If a press didn't land, it hands that step to the user rather than pressing again. Before deleting records chosen by a rule, it names them and asks once. See [What the agent won't do](/product/what-it-wont-do).
 
@@ -81,7 +89,7 @@ When the walkthrough ends, a recap card appears in the chat:
 - **Completed** or **Stopped** at the top. A stopped walkthrough says why, such as "You stopped this walkthrough.", and where it stopped.
 - **You did**, the steps the user did, with any hand-overs and questions.
 - **I did**, the steps HelpAlive did.
-- **Left for you**, anything not finished.
+- **Left for you** refers to anything not finished.
 
 The offer card then offers **Run again**, or **Continue from where we left off** when the walkthrough can carry on.
 

@@ -1,5 +1,5 @@
 ---
-title: "Identify users with HelpAlive.identify()"
+title: "Identify users and tenants with HelpAlive.identify()"
 sidebarTitle: "Identify users"
 description: "Call HelpAlive.identify() for the signed-in user on every page, with userId required and tenantId for apps with companies, and call reset() at logout."
 keywords:
@@ -10,14 +10,22 @@ keywords:
   - reset on logout
 ---
 
-This page explains every field of `identify()` and when to call `reset()`, for the developer who installs HelpAlive. `identify()` tells HelpAlive who is signed in. The agent appears only once it has run.
+`HelpAlive.identify()` is the call that tells HelpAlive who is signed in to your app. This page explains every field of `identify()` and when to call `reset()`, for the developer who installs HelpAlive. The agent appears only once `identify()` has run.
+
+## identify() at a glance
+
+- Call `identify()` right after login, and on every page load while the user stays signed in.
+- `userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too.
+- `role` and `plan` are recommended, because the agent reads both.
+- No events are sent for a visitor until `identify()` runs.
+- Call `reset()` in your logout code, apart from your `identify()` call.
 
 ## Prerequisites
 
 - The HelpAlive tag is in the head of every page. See [Install the script](/installation).
 - You have [decided which id to use](/sdk/overview#decide-before-you-install) for users and, if your app has them, for companies.
 
-## When to call it
+## When to call identify()
 
 Call it wherever your app already knows the signed-in user: right after login, and on every page load while they stay signed in. Calling it again with the same details is safe.
 
@@ -71,7 +79,7 @@ Pick the tab that matches your app. **Settings → Setup & API Key** shows the s
   </Tab>
 </Tabs>
 
-`userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended: the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too. A required field that is missing doesn't stop the call, except `userId`, but your dashboard has less to show for that person.
+`userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended because the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too. A required field that is missing doesn't stop the call, except `userId`, but your dashboard has less to show for that person.
 
 ### Apps with both
 
@@ -86,7 +94,7 @@ HelpAlive.identify({
 });
 ```
 
-Users sent without a tenant appear together in your dashboard as **B2C customers**.
+**B2C customers** refers to the group in your dashboard where users sent without a tenant appear together.
 
 | Field | Required | What it is |
 |-------|----------|------------|
@@ -101,7 +109,7 @@ Users sent without a tenant appear together in your dashboard as **B2C customers
 | `userToken` | No | The token your server makes once you [verify users](/sdk/verify-users). With a token, `userId` and `tenantId` come from the token. |
 | `refreshUserToken` | No | With `userToken`: a function that returns a fresh token from your server. If a token has expired, HelpAlive calls it and sends the request again, so the user notices nothing. A fresh token must name the same user and tenant. |
 
-A tenant is one of your customers: the company, workspace or account a user belongs to in your app. [Key concepts](/product/concepts) defines it with the other terms.
+A tenant refers to one of your customers: the company, workspace or account a user belongs to in your app. [Key concepts](/product/concepts) defines it with the other terms.
 
 ### Types matter
 
@@ -128,7 +136,7 @@ HelpAlive.reset()
 
 `reset()` forgets the user, their tenant and their token. It closes the agent and clears its conversation from the browser. The next person on the same browser never sees the last one's chat.
 
-Never put `reset()` straight after `identify()`. It would forget the user at once and the agent would never appear.
+Never put `reset()` straight after `identify()`, because it would forget the user at once and the agent would never appear.
 
 If your logout navigates away before `reset()` can run, HelpAlive still notices when a different user is identified on that browser. It closes the previous user's agent before loading the new one.
 
@@ -146,19 +154,17 @@ No events are sent for a visitor until `identify()` runs. Events wait in the pag
 
 Sign in to your app and click around, then come back to **Settings → Setup & API Key**. Step **Add HelpAlive to your app** gets a check and says when it last saw a signed-in user, for example "Recognized a signed-in person 3 minutes ago." The user also appears in **Audience**, under their tenant or under **B2C customers**.
 
-## Troubleshooting
+## Why does step 1 stay on Waiting for someone to sign in?
 
-<AccordionGroup>
-  <Accordion title="Step 1 stays on Waiting for someone to sign in">
-    Step **Add HelpAlive to your app** says "On your pages. Waiting for someone to sign in to your app." Our script is on your pages, but `identify()` isn't running, or it was refused. Check that the queue lines come first, that the call runs on every page load after login, and that `userId` is text.
-  </Accordion>
-  <Accordion title="Users show under the wrong company">
-    Your app switched company without calling `identify()` again. Call it after every switch.
-  </Accordion>
-  <Accordion title="The next person on a shared computer sees the last one's chat">
-    `reset()` doesn't run at logout. Add it to your logout code and wherever your app ends a session.
-  </Accordion>
-</AccordionGroup>
+Step 1 stays there because our script is on your pages, but `identify()` isn't running, or it was refused. Step **Add HelpAlive to your app** says "On your pages. Waiting for someone to sign in to your app." Check that the queue lines come first, that the call runs on every page load after login, and that `userId` is text.
+
+## Why do users show under the wrong company?
+
+Users show under the wrong company when your app switched company without calling `identify()` again. Call it after every switch.
+
+## Why does the next person on a shared computer see the last one's chat?
+
+The next person sees the last one's chat because `reset()` doesn't run at logout. Add it to your logout code and wherever your app ends a session.
 
 ## Next
 
