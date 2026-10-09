@@ -1,0 +1,40 @@
+---
+title: "HelpAlive changelog: what's new in the agent and dashboard"
+sidebarTitle: "Changelog"
+description: "What's new in HelpAlive: new features and changes to the in-app agent, the widget your users see, and the dashboard, newest first."
+keywords:
+  - HelpAlive changelog
+  - HelpAlive release notes
+  - what's new in HelpAlive
+  - HelpAlive updates
+---
+
+The HelpAlive changelog is the list of what changed in HelpAlive, newest first. Each entry says what your users see in your app and what your team sees in the dashboard. Changes reach your app and your dashboard on the day of the entry, with nothing for you to install.
+
+## Changelog at a glance
+
+- Entries are dated and listed newest first.
+- **In your app** covers the agent and widget your users see. **In the dashboard** covers what your team sees.
+- Each item links to the page that describes it in full.
+
+<Update label="9 October 2026" description="Nudges, clearer test links, and a simpler Setup">
+
+### In your app
+
+- **Nudges are new.** A nudge is a small message that offers help when a user runs into an error, a button that doesn't respond, or a save that fails. One tap opens the chat with the question already written. See [Nudges](/product/nudges).
+- **Test links end cleanly.** The widget's Test strip has **End test**. It asks first, then says "Test ended." A link that was revoked or is past its 14 days says "This test has ended." See [Test](/dashboard/test#test-it-on-your-app).
+- **Activity is credited to the right person.** Until `identify()` runs on a page load, our script waits briefly before it sends that page's activity, so a browser that switched accounts no longer credits the previous person. See [Identify users](/sdk/identify).
+- **The unread badge is per person.** Unread messages belong to the signed-in person, not the browser, and a reload no longer shows a badge for messages that are gone.
+
+### In the dashboard
+
+- **Setup has four steps.** The band shows how many of the four are done and the next one. A link from Setup to Train or Test shows **Back to setup**. See [Setup](/dashboard/setup).
+- **Test counts question batches as test chats.** Each question in a batch counts as one of your workspace's 300 test chats a month, and your workspace runs one batch at a time. Test assists and test chats start again on your plan's own month. See [Test](/dashboard/test).
+- **Compare pairs answers by question.** It puts answers side by side and lists what changed between the two runs. CSV exports open in a spreadsheet with accents intact and no cell run as a formula.
+- **A test link needs published docs.** **On your app** checks **Your docs, published** before it makes a link, with **Go to Train** if they aren't.
+- **Audience shows test activity.** A person's assists from a test link appear on their **Assists** tab, and test chats are marked **Test chat**. See [Audience and reports](/dashboard/audience-and-reports).
+- **Billing shows a canceled plan clearly.** The band says "Cancelled: your plan won't renew." with the day it runs until. See [Billing](/dashboard/billing).
+- **Team says why an invite email failed.** See [Team](/dashboard/team).
+- **"Plan" replaces "package"** across the dashboard.
+
+</Update>

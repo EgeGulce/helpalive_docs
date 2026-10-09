@@ -1,5 +1,5 @@
 ---
-title: "Chat: what your users see"
+title: "HelpAlive in-app chat: what your users see in the widget"
 sidebarTitle: "Chat"
 description: "What your users see in HelpAlive's chat: the launcher, suggested questions, answers from your docs, the offer to do a task, and past chats."
 keywords:
@@ -10,7 +10,15 @@ keywords:
   - HelpAlive widget
 ---
 
-This page walks through HelpAlive's chat as your users see it, using the widget's own words. It is for admins and support teams who want to know what users will meet before turning the agent on.
+HelpAlive's chat is the panel in your app where your users ask questions and get answers from your published docs. This page walks through it as your users see it, using the widget's own words. It is for admins and support teams who want to know what users will meet before turning the agent on.
+
+## The chat at a glance
+
+- The chat opens from a round launcher in a bottom corner of your app, and it appears only for people you identify.
+- Answers come from your published sources on **Train**. Your docs win when they disagree with the agent's general knowledge.
+- When the agent can do a task in your app, an offer card appears under the answer with **Let's do it** or **Show me how**.
+- Chats are saved per identified user, under **Previous chats** on any device where you identify them.
+- Users are never told about your limits.
 
 ## Prerequisites
 
@@ -18,15 +26,15 @@ This page walks through HelpAlive's chat as your users see it, using the widget'
 - At least one source is published on **Train**.
 - The agent is on for this person on **Controls**.
 
-## The launcher
+## The chat launcher
 
-A round button with the HelpAlive mark sits in a bottom corner of your app. It has no text. Screen readers announce it as "Ask HelpAlive". A badge counts unread replies. They are kept for each person, so the next person on the same browser never sees them, and they clear after 3 days.
+The launcher is a round button with the HelpAlive mark that sits in a bottom corner of your app. It has no text. Screen readers announce it as "Ask HelpAlive". A badge counts unread replies. They are kept for each person, which means that the next person on the same browser never sees them. They clear after 3 days.
 
 When a user seems stuck, a small toast above the launcher, or a dot on it, offers help. See [Nudges](/product/nudges).
 
-You choose the corner, the accent colour and light or dark on **Appearance**. See [Appearance](/dashboard/appearance).
+You choose the corner, the accent color and light or dark on **Appearance**. See [Appearance](/dashboard/appearance).
 
-## The home screen
+## The chat home screen
 
 Pressing the launcher opens the chat panel on its home screen:
 
@@ -34,12 +42,12 @@ Pressing the launcher opens the chat panel on its home screen:
 - **A box that says "What can I help you with?"** The user types a question in their own words.
 - **A short opening line** written for the page the user is on.
 - **"Continue last conversation"**, when the user has an earlier chat, to pick it up.
-- **"Ask about this page"**, a few suggested questions made from the page, what the user has been doing, and your docs. One press asks the question.
-- **"Previous chats"**, the clock button at the top, which lists the user's earlier chats. **New conversation** starts a fresh one.
+- **"Ask about this page"** refers to a few suggested questions made from the page, what the user has been doing, and your docs. One press asks the question.
+- **"Previous chats"** refers to the clock button at the top, which lists the user's earlier chats. **New conversation** starts a fresh one.
 
 The footer says "HelpAlive is AI and can make mistakes." You can't change it.
 
-## Answers
+## How the chat answers
 
 Answers stream into the panel as they're written. They are short, in plain words, and fit the page the user is on.
 
@@ -52,13 +60,13 @@ Tone, length and custom responses are set on **Train** and apply after **Publish
 
 ## The offer to do a task
 
-When a user asks for something to be done, and the agent can do it in your app, an offer card appears under the answer. The card shows the task's name, a line about what will happen, and **My plan**, the rough steps, behind a press.
+When a user asks for something to be done, and the agent can do it in your app, an offer card appears under the answer. The card shows the task's name, a line about what will happen, and **My plan** behind a press. **My plan** refers to the task's rough steps.
 
 The card's button says **Let's do it** when you allow **Does the steps** for this user, or **Show me how** when you allow **Shows how**. While the walkthrough gets ready, the button reads "Getting it ready…". See [Assists](/product/assists) for what happens next.
 
 If your assists for the month are used up, the agent stops offering and keeps answering in words. If your chat messages are used up, the widget says "Chat isn't available right now. Please try again later." Users are never told about your limits.
 
-## Each user's history
+## Chat history for each user
 
 Chats are saved per identified user. The same person sees their earlier chats under **Previous chats** on any device where you identify them. When your app calls `reset()` at logout, the widget clears what it kept in that browser.
 

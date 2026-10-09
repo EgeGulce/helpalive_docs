@@ -16,7 +16,7 @@
     "indexing": "all",
     "metatags": {
       "og:type": "website",
-      "og:site_name": "HelpAlive Documentation",
+      "og:site_name": "HelpAlive",
       "twitter:card": "summary_large_image",
       "twitter:site": "@HelpAliveAI",
       "robots": "index, follow",
@@ -84,7 +84,8 @@
           {
             "group": "Help",
             "pages": [
-              "product/faq"
+              "product/faq",
+              "changelog"
             ]
           }
         ]
@@ -339,5 +340,8 @@
       "source": "/compare",
       "destination": "/product/compare"
     }
-  ]
+  ],
+  "metadata": {
+    "timestamp": true
+  }
 }

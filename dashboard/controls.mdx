@@ -1,5 +1,5 @@
 ---
-title: "Control who gets the agent and set limits"
+title: "HelpAlive agent controls: who gets it, what it does, limits"
 sidebarTitle: "Controls"
 description: "Turn the HelpAlive agent on or off, choose who gets it and whether it does the steps or shows how, and set daily limits. Saves apply at once."
 keywords:
@@ -10,16 +10,24 @@ keywords:
   - per tenant limits
 ---
 
-**Controls** is where you decide whether the agent is on, who gets it and what it does for them. It also sets how much of your plan they can use. It is the fifth item in the sidebar.
+**Controls** is the page in the HelpAlive dashboard where you decide whether the agent is on, who gets it and what it does for them. It also sets how much of your plan they can use. It is the fifth item in the sidebar.
 
 Nothing on Controls waits for **Publish**. When you press **Save changes**, it applies at once, and the toast offers **Undo**. Turning the agent on is the one exception: its box saves for you.
+
+## Controls at a glance
+
+- Nothing on Controls waits for **Publish**. **Save changes** applies at once, and the toast offers **Undo**.
+- Turning the agent on needs at least one published source on **Train**.
+- **Who gets it** gives the agent to **Everyone**, to a **Selected** list, or to **A percentage** of your tenants or people.
+- **What it does** sets whether the agent **Does the steps** or **Shows how**.
+- Daily limits and **How far over your plan** set how much of your plan your users can use.
 
 ## Prerequisites
 
 - At least one published source on **Train**. The switch can't turn the agent on without one. Until then the band says **Off: no docs published.** and, under the switch, "Turning it on needs your docs first. Add them on Train".
 - HelpAlive installed in your app, with `identify()` running for signed-in people. See [Quickstart](/quickstart).
 
-## Turn the agent on
+## How to turn the agent on
 
 <Steps>
   <Step title="Set up the agent, the first time only">
@@ -39,12 +47,12 @@ Nothing on Controls waits for **Publish**. When you press **Save changes**, it a
 To turn it off, move the switch to **Off** and press **Save changes**. Turning off asks nothing. While off, the band says "Off. Nobody sees it; your analytics keep running."
 
 <Note>
-After you turn the agent on, people who already have your app open don't see the chat button straight away. Their browser remembers the earlier setting, so the button appears within a minute or a few page loads. Turning it off, or changing who gets it, reaches them the same way. Someone who opens your app later sees the change on their first page.
+After you turn the agent on, people who already have your app open don't see the chat button straight away, because their browser remembers the earlier setting. The button appears within a minute or a few page loads. Turning it off, or changing who gets it, reaches them the same way. Someone who opens your app later sees the change on their first page.
 </Note>
 
-## The band
+## The status band
 
-The dark band at the top says the agent's state in one line, such as "On for everyone." or "On for 25% of your tenants." It adds since when it has been on and what is left this month. While you have unsaved changes it shows **Not saved yet**.
+The dark band at the top says the agent's state in one line, such as "On for everyone." or "On for 25% of your tenants." It adds since when it has been on and what is left this month. **Not saved yet** means that you have unsaved changes.
 
 While the agent is off, the band also recommends what to do first:
 
@@ -68,11 +76,11 @@ If your plan needs a subscription and you have none, the band says "Your agent i
 | **Selected** | Only the tenants and people in your list. |
 | **A percentage** | A share of your tenants or of your people, which you choose. |
 
-A tenant is one of your own customers: the `tenantId` your app passes to `identify()`. If your app sends no tenants, the choices name people only.
+A tenant refers to one of your own customers: the `tenantId` your app passes to `identify()`. If your app sends no tenants, the choices name people only.
 
-**A percentage** is sticky. The same tenants or people are picked each time, so raising the number only adds more, and nobody loses the agent. Under it, **Who has it today** says about how many people that is. You can also keep a list beside a percentage: "Anyone in this list always has it."
+**A percentage** is sticky, which means that the same tenants or people are picked each time, so raising the number only adds more, and nobody loses the agent. Under it, **Who has it today** says about how many people that is. You can also keep a list beside a percentage: "Anyone in this list always has it."
 
-### The list
+### The list of tenants and people
 
 For **Selected**, or alongside **A percentage**:
 
@@ -92,7 +100,7 @@ This is the choice for everyone. Anyone in your list can have their own: pick it
 
 Either way, the agent hands some steps back to the user, such as uploads, codes and passwords. See [What the agent won't do](/product/what-it-wont-do).
 
-## Assists and Chat messages
+## Daily limits for assists and chat messages
 
 One panel for each. Each shows this month's use against your plan, with **Get more** at the end of the bar when packs are on sale.
 
@@ -102,7 +110,7 @@ Under it, **The most each can start a day** (assists) or **The most each can sen
 - **Each tenant** (shown when your app sends tenants)
 - **Your organisation**
 
-"Leave it empty to use our default": an empty box shows that default in grey, or **No limit** when there is none. A box can't go above the most your plan allows; the page says so if you try. See [Limits and usage](/dashboard/usage) for what your users see at a limit.
+"Leave it empty to use our default": an empty box shows that default in gray, or **No limit** when there is none. A box can't go above the most your plan allows; the page says so if you try. See [Limits and usage](/dashboard/usage) for what your users see at a limit.
 
 ## How far over your plan
 
@@ -128,10 +136,10 @@ At the foot of the page, **How we count** says: "An assist counts once HelpAlive
 
 ## Troubleshooting
 
-- **The switch won't move to On.** No source is published. Publish one on **Train**.
-- **The band says "On, but for nobody yet".** **Selected** is chosen with an empty list. Add tenants or people, or choose **Everyone**.
+- **The switch won't move to On.** This is because no source is published. Publish one on **Train**.
+- **The band says "On, but for nobody yet".** This means that **Selected** is chosen with an empty list. Add tenants or people, or choose **Everyone**.
 - **You turned it on and see no chat button.** Wait a minute and load a few pages. Check that `identify()` runs, and that **Who gets it** includes you.
-- **"That limit can be set up to ..."** A daily limit is above what your plan allows. Lower the highlighted number.
+- **"That limit can be set up to ..."** This means that a daily limit is above what your plan allows. Lower the highlighted number.
 - **Your users stopped getting assists.** You may have reached your plan's assists with **How far over your plan** at 0%, or your trial's assists. See [Limits and usage](/dashboard/usage).
 
 ## Next

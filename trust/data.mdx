@@ -1,5 +1,5 @@
 ---
-title: "Data HelpAlive collects, and what it doesn't"
+title: "What data HelpAlive collects, redacts and keeps"
 sidebarTitle: "Data we collect"
 description: "What HelpAlive collects in your users' browsers, what the agent sees, what is redacted, how long each kind of data is kept, and how to delete it."
 keywords:
@@ -11,7 +11,15 @@ keywords:
   - stop tracking user
 ---
 
-This page lists the data HelpAlive collects about your users, what it does with it, and how long it keeps it. It is for the admins, privacy teams and security reviewers who need to describe HelpAlive in their own privacy notice.
+HelpAlive collects usage events from your users' browsers the whole time its script runs in your app, and more only when a user uses the chat or an assist. This page lists the data HelpAlive collects about your users, what it does with it, and how long it keeps it. It is for the admins, privacy teams and security reviewers who need to describe HelpAlive in their own privacy notice.
+
+## Data collection at a glance
+
+- The script collects no screenshots, screen or session recordings, keystroke timing, screen size or cookies.
+- Before usage events are saved, our servers replace personal data, such as names, email addresses and card numbers, with a tag.
+- The page the agent reads is not redacted, because it is what the agent needs to see to help.
+- Usage events are kept for 12 months. Chat and assist text is kept for your setting, 1 year by default.
+- HelpAlive's servers, database and backups run in US East (Virginia).
 
 ## What the script collects
 
@@ -27,7 +35,7 @@ The script records usage events the whole time it runs in your app. Chat and ass
 | Seen elements | Once per page, what was on screen long enough to be seen, and whether the user touched it. |
 | Custom events | Whatever your code sends with `track()`. |
 | Device facts | Browser and operating system family, device class, language, window size, and a shortened browser description. |
-| Ids | A random browser id, a random visit id, your tenant's id and name, and the user's id, hashed in the browser. The hash is pseudonymous, not anonymous: anyone with the raw id can recompute it. |
+| Ids | A random browser id, a random visit id, your tenant's id and name, and the user's id, hashed in the browser. The hash is pseudonymous, not anonymous, which means that anyone with the raw id can recompute it. |
 | Profile | Display name, email, role, plan and sign-up date, if you send them in `identify()`. Stored as given. |
 | Verified-users token | If you use verified users, the signed token, sent as a request header. |
 | Start-up and error reports | When the script starts, its status, version, and the page's host and path. When it fails, the error message and stack. No user ids. |
@@ -58,7 +66,7 @@ When a user opens the chat, asks a question or runs an assist, the agent reads t
 
 It also gets the user's message and recent turns, and recent activity on this visit. It gets the role, plan and display name you send in `identify()`, and the matching passages from your docs. The chat answer never receives the user's email.
 
-The page the agent reads is not redacted. A card number or code typed into an ordinary field is included. This is deliberate: it is what the agent needs to see to help. See [How the AI uses your data](/trust/ai-and-your-data).
+The page the agent reads is not redacted. A card number or code typed into an ordinary field is included. This is deliberate, because it is what the agent needs to see to help. See [How the AI uses your data](/trust/ai-and-your-data).
 
 ## What is redacted, and what is not
 
@@ -71,7 +79,7 @@ These are **not** redacted:
 - ids, the profile you send in `identify()` (name and email are stored as given), custom `track()` events and the seen-elements list;
 - our server logs.
 
-## Our logs
+## Our server logs
 
 Our server logs keep end users' chat questions, and the page content assists read, including field values, for 30 days. They also hold your team's email addresses at sign-in and when invites are sent. Deleting a user doesn't reach these log copies; they age out after 30 days.
 
@@ -115,7 +123,7 @@ HelpAlive's servers, database and backups run in US East (Virginia). Each custom
 
 On **Settings → Privacy Management**, find the person under **People** or the company under **Tenants**:
 
-- **Stop tracking** drops their new usage events as they arrive. **Resume tracking** starts again.
+- **Stop tracking** means that their new usage events are dropped as they arrive. **Resume tracking** starts again.
 - **Delete their data** deletes their usage data and their chat and assist text. The rest is made anonymous, so your counts stay. The reason you give is kept in **History**.
 
 Deletions reach the database at once. Log copies and backups age out on their own schedule.

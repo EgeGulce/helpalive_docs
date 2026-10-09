@@ -10,15 +10,23 @@ keywords:
   - custom responses
 ---
 
-**Train** is where you choose what the agent knows and how it answers. It is the second item in the sidebar. The page has two halves: **Knowledge sources** on the left and **Personalization** on the right.
+**Train** is the page in the HelpAlive dashboard where you choose what the agent knows and how it answers. It is the second item in the sidebar. The page has two halves: **Knowledge sources** on the left and **Personalization** on the right.
 
 Everything you change on Train is a draft until you press **Publish**. The **Test** page reads your drafts, so you can try them first. See [Publishing](/dashboard/publishing).
+
+## Train at a glance
+
+- You add your help center or docs site, or upload files: PDF, MD, TXT or DOCX, up to 10 MB.
+- The agent answers only from published sources.
+- A new website is crawled again **Weekly**, and an automatic sync goes live by itself.
+- **Personalization** sets the agent's tone of voice, its answer length and up to 15 custom responses.
+- Changes wait for **Publish**, and the **Test** page reads your drafts, so you can try them first.
 
 ## Prerequisites
 
 - The public web address of your help center or docs site, starting with `https://`, or your help files.
 
-## Add a source
+## How to add a source
 
 <Steps>
   <Step title="Choose how to add it">
@@ -42,27 +50,27 @@ Everything you change on Train is a draft until you press **Publish**. The **Tes
 
 At the top, **What your agent knows** says the state of your sources in a few words, such as **All sources live** or **New crawl ready to publish**. A dot beside it is green when every source is live and red when one failed. It is amber while one is crawling or waits to be published. It also shows **Pages live**, **Sections live** and **Last crawl**. If no source is published, it says **The agent is off: no docs published.**
 
-## Each source
+## Your sources
 
 Each row in **Your sources** shows the source's type, its pages and when it was last crawled or uploaded. Use **Search sources** to find one. Each row has:
 
-- **Auto-sync schedule**: how often a website is crawled again. Choose **Off** (manual refresh only), **Every 3 days**, **Weekly**, **Every 2 weeks** or **Monthly**. A new website starts on **Weekly**.
+- **Auto-sync schedule** refers to how often a website is crawled again. Choose **Off** (manual refresh only), **Every 3 days**, **Weekly**, **Every 2 weeks** or **Monthly**. A new website starts on **Weekly**.
 - **View indexed pages**: the pages the agent can answer from, with what changed in the last crawl.
 - **Rename source**
 - **Re-crawl source**: crawl it again now. While it runs, **Stop re-crawl** stops it.
 - **Remove source**: removes it at once. It does not wait for Publish.
 
-### When a source is crawled again
+### How re-crawls and automatic syncs work
 
 What is live keeps answering while a re-crawl runs, and if it stops or fails.
 
 - A re-crawl you start with **Re-crawl source** waits for **Publish**. The row shows **New crawl ready**, with how many pages changed.
 - An automatic sync goes live by itself.
-- If an automatic sync finds far fewer pages than are live, it is held for your check: **Sync held**. The site may have been down or blocked us. Check the site, then **Publish** or **Re-crawl source**. Automatic syncs pause until you do.
+- **Sync held** means that an automatic sync found far fewer pages than are live, so it is held for your check. The site may have been down or blocked us. Check the site, then **Publish** or **Re-crawl source**. Automatic syncs pause until you do.
 - If nothing changed, nothing waits for you.
 
 <Warning>
-The agent answers only from published sources. Removing your last published source turns the agent off for everyone until you publish another.
+The agent answers only from published sources. This means that removing your last published source turns the agent off for everyone until you publish another.
 </Warning>
 
 ## Personalization
@@ -84,7 +92,7 @@ Pick one of each and press **Save changes**. The change goes live with your next
 
 ### Custom responses
 
-A custom response tells the agent what to say on a topic you choose. Under **Custom responses**, press **Add response** (or **Add a custom response** while the list is empty) and fill in:
+A custom response refers to what you tell the agent to say on a topic you choose. Under **Custom responses**, press **Add response** (or **Add a custom response** while the list is empty) and fill in:
 
 - **Topic label**: a short name you see in the list, up to 80 characters.
 - **When to use**: the situation in plain words, 10 to 300 characters. The agent reads this to decide when to use the response.
@@ -102,7 +110,7 @@ Press **Add response** in the editor. Each response in the list has **Edit**, **
 
 - **"Couldn't add that address."** Use the public web address of your docs, starting with `https://`.
 - **A source shows "The crawl did not finish."** Press **Re-crawl source**. If it fails again, check that the site is public.
-- **Your app still gives the old answer.** Changes on Train wait for **Publish**. Check the bar at the top of the dashboard.
+- **Your app still gives the old answer.** This is because changes on Train wait for **Publish**. Check the bar at the top of the dashboard.
 
 ## Next
 

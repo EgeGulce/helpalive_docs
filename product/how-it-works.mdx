@@ -1,5 +1,5 @@
 ---
-title: "How HelpAlive's in-app AI agent works"
+title: "How HelpAlive's in-app AI agent reads pages and does tasks"
 sidebarTitle: "How it works"
 description: "The five stages HelpAlive's agent goes through in your app, from reading the page to handing back what only the user can do, with its guarantees."
 keywords:
@@ -10,9 +10,17 @@ keywords:
   - AI does tasks in web app
 ---
 
-This page explains what HelpAlive's agent does inside your app, stage by stage, and what it guarantees at each one. It is for anyone deciding whether to put HelpAlive in front of their users.
+HelpAlive's agent is an AI agent that runs inside your app: it reads the page, answers from your published docs, and does tasks for your users or shows them how. This page explains what it does, stage by stage, and what it guarantees at each one. It is for anyone deciding whether to put HelpAlive in front of their users.
 
 HelpAlive runs in your user's browser, inside your app, through the one script your developer adds. It appears only for people you identify with `identify()`, and only for the people you choose on **Controls**.
+
+## The agent at a glance
+
+- The agent reads the page as structured text. It never takes screenshots or records the screen.
+- It answers from the sources you publish on **Train**. Drafts are never used for your users' answers.
+- It offers a task only when the user wants it done and the task can be done in your app. The offer card starts nothing by itself.
+- It works one step at a time, and after each step it reads the page again to check the step landed.
+- It hands back the steps only the user can do, such as uploading a file or typing a password it was not given.
 
 ## 1. It reads the page
 
@@ -21,7 +29,7 @@ When a user opens the chat or starts an assist, the agent reads the page they ar
 It also knows what the user just did on this visit, including any errors they hit, and the role and plan you pass in `identify()`.
 
 - It never takes screenshots or records the screen.
-- It reads the page again at every step, so it works from what is on screen now.
+- It reads the page again at every step, which means that it works from what is on screen now.
 
 Because it reads the page's structure, it works on any web app. You don't tag elements or describe your screens. Plain, visible labels on your controls help it, as they help screen readers. See [Make your app easy for the agent](/sdk/agent-ready).
 
@@ -46,8 +54,8 @@ The offer appears as a card under the answer. The card starts nothing by itself.
 
 What happens next depends on the mode you set on **Controls**:
 
-- **Does the steps.** The agent clicks, types, picks and scrolls on the user's behalf, including Save, Submit and Delete.
-- **Shows how.** The agent highlights each control and says what to do, and the user does every click.
+- **Does the steps** means that the agent clicks, types, picks and scrolls on the user's behalf, including Save, Submit and Delete.
+- **Shows how** means that the agent highlights each control and says what to do, and the user does every click.
 
 Either way, it works one step at a time. After each step it reads the page again to check the step landed. If a press didn't land, it hands that step to the user instead of pressing again. The user can ask a question, change direction, take over or pause at any point. See [Assists](/product/assists).
 

@@ -1,5 +1,5 @@
 ---
-title: "HelpAlive security overview"
+title: "HelpAlive security overview: keys, verified users, sessions"
 sidebarTitle: "Security"
 description: "How HelpAlive keeps your workspace and users safe: public and secret keys, verified users, dashboard sessions, HTTPS and hosting."
 keywords:
@@ -11,7 +11,15 @@ keywords:
   - step-up authentication
 ---
 
-This page explains how HelpAlive protects your workspace and your users, and which parts are your choice. It is for security reviewers and the admins and developers who set HelpAlive up.
+HelpAlive protects your workspace and your users with a public project key, a signing secret kept on your server, verified users, dashboard sign-in sessions and HTTPS. This page explains how HelpAlive protects your workspace and your users, and which parts are your choice. It is for security reviewers and the admins and developers who set HelpAlive up.
+
+## Security at a glance
+
+- The project key is public by design, so it can't prove who a user is.
+- The signing secret lives on your server only, and signs a token that proves who a user is.
+- With **Only allow verified users** on, HelpAlive refuses chat, assist and usage requests without a valid token.
+- By default, your team is signed out of the dashboard after 7 days without activity, and after 30 days at most.
+- The script, the usage and chat endpoints and the dashboard are all served over HTTPS.
 
 ## Two keys: one public, one secret
 

@@ -1,5 +1,5 @@
 ---
-title: "Content Security Policy for HelpAlive"
+title: "HelpAlive Content Security Policy: sources and nonce"
 sidebarTitle: "Content Security Policy"
 description: "The two sources to add to your Content Security Policy for HelpAlive, and how to use a nonce with a strict policy."
 keywords:
@@ -9,7 +9,15 @@ keywords:
   - strict CSP chat widget
 ---
 
-This page is for developers whose app sends a `Content-Security-Policy` header. It lists the sources HelpAlive needs, and how to keep a strict, nonce-based policy. Most apps don't send one and can skip this page.
+To run HelpAlive under a Content Security Policy, you add `https://cdn.helpalive.com` to `script-src`, and `https://api.helpalive.com` and `https://chat.helpalive.com` to `connect-src`. This page is for developers whose app sends a `Content-Security-Policy` header. It lists the sources HelpAlive needs, and how to keep a strict, nonce-based policy. Most apps don't send one and can skip this page.
+
+## Content Security Policy at a glance
+
+- `script-src` needs `https://cdn.helpalive.com`, which loads our script and the agent and assist code it adds.
+- `connect-src` needs `https://api.helpalive.com` for activity and `https://chat.helpalive.com` for the agent.
+- You add these sources to your policy without removing anything.
+- You don't need a `style-src` change or `'unsafe-inline'`.
+- With a nonce-based policy, you put the page's nonce on the HelpAlive tag, and HelpAlive puts it on every script it adds.
 
 ## Prerequisites
 
@@ -33,9 +41,9 @@ connect-src https://api.helpalive.com https://chat.helpalive.com;
 
 Without `chat.helpalive.com`, the script loads and activity arrives, but the agent never appears.
 
-You don't need a `style-src` change or `'unsafe-inline'`. In current browsers, HelpAlive applies its styles in a way every policy allows.
+You don't need a `style-src` change or `'unsafe-inline'`, because in current browsers HelpAlive applies its styles in a way every policy allows.
 
-## Use a nonce
+## How to use a nonce
 
 If your `script-src` uses a nonce, put the page's nonce on the HelpAlive tag, the same way your other scripts get theirs:
 
@@ -65,26 +73,24 @@ If you load HelpAlive through [Google Tag Manager](/sdk/google-tag-manager), you
     Sign in, so that `identify()` runs and the agent can load.
   </Step>
   <Step title="Look for policy errors">
-    A blocked request shows as a console error that names `Content Security Policy` and one of our hosts. No such error means the policy lets HelpAlive through.
+    A blocked request shows as a console error that names `Content Security Policy` and one of our hosts. No such error means that the policy lets HelpAlive through.
   </Step>
   <Step title="Confirm on the setup page">
     Load a page of your app, then come back to **Settings → Setup & API Key**. Step **Add HelpAlive to your app** no longer says "Not on your pages yet." Once you sign in, it says "Recognized a signed-in person 3 minutes ago." Once the agent is on, the chat button appears in your app.
   </Step>
 </Steps>
 
-## Troubleshooting
+## Why does the script never load?
 
-<AccordionGroup>
-  <Accordion title="The script never loads">
-    `script-src` lacks `https://cdn.helpalive.com`, or your policy uses a nonce and the tag has none. The console names the blocked script.
-  </Accordion>
-  <Accordion title="Activity arrives, but the agent never appears">
-    `connect-src` lacks `https://chat.helpalive.com`. The agent's settings can't load, so its button never shows.
-  </Accordion>
-  <Accordion title="The policy is in report-only mode">
-    A `Content-Security-Policy-Report-Only` header blocks nothing. It only reports. Fix what it reports before you switch it to enforcing.
-  </Accordion>
-</AccordionGroup>
+The script never loads when `script-src` lacks `https://cdn.helpalive.com`, or when your policy uses a nonce and the tag has none. The console names the blocked script.
+
+## Why does activity arrive, but the agent never appears?
+
+Activity arrives without the agent when `connect-src` lacks `https://chat.helpalive.com`. This means the agent's settings can't load, so its button never shows.
+
+## What does report-only mode do?
+
+Report-only mode means that a `Content-Security-Policy-Report-Only` header blocks nothing. It only reports. Fix what it reports before you switch it to enforcing.
 
 ## Next
 

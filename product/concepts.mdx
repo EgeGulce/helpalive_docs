@@ -1,5 +1,5 @@
 ---
-title: "HelpAlive key concepts and glossary"
+title: "HelpAlive glossary: tenants, users, assists, sources, keys"
 sidebarTitle: "Key concepts"
 description: "Definitions of the words used across HelpAlive: tenant, user, assist, chat message, source, draft, plan, pack, verified user and keys."
 keywords:
@@ -10,9 +10,17 @@ keywords:
   - verified user
 ---
 
-This page defines the words HelpAlive uses in the dashboard, the widget and these docs. Read it once before you set up **Controls** or install the script.
+This is the HelpAlive glossary: it defines the words HelpAlive uses in the dashboard, the widget and these docs. Read it once before you set up **Controls** or install the script.
 
-## People
+## Key concepts at a glance
+
+- A tenant is one of your customers, a user is a person who uses your app, and your team is your own staff who sign in to the dashboard.
+- An assist counts once HelpAlive completes its first step. A chat message counts when the agent answers one of your users' messages.
+- New sources, and changes to tone, length, custom responses and **Appearance**, start as drafts. Your users see only what you have published.
+- A pack is extra assists or chat messages you buy on top of your plan.
+- The project key is public. The signing secret stays on your server and never goes into your pages.
+
+## People: tenants, users and your team
 
 ### Tenant
 
@@ -30,9 +38,9 @@ Your team is your own staff who sign in to the HelpAlive dashboard. Everyone on 
 
 ### Verified user
 
-A verified user is one whose identity your server has signed with your signing secret. With **Only allow verified users** on, HelpAlive refuses chat, assist and usage requests that don't carry a valid signed token. See [Verify users](/sdk/verify-users).
+A verified user refers to a user whose identity your server has signed with your signing secret. With **Only allow verified users** on, HelpAlive refuses chat, assist and usage requests that don't carry a valid signed token. See [Verify users](/sdk/verify-users).
 
-## What the agent does
+## What the agent does: assists and chat messages
 
 ### Assist
 
@@ -44,7 +52,7 @@ An assist counts once HelpAlive completes its first step. An assist that was onl
 
 A chat message counts when the agent answers one of your users' messages. The **Test** page never counts.
 
-## What the agent knows
+## What the agent knows: sources and drafts
 
 ### Source
 
@@ -55,9 +63,9 @@ A source is something the agent answers from. You add sources on **Train**:
 
 ### Draft and published
 
-New sources, and changes to tone, length, custom responses and **Appearance**, start as drafts. Your users see only what you have published. The **Test** page uses your drafts, so you can try changes before you press **Publish**. Changes on **Controls** apply at once, with no draft. See [Publishing](/dashboard/publishing).
+New sources, and changes to tone, length, custom responses and **Appearance**, start as drafts. A draft refers to a change your users don't see yet: your users see only what you have published. The **Test** page uses your drafts, which means that you can try changes before you press **Publish**. Changes on **Controls** apply at once, with no draft. See [Publishing](/dashboard/publishing).
 
-## Billing
+## Billing: plans and packs
 
 ### Plan
 
@@ -67,11 +75,11 @@ Your plan includes a number of assists and chat messages each month. **Settings 
 
 A pack is extra assists or chat messages you buy on top of your plan, with **Add assists** or **Add chat messages**. Packs are charged to the card on file and added right away. They are used after your plan's amount, carry over month to month, and end with your subscription. See [Billing and usage](/dashboard/billing).
 
-## Keys
+## Keys: project key and signing secret
 
 ### Project key
 
-The project key identifies your workspace in the script tag (`data-api-key`). It is public: it sits in your pages, where anyone can see it. Find it on **Settings → Setup & API Key**.
+The project key identifies your workspace in the script tag (`data-api-key`). It is public, which means that anyone can see it in your pages. Find it on **Settings → Setup & API Key**.
 
 ### Signing secret
 

@@ -1,5 +1,5 @@
 ---
-title: "Troubleshoot a HelpAlive install"
+title: "Troubleshoot a HelpAlive install: silent failures and fixes"
 sidebarTitle: "Troubleshooting"
 description: "The ways a HelpAlive install fails without an error on the page, how to spot each one, how to fix it, and how to reach support."
 keywords:
@@ -10,14 +10,22 @@ keywords:
   - HelpAlive 401
 ---
 
-This page helps developers find out why HelpAlive isn't working in their app. Most failures show no error on the page, so each entry says how to spot it.
+A silent failure is a HelpAlive install problem that shows no error on the page. This page helps developers find out why HelpAlive isn't working in their app. Most failures are silent, so each entry says how to spot it.
+
+## Troubleshooting at a glance
+
+- **Settings → Setup & API Key** checks your install again when you return. The first step without a check points to the cause.
+- `data-debug` on the HelpAlive tag logs what HelpAlive does, and why it refused a call, to the browser console.
+- The agent appears only for identified users, and only once it is switched on in **Controls** with a published source.
+- `reset()` belongs in your logout code, apart from `identify()`.
+- Your project key is public, so you can include it when you email support. Never send your signing secret.
 
 ## Prerequisites
 
 - Access to your app in a browser with developer tools.
 - Access to **Settings → Setup & API Key** in the dashboard.
 
-## Start here
+## How to find the cause
 
 <Steps>
   <Step title="Read the setup steps">
@@ -33,79 +41,91 @@ This page helps developers find out why HelpAlive isn't working in their app. Mo
     HelpAlive then logs what it does, and why it refused a call, to the browser console. Some lines are at the verbose level, so show all levels in the console. Remove `data-debug` before you ship.
   </Step>
   <Step title="Find your failure below">
-    Match what you see to one of the entries, in order.
+    Match what you see to one of the entries below, in order.
   </Step>
 </Steps>
 
-## Silent failures
+## Why does nothing start?
 
-<AccordionGroup>
-  <Accordion title="The tag has no data-api-key, so nothing starts">
-    **What you see:** step **Add HelpAlive to your app** still says "Not on your pages yet.", and the console shows nothing, even with `data-debug`.
+Nothing starts when the HelpAlive tag has no `data-api-key`.
 
-    **Fix:** add `data-api-key="YOUR_PROJECT_KEY"` to the tag, with the key from **Settings → Setup & API Key**. If you regenerated the key, put the new one in the tag: the old one stops working shortly after.
-  </Accordion>
+**What you see:** step **Add HelpAlive to your app** still says "Not on your pages yet.", and the console shows nothing, even with `data-debug`.
 
-  <Accordion title="The script is blocked">
-    **What you see:** step **Add HelpAlive to your app** still says "Not on your pages yet." The console shows an error naming `helpalive.js`, `Content Security Policy` or a blocked request.
+**Fix:** add `data-api-key="YOUR_PROJECT_KEY"` to the tag, with the key from **Settings → Setup & API Key**. If you regenerated the key, put the new one in the tag, because the old one stops working shortly after.
 
-    **Fix:** add our sources to your policy, and put your nonce on our tag if your policy uses one. See [Content Security Policy](/sdk/csp). Ad blockers and privacy extensions can also block the script: test in a private window with extensions off.
-  </Accordion>
+## Why is the script blocked?
 
-  <Accordion title="identify() is never called, so the agent never appears">
-    **What you see:** step **Add HelpAlive to your app** says "On your pages. Waiting for someone to sign in to your app." No chat button appears.
+The script is blocked when your Content Security Policy lacks our sources or your nonce, or when an ad blocker or privacy extension blocks it.
 
-    **Fix:** call `identify()` after login and on every page load while the user is signed in, with the four queue lines above it. The agent appears only for identified users. See [Identify users](/sdk/identify).
-  </Accordion>
+**What you see:** step **Add HelpAlive to your app** still says "Not on your pages yet." The console shows an error naming `helpalive.js`, `Content Security Policy` or a blocked request.
 
-  <Accordion title="identify() is refused">
-    **What you see:** the same as above, although your code calls `identify()`. With `data-debug`, the console says why.
+**Fix:** add our sources to your policy, and put your nonce on our tag if your policy uses one. See [Content Security Policy](/sdk/csp). Ad blockers and privacy extensions can also block the script: test in a private window with extensions off.
 
-    **Fix:** pass `userId` and `tenantId` as text or a number, up to 255 characters each. Don't pass an empty `userId`. With a user token, keep the ids in it under 200 characters. Other fields of the wrong type are left out without stopping the call.
-  </Accordion>
+## Why does setup stay on Waiting for someone to sign in?
 
-  <Accordion title="reset() runs straight after identify()">
-    **What you see:** the chat button doesn't appear, or doesn't stay, although your code calls `identify()`.
+Setup stays there when `identify()` is never called. The agent never appears either, because it appears only for identified users.
 
-    **Fix:** move `reset()` into your logout code, apart from `identify()`.
-  </Accordion>
+**What you see:** step **Add HelpAlive to your app** says "On your pages. Waiting for someone to sign in to your app." No chat button appears.
 
-  <Accordion title="The agent is off, or has no published docs">
-    **What you see:** step 1 has a check, but **Train the agent on your product** doesn't, or your users don't see the agent. No chat button appears.
+**Fix:** call `identify()` after login and on every page load while the user is signed in, with the four queue lines above it. See [Identify users](/sdk/identify).
 
-    **Fix:** publish at least one source on **Train**, then switch the agent on in **Controls**. The agent can't be switched on until a source is published. Check that **Who gets it** includes the user you test with.
-  </Accordion>
+## Why is identify() refused?
 
-  <Accordion title="The agent appears only after a short wait">
-    **What you see:** you switched the agent on, or changed **Who gets it**, but a page that was already open doesn't show the change.
+`identify()` is refused when `userId` is empty, or when `userId` or `tenantId` isn't text or a number of up to 255 characters.
 
-    **Why:** each browser keeps the agent's settings for a short time, so pages load fast. A user who already had your app open sees the change within a minute or a few page loads. Switching the agent off takes effect the same way. A browser that has never loaded the agent's settings gets them at once.
+**What you see:** the same as above, although your code calls `identify()`. With `data-debug`, the console says why.
 
-    **Fix:** wait a minute, then load a couple of pages.
-  </Accordion>
+**Fix:** pass `userId` and `tenantId` as text or a number, up to 255 characters each. Don't pass an empty `userId`. With a user token, keep the ids in it under 200 characters. Other fields of the wrong type are left out without stopping the call.
 
-  <Accordion title="Requests are refused once Only allow verified users is on">
-    **What you see:** the chat button appears, but asking something shows "Your session needs a refresh. Reload the page to keep chatting." Users without a token also stop showing in **Reports** and **Audience**.
+## What if reset() runs straight after identify()?
 
-    **Why:** with **Only allow verified users** on, HelpAlive refuses every request without a valid user token.
+Running `reset()` straight after `identify()` forgets the user at once, which is why the chat button doesn't appear, or doesn't stay.
 
-    **Fix:** send a token from every page that calls `identify()`, or turn the switch off while you fix it. See [Verify users](/sdk/verify-users).
-  </Accordion>
+**What you see:** the chat button doesn't appear, or doesn't stay, although your code calls `identify()`.
 
-  <Accordion title="Your account has no subscription">
-    **What you see:** everything is set up, but the chat button never appears.
+**Fix:** move `reset()` into your logout code, apart from `identify()`.
 
-    **Fix:** the agent shows only during your free trial or while you are subscribed. Subscribe on **Settings → Billing and usage**.
-  </Accordion>
+## What if the agent is off, or has no published docs?
 
-  <Accordion title="The agent answers but stops offering assists">
-    **What you see:** the agent answers in words and no longer offers to do tasks. Later it may say "Chat isn't available right now. Please try again later."
+Your users don't see the agent until it is switched on in **Controls**, and it can't be switched on until a source is published on **Train**.
 
-    **Why:** a usage limit was reached: your plan's, or one you set per user, tenant or organisation on **Controls**. Users are never told about a limit.
+**What you see:** step 1 has a check, but **Train the agent on your product** doesn't, or your users don't see the agent. No chat button appears.
 
-    **Fix:** see [Limits and usage](/dashboard/usage).
-  </Accordion>
-</AccordionGroup>
+**Fix:** publish at least one source on **Train**, then switch the agent on in **Controls**. Check that **Who gets it** includes the user you test with.
+
+## Why does the agent appear only after a short wait?
+
+The agent appears after a short wait because each browser keeps the agent's settings for a short time, so pages load fast.
+
+**What you see:** you switched the agent on, or changed **Who gets it**, but a page that was already open doesn't show the change.
+
+A user who already had your app open sees the change within a minute or a few page loads. Switching the agent off takes effect the same way. A browser that has never loaded the agent's settings gets them at once.
+
+**Fix:** wait a minute, then load a couple of pages.
+
+## Why are requests refused once Only allow verified users is on?
+
+**Only allow verified users** means that HelpAlive refuses every request without a valid user token.
+
+**What you see:** the chat button appears, but asking something shows "Your session needs a refresh. Reload the page to keep chatting." Users without a token also stop showing in **Reports** and **Audience**.
+
+**Fix:** send a token from every page that calls `identify()`, or turn the switch off while you fix it. See [Verify users](/sdk/verify-users).
+
+## What if your account has no subscription?
+
+The agent shows only during your free trial or while you are subscribed.
+
+**What you see:** everything is set up, but the chat button never appears.
+
+**Fix:** subscribe on **Settings → Billing and usage**.
+
+## Why does the agent stop offering assists?
+
+The agent stops offering assists because a usage limit was reached: your plan's, or one you set per user, tenant or organization on **Controls**. Users are never told about a limit.
+
+**What you see:** the agent answers in words and no longer offers to do tasks. Later it may say "Chat isn't available right now. Please try again later."
+
+**Fix:** see [Limits and usage](/dashboard/usage).
 
 ## Check it works
 

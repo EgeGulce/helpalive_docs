@@ -1,5 +1,5 @@
 ---
-title: "HelpAlive JavaScript SDK reference"
+title: "HelpAlive JavaScript SDK reference: script tag and calls"
 sidebarTitle: "JavaScript reference"
 description: "Every attribute of the HelpAlive script tag and every call your code can make: init, identify, reset, track, flush and shutdown."
 keywords:
@@ -9,7 +9,15 @@ keywords:
   - HelpAlive track flush shutdown
 ---
 
-This page lists the script tag's attributes and each call on the `HelpAlive` object, for developers. Most apps need only the tag, `identify()` and `reset()`, as [Install the script](/installation) shows.
+The HelpAlive JavaScript SDK reference lists the script tag's attributes and each call on the `HelpAlive` object, for developers: `identify()`, `reset()`, `setConsent()`, `track()`, `flush()`, `shutdown()` and `init()`. Most apps need only the tag, `identify()` and `reset()`, as [Install the script](/installation) shows.
+
+## JavaScript SDK at a glance
+
+- `data-api-key` is the only required attribute of the script tag. Your project key is public.
+- With the four queue lines in place, `identify()`, `reset()`, `setConsent()` and `track()` can run before our script has loaded.
+- Call `init()`, `flush()` and `shutdown()` only after the script has loaded.
+- `identify()` tells HelpAlive who is signed in, and the agent loads only after it succeeds. `reset()` forgets the user at logout.
+- `data-debug` logs what HelpAlive does to the browser console while you test.
 
 ## Prerequisites
 
@@ -90,7 +98,7 @@ HelpAlive.track({ event_type: "report_exported", format: "csv" })
 | `event_type` | string | Required. Your event's name. Use your own names, such as `report_exported`, not HelpAlive's built-in ones such as `pv`, `click`, `form` or `error`. |
 | Other fields | any | Optional properties, at the top level. Keep them small: past a size limit, extra properties are left out. |
 
-Events tracked before `identify()` wait in the page and are sent once it runs. Custom properties are stored as you send them, so don't put personal data in them.
+Events tracked before `identify()` wait in the page and are sent once it runs. Because custom properties are stored as you send them, don't put personal data in them.
 
 ## flush()
 
@@ -125,24 +133,21 @@ await HelpAlive.init({ apiKey: "YOUR_PROJECT_KEY" })
 | `endpoint` | string | HelpAlive's | The same as `data-endpoint`. |
 | `chatEndpoint` | string | HelpAlive's | The same as `data-chat-endpoint`. |
 
-The `capture` keys are `pageviews`, `clicks`, `forms`, `formStart`, `changes`, `errors`, `rage`, `scroll`, `exposure`, `outcomes`, `timing` and `elementContext`. Each is `true` by default. The agent uses recent activity to understand what the user just did, so turning kinds off can make its answers less fitting.
+The `capture` keys are `pageviews`, `clicks`, `forms`, `formStart`, `changes`, `errors`, `rage`, `scroll`, `exposure`, `outcomes`, `timing` and `elementContext`. Each is `true` by default. The agent uses recent activity to understand what the user just did, which is why turning kinds off can make its answers less fitting.
 
 `init()` returns a promise, and rejects if `apiKey` is missing.
 
 ## Check it works
 
-In the browser console on a signed-in page, run `typeof HelpAlive.init`. It prints `"function"` once our script has loaded, and `"undefined"` while only the queue lines have run. Add `data-debug` to the tag to see each call logged.
+In the browser console on a signed-in page, run `typeof HelpAlive.init`. `"function"` means that our script has loaded, and `"undefined"` means that only the queue lines have run. Add `data-debug` to the tag to see each call logged.
 
-## Troubleshooting
+## Why is HelpAlive not defined?
 
-<AccordionGroup>
-  <Accordion title="HelpAlive is not defined">
-    A call ran before the queue lines. Put the four queue lines above your first call.
-  </Accordion>
-  <Accordion title="A call does nothing">
-    The tag has no `data-api-key`, or `identify()` was refused. Add `data-debug` to the tag and read the console. [Troubleshooting](/sdk/troubleshooting) lists the silent failures.
-  </Accordion>
-</AccordionGroup>
+The error `HelpAlive is not defined` means that a call ran before the queue lines. Put the four queue lines above your first call.
+
+## Why does a call do nothing?
+
+A call does nothing when the tag has no `data-api-key`, or when `identify()` was refused. Add `data-debug` to the tag and read the console. [Troubleshooting](/sdk/troubleshooting) lists the silent failures.
 
 ## Next
 

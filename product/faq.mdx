@@ -1,7 +1,7 @@
 ---
-title: "HelpAlive FAQ: screenshots, setup, limits, data"
+title: "HelpAlive FAQ: the AI agent, chat, assists, users and data"
 sidebarTitle: "FAQ"
-description: "Short answers to common HelpAlive questions: screenshots, frameworks, tagging, who sees it, limits, model training, deleting data and speed."
+description: "Short answers about the HelpAlive agent in your web app: screenshots, the script, who sees the chat, assists, limits, users' data and speed."
 keywords:
   - HelpAlive FAQ
   - does HelpAlive take screenshots
@@ -10,77 +10,83 @@ keywords:
   - HelpAlive performance
 ---
 
-Short answers to the questions teams ask most about HelpAlive, each with a link to the full page. It is for anyone evaluating or setting up HelpAlive.
+This is the HelpAlive FAQ: short answers to the questions teams ask most about HelpAlive, each with a link to the full page. It is for anyone evaluating or setting up HelpAlive.
 
-<AccordionGroup>
-  <Accordion title="What is HelpAlive?">
-    HelpAlive is an AI agent inside your web app. It answers your users' questions from your docs, and does tasks for them or shows them how, one step at a time. You add one script and one `identify()` call. See [How HelpAlive works](/product/how-it-works).
-  </Accordion>
+## The FAQ at a glance
 
-  <Accordion title="Does it take screenshots?">
-    No. The agent reads the page as structured text: headings, visible text, and each button, link and field with its label, state and value. It never takes screenshots or records the screen. See [Data we collect](/trust/data).
-  </Accordion>
+- HelpAlive is an AI agent inside your web app. You add one script and one `identify()` call.
+- It never takes screenshots or records the screen. It reads the page as structured text.
+- It works on any web app in the browser, with nothing to tag.
+- It appears only for people your app identifies, and you choose who sees it on **Controls**.
+- Your users are never told about a limit.
 
-  <Accordion title="Does it work with any framework?">
-    Yes. It works on any web app in the browser: React, Vue, Angular, Svelte, Next.js, server-rendered apps and site builders. In single-page apps it follows page changes on its own. See [Install the script](/installation).
-  </Accordion>
+## What is HelpAlive?
 
-  <Accordion title="Do I need to tag elements?">
-    No. There's nothing to tag and no screens to describe. Plain, visible labels on your buttons and fields help the agent, as they help screen readers. See [Make your app easy for the agent](/sdk/agent-ready).
-  </Accordion>
+HelpAlive is an AI agent inside your web app. It answers your users' questions from your docs, and does tasks for them or shows them how, one step at a time. You add one script and one `identify()` call. See [How HelpAlive works](/product/how-it-works).
 
-  <Accordion title="Can it make changes for users?">
-    Yes, if you allow it. With **Does the steps** on **Controls**, it clicks, types and saves for the user, and hands back what only they can do. With **Shows how**, it highlights each control and the user does every click. See [Assists](/product/assists).
-  </Accordion>
+## Does it take screenshots?
 
-  <Accordion title="Will it delete things without asking?">
-    It can press Delete when the task asks for it. When a user asks to delete records by a rule, such as "delete all drafts", it lists them and asks once first. See [What the agent won't do](/product/what-it-wont-do).
-  </Accordion>
+No. The agent reads the page as structured text: headings, visible text, and each button, link and field with its label, state and value. It never takes screenshots or records the screen. See [Data we collect](/trust/data).
 
-  <Accordion title="Will it pop up on its own?">
-    Rarely, and only when a user seems stuck. The widget offers help in a small toast when someone sees an error, presses a button that does nothing, or has a save refused. It is never pushy, and tapping it opens the chat with their question already typed. See [Nudges](/product/nudges).
-  </Accordion>
+## Does it work with any framework?
 
-  <Accordion title="Can I limit who sees it?">
-    Yes. On **Controls**, choose **Everyone**, selected tenants or people, or a percentage of them. You can also set limits per person, per tenant and for your organisation. See [Controls](/dashboard/controls).
-  </Accordion>
+Yes. It works on any web app in the browser: React, Vue, Angular, Svelte, Next.js, server-rendered apps and site builders. In single-page apps it follows page changes on its own. See [Install the script](/installation).
 
-  <Accordion title="Does it work for visitors who aren't signed in?">
-    No. The agent appears only for people your app identifies with `identify()`. See [Identify users](/sdk/identify).
-  </Accordion>
+## Do I need to tag elements?
 
-  <Accordion title="Where do the answers come from?">
-    From the websites and files you publish on **Train**. Where your docs are silent, the agent can use general knowledge of your product, and your docs win when the two disagree. Drafts never reach your users. See [Chat](/product/chat).
-  </Accordion>
+No. There's nothing to tag and no screens to describe. Plain, visible labels on your buttons and fields help the agent, as they help screen readers. See [Make your app easy for the agent](/sdk/agent-ready).
 
-  <Accordion title="What happens at my limit?">
-    Your users are never told about a limit. When assists run out, the chat stops offering them and keeps answering in words. When chat messages run out, the widget says chat isn't available right now. **How far over your plan** on **Controls** sets how far past your plan usage may go. See [Limits and usage](/dashboard/usage).
-  </Accordion>
+## Can it make changes for users?
 
-  <Accordion title="Is my data used to train models?">
-    The model provider that writes answers and runs assists doesn't train on data sent through its API. It may keep that data for up to 30 days for abuse checks. We may use the kept words of chats and assists, de-identified, to improve HelpAlive for all customers; write to support@helpalive.com to opt out. See [How the AI uses your data](/trust/ai-and-your-data).
-  </Accordion>
+Yes, if you allow it. **Does the steps** on **Controls** means that it clicks, types and saves for the user, and hands back what only they can do. **Shows how** means that it highlights each control and the user does every click. See [Assists](/product/assists).
 
-  <Accordion title="How do I remove a user's data?">
-    Go to **Settings → Privacy Management**, find the person or tenant, and press **Delete their data**. Their usage data and their chat and assist text are deleted; the counts stay, made anonymous. **Stop tracking** drops their new events instead. See [Privacy Management](/dashboard/privacy-management).
-  </Accordion>
+## Will it delete things without asking?
 
-  <Accordion title="Can my team read users' chats?">
-    Yes. Everyone on your team can read chat transcripts and assists on **Audience**. Tell your users so in your own privacy notice. See [Audience and Reports](/dashboard/audience-and-reports).
-  </Accordion>
+It can press Delete when the task asks for it. When a user asks to delete records by a rule, such as "delete all drafts", it lists them and asks once first. See [What the agent won't do](/product/what-it-wont-do).
 
-  <Accordion title="Does it slow my app?">
-    The script loads with `async`, so it doesn't hold up your page. The chat widget loads only after `identify()`, and the code for assists loads only when one starts. See [Install the script](/installation).
-  </Accordion>
+## Will it pop up on its own?
 
-  <Accordion title="Does it use cookies?">
-    No. The script sets no cookies. It keeps ids and settings in your site's browser storage, and `reset()` at logout clears the chat entries. See [Data we collect](/trust/data).
-  </Accordion>
+Rarely, and only when a user seems stuck. The widget offers help in a small toast when someone sees an error, presses a button that does nothing, or has a save refused. It is never pushy, and tapping it opens the chat with their question already typed. See [Nudges](/product/nudges).
 
-  <Accordion title="Which languages does it support?">
-    English only for now. The widget's buttons and labels are in English.
-  </Accordion>
-</AccordionGroup>
+## Can I limit who sees it?
+
+Yes. On **Controls**, choose **Everyone**, selected tenants or people, or a percentage of them. You can also set limits per person, per tenant and for your organization. See [Controls](/dashboard/controls).
+
+## Does it work for visitors who aren't signed in?
+
+No. The agent appears only for people your app identifies with `identify()`. See [Identify users](/sdk/identify).
+
+## Where do the answers come from?
+
+From the websites and files you publish on **Train**. Where your docs are silent, the agent can use general knowledge of your product, and your docs win when the two disagree. Drafts never reach your users. See [Chat](/product/chat).
+
+## What happens at my limit?
+
+Your users are never told about a limit. When assists run out, the chat stops offering them and keeps answering in words. When chat messages run out, the widget says chat isn't available right now. **How far over your plan** on **Controls** sets how far past your plan usage may go. See [Limits and usage](/dashboard/usage).
+
+## Is my data used to train models?
+
+The model provider that writes answers and runs assists doesn't train on data sent through its API. It may keep that data for up to 30 days for abuse checks. We may use the kept words of chats and assists, de-identified, to improve HelpAlive for all customers; write to support@helpalive.com to opt out. See [How the AI uses your data](/trust/ai-and-your-data).
+
+## How do I remove a user's data?
+
+Go to **Settings → Privacy Management**, find the person or tenant, and press **Delete their data**. Their usage data and their chat and assist text are deleted; the counts stay, made anonymous. **Stop tracking** means that their new events are dropped instead. See [Privacy Management](/dashboard/privacy-management).
+
+## Can my team read users' chats?
+
+Yes. Everyone on your team can read chat transcripts and assists on **Audience**. Tell your users so in your own privacy notice. See [Audience and Reports](/dashboard/audience-and-reports).
+
+## Does it slow my app?
+
+No. The script doesn't hold up your page, because it loads with `async`. The chat widget loads only after `identify()`, and the code for assists loads only when one starts. See [Install the script](/installation).
+
+## Does it use cookies?
+
+No. The script sets no cookies. It keeps ids and settings in your site's browser storage, and `reset()` at logout clears the chat entries. See [Data we collect](/trust/data).
+
+## Which languages does it support?
+
+English only for now. The widget's buttons and labels are in English.
 
 ## Next
 

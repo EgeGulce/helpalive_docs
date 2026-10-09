@@ -1,5 +1,5 @@
 ---
-title: "Make your app easy for the HelpAlive agent"
+title: "Make your web app agent-ready with accessible names"
 sidebarTitle: "Make your app agent-ready"
 description: "The agent reads your page's controls by their visible text and accessible names, so plain labels help it as they help screen readers."
 keywords:
@@ -9,26 +9,34 @@ keywords:
   - HelpAlive page structure
 ---
 
-This page is for developers and designers who want the agent to work well in their app. There is nothing to install or tag. The same habits that help screen-reader users help the agent.
+An agent-ready app is one whose buttons, links, fields and menus carry plain names that the HelpAlive agent can read: their visible text or their accessible names. This page is for developers and designers who want the agent to work well in their app. There is nothing to install or tag. The same habits that help screen-reader users help the agent.
+
+## Agent-ready apps at a glance
+
+- The agent reads the page as structured text, not as a picture. It takes no screenshots.
+- For each control it reads the kind of control, its name, its state, and the text around it.
+- You add no data attributes, selectors or ids for HelpAlive.
+- Clear names, labeled fields, native elements and errors shown as text all help the agent.
+- When the agent meets something it can't read, such as a `<canvas>` or a frame from another site, it hands the task back to the user.
 
 ## How the agent reads your page
 
 The agent reads the page as structured text, not as a picture. It takes no screenshots. For each button, link, field and menu, it reads:
 
 - what kind of control it is, such as a button, a link, a text field or a checkbox;
-- its name: the visible text, or the accessible name from a `<label>`, `aria-label`, `aria-labelledby`, `alt` or `title`;
+- its name, which refers to the visible text, or the accessible name from a `<label>`, `aria-label`, `aria-labelledby`, `alt` or `title`;
 - its state, such as checked, disabled, selected or expanded, and the value a field shows, except in password fields;
 - the headings, section titles, notices and error messages around it.
 
 Hidden elements are left out. Open shadow DOM, and frames from your own origin, are read like the rest of the page.
 
-You add no data attributes, selectors or ids for HelpAlive. The agent works with the page as your users see it.
+You add no data attributes, selectors or ids for HelpAlive, because the agent works with the page as your users see it.
 
 ## Prerequisites
 
 - HelpAlive is installed. See [Install the script](/installation).
 
-## Habits that help
+## How to make your app agent-ready
 
 <Steps>
   <Step title="Give every control a name">
@@ -39,7 +47,7 @@ You add no data attributes, selectors or ids for HelpAlive. The agent works with
     ```
   </Step>
   <Step title="Tie each field to its label">
-    Use `<label for>`, or wrap the field in its label. A placeholder alone disappears once the user types, and it reads as a hint, not a name.
+    Use `<label for>`, or wrap the field in its label. A placeholder alone is not enough, because it disappears once the user types, and it reads as a hint, not a name.
 
     ```html
     <label for="company-name">Company name</label>
@@ -73,16 +81,13 @@ The agent hands the task back to the user when it meets something it can't read 
 1. Run your browser's accessibility checker, or a tool such as Lighthouse, on a busy page. Fix controls flagged as having no name.
 2. Open the agent in your app and ask it to do a task on that page. Watch where it hands back to you.
 
-## Troubleshooting
+## Why does the agent stop and ask the user to take over?
 
-<AccordionGroup>
-  <Accordion title="The agent stops and asks the user to take over">
-    It reached a control it couldn't name or read. Find the step where it stopped, and give that control a visible label or an `aria-label`.
-  </Accordion>
-  <Accordion title="The agent picks the wrong one of several similar buttons">
-    The buttons share a name. Make each name specific, for example "Edit billing address" and "Edit shipping address".
-  </Accordion>
-</AccordionGroup>
+The agent stops because it reached a control it couldn't name or read. Find the step where it stopped, and give that control a visible label or an `aria-label`.
+
+## Why does the agent pick the wrong one of several similar buttons?
+
+The agent picks the wrong button because the buttons share a name. Make each name specific, for example "Edit billing address" and "Edit shipping address".
 
 ## Next
 

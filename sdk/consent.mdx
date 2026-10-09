@@ -1,5 +1,5 @@
 ---
-title: "Consent and cookie banners with HelpAlive"
+title: "Load HelpAlive after consent from your cookie banner"
 sidebarTitle: "Consent"
 description: "HelpAlive has no consent mode: how to make it wait for your cookie banner, and what to do with an old data-consent attribute or setConsent() call."
 keywords:
@@ -9,7 +9,15 @@ keywords:
   - opt-in tracking SaaS
 ---
 
-This page is for developers whose cookie banner must approve tools before they run. HelpAlive has no consent mode of its own. It records activity once `identify()` runs, as [Identify users](/sdk/identify) describes.
+Consent, on this page, refers to your cookie banner's approval before a tool may run in a user's browser. HelpAlive has no consent mode of its own: it records activity once `identify()` runs, as [Identify users](/sdk/identify) describes. To make it wait for your banner, you hold back the HelpAlive tag until the user accepts. This page is for developers whose cookie banner must approve tools before they run.
+
+## Consent at a glance
+
+- HelpAlive has no consent mode. Your banner decides when the tag loads.
+- Without the tag, nothing of HelpAlive runs and the agent doesn't appear.
+- Calls to `identify()` and `reset()` made before the tag loads wait in the page, then run once it has loaded.
+- The old `data-consent` attribute, `setConsent()` and the `mode` and `consent` options of `init()` do nothing now. You can delete them.
+- HelpAlive doesn't read Do Not Track or Global Privacy Control signals.
 
 ## Prerequisites
 
@@ -26,9 +34,34 @@ This page is for developers whose cookie banner must approve tools before they r
   </Step>
 </Steps>
 
+### Example: add the tag when the user accepts
+
+Call this from your banner's "accepted" callback. It adds the same tag as [Install the script](/installation), once, from your code:
+
+```javascript
+// Run when your cookie banner reports that the user accepted.
+function loadHelpAlive() {
+  const src = "https://cdn.helpalive.com/sdk/helpalive.js";
+  if (document.querySelector(`script[src="${src}"]`)) return;
+  const tag = document.createElement("script");
+  tag.src = src;
+  tag.async = true;
+  tag.setAttribute("data-api-key", "YOUR_PROJECT_KEY");
+  document.head.appendChild(tag);
+}
+```
+
+Replace `YOUR_PROJECT_KEY` with your key from **Settings → Setup & API Key**. If your Content Security Policy uses a nonce, set it on the tag too, as [Content Security Policy](/sdk/csp) describes.
+
 <Note>
 Without the tag, nothing of HelpAlive runs, so the agent doesn't appear for a user who declines. To keep the agent away from some users, leave them out of **Who gets it** on **Controls**. To stop recording one user for good, use **Settings → Privacy Management**.
 </Note>
+
+## How HelpAlive behaves before and after consent
+
+- **Before the user accepts:** the tag isn't on the page, so HelpAlive sends nothing and shows nothing. Your four queue lines hold any `identify()` or `reset()` calls in the page.
+- **After the user accepts:** the tag loads, runs the waiting calls, and the chat button appears for users in **Who gets it**.
+- **If the user declines:** the tag never loads. This means that the agent stays away for that user, in that browser, until your banner reports a change.
 
 ## Old consent settings
 

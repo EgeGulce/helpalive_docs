@@ -15,6 +15,14 @@ HelpAlive is an AI agent that lives inside your web app. It answers your users' 
 
 This site is for the people who set HelpAlive up: the admin who configures it in the dashboard and the developer who installs it.
 
+## HelpAlive at a glance
+
+- **What it is:** an in-app AI agent. It runs in your user's browser, inside your app, and sees the page the user is on.
+- **What it does:** it answers questions from the docs you publish, offers to do a task when the user wants it done, and hands back the steps only the user can take.
+- **How you add it:** one script tag and one `identify()` call. You don't tag elements, describe your screens or build an API for it.
+- **Who sees it:** only the signed-in people your app identifies, and only those you choose on **Controls**.
+- **How it sees your app:** as structured text, with headings, visible text, and each button, link and field with its label. It never takes screenshots or records the screen.
+
 ## Pick your path
 
 <CardGroup cols={2}>
@@ -34,11 +42,24 @@ This site is for the people who set HelpAlive up: the admin who configures it in
 
 ## What your users get
 
-- **Answers from your docs.** Users ask in their own words and get a short answer that fits the page they're on.
-- **Tasks done for them, or shown to them.** When a user wants something done, the agent offers an assist. It does the steps itself, or highlights each control so the user clicks.
+- **Answers from your docs.** Users ask in their own words and get a short answer that fits the page they're on. Suggested questions under **"Ask about this page"** are made from the page, what the user has been doing, and your docs. See [Chat](/product/chat).
+- **Tasks done for them, or shown to them.** When a user wants something done, the agent offers an assist. It does the steps itself, or highlights each control so the user clicks. See [Assists](/product/assists).
+- **Help when they get stuck.** A nudge is a small message that offers help when a user runs into an error, a button that doesn't respond, or a save that fails. See [Nudges](/product/nudges).
 - **A clear hand-back.** Steps only the user can do, such as uploading a file, go back to them.
 
 You decide which of these each tenant or person gets, on **Controls**.
+
+## How HelpAlive works
+
+HelpAlive works in five stages, each one in your user's own signed-in session:
+
+1. **It reads the page** as structured text, again at every step, so it works from what is on screen now.
+2. **It answers from your published docs.** Drafts are never used for your users' answers, and your docs win when general knowledge disagrees.
+3. **It offers a task only when it can be done in your app**, as a card under the answer. The card starts nothing by itself.
+4. **It does the steps, or shows how**, one step at a time, and checks after each step that it landed.
+5. **It hands back what only the user can do**, such as a password, a code from their phone, or a file upload.
+
+Because it works through your app's own interface, it can do only what that user could do themselves. See [How HelpAlive works](/product/how-it-works) for the guarantees at each stage, and [How HelpAlive compares](/product/compare) for how it differs from help chatbots, product tours and MCP-based agents.
 
 ## Start here
 

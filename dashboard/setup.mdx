@@ -1,5 +1,5 @@
 ---
-title: "Set up HelpAlive: Setup & API Key page"
+title: "Set up HelpAlive: four steps, project key and signing secret"
 sidebarTitle: "Setup & API Key"
 description: "Follow HelpAlive's four setup steps, check that each one works, and manage your public project key and your private signing secret."
 keywords:
@@ -10,7 +10,15 @@ keywords:
   - only allow verified users
 ---
 
-**Setup & API Key** is where you install HelpAlive and check that it works. It is the second tab of **Settings**, at **Settings → Setup & API Key**. It also holds your project key and your signing secret.
+**Setup & API Key** is the page in the HelpAlive dashboard where you install HelpAlive and check that it works. It is the second tab of **Settings**, at **Settings → Setup & API Key**. It also holds your project key and your signing secret.
+
+## Setup at a glance
+
+- Setup has four steps: **Add HelpAlive to your app**, **Train the agent on your product**, **Test it on your app** and **Verify your users**, which is optional.
+- Each step has one line saying what HelpAlive saw, and gets a check by itself once it is done.
+- **Your project key** is public: it goes in the script tag on every page.
+- Your signing secret is private. Keep it on your server, like a password.
+- With **Only allow verified users** on, anyone without a valid user token can't see the agent.
 
 ## Is it working?
 
@@ -46,7 +54,7 @@ The steps are listed on the left, one shown at a time. Each gets a check by itse
 
 ## Verified users
 
-Without this step, HelpAlive trusts the user id your page sends. Someone who edits the page in their browser could send another person's id and read that person's chats. With it, your server signs each id, and once **Only allow verified users** is on, nobody can pretend to be someone else. Add it before you open the agent to all your users.
+Without this step, HelpAlive trusts the user id your page sends. This means that someone who edits the page in their browser could send another person's id and read that person's chats. With it, your server signs each id, and once **Only allow verified users** is on, nobody can pretend to be someone else. Add it before you open the agent to all your users.
 
 ### Your signing secret
 
@@ -60,7 +68,7 @@ The signing secret is private. Never put it in your page, your app's front-end c
 
 ### Make a user token
 
-Under **Make a user token on your server, and pass it to identify()**, choose **With an AI coding agent** or **Add it yourself**. The code comes in eight server languages. Your server makes a short signed text per person, the user token, and your page passes it to `identify()`. The code is on [Verify users](/sdk/verify-users).
+Under **Make a user token on your server, and pass it to identify()**, choose **With an AI coding agent** or **Add it yourself**. The code comes in eight server languages. The user token refers to a short signed text your server makes per person. Your page passes it to `identify()`. The code is on [Verify users](/sdk/verify-users).
 
 ### Check your setup
 
@@ -73,7 +81,7 @@ After you deploy your signing, sign in to your app and open the agent. Then pres
 With this switch on, anyone without a valid user token can't see the agent, and their activity is not recorded.
 
 - It can be turned on only after a verified sign-in in the last 30 minutes. Otherwise it says "No verified sign-in in the last 30 minutes, so this stays off."
-- It is marked **Recommended** once nearly all sign-ins in the last 7 days arrive verified and none fail.
+- **Recommended** means that nearly all sign-ins in the last 7 days arrived verified and none failed.
 - Turning it on asks first: "Hide the agent from anyone we can't verify?" The dialog says how many people in the last 7 days had no token, or a token that had expired or didn't check out. Press **Turn it on anyway**, or **Show me the fix** to open the setup instructions instead.
 - Turning it off always works, so you have a way out if signing breaks.
 
@@ -93,11 +101,11 @@ The first three steps have a check, and the band says your agent is ready for yo
 
 ## Troubleshooting
 
-- **"Our script reaches your pages but can't start."** The tag has the wrong project key. Copy it again from this page.
-- **"Last seen on your pages ... Is the tag still there?"** The tag was removed, or your pages stopped loading it.
-- **Step 1 stays on "Waiting for someone to sign in".** `identify()` isn't running. Call it after login and on every page load.
-- **Some users can't see the agent after you turn on Only allow verified users.** Their pages send no token, or a token that fails. Step 4 names the main reason and the fix. Turn the switch off while you fix the signing, then turn it on again.
-- **"Too soon to regenerate."** The project key can be regenerated once an hour.
+- **"Our script reaches your pages but can't start."** This means that the tag has the wrong project key. Copy it again from this page.
+- **"Last seen on your pages ... Is the tag still there?"** This means that the tag was removed, or your pages stopped loading it.
+- **Step 1 stays on "Waiting for someone to sign in".** This means that `identify()` isn't running. Call it after login and on every page load.
+- **Some users can't see the agent after you turn on Only allow verified users.** This is because their pages send no token, or a token that fails. Step 4 names the main reason and the fix. Turn the switch off while you fix the signing, then turn it on again.
+- **"Too soon to regenerate."** This is because the project key can be regenerated once an hour.
 
 ## Next
 
