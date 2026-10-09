@@ -34,7 +34,7 @@ The model receives only what the current moment needs. That falls into five kind
 | **Recent activity**: what the user did on this visit, and the titles of their own recent chats | When the chat opens and with each question |
 | **Passages from your published docs** that match the question | With each question |
 
-Field values are sent as shown, except in password, file-upload and hidden fields. The page is not redacted, because it is what the agent needs to see. The user's email is never sent with a chat question.
+Field values are sent as shown, except in password, card, one-time-code, file-upload and hidden fields, and in any field holding a card number. Apart from those fields, the page is not redacted, because it is what the agent needs to see. The user's email is never sent with a chat question.
 
 Your docs' text and your users' questions are also processed to find the right passages. Our model provider and a search-relevance provider do this work. See [Subprocessors](/trust/subprocessors).
 
