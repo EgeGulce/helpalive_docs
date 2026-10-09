@@ -202,7 +202,7 @@ Without it, HelpAlive trusts the user id your page sends. This means that someon
     | `sub` | The same id your page passes to `identify()` as `userId`, as a string. |
     | `tenant` | Optional: the same id your page passes as `tenantId`, as a string. Leave it out if your app has no companies or workspaces. |
 
-    Leave out an expiry (`exp`) and a key id (`kid`). HelpAlive honours an `exp` if you add one, but a token that expires stops working in a tab left open. Rotating the secret is how you cut old tokens off.
+    Leave out an expiry (`exp`) and a key id (`kid`). HelpAlive honors an `exp` if you add one, but a token that expires stops working in a tab left open. Rotating the secret is how you cut old tokens off.
   </Step>
 
   <Step title="Get the token to the page">
@@ -226,8 +226,8 @@ Without it, HelpAlive trusts the user id your page sends. This means that someon
       tenantName: company.name,     // optional: the company's name, shown in your dashboard
       displayName: user.name,       // optional
       email: user.email,            // optional
-      role: user.role,              // optional: e.g. "admin", "editor", "viewer"
-      plan: company.plan,           // optional: e.g. "free", "pro", "enterprise"
+      role: user.role,              // recommended, helps the agent: e.g. "admin", "editor", "viewer"
+      plan: company.plan,           // recommended, helps the agent: e.g. "free", "pro", "enterprise"
       createdAt: user.createdAt,    // optional: signup date, Unix time in seconds
     })
     ```

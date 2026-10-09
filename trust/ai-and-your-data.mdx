@@ -14,7 +14,7 @@ HelpAlive's agent sends data to an AI model only at the moment a user uses the c
 
 ## AI and your data at a glance
 
-- The agent reads the current page only when someone uses the chat or an assist. That page view is not redacted.
+- The agent reads the current page only when someone uses the chat or an assist. Apart from password, card, one-time-code, file-upload and hidden fields, that page view is not redacted.
 - Before activity is stored, our servers remove names, email addresses, phone numbers, IP addresses and card numbers from its text.
 - The model provider doesn't train on data sent through its API.
 - The page the agent read is not saved to our database.
@@ -28,7 +28,7 @@ The agent answers questions about the page a user is on, and does tasks on that 
 
 **Always, while the script runs: activity only.** HelpAlive records which pages are viewed, what is clicked, which fields change and which errors appear. This is not a copy of the page. Before activity is stored, our servers remove names, email addresses, phone numbers, IP addresses and card numbers from its text. Password, card and one-time-code fields are never collected.
 
-**Only when someone uses the assistant: the page.** When an end user opens the chat, asks a question or runs an assist, the assistant reads the current page as text, the way a person would see it, so it can help. That page view goes to our AI provider and is not redacted, because it is what the assistant works from. No copy of the page is taken at any other time.
+**Only when someone uses the agent: the page.** When a user opens the chat, asks a question or runs an assist, the agent reads the current page as text, the way a person would see it, so it can help. That page goes to our model provider and is not redacted, apart from the fields listed below, because it is what the agent works from. No copy of the page is taken at any other time.
 
 ## What is sent, and when
 
@@ -42,7 +42,7 @@ The model receives only what the current moment needs. That falls into five kind
 | **Recent activity**: what the user did on this visit, and the titles of their own recent chats | When the chat opens and with each question |
 | **Passages from your published docs** that match the question | With each question |
 
-Field values are sent as shown, except in password, file-upload and hidden fields. The page is not redacted, because it is what the agent needs to see. The user's email is never sent with a chat question.
+Field values are sent as shown, except in password, card, one-time-code, file-upload and hidden fields, and in any field holding a card number. Apart from those fields, the page is not redacted, because it is what the agent needs to see. The user's email is never sent with a chat question.
 
 Your docs' text and your users' questions are also processed to find the right passages. Our model provider and a search-relevance provider do this work. See [Subprocessors](/trust/subprocessors).
 

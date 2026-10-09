@@ -57,9 +57,9 @@ The Google Tag Manager install is a way to add HelpAlive through Tag Manager, fo
       helpalive_tenant_id: String(company.id),       // required in a B2B app; leave out for B2C users
       helpalive_tenant_name: company.name,           // required in a B2B app; the company's name
       helpalive_display_name: user.name,             // required; the person's name
-      helpalive_email: user.email,                   // optional; user email
-      helpalive_role: user.role,                     // optional; e.g. "admin", "editor"
-      helpalive_plan: company.plan,                  // optional; e.g. "free", "pro"
+      helpalive_email: user.email,                   // optional
+      helpalive_role: user.role,                     // recommended, helps the agent; for example "admin"
+      helpalive_plan: company.plan,                  // recommended, helps the agent; for example "pro"
       helpalive_created_at: user.createdAt,          // optional; signup date (Unix seconds)
     });
     ```
@@ -151,7 +151,7 @@ Tag Manager won't publish the identify tag because the tag names a variable you 
 
 ## Why does the identify tag fire, but nobody is recognized?
 
-Nobody is recognized because the user id reached HelpAlive as a number or as empty. Push it as text. To see the reason, add `s.setAttribute("data-debug","");` to the loader tag while you test, and read the browser console.
+Nobody is recognized because the user id reached HelpAlive empty. Check that your push sets `helpalive_user_id` before the `helpalive_identify` event, and that the Data Layer Variable has exactly that name. To see the reason, add `s.setAttribute("data-debug","");` to the loader tag while you test, and read the browser console.
 
 ## Why does the previous user's chat stay open after logout?
 

@@ -17,7 +17,7 @@ HelpAlive collects usage events from your users' browsers the whole time its scr
 
 - The script collects no screenshots, screen or session recordings, keystroke timing, screen size or cookies.
 - Before usage events are saved, our servers replace personal data, such as names, email addresses and card numbers, with a tag.
-- The page the agent reads is not redacted, because it is what the agent needs to see to help.
+- Apart from password, card, one-time-code, file-upload and hidden fields, the page the agent reads is not redacted, because it is what the agent needs to see to help.
 - Usage events are kept for 12 months. Chat and assist text is kept for your setting, 1 year by default.
 - HelpAlive's servers, database and backups run in US East (Virginia).
 
@@ -29,7 +29,7 @@ The script records usage events the whole time it runs in your app. Chat and ass
 |---|---|
 | Page views | Page address, title, and the previous page on your site. Secret-looking parts of the address are removed first (see below). |
 | Clicks | The element's visible text, label, id, CSS classes, position and state, such as checked or disabled. For text fields, only whether they have a value. |
-| Field changes | The value typed or picked, and the value before it. Only password fields are blanked. |
+| Field changes | The value typed or picked, and the value before it. Password, card and one-time-code fields send no value, and neither does a field holding a card number. |
 | Form submits | The submit button's label and the form's name. No field values. |
 | Errors | Error messages shown on screen. When a request your page makes to change data is rejected, the start of that response, from any server your page calls. |
 | Seen elements | Once per page, what was on screen long enough to be seen, and whether the user touched it. |
@@ -61,12 +61,12 @@ When a user opens the chat, asks a question or runs an assist, the agent reads t
 
 - the page's title, headings and visible text, such as banners and notices;
 - each button, link and field, with its label, role and state;
-- **the values in fields**, as shown, except password, file-upload and hidden fields;
+- **the values in fields**, as shown, except password, card, one-time-code, file-upload and hidden fields, and any field holding a card number. For those it sees only whether the field is filled;
 - the full page address, the browser's time zone and local date.
 
 It also gets the user's message and recent turns, and recent activity on this visit. It gets the role, plan and display name you send in `identify()`, and the matching passages from your docs. The chat answer never receives the user's email.
 
-The page the agent reads is not redacted. A card number or code typed into an ordinary field is included. This is deliberate, because it is what the agent needs to see to help. See [How the AI uses your data](/trust/ai-and-your-data).
+Apart from those fields, the page the agent reads is not redacted. A code typed into a field your page doesn't mark as a one-time code (`autocomplete="one-time-code"`) is included. This is deliberate, because it is what the agent needs to see to help. See [How the AI uses your data](/trust/ai-and-your-data).
 
 ## What is redacted, and what is not
 
@@ -81,9 +81,9 @@ These are **not** redacted:
 
 ## Our server logs
 
-Our server logs keep end users' chat questions, and the page content assists read, including field values, for 30 days. They also hold your team's email addresses at sign-in and when invites are sent. Deleting a user doesn't reach these log copies; they age out after 30 days.
+Our server logs keep your users' chat questions, and the page content assists read, including field values, for 30 days. They also hold your team's email addresses at sign-in and when invites are sent. Deleting a user doesn't reach these log copies; they age out after 30 days.
 
-Error reports from our servers can include the log lines just before an error, and go to our error-tracking provider. See [Subprocessors](/trust/subprocessors).
+Error reports from our servers can include the log lines just before an error. They are kept with our server logs, for 30 days. See [Subprocessors](/trust/subprocessors).
 
 ## How long we keep it
 
