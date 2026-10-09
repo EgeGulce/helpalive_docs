@@ -1,0 +1,209 @@
+---
+title: "Install HelpAlive in a Vue or Nuxt app"
+sidebarTitle: "Vue and Nuxt"
+description: "Add the HelpAlive in-app AI agent to a Vue 3 or Nuxt app: the tag in index.html or nuxt.config, identify() in a watcher on your signed-in user, and reset() in your logout action."
+keywords:
+  - install HelpAlive Vue
+  - add AI agent to Vue app
+  - Vue in-app AI assistant
+  - install HelpAlive Nuxt
+  - Pinia auth store identify
+---
+
+Installing HelpAlive in a Vue app means adding one script tag to `index.html`, calling `identify()` from a watcher on your signed-in user, and calling `reset()` in your logout action. This page covers Vue 3 apps built with Vite, and Nuxt apps, which load the tag from `nuxt.config` instead.
+
+## Vue install at a glance
+
+- In Vue with Vite, the tag goes in `index.html`. In Nuxt, it goes in `app.head` in `nuxt.config`.
+- A small helper module lets your code call HelpAlive before the script has loaded.
+- A `watch` on your signed-in user, with `immediate: true`, calls `identify()` after login and on every page load.
+- `reset()` goes in your logout action, for example in a Pinia auth store.
+- Vue Router changes are tracked by themselves, in history mode and hash mode.
+
+## Before you start
+
+- Your project key, from **Settings → Setup & API Key**. It is public, which means that it is safe to put in your front-end code.
+- The store or composable that holds the signed-in user, for example a Pinia `useAuthStore()`.
+- About 10 minutes.
+
+## How to install HelpAlive in Vue
+
+<Steps>
+  <Step title="Add the tag to index.html">
+    Open `index.html` at the root of your project and paste the tag before `</head>`:
+
+    ```html index.html
+    <!-- Paste before </head> -->
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
+    ```
+
+    Replace `YOUR_PROJECT_KEY` with your key.
+  </Step>
+
+  <Step title="Add the helper module">
+    Create `src/helpalive.ts`. It queues calls made before the script has loaded, and the script replays them in order when it arrives:
+
+    ```typescript src/helpalive.ts
+    export type HelpAliveUser = {
+      userId: string;       // required: your own id for this person
+      displayName: string;  // required: their name or email, shown in your dashboard
+      tenantId?: string;    // B2B: their company or workspace id
+      tenantName?: string;  // B2B: that company's name
+      email?: string;
+      role?: string;        // recommended, the agent reads it
+      plan?: string;        // recommended, the agent reads it
+      createdAt?: number;   // signup date, Unix time in seconds
+    };
+
+    function helpAlive() {
+      const w = window as any;
+      w.HelpAlive = w.HelpAlive || { q: [] };
+      for (const m of ["identify", "reset", "setConsent", "track"]) {
+        if (!w.HelpAlive[m]) w.HelpAlive[m] = (...args: unknown[]) => w.HelpAlive.q.push([m, args]);
+      }
+      return w.HelpAlive;
+    }
+
+    export function identifyUser(user: HelpAliveUser) {
+      helpAlive().identify(user);
+    }
+
+    export function resetUser() {
+      helpAlive().reset();
+    }
+    ```
+  </Step>
+
+  <Step title="Call identify() from a watcher on the user">
+    In your root component, watch the signed-in user. `immediate: true` makes it run on page load as well as after login:
+
+    ```vue src/App.vue
+    <script setup lang="ts">
+    import { watch } from "vue";
+    import { useAuthStore } from "./stores/auth";
+    import { identifyUser } from "./helpalive";
+
+    const auth = useAuthStore();
+
+    watch(
+      () => auth.user,
+      (user) => {
+        if (!user) return; // still loading, or signed out: nothing to send yet
+        identifyUser({
+          userId: String(user.id),
+          displayName: user.name,
+          tenantId: String(user.company.id),  // leave out in a B2C app
+          tenantName: user.company.name,      // leave out in a B2C app
+          email: user.email,
+          role: user.role,
+          plan: user.company.plan,
+        });
+      },
+      { immediate: true },
+    );
+    </script>
+    ```
+
+    Fill the fields from your own user and company objects, and delete the ones your app doesn't have. [Identify users](/sdk/identify) describes each field.
+  </Step>
+
+  <Step title="Call reset() in your logout action">
+    Put `resetUser()` in the action that signs the user out:
+
+    ```typescript src/stores/auth.ts
+    import { defineStore } from "pinia";
+    import { resetUser } from "../helpalive";
+
+    export const useAuthStore = defineStore("auth", {
+      state: () => ({ user: null as User | null }),
+      actions: {
+        async logout() {
+          resetUser();
+          await api.post("/logout");
+          this.user = null;
+        },
+      },
+    });
+    ```
+
+    Also call it wherever your app finds out a session has ended, for example in an HTTP interceptor that sees a `401`. Don't call it from the watcher when `user` is `null`: the user is `null` for a moment on every page load, and `reset()` would close the agent and clear the user's conversation each time.
+  </Step>
+</Steps>
+
+If your app sends a Content Security Policy, add HelpAlive's sources as [Install the script](/installation#how-to-install-the-script) shows in its last step.
+
+## How to install HelpAlive in Nuxt
+
+<Steps>
+  <Step title="Add the tag in nuxt.config">
+    Add the script to `app.head`, so Nuxt puts it in the head of every page:
+
+    ```typescript nuxt.config.ts
+    export default defineNuxtConfig({
+      app: {
+        head: {
+          script: [
+            {
+              src: "https://cdn.helpalive.com/sdk/helpalive.js",
+              "data-api-key": "YOUR_PROJECT_KEY",
+              async: true,
+            },
+          ],
+        },
+      },
+    });
+    ```
+  </Step>
+
+  <Step title="Call identify() from a client-only plugin">
+    Copy the helper module above to `utils/helpalive.ts`, then create a plugin whose name ends in `.client.ts`, so it runs only in the browser:
+
+    ```typescript plugins/helpalive.client.ts
+    import { identifyUser } from "~/utils/helpalive";
+
+    export default defineNuxtPlugin(() => {
+      const user = useCurrentUser(); // your own composable or store
+
+      watch(
+        user,
+        (u) => {
+          if (u) identifyUser({ userId: String(u.id), displayName: u.name, tenantId: String(u.companyId), tenantName: u.companyName });
+        },
+        { immediate: true },
+      );
+    });
+    ```
+
+    Call `resetUser()` in your logout function, as in the Vue steps above.
+  </Step>
+</Steps>
+
+## Why does the identify code need to run only in the browser?
+
+HelpAlive runs in the browser, and `window` does not exist during server rendering. In Nuxt, the `.client.ts` suffix keeps the plugin out of the server. The helper module also touches `window` only inside its functions, so importing it on the server is safe.
+
+## Do I need to tell HelpAlive about route changes?
+
+No. HelpAlive records a page view whenever Vue Router changes the address, in history mode and in hash mode. There is nothing to call in a navigation guard.
+
+## What happens when another user signs in without a reload?
+
+The watcher calls `identify()` with the new user when `auth.user` changes. HelpAlive closes the previous user's agent first, then opens a fresh one for the new user. Calling `reset()` in your logout action first is still the right order.
+
+## Check that it works
+
+Sign in to your app with a test account, then open **Settings → Setup & API Key** on the dashboard. The first step, **Add HelpAlive to your app**, gets a check once HelpAlive has seen your page and a signed-in user. [Check it works](/installation#check-it-works) explains each step. To see what HelpAlive does on a page, add `data-debug` to the tag while you test, and remove it before you ship.
+
+## Related pages
+
+<CardGroup cols={3}>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    Every identify() field, switching company, and logout.
+  </Card>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    Add a signed token so nobody can pose as another user.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
+  </Card>
+</CardGroup>

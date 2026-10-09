@@ -1,0 +1,187 @@
+---
+title: "Install HelpAlive in an Angular app"
+sidebarTitle: "Angular"
+description: "Add the HelpAlive in-app AI agent to an Angular app: the tag in src/index.html, a HelpAliveService that runs outside the Angular zone, identify() from your auth state, and reset() at logout."
+keywords:
+  - install HelpAlive Angular
+  - add AI agent to Angular app
+  - Angular in-app AI assistant
+  - Angular third-party script service
+  - Angular runOutsideAngular
+---
+
+Installing HelpAlive in an Angular app means adding one script tag to `src/index.html`, wrapping HelpAlive in a small injectable service, calling `identify()` when your auth state has a signed-in user, and calling `reset()` in your logout code. This page works for Angular apps with standalone components or NgModules, with or without server-side rendering.
+
+## Angular install at a glance
+
+- The tag goes in `src/index.html`, so it loads once for the whole app.
+- A `HelpAliveService` holds the calls, so components and services never touch `window` themselves.
+- The service runs HelpAlive outside the Angular zone, so HelpAlive's background work doesn't trigger change detection.
+- The service does nothing during server rendering, so it is safe with Angular SSR.
+- `identify()` runs from your auth state, and `reset()` runs in your logout method and when a request comes back `401`.
+
+## Before you start
+
+- Your project key, from **Settings → Setup & API Key**. It is public, which means that it is safe to put in your front-end code.
+- The service that holds the signed-in user, for example an `AuthService` with a `user` signal or a `user$` observable.
+- About 10 minutes.
+
+## How to install HelpAlive in Angular
+
+<Steps>
+  <Step title="Add the tag to src/index.html">
+    Paste the tag before `</head>` in `src/index.html`:
+
+    ```html src/index.html
+    <!-- Paste before </head> -->
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
+    ```
+
+    Replace `YOUR_PROJECT_KEY` with your key.
+  </Step>
+
+  <Step title="Create the HelpAlive service">
+    Create `src/app/helpalive.service.ts`. It queues calls made before the script has loaded, and the script replays them in order when it arrives:
+
+    ```typescript src/app/helpalive.service.ts
+    import { Injectable, NgZone, PLATFORM_ID, inject } from "@angular/core";
+    import { isPlatformBrowser } from "@angular/common";
+
+    export type HelpAliveUser = {
+      userId: string;       // required: your own id for this person
+      displayName: string;  // required: their name or email, shown in your dashboard
+      tenantId?: string;    // B2B: their company or workspace id
+      tenantName?: string;  // B2B: that company's name
+      email?: string;
+      role?: string;        // recommended, the agent reads it
+      plan?: string;        // recommended, the agent reads it
+      createdAt?: number;   // signup date, Unix time in seconds
+    };
+
+    @Injectable({ providedIn: "root" })
+    export class HelpAliveService {
+      private zone = inject(NgZone);
+      private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+
+      identify(user: HelpAliveUser): void {
+        this.call("identify", user);
+      }
+
+      reset(): void {
+        this.call("reset");
+      }
+
+      private call(method: string, ...args: unknown[]): void {
+        if (!this.isBrowser) return; // nothing to do during server rendering
+        const w = window as any;
+        w.HelpAlive = w.HelpAlive || { q: [] };
+        for (const m of ["identify", "reset", "setConsent", "track"]) {
+          if (!w.HelpAlive[m]) w.HelpAlive[m] = (...a: unknown[]) => w.HelpAlive.q.push([m, a]);
+        }
+        this.zone.runOutsideAngular(() => w.HelpAlive[method](...args));
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Call identify() from your auth state">
+    In your root component, call `identify()` whenever the signed-in user is set. With a signal, use an `effect`:
+
+    ```typescript src/app/app.component.ts
+    import { Component, effect, inject } from "@angular/core";
+    import { RouterOutlet } from "@angular/router";
+    import { AuthService } from "./auth.service";
+    import { HelpAliveService } from "./helpalive.service";
+
+    @Component({
+      selector: "app-root",
+      standalone: true,
+      imports: [RouterOutlet],
+      template: "<router-outlet />",
+    })
+    export class AppComponent {
+      private auth = inject(AuthService);
+      private helpAlive = inject(HelpAliveService);
+
+      constructor() {
+        effect(() => {
+          const user = this.auth.user();
+          if (!user) return; // still loading, or signed out: nothing to send yet
+          this.helpAlive.identify({
+            userId: String(user.id),
+            displayName: user.name,
+            tenantId: String(user.company.id),  // leave out in a B2C app
+            tenantName: user.company.name,      // leave out in a B2C app
+            email: user.email,
+            role: user.role,
+            plan: user.company.plan,
+          });
+        });
+      }
+    }
+    ```
+
+    With an observable, subscribe to `user$` in the same place and make the same call for each user it emits. [Identify users](/sdk/identify) describes each field.
+  </Step>
+
+  <Step title="Call reset() at logout">
+    Put `reset()` in the method that signs the user out:
+
+    ```typescript src/app/auth.service.ts
+    logout(): void {
+      this.helpAlive.reset();
+      this.http.post("/api/logout", {}).subscribe(() => this.router.navigate(["/login"]));
+    }
+    ```
+
+    Also call it where your app finds out a session has ended, usually in an HTTP interceptor that sees a `401`:
+
+    ```typescript src/app/session.interceptor.ts
+    import { HttpInterceptorFn } from "@angular/common/http";
+    import { inject } from "@angular/core";
+    import { tap } from "rxjs";
+    import { HelpAliveService } from "./helpalive.service";
+
+    export const sessionInterceptor: HttpInterceptorFn = (req, next) => {
+      const helpAlive = inject(HelpAliveService);
+      return next(req).pipe(
+        tap({ error: (err) => { if (err.status === 401) helpAlive.reset(); } }),
+      );
+    };
+    ```
+  </Step>
+</Steps>
+
+## Why run HelpAlive outside the Angular zone?
+
+HelpAlive works in the background while your user is on the page. Started from inside the Angular zone, that background work would make Angular run change detection more often than it needs to, and could keep the app from reaching a stable state, which server-side rendering and service workers wait for. `runOutsideAngular` keeps HelpAlive's work out of Angular's change detection. In a zoneless app it does no harm.
+
+## Why does the service check for the browser?
+
+With Angular SSR, your components and services also run on the server, where `window` does not exist. `isPlatformBrowser` makes the service skip every call there, and the browser makes the same calls once the app starts on the client.
+
+## How do I add the nonce for a Content Security Policy?
+
+Angular's `ngCspNonce` attribute covers the styles Angular adds itself, not our script tag. Have your server put the page's nonce on the HelpAlive tag as a `nonce` attribute, the same way it fills in `ngCspNonce`, and add HelpAlive's sources to your policy. [Content Security Policy](/sdk/csp) lists the sources.
+
+## Do I need to tell HelpAlive about route changes?
+
+No. HelpAlive records a page view whenever the Angular router changes the address, with the default path routing or with `HashLocationStrategy`. There is nothing to call in a guard or a router event.
+
+## Check that it works
+
+Sign in to your app with a test account, then open **Settings → Setup & API Key** on the dashboard. The first step, **Add HelpAlive to your app**, gets a check once HelpAlive has seen your page and a signed-in user. [Check it works](/installation#check-it-works) explains each step. To see what HelpAlive does on a page, add `data-debug` to the tag while you test, and remove it before you ship.
+
+## Related pages
+
+<CardGroup cols={3}>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    Every identify() field, switching company, and logout.
+  </Card>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    Add a signed token so nobody can pose as another user.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
+  </Card>
+</CardGroup>

@@ -56,10 +56,10 @@ Follow all of these. A missed rule usually fails without any error on screen.
 
     | Your app | Where the tag goes |
     |----------|--------------------|
-    | Rails, Django, Laravel, ASP.NET or any server-rendered app | The layout template every page uses |
-    | React, Vue, Angular or Svelte (Vite and similar) | `index.html` |
-    | Next.js | `app/layout.tsx`, or `pages/_document.tsx` |
-    | Nuxt | `app.head` in `nuxt.config` |
+    | Rails, Django, Laravel, ASP.NET or any server-rendered app | The layout template every page uses ([step by step](/sdk/html)) |
+    | React, Vue, Angular or Svelte (Vite and similar) | `index.html` ([React](/sdk/react), [Vue](/sdk/vue), [Angular](/sdk/angular)) |
+    | Next.js | `app/layout.tsx` or `pages/_app.tsx`, with `next/script` ([step by step](/sdk/nextjs)) |
+    | Nuxt | `app.head` in `nuxt.config` ([step by step](/sdk/vue#how-to-install-helpalive-in-nuxt)) |
     | Webflow, WordPress, Bubble and other builders | The site's custom code setting for the head |
 
     The tag doesn't hold up your page, because it loads in the background (`async`). [The JavaScript reference](/sdk/reference#script-tag-attributes) lists the other attributes the tag accepts.

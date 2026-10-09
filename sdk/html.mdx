@@ -1,0 +1,185 @@
+---
+title: "Install HelpAlive in HTML, Rails, Django or Laravel"
+sidebarTitle: "HTML and server-rendered"
+description: "Add the HelpAlive in-app AI agent to a plain HTML or server-rendered app: the tag in your base layout, an identify() call your server prints safely for the signed-in user, and reset() at logout."
+keywords:
+  - install HelpAlive HTML
+  - add AI agent to Rails app
+  - add AI agent to Django app
+  - add AI agent to Laravel app
+  - server-rendered app identify user
+---
+
+Installing HelpAlive in a plain HTML or server-rendered app means adding one script tag to the layout every page uses, having your server print an `identify()` call for the signed-in user, and calling `reset()` when the user logs out. This page shows the pattern in plain HTML, Rails, Django and Laravel. The same pattern works in any server that renders HTML templates, such as ASP.NET, Express or PHP.
+
+## HTML install at a glance
+
+- The tag goes in the `<head>` of your base layout, the template every page shares.
+- Your server prints the `identify()` call into the page, only when someone is signed in.
+- User values go into the page through your framework's JSON helper, never pasted into the script by hand.
+- `reset()` runs in the browser when the user submits your logout form.
+- With Turbo, htmx or a similar library, keep the identify script in the body so it runs on each visit.
+
+## Before you start
+
+- Your project key, from **Settings → Setup & API Key**. It is public, which means that it is safe to put in your pages.
+- Access to your base layout, for example `application.html.erb`, `base.html` or `app.blade.php`.
+- About 10 minutes.
+
+## How to install HelpAlive in a server-rendered app
+
+<Steps>
+  <Step title="Add the tag to your base layout">
+    Paste the tag before `</head>` in the layout every page uses:
+
+    ```html
+    <!-- Paste before </head> -->
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
+    ```
+
+    Replace `YOUR_PROJECT_KEY` with your key.
+  </Step>
+
+  <Step title="Print identify() for the signed-in user">
+    In the same layout, just inside `<body>`, print the identify call when someone is signed in. The first lines let the call run before our script has finished loading, and our script replays it when it arrives. Pick your framework:
+
+    <Tabs>
+      <Tab title="Rails">
+        ```erb app/views/layouts/application.html.erb
+        <% if current_user %>
+          <script>
+            window.HelpAlive = window.HelpAlive || { q: [] };
+            ["identify", "reset", "setConsent", "track"].forEach(function (m) {
+              HelpAlive[m] = HelpAlive[m] || function () { HelpAlive.q.push([m, [].slice.call(arguments)]); };
+            });
+            HelpAlive.identify(<%= raw json_escape({
+              userId: current_user.id.to_s,
+              displayName: current_user.name,
+              tenantId: current_user.company_id.to_s,
+              tenantName: current_user.company.name,
+              email: current_user.email,
+              role: current_user.role,
+              createdAt: current_user.created_at.to_i
+            }.to_json) %>);
+          </script>
+        <% end %>
+        ```
+      </Tab>
+      <Tab title="Django">
+        ```django templates/base.html
+        {% if user.is_authenticated %}
+          {{ helpalive_user|json_script:"helpalive-user" }}
+          <script>
+            window.HelpAlive = window.HelpAlive || { q: [] };
+            ["identify", "reset", "setConsent", "track"].forEach(function (m) {
+              HelpAlive[m] = HelpAlive[m] || function () { HelpAlive.q.push([m, [].slice.call(arguments)]); };
+            });
+            HelpAlive.identify(JSON.parse(document.getElementById("helpalive-user").textContent));
+          </script>
+        {% endif %}
+        ```
+
+        Build `helpalive_user` in a context processor, so every template has it:
+
+        ```python yourapp/context_processors.py
+        def helpalive_user(request):
+            user = request.user
+            if not user.is_authenticated:
+                return {}
+            return {"helpalive_user": {
+                "userId": str(user.pk),
+                "displayName": user.get_full_name() or user.email,
+                "tenantId": str(user.company_id),
+                "tenantName": user.company.name,
+                "email": user.email,
+                "createdAt": int(user.date_joined.timestamp()),
+            }}
+        ```
+      </Tab>
+      <Tab title="Laravel">
+        ```blade resources/views/layouts/app.blade.php
+        @auth
+          <script>
+            window.HelpAlive = window.HelpAlive || { q: [] };
+            ["identify", "reset", "setConsent", "track"].forEach(function (m) {
+              HelpAlive[m] = HelpAlive[m] || function () { HelpAlive.q.push([m, [].slice.call(arguments)]); };
+            });
+            HelpAlive.identify(@json([
+              'userId' => (string) auth()->id(),
+              'displayName' => auth()->user()->name,
+              'tenantId' => (string) auth()->user()->company_id,
+              'tenantName' => auth()->user()->company->name,
+              'email' => auth()->user()->email,
+              'createdAt' => auth()->user()->created_at->timestamp,
+            ]));
+          </script>
+        @endauth
+        ```
+      </Tab>
+      <Tab title="Plain HTML">
+        If your pages are static and a script on the page fetches the user, call `identify()` once the user arrives:
+
+        ```html
+        <script>
+          window.HelpAlive = window.HelpAlive || { q: [] };
+          ["identify", "reset", "setConsent", "track"].forEach(function (m) {
+            HelpAlive[m] = HelpAlive[m] || function () { HelpAlive.q.push([m, [].slice.call(arguments)]); };
+          });
+          fetch("/api/me").then(function (r) { return r.ok ? r.json() : null; }).then(function (user) {
+            if (!user) return;
+            HelpAlive.identify({ userId: String(user.id), displayName: user.name });
+          });
+        </script>
+        ```
+      </Tab>
+    </Tabs>
+
+    Leave out `tenantId` and `tenantName` in a B2C app, and delete the fields your app doesn't have. [Identify users](/sdk/identify) describes each field.
+  </Step>
+
+  <Step title="Call reset() when the user logs out">
+    Logout in a server-rendered app is usually a form or a link that goes to the server. Call `reset()` in the browser just before it leaves, in the same layout:
+
+    ```html
+    <script>
+      document.addEventListener("submit", function (event) {
+        if (event.target.matches("#logout-form")) HelpAlive.reset();
+      });
+    </script>
+    ```
+
+    Use your own logout form's selector. For a logout link, listen for `click` on the link instead. If your app ends sessions on its own, for example after a timeout, also print `HelpAlive.reset()` on the page that tells the user they were signed out.
+  </Step>
+</Steps>
+
+If your app sends a Content Security Policy, add HelpAlive's sources and put your page's nonce on the tag and on the inline scripts above, as [Install the script](/installation#how-to-install-the-script) shows in its last step.
+
+## Why print user values with a JSON helper?
+
+Names and emails come from your users, so a value can contain characters that end a script early, such as `</script>`. Rails's `json_escape`, Django's `json_script` and Laravel's `@json` turn each value into safe JavaScript. Pasting values into the script by hand would let a value someone typed into your app, such as a company name, run code in other people's browsers.
+
+## Does it work with Turbo or htmx?
+
+Yes. The tag in the head loads once and stays as Turbo or htmx swaps the page. Keep the identify script in the body, as above, so it runs again on each visit; a repeated call with the same details is harmless. HelpAlive records a page view by itself each time the address changes.
+
+## Does the agent appear on signed-out pages?
+
+No. The script can load on every page, but the agent appears only after `identify()` has run for a signed-in user. Your login page and marketing pages stay as they are.
+
+## Check that it works
+
+Sign in to your app with a test account, then open **Settings → Setup & API Key** on the dashboard. The first step, **Add HelpAlive to your app**, gets a check once HelpAlive has seen your page and a signed-in user. [Check it works](/installation#check-it-works) explains each step. To see what HelpAlive does on a page, add `data-debug` to the tag while you test, and remove it before you ship.
+
+## Related pages
+
+<CardGroup cols={3}>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    Sign each user id on your server, with Ruby, Python and PHP examples.
+  </Card>
+  <Card title="Google Tag Manager" icon="tags" href="/sdk/google-tag-manager">
+    Install without changing your templates.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
+  </Card>
+</CardGroup>
