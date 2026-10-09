@@ -1,0 +1,157 @@
+---
+title: "Install HelpAlive in a React app (Vite or Create React App)"
+sidebarTitle: "React"
+description: "Add the HelpAlive in-app AI agent to a React app: the tag in index.html, a small helper module, identify() in a useEffect where you hold the user, and reset() at logout."
+keywords:
+  - install HelpAlive React
+  - add AI agent to React app
+  - React in-app AI assistant
+  - HelpAlive Vite
+  - React useEffect identify
+---
+
+Installing HelpAlive in a React app means adding one script tag to `index.html`, calling `identify()` from the component that holds your signed-in user, and calling `reset()` in your logout code. This page is for React apps built with Vite, Create React App or a similar setup that serves one `index.html`. Using Next.js? Follow [Install HelpAlive in Next.js](/sdk/nextjs) instead.
+
+## React install at a glance
+
+- The tag goes in `index.html`, not in a component, so it loads once for the whole app.
+- A small helper module lets your components call HelpAlive before the script has loaded.
+- `identify()` runs in a `useEffect` wherever your app already knows the signed-in user, such as your auth provider.
+- `reset()` runs in your logout function and when a request comes back signed out, never in an effect.
+- Route changes are tracked by themselves, with React Router or any other router.
+
+## Before you start
+
+- Your project key, from **Settings → Setup & API Key**. It is public, which means that it is safe to put in your front-end code.
+- The component or context that knows the signed-in user, for example an `AuthProvider` or a `useAuth()` hook.
+- About 10 minutes.
+
+## How to install HelpAlive in React
+
+<Steps>
+  <Step title="Add the tag to index.html">
+    Open `index.html` at the root of your project (in Create React App it is `public/index.html`) and paste the tag before `</head>`:
+
+    ```html index.html
+    <!-- Paste before </head> -->
+    <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
+    ```
+
+    Replace `YOUR_PROJECT_KEY` with your key. Keeping the tag in `index.html` loads HelpAlive once, as your app starts, on every route.
+  </Step>
+
+  <Step title="Add the helper module">
+    Create `src/helpalive.ts`. It lets your components call HelpAlive before the script has finished loading, and the script replays those calls in order when it arrives:
+
+    ```typescript src/helpalive.ts
+    export type HelpAliveUser = {
+      userId: string;       // required: your own id for this person
+      displayName: string;  // required: their name or email, shown in your dashboard
+      tenantId?: string;    // B2B: their company or workspace id
+      tenantName?: string;  // B2B: that company's name
+      email?: string;
+      role?: string;        // recommended, the agent reads it
+      plan?: string;        // recommended, the agent reads it
+      createdAt?: number;   // signup date, Unix time in seconds
+    };
+
+    // Queues calls made before our script has loaded.
+    function helpAlive() {
+      const w = window as any;
+      w.HelpAlive = w.HelpAlive || { q: [] };
+      for (const m of ["identify", "reset", "setConsent", "track"]) {
+        if (!w.HelpAlive[m]) w.HelpAlive[m] = (...args: unknown[]) => w.HelpAlive.q.push([m, args]);
+      }
+      return w.HelpAlive;
+    }
+
+    export function identifyUser(user: HelpAliveUser) {
+      helpAlive().identify(user);
+    }
+
+    export function resetUser() {
+      helpAlive().reset();
+    }
+    ```
+
+    In a JavaScript project, name the file `helpalive.js` and delete the type and the `as any`.
+  </Step>
+
+  <Step title="Call identify() where you hold the signed-in user">
+    Add an effect to the component that owns the user, so it runs after login and on every page load while the user stays signed in:
+
+    ```tsx src/AuthProvider.tsx
+    import { useEffect } from "react";
+    import { identifyUser } from "./helpalive";
+
+    // Inside your AuthProvider, or any component that has the signed-in user
+    useEffect(() => {
+      if (!user) return; // still loading, or signed out: nothing to send yet
+      identifyUser({
+        userId: String(user.id),
+        displayName: user.name,
+        tenantId: String(user.company.id),   // leave out in a B2C app
+        tenantName: user.company.name,       // leave out in a B2C app
+        email: user.email,
+        role: user.role,
+        plan: user.company.plan,
+        createdAt: Math.floor(new Date(user.createdAt).getTime() / 1000),
+      });
+    }, [user]);
+    ```
+
+    The last line turns a date into Unix seconds, the only form `createdAt` accepts. Fill the rest from your own user and company objects, and delete the fields your app doesn't have. [Identify users](/sdk/identify) describes each field.
+  </Step>
+
+  <Step title="Call reset() in your logout code">
+    Put `resetUser()` in the function that signs the user out, before you leave the page:
+
+    ```tsx src/AuthProvider.tsx
+    import { resetUser } from "./helpalive";
+
+    async function logout() {
+      resetUser();
+      await api.post("/logout");
+      navigate("/login");
+    }
+    ```
+
+    Also call it wherever your app finds out a session has ended, for example in the response handler that sees a `401` and sends the user to the login page. `reset()` closes the agent and clears its conversation from the browser, so the next person on that browser starts fresh.
+  </Step>
+</Steps>
+
+If your app sends a Content Security Policy, add HelpAlive's sources as [Install the script](/installation#how-to-install-the-script) shows in its last step.
+
+## Why not call reset() when the user is null?
+
+The user is `null` for a moment on every page load, while your app checks the session. A `reset()` in an `else` branch of the effect, or in its cleanup, would run on every load: it would close the agent and clear the user's conversation each time. Call `reset()` only from code that runs because someone signed out.
+
+## Does React StrictMode cause problems?
+
+No. In development, StrictMode runs each effect twice, so `identify()` is called twice for the same user. A repeated call with the same details is harmless, so nothing changes.
+
+## What happens when another user signs in without a reload?
+
+Call `identify()` with the new user, which the effect above already does when `user` changes. HelpAlive closes the previous user's agent first, then opens a fresh one for the new user. Calling `reset()` in your logout code first is still the right order.
+
+## Do I need to tell HelpAlive about route changes?
+
+No. HelpAlive records a page view whenever your router changes the address, with React Router, TanStack Router or hash routing. There is nothing to call on navigation.
+
+## Check that it works
+
+Sign in to your app with a test account, then open **Settings → Setup & API Key** on the dashboard. The first step, **Add HelpAlive to your app**, gets a check once HelpAlive has seen your page and a signed-in user. [Check it works](/installation#check-it-works) explains each step. To see what HelpAlive does on a page, add `data-debug` to the tag while you test, and remove it before you ship.
+
+## Related pages
+
+<CardGroup cols={3}>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    Every identify() field, switching company, and logout.
+  </Card>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    Add a signed token so nobody can pose as another user.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
+    The failures that show no error.
+  </Card>
+</CardGroup>

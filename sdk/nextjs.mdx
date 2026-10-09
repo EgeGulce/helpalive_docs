@@ -1,0 +1,230 @@
+---
+title: "Install HelpAlive in Next.js (App Router or Pages Router)"
+sidebarTitle: "Next.js"
+description: "Add the HelpAlive in-app AI agent to a Next.js app: next/script in your layout, a client component that calls identify(), and reset() in the browser at sign-out."
+keywords:
+  - install HelpAlive Next.js
+  - add AI agent to Next.js app
+  - Next.js in-app AI assistant
+  - next/script third-party script
+  - Next.js App Router identify
+---
+
+Installing HelpAlive in Next.js means loading our script with `next/script` in a layout, calling `identify()` from a small client component, and calling `reset()` in the browser when the user signs out. This page covers both the App Router and the Pages Router.
+
+## Next.js install at a glance
+
+- Load the script with the `Script` component from `next/script` in a layout, with `strategy="afterInteractive"`.
+- Put the layout's `Script` in the root layout for every page, or in your signed-in area's layout to load it only after login.
+- Call `identify()` from a client component (`"use client"`), because it runs in the browser.
+- Pass that component only the user fields HelpAlive needs, never your whole session object.
+- Call `reset()` in the browser at sign-out, even when the sign-out itself runs on the server.
+
+## Before you start
+
+- Your project key, from **Settings → Setup & API Key**. It is public, which means that it is safe in client code. If you keep it in an environment variable, the variable's name must start with `NEXT_PUBLIC_` to reach the browser.
+- A way to read the signed-in user in a server component or layout, which most auth setups give you.
+- About 10 minutes.
+
+## How to install HelpAlive in the App Router
+
+<Steps>
+  <Step title="Load the script in your layout">
+    Add `Script` to `app/layout.tsx`, so it loads on every page:
+
+    ```tsx app/layout.tsx
+    import Script from "next/script";
+
+    export default function RootLayout({ children }: { children: React.ReactNode }) {
+      return (
+        <html lang="en">
+          <body>
+            {children}
+            <Script
+              src="https://cdn.helpalive.com/sdk/helpalive.js"
+              data-api-key="YOUR_PROJECT_KEY"
+              strategy="afterInteractive"
+            />
+          </body>
+        </html>
+      );
+    }
+    ```
+
+    To load HelpAlive only once someone has signed in, put the same `Script` in the layout of your signed-in area instead, for example `app/(app)/layout.tsx`. The agent only appears for signed-in users either way.
+  </Step>
+
+  <Step title="Add the helper module">
+    Create `lib/helpalive.ts`. It queues calls made before the script has loaded, and the script replays them in order when it arrives. It touches `window` only inside its functions, so importing it during server rendering is safe:
+
+    ```typescript lib/helpalive.ts
+    export type HelpAliveUser = {
+      userId: string;       // required: your own id for this person
+      displayName: string;  // required: their name or email, shown in your dashboard
+      tenantId?: string;    // B2B: their company or workspace id
+      tenantName?: string;  // B2B: that company's name
+      email?: string;
+      role?: string;        // recommended, the agent reads it
+      plan?: string;        // recommended, the agent reads it
+      createdAt?: number;   // signup date, Unix time in seconds
+    };
+
+    function helpAlive() {
+      const w = window as any;
+      w.HelpAlive = w.HelpAlive || { q: [] };
+      for (const m of ["identify", "reset", "setConsent", "track"]) {
+        if (!w.HelpAlive[m]) w.HelpAlive[m] = (...args: unknown[]) => w.HelpAlive.q.push([m, args]);
+      }
+      return w.HelpAlive;
+    }
+
+    export function identifyUser(user: HelpAliveUser) {
+      helpAlive().identify(user);
+    }
+
+    export function resetUser() {
+      helpAlive().reset();
+    }
+    ```
+  </Step>
+
+  <Step title="Call identify() from a client component">
+    Create a client component that receives the user and calls `identify()` in an effect:
+
+    ```tsx components/helpalive-identify.tsx
+    "use client";
+
+    import { useEffect } from "react";
+    import { identifyUser, type HelpAliveUser } from "@/lib/helpalive";
+
+    export function HelpAliveIdentify({ user }: { user: HelpAliveUser | null }) {
+      useEffect(() => {
+        if (user) identifyUser(user);
+      }, [user]);
+      return null;
+    }
+    ```
+
+    Render it in your signed-in layout, and build its `user` prop on the server from your own session:
+
+    ```tsx app/(app)/layout.tsx
+    import { HelpAliveIdentify } from "@/components/helpalive-identify";
+    import { getCurrentUser } from "@/lib/auth"; // your own session helper
+
+    export default async function AppLayout({ children }: { children: React.ReactNode }) {
+      const user = await getCurrentUser();
+      return (
+        <>
+          <HelpAliveIdentify
+            user={user && {
+              userId: String(user.id),
+              displayName: user.name,
+              tenantId: String(user.companyId),  // leave out in a B2C app
+              tenantName: user.companyName,      // leave out in a B2C app
+              email: user.email,
+              role: user.role,
+              plan: user.plan,
+            }}
+          />
+          {children}
+        </>
+      );
+    }
+    ```
+
+    Everything you pass to a client component is sent to the browser, so pass these fields only, never the session object with its tokens. [Identify users](/sdk/identify) describes each field.
+  </Step>
+
+  <Step title="Call reset() in the browser at sign-out">
+    `reset()` runs in the browser. Call `resetUser()` in the click or submit handler of your sign-out control, before your sign-out call:
+
+    ```tsx components/sign-out-button.tsx
+    "use client";
+
+    import { resetUser } from "@/lib/helpalive";
+
+    export function SignOutButton({ signOut }: { signOut: () => Promise<void> }) {
+      return (
+        <button
+          onClick={async () => {
+            resetUser();
+            await signOut();
+          }}
+        >
+          Sign out
+        </button>
+      );
+    }
+    ```
+
+    If your sign-out is a Server Action or a Route Handler, keep it there and still call `resetUser()` in the browser first. Also call it wherever the browser learns that a session has ended, for example when a fetch comes back `401`.
+  </Step>
+</Steps>
+
+## How to install HelpAlive in the Pages Router
+
+Load the script and identify the user in `pages/_app.tsx`, using the same `lib/helpalive.ts` module:
+
+```tsx pages/_app.tsx
+import type { AppProps } from "next/app";
+import Script from "next/script";
+import { useEffect } from "react";
+import { identifyUser } from "@/lib/helpalive";
+
+export default function App({ Component, pageProps }: AppProps) {
+  const user = pageProps.user; // however your app passes the signed-in user
+
+  useEffect(() => {
+    if (!user) return;
+    identifyUser({
+      userId: String(user.id),
+      displayName: user.name,
+      tenantId: String(user.companyId),
+      tenantName: user.companyName,
+    });
+  }, [user]);
+
+  return (
+    <>
+      <Script
+        src="https://cdn.helpalive.com/sdk/helpalive.js"
+        data-api-key="YOUR_PROJECT_KEY"
+        strategy="afterInteractive"
+      />
+      <Component {...pageProps} />
+    </>
+  );
+}
+```
+
+Call `resetUser()` in your sign-out handler, exactly as in the App Router.
+
+## Why use next/script instead of a plain script tag?
+
+`next/script` loads the tag once and keeps it across client-side navigations, and `afterInteractive` loads it once the page has started hydrating, so it doesn't hold up your first render. A plain `<script>` added from a client component is not guaranteed to run. Keep `Script` in a layout or in `_app`, not in a single page, or HelpAlive loads only on that page.
+
+## How do I add the nonce for a Content Security Policy?
+
+Pass your nonce to `Script` with the `nonce` prop, the same way your other scripts get it, and add HelpAlive's sources to your policy. [Content Security Policy](/sdk/csp) lists the sources and explains each one.
+
+## Do I need to tell HelpAlive about route changes?
+
+No. HelpAlive records a page view whenever the Next.js router changes the address, including client-side navigations with `Link` and `router.push()`. There is nothing to call on navigation.
+
+## Check that it works
+
+Sign in to your app with a test account, then open **Settings → Setup & API Key** on the dashboard. The first step, **Add HelpAlive to your app**, gets a check once HelpAlive has seen your page and a signed-in user. [Check it works](/installation#check-it-works) explains each step. To see what HelpAlive does on a page, add `data-debug` to `Script` while you test, and remove it before you ship.
+
+## Related pages
+
+<CardGroup cols={3}>
+  <Card title="Identify users" icon="user-check" href="/sdk/identify">
+    Every identify() field, switching company, and logout.
+  </Card>
+  <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
+    Sign each user id on your server, with a Node.js example.
+  </Card>
+  <Card title="Install in React" icon="atom" href="/sdk/react">
+    The same steps for React apps built with Vite.
+  </Card>
+</CardGroup>

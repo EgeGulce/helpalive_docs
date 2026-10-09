@@ -145,6 +145,16 @@
             ]
           },
           {
+            "group": "Install by framework",
+            "pages": [
+              "sdk/react",
+              "sdk/nextjs",
+              "sdk/vue",
+              "sdk/angular",
+              "sdk/html"
+            ]
+          },
+          {
             "group": "Install options and security",
             "pages": [
               "sdk/google-tag-manager",
