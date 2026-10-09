@@ -16,7 +16,7 @@ HelpAlive runs in your user's browser, inside your app, through the one script y
 
 ## 1. It reads the page
 
-When a user opens the chat or starts an assist, the agent reads the page they are on as structured text. It sees the page's title and headings, the visible text, and each button, link and field with its label and state. It also sees the values in fields, except passwords, file uploads and hidden fields.
+When a user opens the chat or starts an assist, the agent reads the page they are on as structured text. It sees the page's title and headings, the visible text, and each button, link and field with its label and state. It also sees the values in fields, except password, card and one-time-code fields, file uploads and hidden fields. A card number typed into any other field is hidden too.
 
 It also knows what the user just did on this visit, including any errors they hit, and the role and plan you pass in `identify()`.
 
