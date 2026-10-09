@@ -10,7 +10,7 @@ keywords:
   - chat widget identity verification
 ---
 
-This page shows your developer how to prove to HelpAlive who each signed-in user is, with a token your server signs. It is optional and recommended for security. It is complete on its own, so an AI coding agent can follow it without reading any other page.
+This page shows your developer how to prove to HelpAlive who each signed-in user is, with a token your server signs. It is optional and recommended. It is complete on its own, so an AI coding agent can follow it without reading any other page.
 
 Without it, HelpAlive trusts the user id your page sends. Someone who edits the page in their browser could send another user's id and read that user's chats. With it, your server signs each id. Once you turn on **Only allow verified users**, nobody can pretend to be someone else. Add it before you open the agent to all your users.
 
@@ -292,8 +292,8 @@ With it on, HelpAlive refuses every request without a valid user token:
 
 - A page without a valid token gets no chat button, so the user doesn't see the agent.
 - If a token expires while the chat is open, HelpAlive calls your `refreshUserToken` function, if you pass one to `identify()`, and sends the request again. If that fails, the user sees "Your session needs a refresh. Reload the page to keep chatting." with a **Reload page** button.
-- If an open chat is refused for any other reason, the question box gives way to "Chat isn't available right now, please try again later." A running assist stops quietly.
-- Activity from pages without a token is refused too. Those users stop showing in **Reports**, **Audience** and the setup checks.
+- If an open chat is refused for any other reason, the question box gives way to "Chat isn't available right now. Please try again later." A running assist stops quietly.
+- Activity from pages without a token is refused too. Those users stop showing in **Reports**, **Audience** and the setup steps.
 
 While the switch hides the agent from people, step 4 on **Settings → Setup & API Key** says how many couldn't see it in the last 7 days, the main reason, and the fix. We also email your team when it starts. See [Setup & API Key](/dashboard/setup#only-allow-verified-users).
 

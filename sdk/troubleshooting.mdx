@@ -20,8 +20,8 @@ This page helps developers find out why HelpAlive isn't working in their app. Mo
 ## Start here
 
 <Steps>
-  <Step title="Read the setup checks">
-    Use your app, then come back to **Settings → Setup & API Key**; it checks again when you return. The first check that isn't green points to the cause. Each check says what it last saw.
+  <Step title="Read the setup steps">
+    Use your app, then come back to **Settings → Setup & API Key**; it checks again when you return. The first step without a check points to the cause. Each step has one line saying what HelpAlive saw.
   </Step>
   <Step title="Turn on console logs">
     Add `data-debug` to the HelpAlive tag while you test:
@@ -41,19 +41,19 @@ This page helps developers find out why HelpAlive isn't working in their app. Mo
 
 <AccordionGroup>
   <Accordion title="The tag has no data-api-key, so nothing starts">
-    **What you see:** **HelpAlive is on your pages** stays grey, and the console shows nothing, even with `data-debug`.
+    **What you see:** step **Add HelpAlive to your app** still says "Not on your pages yet.", and the console shows nothing, even with `data-debug`.
 
     **Fix:** add `data-api-key="YOUR_PROJECT_KEY"` to the tag, with the key from **Settings → Setup & API Key**. If you regenerated the key, put the new one in the tag: the old one stops working shortly after.
   </Accordion>
 
   <Accordion title="The script is blocked">
-    **What you see:** **HelpAlive is on your pages** stays grey. The console shows an error naming `helpalive.js`, `Content Security Policy` or a blocked request.
+    **What you see:** step **Add HelpAlive to your app** still says "Not on your pages yet." The console shows an error naming `helpalive.js`, `Content Security Policy` or a blocked request.
 
     **Fix:** add our sources to your policy, and put your nonce on our tag if your policy uses one. See [Content Security Policy](/sdk/csp). Ad blockers and privacy extensions can also block the script: test in a private window with extensions off.
   </Accordion>
 
   <Accordion title="identify() is never called, so the agent never appears">
-    **What you see:** **HelpAlive is on your pages** is green, but **It knows who is signed in** stays grey. No chat button appears.
+    **What you see:** step **Add HelpAlive to your app** says "On your pages. Waiting for someone to sign in to your app." No chat button appears.
 
     **Fix:** call `identify()` after login and on every page load while the user is signed in, with the four queue lines above it. The agent appears only for identified users. See [Identify users](/sdk/identify).
   </Accordion>
@@ -71,7 +71,7 @@ This page helps developers find out why HelpAlive isn't working in their app. Mo
   </Accordion>
 
   <Accordion title="The agent is off, or has no published docs">
-    **What you see:** the first two checks are green, but **The agent has your docs** is not, or your users don't see the agent. No chat button appears.
+    **What you see:** step 1 has a check, but **Train the agent on your product** doesn't, or your users don't see the agent. No chat button appears.
 
     **Fix:** publish at least one source on **Train**, then switch the agent on in **Controls**. The agent can't be switched on until a source is published. Check that **Who gets it** includes the user you test with.
   </Accordion>
@@ -99,9 +99,9 @@ This page helps developers find out why HelpAlive isn't working in their app. Mo
   </Accordion>
 
   <Accordion title="The agent answers but stops offering assists">
-    **What you see:** the agent answers in words and no longer offers to do tasks. Later it may say "Chat isn't available right now, please try again later."
+    **What you see:** the agent answers in words and no longer offers to do tasks. Later it may say "Chat isn't available right now. Please try again later."
 
-    **Why:** a usage limit was reached: your package's, or one you set per user, tenant or organisation on **Controls**. Users are never told about a limit.
+    **Why:** a usage limit was reached: your plan's, or one you set per user, tenant or organisation on **Controls**. Users are never told about a limit.
 
     **Fix:** see [Limits and usage](/dashboard/usage).
   </Accordion>
@@ -109,14 +109,14 @@ This page helps developers find out why HelpAlive isn't working in their app. Mo
 
 ## Check it works
 
-When every required check on **Settings → Setup & API Key** is green, the panel says **Everything is working.** Sign in to your app as a user who gets the agent, open the chat button, and ask a question your docs answer.
+When the first three steps on **Settings → Setup & API Key** have a check, **Everything is working.** shows at the top. Sign in to your app as a user who gets the agent, open the chat button, and ask a question your docs answer.
 
 ## Still stuck?
 
 Email [support@helpalive.com](mailto:support@helpalive.com). To help us answer quickly, include:
 
 - the address of a page where the problem happens, and the browser you used;
-- which checks on **Settings → Setup & API Key** are green;
+- which steps on **Settings → Setup & API Key** have a check, and what step 1's line says;
 - what the browser console shows with `data-debug` on the tag.
 
 Your project key is public, so you can include it. Never send your signing secret.

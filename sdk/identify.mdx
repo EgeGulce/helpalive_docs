@@ -21,6 +21,8 @@ This page explains every field of `identify()` and when to call `reset()`, for t
 
 Call it wherever your app already knows the signed-in user: right after login, and on every page load while they stay signed in. Calling it again with the same details is safe.
 
+Call it as early in each page load as you can. Until it runs, our script waits briefly before it sends the page's activity, so that activity is credited to the right person.
+
 Keep these four lines above your first call. They let your code call HelpAlive before our script has finished loading, and our script replays the calls in order:
 
 ```javascript
@@ -142,13 +144,13 @@ No events are sent for a visitor until `identify()` runs. Events wait in the pag
 
 ## Check it works
 
-Sign in to your app and click around, then come back to **Settings → Setup & API Key**. **It knows who is signed in** turns green and says when it last recognized a signed-in user. The user also appears in **Audience**, under their tenant or under **B2C customers**.
+Sign in to your app and click around, then come back to **Settings → Setup & API Key**. Step **Add HelpAlive to your app** gets a check and says when it last saw a signed-in user, for example "Recognized a signed-in person 3 minutes ago." The user also appears in **Audience**, under their tenant or under **B2C customers**.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="It knows who is signed in stays grey">
-    `identify()` isn't running, or it was refused. Check that the queue lines come first, that the call runs on every page load after login, and that `userId` is text.
+  <Accordion title="Step 1 stays on Waiting for someone to sign in">
+    Step **Add HelpAlive to your app** says "On your pages. Waiting for someone to sign in to your app." Our script is on your pages, but `identify()` isn't running, or it was refused. Check that the queue lines come first, that the call runs on every page load after login, and that `userId` is text.
   </Accordion>
   <Accordion title="Users show under the wrong company">
     Your app switched company without calling `identify()` again. Call it after every switch.
@@ -162,7 +164,7 @@ Sign in to your app and click around, then come back to **Settings → Setup & A
 
 <CardGroup cols={3}>
   <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
-    Optional, and recommended for security.
+    Optional, and recommended before you open the agent to all your users.
   </Card>
   <Card title="Consent" icon="cookie" href="/sdk/consent">
     Wait for your cookie banner before loading HelpAlive.

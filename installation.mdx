@@ -108,6 +108,8 @@ Follow all of these. A missed rule usually fails without any error on screen.
     `userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended: the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too.
 
     The first four lines let your code call HelpAlive before our script has loaded. Our script replays the calls in order when it arrives. [Identify users](/sdk/identify) describes each field.
+
+    Call `identify()` on every page load, as early as you can. Until it runs, our script waits briefly before it sends the page's activity, so that activity is credited to the right person.
   </Step>
 
   <Step title="Forget them when they log out">
@@ -171,18 +173,17 @@ if (!HelpAlive[m]) HelpAlive[m] = (...args: unknown[]) => HelpAlive.q.push([m, a
   <Step title="Look for the agent">
     The round chat button appears in a corner once the agent is switched on on **Controls** and has published docs from **Train**. Until then, the steps below still tell you the install works.
   </Step>
-  <Step title="Open the setup checks">
-    The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back. The page checks again when you return. Then **Settings → Setup & API Key** shows the **Is it working?** checks turning green one by one:
+  <Step title="Open the setup steps">
+    The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back. The page checks again when you return. **Settings → Setup & API Key** lists four steps. Each gets a check by itself, with one line on what HelpAlive saw:
 
-    | Check | It turns green when |
-    |-------|---------------------|
-    | **HelpAlive is on your pages** | Our script started on one of your pages, or sent an event, in the last week. |
-    | **It knows who is signed in** | A page called `identify()` for a signed-in user. |
-    | **The agent has your docs** | At least one source on **Train** is published. |
-    | **A test has run in your app** | An assist or chat ran from a test link made by **Test it on your app**. |
-    | **Users are verified** (optional) | Valid user tokens are arriving. See [Verify users](/sdk/verify-users). |
+    | Step | It gets a check when |
+    |------|----------------------|
+    | **Add HelpAlive to your app** | Our script ran on one of your pages in the last week, and a page called `identify()` for a signed-in user. Until someone signs in, it says "On your pages. Waiting for someone to sign in to your app." Then it says "Recognized a signed-in person 3 minutes ago." |
+    | **Train the agent on your product** | At least one source on **Train** is published: "2 sources live for the agent." |
+    | **Test it on your app** | An assist or chat ran from a test link made on the dashboard's **Test** page. |
+    | **Verify your users** (optional) | Valid user tokens are arriving. See [Verify users](/sdk/verify-users). |
 
-    When the four required checks are green, the panel says **Everything is working.**
+    When the first three steps have a check, the band at the top says "3 of 4 steps done. Your agent is ready for your users." **Everything is working.** shows beside the refresh button.
   </Step>
 </Steps>
 
@@ -191,16 +192,16 @@ To see what HelpAlive does on a page, add `data-debug` to the tag while you test
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="HelpAlive is on your pages stays grey">
+  <Accordion title="Step 1 still says Not on your pages yet">
     - The build with the tag isn't live where you're testing yet.
     - The tag has no `data-api-key`. Without it, nothing starts and nothing is logged.
     - Your Content Security Policy blocks the script. Open the browser console and look for an error that names `helpalive.js` or `Content Security Policy`.
     - An ad blocker or privacy extension blocks it. Try a private window with extensions off.
   </Accordion>
-  <Accordion title="The script is seen, but nobody is recognized">
-    `identify()` isn't running, or it was refused. Check that it runs after login and on every page load, and that the four queue lines come before it. Check that `userId` is not empty. Add `data-debug` to the tag to see the reason in the console.
+  <Accordion title="Step 1 stays on Waiting for someone to sign in">
+    The script is on your pages, but `identify()` isn't running, or it was refused. Check that it runs after login and on every page load, and that the four queue lines come before it. Check that `userId` is not empty. Add `data-debug` to the tag to see the reason in the console.
   </Accordion>
-  <Accordion title="Everything is green, but the agent doesn't appear">
+  <Accordion title="Everything is working, but the agent doesn't appear">
     The agent appears only for signed-in users it is switched on for, on **Controls**. A page that was already open picks up a change within a minute or a few page loads. [Troubleshooting](/sdk/troubleshooting) covers the other causes.
   </Accordion>
 </AccordionGroup>
@@ -210,7 +211,7 @@ To see what HelpAlive does on a page, add `data-debug` to the tag while you test
 Email [support@helpalive.com](mailto:support@helpalive.com). To help us answer quickly, include:
 
 - the address of a page where the problem happens, and the browser you used;
-- which checks on **Settings → Setup & API Key** are green;
+- which steps on **Settings → Setup & API Key** have a check, and what step 1's line says;
 - what the browser console shows with `data-debug` on the tag.
 
 Your project key is public, so you can include it. Never send your signing secret.
@@ -222,7 +223,7 @@ Your project key is public, so you can include it. Never send your signing secre
     Every identify() field, switching company, and logout.
   </Card>
   <Card title="Verify users" icon="shield-check" href="/sdk/verify-users">
-    Optional, and recommended for security.
+    Optional, and recommended before you open the agent to all your users.
   </Card>
   <Card title="Troubleshooting" icon="wrench" href="/sdk/troubleshooting">
     The failures that show no error.

@@ -20,7 +20,7 @@ Each step in the list on the left has one line saying what HelpAlive saw:
 
 | Step | Its line when it is done |
 | --- | --- |
-| **Add HelpAlive to your app** | "Seen on your pages 3 minutes ago.", then "Recognized a signed-in person ..." once `identify()` runs. |
+| **Add HelpAlive to your app** | "Recognized a signed-in person 3 minutes ago." Before that, "On your pages. Waiting for someone to sign in to your app." |
 | **Train the agent on your product** | "2 sources live for the agent." |
 | **Test it on your app** | "Tested in your app: ..." once a test link ran an assist or a chat. |
 | **Verify your users** (optional) | How many sign-ins in the last 7 days arrived verified. |
@@ -95,7 +95,7 @@ The first three steps have a check, and the band says your agent is ready for yo
 
 - **"Our script reaches your pages but can't start."** The tag has the wrong project key. Copy it again from this page.
 - **"Last seen on your pages ... Is the tag still there?"** The tag was removed, or your pages stopped loading it.
-- **It knows who is signed in stays grey.** `identify()` isn't running. Call it after login and on every page load.
+- **Step 1 stays on "Waiting for someone to sign in".** `identify()` isn't running. Call it after login and on every page load.
 - **Some users can't see the agent after you turn on Only allow verified users.** Their pages send no token, or a token that fails. Step 4 names the main reason and the fix. Turn the switch off while you fix the signing, then turn it on again.
 - **"Too soon to regenerate."** The project key can be regenerated once an hour.
 
