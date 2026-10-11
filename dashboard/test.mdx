@@ -9,7 +9,7 @@ keywords:
   - preview draft
 ---
 
-**Test** is the page in the HelpAlive dashboard where you try the agent before your users do. It is the third item in the sidebar, with two views, switched at the top right. **On your app**, the one it opens on, tries the whole agent in your real app; see [Test it on your app](#test-it-on-your-app). **Question batches** runs a batch of questions through the agent so you can read its answers. Use it after you change sources, tone, length or custom responses on **Train**, before you press **Publish**.
+**Test** is the page in the HelpAlive dashboard where you try the agent before your users do. It has two views. **On your app**, the one it opens on, tries the whole agent in your real app; see [Test it on your app](#test-it-on-your-app). **Question batches** runs a batch of questions through the agent so you can read its answers. Use it after you change sources, tone, length or custom responses on **Train**, before you press **Publish**.
 
 ## Testing at a glance
 
@@ -20,12 +20,7 @@ keywords:
 
 ## How a question batch works
 
-- The page runs your questions through the same answering steps as the chat in your app.
-- While you have unpublished changes to guidance, custom responses or sources, **Question batches** uses them, and the page shows **Previewing draft**, which means that the answers include your unpublished changes. The input card says "Unpublished changes will be included."
-- With nothing unpublished, it answers from your published guidance, custom responses and docs, the ones your users' chat answers from.
-- Tests never count against your plan. Each question in a batch counts as one of your workspace's test chats for the month.
-
-Question batches test chat answers only. To try assists too, use [Test it on your app](#test-it-on-your-app). Nothing here reaches your users until you **Publish**.
+A question batch answers the way the chat in your app does. When you have unpublished changes to guidance, custom responses or sources, it answers from them and the page shows **Previewing draft**. Each question counts as one of your workspace's test chats for the month.
 
 ## Run a batch of test questions
 
@@ -34,31 +29,31 @@ Question batches test chat answers only. To try assists too, use [Test it on you
     Press **New test**. Give it a **Test name (optional)**.
   </Step>
   <Step title="Add questions">
-    Type one question per line under **Questions (one per line)**. To test follow-ups, press **Add conversation** and add an **Opening question** with up to four **Follow-up** questions. A run holds up to 50 questions, follow-ups included. The card says how many days results are kept.
+    Type one question per line under **Questions (one per line)**. To test follow-ups, press **Add conversation** and add an **Opening question** with up to four **Follow-up** questions. A run holds up to 50 questions, follow-ups included.
   </Step>
   <Step title="Or load questions">
     **Load set** opens a set you saved before. **Upload CSV** reads a file with columns `turn_1`, `turn_2` and so on, one conversation per row.
   </Step>
   <Step title="Run it">
-    Press **Run test**. Answers fill in the results table as they come. **Cancel** stops the run, and the question being answered then still finishes. Your workspace runs one batch at a time.
+    Press **Run test**. Answers fill in the results table as they come. **Cancel** stops the run. Your workspace runs one batch at a time.
   </Step>
 </Steps>
 
 ## Read a batch's results
 
-Each run appears in the list on the left with its state: **Queued**, **Running**, **Done**, **Cancelled** or **Error**. Open a run to see each question and a plain-text preview of the agent's answer. Click a row for **Question detail**, including **Sources it answered from**. An answer that lands while the detail is open shows there.
+Each run appears in the list on the left with its state: **Queued**, **Running**, **Done**, **Cancelled** or **Error**. Open a run to see each question and a plain-text preview of the agent's answer. Click a row for **Question detail**, including **Sources it answered from**.
 
-The summary strip at the top says how the run is going, for example "Running: 8 of 12 answered", with a clock that keeps ticking. Once it ends, it says how it went, for example "Finished all 12 questions". **Not asked** means that a stopped run never reached that question. Once a run has ended, you can:
+The summary strip at the top says how the run is going, for example "Running: 8 of 12 answered". Once it ends, it says how it went, for example "Finished all 12 questions". **Not asked** means that a stopped run never reached that question. Once a run has ended, you can:
 
 - save the questions as a reusable set, to run them again later;
-- export the results as a CSV file, which opens in a spreadsheet with accents intact and no cell run as a formula;
+- export the results as a CSV file;
 - **Compare** it with another run.
 
 ## Compare two runs
 
 Open a finished or canceled run and press **Compare** in its summary strip. The **Compare runs** view opens. Pick a second run under **Pick a run to compare…**.
 
-HelpAlive pairs the answers by question and puts them side by side, each with its sources. The header counts them, for example "12 questions asked in both runs, 2 in only one." Above the answers, a box lists what changed between the runs, such as docs added or "The answer guidance changed." **Sources changed** means that the two answers in a pair drew on different sources. Questions asked in only one run are listed at the end. **Export CSV** saves the comparison.
+HelpAlive pairs the answers by question and puts them side by side, each with its sources. Above the answers, a box lists what changed between the runs, such as docs added or "The answer guidance changed." **Sources changed** means that the two answers in a pair drew on different sources. Questions asked in only one run are listed at the end. **Export CSV** saves the comparison.
 
 Answers can be worded differently even when nothing changed, because the agent writes each answer afresh. Run the same set before and after a change on **Train** to see what the change did.
 
@@ -77,13 +72,11 @@ You don't need to change **Controls** or pick yourself there. Sign in to your ap
   </Step>
 </Steps>
 
-The **Good to know** panel sums up the rules below, starting with **How a test works**.
+A link works in the first browser that opens it, for 14 days or until you end it. To test in another browser, make a new link.
 
-A link works in the first browser that opens it, for 14 days or until you end it. The link is shown once and we keep no copy, so it does nothing in another browser, a private window or on another computer. To test somewhere else, make a new link. A link nobody has opened yet can still be copied from the browser that made it.
+**Revoke** on the dashboard, or **End test** on the widget's Test strip in your app, ends a link. A test link never changes who gets the agent on [Controls](/dashboard/controls).
 
-**Revoke** ends a link. The page says "Test ended. The agent leaves that browser the next time it is used." and the link shows **Ended**. **End test** on the widget's Test strip does the same from inside your app. It asks first, with **End test** and **Keep testing**, then says "Test ended." A link ended on the dashboard, or past its 14 days, says "This test has ended." in the widget. Your users see the agent only once they are in **Who gets it** on [Controls](/dashboard/controls); a test link never changes that.
-
-Tests don't count toward your plan or your users' daily limits. Your workspace gets 50 test assists and 300 test chats a month, test links and question batches together. The top of **On your app** shows them as **Test assists** and **Test chats**, with the day they start again, for example "starts again 1 Nov". That day follows your plan's own month. Every assist and chat from a test link appears there, step by step. The step on **Setup** turns green once a test has run an assist or a chat.
+The 50 test assists and 300 test chats a month are shared by test links and question batches. The top of **On your app** shows what is left as **Test assists** and **Test chats**. Every assist and chat from a test link appears there, step by step. The step on **Setup** turns green once a test has run an assist or a chat.
 
 ## Check it works
 
@@ -92,15 +85,10 @@ Run one question your docs answer. The row turns **Done** and shows an answer dr
 ## Troubleshooting
 
 - **"Run test" is disabled.** The run is over the 50-question limit, or has more questions than your workspace's test chats left this month. Remove some questions, or wait for the day they start again.
-- **A CSV row was skipped.** Rows with more than five questions are skipped. Rows past the 50-question limit are left out.
 - **"A test run is already going."** Your workspace runs one batch at a time. Wait for it to finish or cancel it, then start yours.
-- **A new run won't start today.** Your workspace has reached a daily limit. The message says when it resets.
-- **"Your agent has no docs to answer from yet."** Add docs on **Train**, then run the test.
 - **The test link can't be made.** If **Your docs, published** shows **Not published**, publish your docs on **Train**, then check again. If **A plan or free trial** shows **No plan**, testing on your app starts once your plan or free trial does.
 - **The widget says "This test has ended."** The link was revoked or its 14 days are over. Make a new link.
 - **The test link does nothing in this browser.** Each link works in the first browser that opens it. Make a new link for this browser.
-- **The link was lost while signing in.** If your app signs people in on another address, sign in, then open the link once more.
-- **The answer ignores a source you just added.** Check that its crawl finished on **Train**. A source still crawling is not part of the draft yet.
 
 ## Next
 
