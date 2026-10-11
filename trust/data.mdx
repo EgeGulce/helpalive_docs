@@ -81,9 +81,7 @@ These are **not** redacted:
 
 ## Our server logs
 
-Our server logs keep your users' chat questions, and the page content assists read, including field values, for 30 days. They also hold your team's email addresses at sign-in and when invites are sent. Deleting a user doesn't reach these log copies; they age out after 30 days.
-
-Error reports from our servers can include the log lines just before an error. They are kept with our server logs, for 30 days. See [Subprocessors](/trust/subprocessors).
+Our server logs can hold your users' chat questions and the page text assists read, but never values typed into fields. They also hold your team's email addresses at sign-in and when invites are sent. Logs are kept for 30 days. Deleting a user doesn't reach these log copies; they age out.
 
 ## How long we keep it
 
@@ -100,10 +98,10 @@ HelpAlive's servers, database and backups run in US East (Virginia). Each custom
 | A running assist's working state | Cleared soon after the assist ends or is left |
 | Records of chat messages and assist starts refused at a limit: who, which limit and when | As long as the rest of that user's data, and deleted with it |
 | Your docs' text from **Train** | Until you remove the source |
-| Script start-up reports | No time limit yet |
-| Chats your team runs on **Test** | No time limit yet |
+| Script start-up reports | 12 months, with usage events |
+| Chats your team runs on **Test** | 30 days, or your chat setting if it is shorter |
 | Server logs | 30 days |
-| Database backups | Taken daily and weekly, and they age out on their own schedule |
+| Database backups | Taken daily and weekly, and kept for up to about a month |
 
 ### Set how long chat and assist text is kept
 
@@ -126,7 +124,7 @@ On **Settings → Privacy Management**, find the person under **People** or the 
 - **Stop tracking** means that their new usage events are dropped as they arrive. **Resume tracking** starts again.
 - **Delete their data** deletes their usage data and their chat and assist text. The rest is made anonymous, so your counts stay. The reason you give is kept in **History**.
 
-Deletions reach the database at once. Log copies and backups age out on their own schedule.
+Deletions reach the database at once. Log copies age out within 30 days, and backups within about a month.
 
 To delete your whole workspace when you leave, email [support@helpalive.com](mailto:support@helpalive.com).
 
