@@ -30,7 +30,7 @@ Training the agent, choosing who gets it, and billing are done by an admin in th
 <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
 ```
 
-2. Wherever the app knows the signed-in user, right after login and on every page load, add the queue lines and then `identify()`. Call it as early in each page load as you can: until it runs, the script waits briefly before sending the page's activity, so that activity is credited to the right person.
+2. Wherever the app knows the signed-in user, right after login and on every page load, add the queue lines and then `identify()`. Call it as early in each page load as you can.
 
 ```javascript
 // Lets the calls below run before the script has loaded. Keep it first.

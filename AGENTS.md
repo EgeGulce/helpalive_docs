@@ -10,7 +10,7 @@ This is the public Mintlify site for HelpAlive (docs.helpalive.com). Mintlify pu
 - This file and anything else for writers stays in `.mintignore`, so it is never published.
 
 ## The four tabs
-- **Product:** what end users get (chat, assists, what it won't do), key concepts and the FAQ.
+- **Product:** what end users get (chat, assists, nudges, safety and hand-backs), key concepts and the FAQ.
 - **Dashboard:** one page per sidebar item and Settings tab, using the dashboard's exact labels. HelpAlive's own agent answers dashboard users from these pages.
 - **Developers:** install, identify, verify users, GTM, CSP, consent and reference.
   - `/installation` and `/sdk/verify-users` are linked from the dashboard's AI-agent prompts. Keep those paths and keep each page self-contained.
