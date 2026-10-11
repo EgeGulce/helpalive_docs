@@ -19,7 +19,7 @@ This is the public Mintlify site for HelpAlive (docs.helpalive.com). Mintlify pu
 ## Rules
 - The product code (EgeGulce/HelpAlive_tracker) is the source of truth. Check every claim against it.
 - Never name models or vendors outside Subprocessors. Never describe prompts, ranking, thresholds, internal limits or costs.
-- No prices. Prices are shown in the dashboard under Settings → Billing and usage.
+- Prices appear only on `dashboard/plans.mdx` (and pack prices on Billing), and only once they are live in the dashboard. Never name the card processor or any other third party outside Subprocessors.
 - Never document what doesn't exist (roles, an enterprise plan, a trial before it ships, Studio, integrations, export, citations).
 - Never promise in-browser redaction, or cleaning of addresses or chat text.
 - "Assist" is the word for a task the agent does or shows, as the dashboard, billing and packs say it. Where a page describes what end users see inside the widget, it is a "walkthrough", with the widget's own labels (the start button for Shows how is **Show me how**). Keep "guide" only as a search keyword. "Tenant" is the word for a customer's customer (`tenantId`).

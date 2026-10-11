@@ -123,6 +123,7 @@
             "pages": [
               "dashboard/team",
               "dashboard/setup",
+              "dashboard/plans",
               "dashboard/billing",
               "dashboard/privacy-management",
               "dashboard/account"
