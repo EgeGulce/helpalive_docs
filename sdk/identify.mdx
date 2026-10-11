@@ -29,7 +29,7 @@ keywords:
 
 Call it wherever your app already knows the signed-in user: right after login, and on every page load while they stay signed in. Calling it again with the same details is safe.
 
-Call it as early in each page load as you can. Until it runs, our script waits briefly before it sends the page's activity, so that activity is credited to the right person.
+Call it as early in each page load as you can.
 
 Keep these four lines above your first call. They let your code call HelpAlive before our script has finished loading, and our script replays the calls in order:
 
@@ -79,7 +79,7 @@ Pick the tab that matches your app. **Settings → Setup & API Key** shows the s
   </Tab>
 </Tabs>
 
-`userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended because the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too. A required field that is missing doesn't stop the call, except `userId`, but your dashboard has less to show for that person.
+`userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended because the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others.
 
 ### Apps with both
 
@@ -116,7 +116,6 @@ A tenant refers to one of your customers: the company, workspace or account a us
 - `userId` and `tenantId` can be text or a number. `42` and `"42"` are the same person.
 - Pass `displayName`, `email`, `role` and `plan` as text. A number in `displayName`, `role` or `plan` is turned into text. A field of another type, or one too long, is left out, and the call goes on without it. Keep `role` and `plan` short, as a name rather than a description.
 - An empty `userId`, or a `userId` or `tenantId` over 255 characters, stops the call, and the agent doesn't load on that page.
-- With a `userToken`, a user or tenant id in the token over 200 characters stops the call too. Use a shorter id.
 
 These problems show nothing on screen. Add `data-debug` to the tag to see them in the browser console.
 

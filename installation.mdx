@@ -113,11 +113,11 @@ Follow all of these. A missed rule usually fails without any error on screen.
       </Tab>
     </Tabs>
 
-    `userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended: the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others. `String()` keeps ids as text; numbers work too.
+    `userId` and `displayName` are always required. In a B2B app, `tenantId` and `tenantName` are required too; in a B2C app, leave them out. `role` and `plan` are recommended: the agent reads both, and without them it sees "unknown". The rest are optional: fill what your app has, and delete the others.
 
     The first four lines let your code call HelpAlive before our script has loaded. Our script replays the calls in order when it arrives. [Identify users](/sdk/identify) describes each field.
 
-    Call `identify()` on every page load, as early as you can. Until it runs, our script waits briefly before it sends the page's activity, so that activity is credited to the right person.
+    Call `identify()` on every page load, as early as you can.
   </Step>
 
   <Step title="Forget them when they log out">
@@ -169,7 +169,6 @@ if (!HelpAlive[m]) HelpAlive[m] = (...args: unknown[]) => HelpAlive.q.push([m, a
 
 - HelpAlive records page views by itself when your router changes the address. You don't call anything on route changes.
 - One `identify()` per page load is enough. Calling it again with the same details is safe.
-- React StrictMode runs effects twice in development. Two `identify()` calls for the same user are harmless.
 - If a different user signs in without a page reload, call `identify()` with the new user. HelpAlive closes the previous user's agent first.
 
 ## Check it works
@@ -182,16 +181,7 @@ if (!HelpAlive[m]) HelpAlive[m] = (...args: unknown[]) => HelpAlive.q.push([m, a
     The round chat button appears in a corner once the agent is switched on on **Controls** and has published docs from **Train**. Until then, the steps below still tell you the install works.
   </Step>
   <Step title="Open the setup steps">
-    The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back. The page checks again when you return. **Settings → Setup & API Key** lists four steps. Each gets a check by itself, with one line on what HelpAlive saw:
-
-    | Step | It gets a check when |
-    |------|----------------------|
-    | **Add HelpAlive to your app** | Our script ran on one of your pages in the last week, and a page called `identify()` for a signed-in user. Until someone signs in, it says "On your pages. Waiting for someone to sign in to your app." Then it says "Recognized a signed-in person 3 minutes ago." |
-    | **Train the agent on your product** | At least one source on **Train** is published: "2 sources live for the agent." |
-    | **Test it on your app** | An assist or chat ran from a test link made on the dashboard's **Test** page. |
-    | **Verify your users** (optional) | Valid user tokens are arriving. See [Verify users](/sdk/verify-users). |
-
-    When the first three steps have a check, the band at the top says "3 of 4 steps done. Your agent is ready for your users." **Everything is working.** shows beside the refresh button.
+    Once the tag is live, sign in to your app and click around, then come back to **Settings → Setup & API Key**. Step **Add HelpAlive to your app** gets a check once it sees a signed-in person. [Setup & API Key](/dashboard/setup) explains each step.
   </Step>
 </Steps>
 

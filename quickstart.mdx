@@ -19,7 +19,6 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
 - Step 2: on **Train**, add your help or docs site or upload a file, then press **Publish**.
 - Step 3: try the agent in your own app with **Test it on your app**, then turn it on for your users on **Controls**.
 - Step 4, optional and recommended: your server signs each user id, so that with **Only allow verified users** on, nobody can use the agent as someone else.
-- The agent appears only for signed-in people your app identifies.
 
 ## Prerequisites
 
@@ -110,32 +109,20 @@ The steps are the same four as **Settings → Setup & API Key** in your dashboar
   </Step>
 </Steps>
 
-<Note>
-If someone already had your app open when you turned the agent on, their browser still remembers that it was off. They see the chat button within a minute or a few page loads. People who open your app later see it on their first page.
-</Note>
-
 ## Check it works
 
-At the top of **Settings → Setup & API Key**, the band says how many of the 4 steps are done and what to do next. Each step in the list under it gets a check once HelpAlive sees it working.
-
-The checks need a real visit: once the tag is live, open your app, sign in, click around, and come back. You don't need to refresh, because the page checks again when you return. When the first three steps have a check, the band says your agent is ready for your users.
+Once the tag is live, sign in to your app, then come back to **Settings → Setup & API Key**. Each step gets a check when HelpAlive sees it working.
 
 ## Troubleshooting
 
 - **The step 3 card is grayed out.** You can't test the agent before a source is published. Publish one on **Train** first.
 - **The tag is on the page but nothing appears.** The agent only shows after `identify()` runs for a signed-in person. Check that your code calls it on every page load, and that `userId` is not empty.
-- **Nothing shows after you switched it on.** Wait a minute and load a few pages, as in the note above. Check that **Who gets it** includes you.
+- **Nothing shows after you switched it on.** People who already had your app open see it within a minute or a few page loads. Check that **Who gets it** includes you.
 - **Controls says "Your agent is off for your users until you subscribe."** Subscribe on **Settings → Billing and usage**. See [Billing and usage](/dashboard/billing).
 
 ## Still stuck?
 
-Email [support@helpalive.com](mailto:support@helpalive.com). To help us answer quickly, include:
-
-- the address of a page where the problem happens, and the browser you used;
-- which checks on **Settings → Setup & API Key** are green;
-- what the browser console shows with `data-debug` on the tag.
-
-Your project key is public, which means that you can include it. Never send your signing secret.
+See [Troubleshooting](/sdk/troubleshooting#still-stuck).
 
 ## Next
 
