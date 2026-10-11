@@ -1,7 +1,7 @@
 ---
-title: "What HelpAlive's agent won't do: hand-back steps and limits"
-sidebarTitle: "What it won't do"
-description: "The steps HelpAlive always hands back to the user, the questions it always asks first, and the limits on what it answers, in one list."
+title: "HelpAlive safety and hand-backs: what the agent leaves to the user"
+sidebarTitle: "Safety and hand-backs"
+description: "The steps HelpAlive always hands back to the user, the questions it always asks first, and how it sticks to your docs, in one list."
 keywords:
   - AI agent limits
   - AI agent guardrails
@@ -10,17 +10,15 @@ keywords:
   - AI answers only from docs
 ---
 
-HelpAlive's agent has fixed limits: steps it hands back to the user, things it asks before doing, and things it won't say. This page lists every one. It is for admins and security reviewers who need to know the agent's limits before turning it on.
+HelpAlive's agent follows the same safety rules in every app: steps it hands back to the user, things it asks before doing, and how it answers. This page lists them. It is for admins and security reviewers who want to know them before turning the agent on.
 
-Each "it won't" here refers to how the agent behaves in every app. You don't have to set anything up for it.
-
-## The agent's limits at a glance
+## Safety at a glance
 
 - Even with **Does the steps**, the agent hands back uploads, codes sent to the user, passwords it was not given, and anything outside your page.
 - It asks before writing to a record the user didn't name, and once before deleting many records by a rule.
 - It answers from your published sources on **Train**. Your users never get answers from drafts.
-- It never tells a user to "contact support", never mentions your limits, and never hides that it's an AI.
-- These limits hold in every app, with nothing to set up.
+- It never hides that it's an AI.
+- These rules hold in every app, with nothing to set up.
 
 ## Steps the agent always hands back
 
@@ -33,9 +31,6 @@ During an assist, even with **Does the steps**, the agent hands these steps to t
 | A password or other sign-in detail it was not given | Only the user should type it. |
 | Downloads, file pickers and the browser's or computer's own dialogs | It can't operate or check them, because they sit outside your page. |
 | Anything in another app or another site | It works only inside your app, in the tab the user has open. |
-| Canvas areas, such as drawing boards or some charts | They show pictures, not controls it can read. |
-| A part of the page it can't read yet, such as some embedded frames | An area it can't read isn't treated as empty. It says so and hands the step over. |
-| A control it can't name | When it can't tell what a control does, it asks rather than guesses. |
 
 When it hands a step back, the control is highlighted when it can be, and the bar says **Your turn**, which means that the step is the user's. The user presses **Done** when finished, or **Skip**.
 
@@ -49,29 +44,12 @@ When it hands a step back, the control is highlighted when it can be, and the ba
 With **Does the steps**, the agent presses Save, Submit and Delete when the task calls for it. Deleting by a rule is the one case where it always confirms first. If you want users to make every click themselves, set **Shows how** on **Controls**.
 </Warning>
 
-## What the agent won't say
+## How the agent answers
 
-- **It won't send users elsewhere.** It never tells a user to "contact support" or to ask their admin.
 - **It won't stretch a feature to fit.** When your app can't do something, it says so plainly, then helps with the parts it can.
 - **It sticks to your sources.** It answers from your published sources on **Train**. Where your docs are silent, it can use general knowledge of your product, and your docs win when the two disagree. It doesn't invent links, ids or quoted text. Like any AI, it can still make mistakes.
 - **It won't use drafts.** Your users get answers from published sources only. Drafts show only on **Test**.
-- **It won't mention your limits.** When a limit is reached, users aren't told about plans or usage.
 - **It won't hide that it's an AI.** It says so when asked, and the chat's footer says "HelpAlive is AI and can make mistakes."
-
-## Current limits
-
-- **English only.** The widget's buttons and labels are in English, and other languages aren't supported yet.
-- **No source links.** Answers don't link to the doc they came from.
-- **Assists start from the chat.** An assist starts only when the user accepts an offer in the chat.
-
-## Check it works
-
-In your app, start an assist for a task that includes uploading a file. At the upload step, the bar should say **Your turn** and the file control should be highlighted.
-
-## Troubleshooting
-
-- **An assist stops at a file or code step and waits.** That's the hand-back. The user does the step and presses **Done**.
-- **It asked before deleting, but your user had already said "all".** That's expected. A rule-based delete always gets one confirmation with the list.
 
 ## Next
 

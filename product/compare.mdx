@@ -35,7 +35,7 @@ Product tours are written by your team in advance, step by step, and break when 
 
 ## Do I need an API or an MCP server?
 
-No. Agents built on an API or MCP server can only do what that API exposes, which is why your team has to build and maintain it first. HelpAlive works through your app's own interface, in the user's own signed-in session. It can do only what that user could do themselves, and it hands back steps only the user should take, such as typing a password or uploading a file. See [What the agent won't do](/product/what-it-wont-do).
+No. Agents built on an API or MCP server can only do what that API exposes, which is why your team has to build and maintain it first. HelpAlive works through your app's own interface, in the user's own signed-in session. It can do only what that user could do themselves, and it hands back steps only the user should take, such as typing a password or uploading a file. See [Safety and hand-backs](/product/what-it-wont-do).
 
 ## Does HelpAlive take screenshots?
 
@@ -44,12 +44,6 @@ No. Agents that work from screenshots send images of the screen to a model and w
 ## Does it slow down my app?
 
 No. The script doesn't hold up your page, because it loads in the background. The chat loads only after `identify()`, and the code for assists loads only when one starts. See [Install the script](/installation).
-
-## When another tool fits better
-
-- **You need human support agents, tickets or an inbox.** HelpAlive has no handoff to a human team. Keep your help desk for that.
-- **Your product is a native mobile or desktop app.** HelpAlive runs in web apps in the browser.
-- **You want users to stay anonymous.** The agent appears only for signed-in users that your app identifies.
 
 ## Next
 

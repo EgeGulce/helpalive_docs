@@ -12,14 +12,6 @@ keywords:
 
 This is the HelpAlive FAQ: short answers to the questions teams ask most about HelpAlive, each with a link to the full page. It is for anyone evaluating or setting up HelpAlive.
 
-## The FAQ at a glance
-
-- HelpAlive is an AI agent inside your web app. You add one script and one `identify()` call.
-- It never takes screenshots or records the screen. It reads the page as structured text.
-- It works on any web app in the browser, with nothing to tag.
-- It appears only for people your app identifies, and you choose who sees it on **Controls**.
-- Your users are never told about a limit.
-
 ## What is HelpAlive?
 
 HelpAlive is an AI agent inside your web app. It answers your users' questions from your docs, and does tasks for them or shows them how, one step at a time. You add one script and one `identify()` call. See [How HelpAlive works](/product/how-it-works).
@@ -42,7 +34,7 @@ Yes, if you allow it. **Does the steps** on **Controls** means that it clicks, t
 
 ## Will it delete things without asking?
 
-It can press Delete when the task asks for it. When a user asks to delete records by a rule, such as "delete all drafts", it lists them and asks once first. See [What the agent won't do](/product/what-it-wont-do).
+It can press Delete when the task asks for it. When a user asks to delete records by a rule, such as "delete all drafts", it lists them and asks once first. See [Safety and hand-backs](/product/what-it-wont-do).
 
 ## Will it pop up on its own?
 
@@ -62,11 +54,11 @@ From the websites and files you publish on **Train**. Where your docs are silent
 
 ## What happens at my limit?
 
-Your users are never told about a limit. When assists run out, the chat stops offering them and keeps answering in words. When chat messages run out, the widget says chat isn't available right now. **How far over your plan** on **Controls** sets how far past your plan usage may go. See [Limits and usage](/dashboard/usage).
+Your users never see a limit named. **How far over your plan** on **Controls** sets how far past your plan usage may go. See [Limits and usage](/dashboard/usage).
 
 ## Is my data used to train models?
 
-The model provider that writes answers and runs assists doesn't train on data sent through its API. It may keep that data for up to 30 days for abuse checks. We may use the kept words of chats and assists, de-identified, to improve HelpAlive for all customers; write to support@helpalive.com to opt out. See [How the AI uses your data](/trust/ai-and-your-data).
+The model provider that writes answers and runs assists doesn't train on data sent through its API. We may use the kept words of chats and assists, de-identified, to improve HelpAlive for all customers; write to support@helpalive.com to opt out. See [How the AI uses your data](/trust/ai-and-your-data).
 
 ## How do I remove a user's data?
 
@@ -83,10 +75,6 @@ No. The script doesn't hold up your page, because it loads with `async`. The cha
 ## Does it use cookies?
 
 No. The script sets no cookies. It keeps ids and settings in your site's browser storage, and `reset()` at logout clears the chat entries. See [Data we collect](/trust/data).
-
-## Which languages does it support?
-
-English only for now. The widget's buttons and labels are in English.
 
 ## Next
 

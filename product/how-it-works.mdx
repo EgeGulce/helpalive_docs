@@ -24,7 +24,7 @@ HelpAlive runs in your user's browser, inside your app, through the one script y
 
 ## 1. It reads the page
 
-When a user opens the chat or starts an assist, the agent reads the page they are on as structured text. It sees the page's title and headings, the visible text, and each button, link and field with its label and state. It also sees the values in fields, except password, card and one-time-code fields, file uploads and hidden fields. A card number typed into any other field is hidden too.
+When a user opens the chat or starts an assist, the agent reads the page they are on as structured text. It sees the page's title and headings, the visible text, and each button, link and field with its label and state. See [Data we collect](/trust/data) for exactly what it reads.
 
 It also knows what the user just did on this visit, including any errors they hit, and the role and plan you pass in `identify()`.
 
@@ -39,14 +39,13 @@ The agent answers from the sources you add and publish on **Train**: your help s
 
 - It answers what was asked, briefly, in plain words.
 - It says plainly when your app can't do something, then helps with the parts it can.
-- It never tells a user to "contact support".
 - It doesn't invent links, ids or quoted text that aren't in your docs or on the page.
 
 See [Chat](/product/chat) for what the user sees.
 
 ## 3. It decides whether the task can be done here, and offers
 
-The agent offers to help only when the user wants the task done, not only explained, and the task can be done in your app. It doesn't offer again for a task the user turned down or already did.
+The agent offers to help only when the user wants the task done, not only explained, and the task can be done in your app.
 
 The offer appears as a card under the answer. The card starts nothing by itself. The user presses it, or ignores it. Otherwise the user gets a plain answer and no card.
 
@@ -61,21 +60,9 @@ Either way, it works one step at a time. After each step it reads the page again
 
 ## 5. It hands back what only the user can do
 
-Some steps belong to the user, and the agent hands them back and says so. These include uploading a file, a code from their phone or email, and a password it was not given. They also include downloads, other apps, and anything it can't read or name. It asks the user for content only they can give, such as a message's wording. Before deleting records chosen by a rule, such as "delete all drafts", it lists them and asks once.
+Some steps belong to the user, and the agent hands them back and says so. These include uploading a file, a code from their phone or email, and a password it was not given. It asks the user for content only they can give, such as a message's wording. Before deleting records chosen by a rule, such as "delete all drafts", it lists them and asks once.
 
-See [What the agent won't do](/product/what-it-wont-do) for the full list.
-
-## Check it works
-
-1. Publish at least one source on **Train**.
-2. Turn the agent on for yourself on **Controls**.
-3. In your app, open the chat and ask for a task your docs describe, such as "Can you set this up for me?"
-4. An offer card should appear under the answer. Press it and watch the bar at the bottom of the page.
-
-## Troubleshooting
-
-- **No offer card appears.** The agent offers only when the task can be done in your app and it can name where. Ask for a task your published docs describe. Offers also stop once your assists for the month are used up; answers keep coming.
-- **The agent answers from old content.** Changes on **Train** wait for **Publish**. Use **Test** to try drafts before you publish.
+See [Safety and hand-backs](/product/what-it-wont-do) for the full list.
 
 ## Next
 
@@ -86,7 +73,7 @@ See [What the agent won't do](/product/what-it-wont-do) for the full list.
   <Card title="Assists" icon="route" href="/product/assists">
     The offer, the bar, and the recap.
   </Card>
-  <Card title="What the agent won't do" icon="hand" href="/product/what-it-wont-do">
-    Every hand-back and limit, in one place.
+  <Card title="Safety and hand-backs" icon="hand" href="/product/what-it-wont-do">
+    Every hand-back, in one place.
   </Card>
 </CardGroup>

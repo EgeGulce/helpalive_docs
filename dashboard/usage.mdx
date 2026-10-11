@@ -24,7 +24,10 @@ Usage is how many assists and chat messages your users take from your HelpAlive 
 
 > An assist counts once HelpAlive completes its first step. Offers nobody started, and assists that stop or fail before their first step is done, are not counted. A chat message counts when the agent answers one. Tests never count.
 
-- Each case, from a stopped assist to **Run again**, is listed in [What counts as an assist](/product/assists#what-counts-as-an-assist).
+- An assist counts once, however it ends after its first step and however long it runs.
+- An assist that can't start because a limit was reached, or because chat messages are used up, does not count.
+- **Run again** and **Continue from where we left off** each start a new assist. Pausing, **Take over**, **Hand back** and steering stay within the same one.
+- The agent's answer that offers an assist counts as one chat message whether or not the user starts it, and so does each question asked with **Ask or steer**.
 - A failed or empty answer does not count.
 - The greeting and suggested questions the chat shows when it opens do not count.
 

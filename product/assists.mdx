@@ -10,7 +10,7 @@ keywords:
   - interactive product walkthrough
 ---
 
-An assist is HelpAlive doing a task in your app for a user, or showing them how, one step at a time. This page shows what the user sees from the offer to the recap, in the widget's own words. Inside the widget, your users see an assist as a "walkthrough"; the dashboard calls it an assist. Both words refer to the same thing.
+An assist is HelpAlive doing a task in your app for a user, or showing them how, one step at a time. This page shows what the user sees from the offer to the recap, in the widget's own words. Inside the widget, your users see an assist as a "walkthrough"; the dashboard calls it an assist.
 
 ## Assists at a glance
 
@@ -38,7 +38,7 @@ Every assist starts from the chat. Each one is put together for the user's reque
 
 1. The user asks for something in the chat, such as "Can you add a teammate for me?"
 2. An offer card appears under the answer with the task's name and **My plan**, the rough steps.
-3. The user presses **Let's do it** or **Show me how**. The button reads "Getting it ready…" while the walkthrough gets ready.
+3. The user presses **Let's do it** or **Show me how**.
 
 The card then shows **In progress** while the walkthrough runs.
 
@@ -48,8 +48,6 @@ A bar sits at the bottom of the page for the whole walkthrough. On its left, a l
 
 - **HelpAlive:** means that HelpAlive is acting. It is followed by what it's doing, such as working out the next step or waiting for the page.
 - **Your turn:** means that the user acts next. It is followed by what the user should do. A **Your turn** tag also shows.
-
-The current part of the task shows above that line.
 
 When it's the user's turn, the control is highlighted on the page with a short instruction. If there's text to type, it shows with a copy button. **Done** tells HelpAlive the user did the step. **Skip** moves past it.
 
@@ -63,7 +61,7 @@ On the right of the bar are four controls.
 
 ### Ask or steer
 
-**Ask or steer** opens a box that says "Ask anything, or say what to change…". The user types and presses **Send**. HelpAlive waits while it reads the words, then does one of two things:
+**Ask or steer** opens a box that says "Ask anything, or say what to change…". The user types and presses **Send**. HelpAlive then does one of two things:
 
 - It answers a question in the chat.
 - It changes what it does next, such as "use the Marketing team instead". The walkthrough carries on with the change.
@@ -78,10 +76,6 @@ With **Does the steps**, the bar shows **Take over**. Pressing it hands every re
 
 If the user steps away, the walkthrough waits, and the bar says "Paused. I'll pick this up when you're back." If the page reloads mid-walkthrough, it picks up where it left off.
 
-## How HelpAlive checks each step
-
-After each step, HelpAlive reads the page again to check the step landed. If a press didn't land, it hands that step to the user rather than pressing again. Before deleting records chosen by a rule, it names them and asks once. See [What the agent won't do](/product/what-it-wont-do).
-
 ## The recap
 
 When the walkthrough ends, a recap card appears in the chat:
@@ -95,40 +89,25 @@ The offer card then offers **Run again**, or **Continue from where we left off**
 
 ## What counts as an assist
 
-**An assist counts once HelpAlive completes its first step.** It counts once, however it ends after that and however long it runs.
-
-These don't count:
-
-- An offer the user doesn't start.
-- An assist that stops or fails before its first step is done.
-- An assist that can't start because a limit was reached, or because chat messages are used up.
-- Assists from a test link. See [Test it on your app](/dashboard/test#test-it-on-your-app).
-
-**Run again** and **Continue from where we left off** each start a new assist. Pausing, **Take over**, **Hand back** and steering stay within the same one.
-
-Every assist starts from a chat message. The agent's answer counts as one chat message whether or not the user starts the assist, and so does each question asked with **Ask or steer**.
-
-On your dashboard, **Assists started** is the count your plan uses. See [Limits and usage](/dashboard/usage).
+An assist counts once HelpAlive completes its first step. Assists from a test link never count. See [How we count](/dashboard/usage#how-we-count).
 
 ## Check it works
 
 1. On **Controls**, set **Does the steps** for yourself.
-2. In your app, ask the chat to do a short task your docs describe.
-3. Press **Let's do it** and watch the bar switch between **HelpAlive:** and **Your turn:**.
-4. Press **Take over**, then **Hand back**, then **Pause** and **Resume**.
-5. Let it finish and read the recap's **You did** and **I did**.
+2. In your app, ask the chat to do a short task your docs describe, and press **Let's do it**.
+3. Watch the bar, then read the recap's **You did** and **I did**.
 
 ## Troubleshooting
 
 - **The button says Show me how, not Let's do it.** This user, or their tenant, is set to **Shows how** on **Controls**. Changes there apply at once.
-- **No Take over button.** It appears only with **Does the steps**, and not while the walkthrough is paused.
+- **No Take over button.** It appears only with **Does the steps**.
 - **No offer at all.** The agent offers only tasks it can do in your app. Offers also stop once your assists for the month are used up. See [Limits and usage](/dashboard/usage).
-- **The assist stops at a step on another site or in a file dialog.** That's a hand-back by design. See [What the agent won't do](/product/what-it-wont-do).
+- **The assist stops at a step on another site or in a file dialog.** That's a hand-back by design. See [Safety and hand-backs](/product/what-it-wont-do).
 
 ## Next
 
 <CardGroup cols={3}>
-  <Card title="What the agent won't do" icon="hand" href="/product/what-it-wont-do">
+  <Card title="Safety and hand-backs" icon="hand" href="/product/what-it-wont-do">
     Every hand-back and confirmation.
   </Card>
   <Card title="Controls" icon="sliders-horizontal" href="/dashboard/controls">
