@@ -240,11 +240,11 @@
         "items": [
           {
             "label": "Privacy policy",
-            "href": "https://helpalive.com/privacy"
+            "href": "https://helpalive.com/legal/privacy"
           },
           {
             "label": "Terms of use",
-            "href": "https://helpalive.com/terms"
+            "href": "https://helpalive.com/legal/terms"
           }
         ]
       }
