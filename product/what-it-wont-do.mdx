@@ -18,7 +18,7 @@ HelpAlive's agent follows the same safety rules in every app: the steps it hands
 - It asks before writing to a record the user didn't name, and once before deleting many records by a rule.
 - It answers from your published sources on **Train**. Your users never get answers from drafts.
 - It never hides that it's an AI.
-- These rules hold in every app, with nothing to set up.
+- These rules apply in every app, with nothing to set up. The hand-backs are fixed; the questions it asks are how the agent is built to behave, and like any AI it can make mistakes.
 
 ## Steps the agent always hands back
 
@@ -34,20 +34,20 @@ During an assist, even with **Does the steps**, the agent hands these steps to t
 
 When it hands a step back, the control is highlighted when it can be, and the bar says **Your turn**, which means that the step is the user's. The user presses **Done** when finished, or **Skip**.
 
-## Things the agent always asks first
+## Things the agent asks first
 
 - **Content only the user can give.** A name, a message's wording, a choice that is theirs to make. It asks at the moment it needs the answer, one thing at a time.
 - **A record the user didn't name.** If a change would land on a record the user never named, it asks before writing.
 - **Deleting many records by a rule.** This refers to a request like "delete all drafts except the last one". It finds the records, names them, and asks once before the first deletion. One answer covers the whole set.
 
 <Warning>
-With **Does the steps**, the agent presses Save, Submit and Delete when the task calls for it. Deleting by a rule is the one case where it always confirms first. If you want users to make every click themselves, set **Shows how** on **Controls**.
+With **Does the steps**, the agent presses Save, Submit and Delete when the task calls for it. It is built to confirm first before deleting by a rule. If you want users to make every click themselves, set **Shows how** on **Controls**.
 </Warning>
 
 ## How the agent answers
 
 - **It won't stretch a feature to fit.** When your app can't do something, it says so plainly, then helps with the parts it can.
-- **It sticks to your sources.** It answers from your published sources on **Train**. Where your docs are silent, it can use general knowledge of your product, and your docs win when the two disagree. It doesn't invent links, ids or quoted text. Like any AI, it can still make mistakes.
+- **It sticks to your sources.** It answers from your published sources on **Train**. Where your docs are silent, it can use general knowledge of your product, and it is built to follow your docs when the two disagree and not to invent links, ids or quoted text. Like any AI, it can still make mistakes.
 - **It won't use drafts.** Your users get answers from published sources only. Drafts show only on **Test**.
 - **It won't hide that it's an AI.** It says so when asked, and the chat's footer says "HelpAlive is AI and can make mistakes."
 

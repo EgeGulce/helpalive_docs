@@ -16,7 +16,7 @@ HelpAlive collects usage events from your users' browsers the whole time its scr
 ## Data collection at a glance
 
 - The script collects no screenshots, screen or session recordings, keystroke timing, screen size or cookies.
-- Before usage events are saved, our servers replace personal data, such as names, email addresses and card numbers, with a tag.
+- Before usage events are saved, our servers scan them and replace personal data, such as names, email addresses and card numbers, with a tag. The scan is automatic and can miss some.
 - Apart from password, card, one-time-code, file-upload and hidden fields, the page the agent reads is not redacted, because it is what the agent needs to see to help.
 - Usage events are kept for 12 months. Chat and assist text is kept for your setting, 1 year by default.
 - HelpAlive's servers, database and backups run in US East (Virginia).
@@ -64,7 +64,7 @@ When a user opens the chat, asks a question or runs an assist, the agent reads t
 - **the values in fields**, as shown, except password, card, one-time-code, file-upload and hidden fields, and any field holding a card number. For those it sees only whether the field is filled;
 - the full page address, the browser's time zone and local date.
 
-It also gets the user's message and recent turns, and recent activity on this visit. It gets the role, plan and display name you send in `identify()`, and the matching passages from your docs. The chat answer never receives the user's email.
+It also gets the user's message and recent turns, and recent activity on this visit. It gets the role, plan and display name you send in `identify()`, and the matching passages from your docs. The `email` field you send in `identify()` is never sent to the model. Anything else is: if you pass an email as `displayName`, or an email shows on the page or in a chat, the agent sees it.
 
 Apart from those fields, the page the agent reads is not redacted. A code typed into a field your page doesn't mark as a one-time code (`autocomplete="one-time-code"`) is included. This is deliberate, because it is what the agent needs to see to help. See [How the AI uses your data](/trust/ai-and-your-data).
 
@@ -94,7 +94,7 @@ HelpAlive's servers, database and backups run in US East (Virginia). Each custom
 | User profile from `identify()` | Until you delete that user |
 | Chat messages and answers, word for word | Your setting, 1 year by default. After it, the words are cleared and the dates and counts stay. |
 | Assist requests, plans, questions and answers | Same setting as chat |
-| Assist step titles and the labels clicked | Until you delete the user |
+| Assist step titles and the labels clicked | Same setting as chat |
 | A running assist's working state | Cleared soon after the assist ends or is left |
 | Records of chat messages and assist starts refused at a limit: who, which limit and when | As long as the rest of that user's data, and deleted with it |
 | Your docs' text from **Train** | Until you remove the source |
@@ -124,7 +124,7 @@ On **Settings → Privacy Management**, find the person under **People** or the 
 - **Stop tracking** means that their new usage events are dropped as they arrive. **Resume tracking** starts again.
 - **Delete their data** deletes their usage data and their chat and assist text. The rest is made anonymous, so your counts stay. The reason you give is kept in **History**.
 
-Deletions reach the database at once. Log copies age out within 30 days, and backups within about a month.
+Deletions reach the database within a minute, and a second pass 15 minutes later removes anything that was still on its way. Log copies age out within 30 days, and backups within about a month.
 
 To delete your whole workspace when you leave, email [support@helpalive.com](mailto:support@helpalive.com).
 

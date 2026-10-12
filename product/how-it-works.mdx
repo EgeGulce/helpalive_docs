@@ -1,16 +1,16 @@
 ---
 title: "How HelpAlive's in-app AI agent reads pages and does tasks"
 sidebarTitle: "How it works"
-description: "The five stages HelpAlive's agent goes through in your app, from reading the page to handing back what only the user can do, with its guarantees."
+description: "The five stages HelpAlive's agent goes through in your app, from reading the page to handing back what only the user can do, and what is fixed."
 keywords:
   - how HelpAlive works
   - AI agent stages
-  - in-app AI guarantees
+  - in-app AI safety
   - AI agent reads the DOM
   - AI does tasks in web app
 ---
 
-HelpAlive's agent is an AI agent that runs inside your app: it reads the page, answers from your published docs, and does tasks for your users or shows them how. This page explains what it does, stage by stage, and what it guarantees at each one. It is for anyone deciding whether to put HelpAlive in front of their users.
+HelpAlive's agent is an AI agent that runs inside your app: it reads the page, answers from your published docs, and does tasks for your users or shows them how. This page explains what it does, stage by stage. Some of it is fixed in the product, such as never taking screenshots; the rest is how the agent is built to behave, and like any AI it can make mistakes. It is for anyone deciding whether to put HelpAlive in front of their users.
 
 HelpAlive runs in your user's browser, inside your app, through the one script your developer adds. It appears only for people you identify with `identify()`, and only for the people you choose on **Controls**.
 
@@ -35,11 +35,11 @@ Because it reads the page's structure, it works on any web app. You don't tag el
 
 ## 2. It answers from your published docs
 
-The agent answers from the sources you add and publish on **Train**: your help site and the files you upload. Drafts are never used for your users' answers. Where your docs are silent, it can use general knowledge of your product, and your docs always win when the two disagree.
+The agent answers from the sources you add and publish on **Train**: your help site and the files you upload. Drafts are never used for your users' answers. Where your docs are silent, it can use general knowledge of your product, and it is built to follow your docs when the two disagree.
 
 - It answers what was asked, briefly, in plain words.
 - It says plainly when your app can't do something, then helps with the parts it can.
-- It doesn't invent links, ids or quoted text that aren't in your docs or on the page.
+- It is built not to invent links, ids or quoted text that aren't in your docs or on the page.
 
 See [Chat](/product/chat) for what the user sees.
 

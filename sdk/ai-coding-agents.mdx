@@ -42,7 +42,7 @@ The HelpAlive coding agent prompts are two prompts from the dashboard that you p
 ```text Install prompt
 Add HelpAlive (an in-app AI agent) to this web app. Make only the changes below.
 
-1. Load the HelpAlive script on every page. Put this tag in the HTML <head> of the layout or template every page uses (for example index.html, the root layout in Next.js, or the base template in Rails, Django or Laravel):
+1. Load the HelpAlive script on every page, except pages that show data the app's owner says HelpAlive must not receive (ask them which), and only after cookie consent if this app asks for it. Put this tag in the HTML <head> of the layout or template every page uses (for example index.html, the root layout in Next.js, or the base template in Rails, Django or Laravel):
 
 <!-- Paste before </head> -->
 <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>

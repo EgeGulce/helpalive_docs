@@ -9,7 +9,7 @@ keywords:
   - opt-in tracking SaaS
 ---
 
-Consent, on this page, refers to your cookie banner's approval before a tool may run in a user's browser. HelpAlive has no consent mode of its own: it records activity once `identify()` runs, as [Identify users](/sdk/identify) describes. To make it wait for your banner, you hold back the HelpAlive tag until the user accepts. This page is for developers whose cookie banner must approve tools before they run.
+Consent, on this page, refers to your cookie banner's approval before a tool may run in a user's browser. HelpAlive has no consent mode of its own. Once the tag loads, it notes activity in the page, sends it only after `identify()` runs, and drops it if `identify()` never runs, as [Identify users](/sdk/identify) describes. To make it wait for your banner, you hold back the HelpAlive tag until the user accepts. This page is for developers whose cookie banner must approve tools before they run.
 
 ## Consent at a glance
 
@@ -56,6 +56,18 @@ Replace `YOUR_PROJECT_KEY` with your key from **Settings → Setup & API Key**. 
 <Note>
 Without the tag, nothing of HelpAlive runs, so the agent doesn't appear for a user who declines. To keep the agent away from some users, leave them out of **Who gets it** on **Controls**. To stop recording one user for good, use **Settings → Privacy Management**.
 </Note>
+
+## If a user withdraws consent
+
+When your banner reports that a user who accepted has changed their mind, run this on the page:
+
+```javascript
+// Run when your cookie banner reports that the user withdrew consent.
+HelpAlive.reset();     // closes the agent and forgets the person in this browser
+HelpAlive.shutdown();  // stops recording on this page
+```
+
+Then stop adding the tag on later page loads, as in [Make HelpAlive wait for consent](#make-helpalive-wait-for-consent). If the user accepts again, add the tag again.
 
 ## How HelpAlive behaves before and after consent
 

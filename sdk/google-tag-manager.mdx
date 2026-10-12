@@ -24,6 +24,8 @@ The Google Tag Manager install is a way to add HelpAlive through Tag Manager, fo
 - Tag Manager is already on every page of your app.
 - Your project key, from **Settings → Setup & API Key**. It is public and safe to put in a tag.
 - A developer who can add two `dataLayer.push` calls to your app: one after login, one at logout.
+- If your users must accept a cookie banner before tools like this run, fire the tag only after they accept. See [Consent](/sdk/consent).
+- Don't fire the tag on any page that shows data our [Terms of Service](https://helpalive.com/legal/terms) say HelpAlive must not receive. Hiding the agent on **Controls** isn't enough: activity is still recorded.
 
 ## How to set up HelpAlive in Tag Manager
 
@@ -47,24 +49,24 @@ The Google Tag Manager install is a way to add HelpAlive through Tag Manager, fo
   </Step>
 
   <Step title="Push the signed-in user to the data layer, from your app">
-    Run this right after login, and on every page load while the user stays signed in. Leave out the lines you don't have.
+    Run this right after login, and on every page load while the user stays signed in. Keep every line: for a value this user doesn't have, push `undefined`. Tag Manager keeps the last value pushed, so a line you leave out would carry the previous user's value over.
 
     ```javascript
     // On every page while someone is logged in, starting right after login
     dataLayer.push({
       event: "helpalive_identify",
       helpalive_user_id: String(user.id),            // required; your user's stable ID
-      helpalive_tenant_id: String(company.id),       // required in a B2B app; leave out for B2C users
-      helpalive_tenant_name: company.name,           // required in a B2B app; the company's name
+      helpalive_tenant_id: company ? String(company.id) : undefined, // required in a B2B app; undefined for users with no tenant
+      helpalive_tenant_name: company ? company.name : undefined,     // required in a B2B app; the company's name
       helpalive_display_name: user.name,             // required; the person's name
       helpalive_email: user.email,                   // optional
       helpalive_role: user.role,                     // recommended, helps the agent; for example "admin"
-      helpalive_plan: company.plan,                  // recommended, helps the agent; for example "pro"
+      helpalive_plan: (company || user).plan,        // recommended, helps the agent; for example "pro"
       helpalive_created_at: user.createdAt,          // optional; signup date (Unix seconds)
     });
     ```
 
-    The user id and the person's name are always required. In a B2B app, the tenant id and name are required too; leave them out for users with no tenant. A tenant refers to the company, workspace or account a user belongs to in your app.
+    The user id and the person's name are always required. In a B2B app, the tenant id and name are required too; push `undefined` for users with no tenant. A tenant refers to the company, workspace or account a user belongs to in your app.
   </Step>
 
   <Step title="Create a Data Layer Variable for each field">
@@ -98,7 +100,19 @@ The Google Tag Manager install is a way to add HelpAlive through Tag Manager, fo
 
     ```javascript
     // In your logout code, and wherever your app ends a session
-    dataLayer.push({ event: "helpalive_reset" });
+    // Clears every HelpAlive value, so the next person never inherits one
+    dataLayer.push({
+      event: "helpalive_reset",
+      helpalive_user_id: undefined,
+      helpalive_tenant_id: undefined,
+      helpalive_tenant_name: undefined,
+      helpalive_display_name: undefined,
+      helpalive_email: undefined,
+      helpalive_role: undefined,
+      helpalive_plan: undefined,
+      helpalive_created_at: undefined,
+      helpalive_user_token: undefined,  // only if you verify users
+    });
     ```
 
     Then add a third Custom HTML tag, triggered by the custom event `helpalive_reset`:

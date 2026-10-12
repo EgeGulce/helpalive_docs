@@ -24,7 +24,7 @@ Training the agent, choosing who gets it, and billing are done by an admin in th
 
 ## Install
 
-1. Put this tag in the `<head>` of the layout every page uses. The project key is public and is on **Settings → Setup & API Key**.
+1. Put this tag in the `<head>` of the layout every page uses. The project key is public and is on **Settings → Setup & API Key**. Leave it off pages that show data the app's owner says HelpAlive must not receive, and load it only after cookie consent if the app asks for it (https://docs.helpalive.com/sdk/consent).
 
 ```html
 <script src="https://cdn.helpalive.com/sdk/helpalive.js" data-api-key="YOUR_PROJECT_KEY" async></script>
