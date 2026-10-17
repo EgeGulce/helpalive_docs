@@ -22,10 +22,11 @@ Usage is how many assists and chat messages your users take from your HelpAlive 
 
 ## How we count
 
-> An assist counts once HelpAlive completes its first step. Offers nobody started, and assists that stop or fail before their first step is done, are not counted. A chat message counts when the agent answers one. Tests never count.
+> An assist counts once HelpAlive completes its first step. Offers nobody started, and assists that stop or fail before their first step is done, are not counted. A chat message counts when the agent answers one. Tests never count. An assist that has started always finishes and counts, and anything used past your limit moves into next month.
 
 - An assist counts once, however it ends after its first step and however long it runs.
-- An assist that can't start because a limit was reached, or because chat messages are used up, does not count.
+- At a limit, or while chat messages are used up, the chat stops offering assists, so nothing more is counted.
+- An assist that has started always finishes, even if a limit is reached while it runs. What it used past your limit isn't billed: it opens next month as already used.
 - **Run again** and **Continue from where we left off** each start a new assist. Pausing, **Take over**, **Hand back** and steering stay within the same one.
 - The agent's answer that offers an assist counts as one chat message whether or not the user starts it, and so does each question asked with **Ask or steer**.
 - A failed or empty answer does not count.
@@ -53,7 +54,7 @@ Leave a box empty to use our default; the box shows it in gray. A box can't go a
 
 **How far over your plan** on **Controls** sets how far past your plan's monthly amounts your users may go. It is a percent of your plan, from 0% up to 100%, set separately for assists and chat messages.
 
-- **It starts at 0%, which means stop.** At your plan's limit, new assists and chat messages are refused until the period starts again.
+- **It starts at 0%, which means stop.** At your plan's limit, the chat offers no new assists and new chat messages are refused until the period starts again. An assist that has already started still finishes.
 - **Above 0%**, your users can go that far past your plan. Overage refers to that use past your plan: \$0.25 an assist and \$0.015 a chat message, billed on your next monthly invoice. The page says how many more that allows.
 - For more than the slider allows, buy a pack.
 - **During the free trial there is no overage.** Once the trial's assists or chat messages, and any packs you bought, are used, new ones stop until your plan starts. **Controls** says your trial's assists or chat messages are used, "until your plan starts on" the date.
@@ -65,7 +66,7 @@ Packs add to what your plan includes. They are used after the plan's own amount 
 
 Your users never see a limit named.
 
-- **At your plan's assists**, with nothing more allowed, the chat stops offering assists and keeps answering in words. An assist that starts anyway ends quietly, and the chat says "Let's pick this up in a moment."
+- **At your plan's assists**, with nothing more allowed, the chat stops offering assists and keeps answering in words. An assist that has already started runs to its end.
 - **At your plan's chat messages**, with nothing more allowed, a chat that is already open answers each new message with "Chat isn't available right now. Please try again later." From the next page load the chat button is hidden. It comes back with a pack, a higher **How far over your plan**, or the new plan period. Every assist starts from a chat message, so no new assists can start either until chat is available again.
 - **At a daily limit** for a person, tenant or your organization, the same quiet answers apply until the day is over.
 
